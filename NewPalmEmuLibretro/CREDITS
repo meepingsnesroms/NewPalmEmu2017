@@ -1,0 +1,26 @@
+I do not care about licences or legal crap!!!
+
+I used whatever librarys and code worked best and will give proper credit
+for them,other than that I do not care what your licence is or if I stole
+your code.
+
+ALL INFORMATION IS FAIR USE.
+
+Library             | Inventor
+------------------------------
+Palm API reference  | PALM
+68k Emulator        | UAE (U* Amiga Emulator)
+68k Cycle Table     | Musashi 68k Emu
+Arm Emulator        | GB Enhanced+ (Daniel Baxter)
+Palm OS Color Table | Pilot Resource Compiler (PilRC)
+
+
+
+Original Code
+-------------
+PRC & PDB parser
+API implimentation
+
+
+//everything else may or may not be used so they have not been added.
+

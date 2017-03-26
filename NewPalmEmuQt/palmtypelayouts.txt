@@ -1,0 +1,598 @@
+typedef struct {
+        Int8		offset;
+        Int8		width;
+} FontCharInfoType, * FontCharInfoPtr;
+
+typedef struct {
+        Int16 fontType; 			// font type
+        Int16 firstChar; 			// ASCII code of first character
+        Int16 lastChar; 			// ASCII code of last character
+        Int16 maxWidth; 			// maximum character width
+        Int16 kernMax; 			// negative of maximum character kern
+        Int16 nDescent; 			// negative of descent
+        Int16 fRectWidth; 		// width of font rectangle
+        Int16 fRectHeight; 		// height of font rectangle
+        Int16 owTLoc; 				// offset to offset/width table
+        Int16 ascent; 				// ascent
+        Int16 descent; 			// descent
+        Int16 leading; 			// leading
+        Int16 rowWords; 			// row width of bit image / 2
+} FontType;
+
+
+
+
+
+
+
+
+// Alert constants and structures
+enum alertTypes {
+        informationAlert,
+        confirmationAlert,
+        warningAlert,
+        errorAlert };
+typedef enum alertTypes AlertType;
+
+typedef struct {
+        UInt16		alertType;
+        UInt16		helpRscID;
+        UInt16		numButtons;
+        UInt16		defaultButton;
+} AlertTemplateType;
+
+// Types of object in a dialog box
+enum formObjects {
+        frmFieldObj,
+        frmControlObj,
+        frmListObj,
+        frmTableObj,
+        frmBitmapObj,
+        frmLineObj,
+        frmFrameObj,
+        frmRectangleObj,
+        frmLabelObj,
+        frmTitleObj,
+        frmPopupObj,
+        frmGraffitiStateObj,
+        frmGadgetObj,
+        frmScrollBarObj };
+typedef enum formObjects FormObjectKind;
+
+
+typedef struct {
+        UInt16 usable			:1;	// Set if part of ui
+        UInt16 reserved		:15;	// pad it out
+} FormObjAttrType;
+
+
+// Gadget support:
+#define formGadgetDrawCmd			0	// paramP is unspecified
+#define formGadgetEraseCmd			1	// paramP is unspecified
+#define formGadgetHandleEventCmd	2	// paramP is an EventType *for the relevant event.
+#define formGadgetDeleteCmd		3	// paramP is unspecified.
+
+
+typedef struct {
+        UInt16 usable			:1;	// Set if part of ui - "should be drawn"
+        UInt16 extended		:1;	// Set if the structure is an "Extended" gadget (i.e., the 'handler' field is present)
+        UInt16 visible			:1;	// Set if drawn - "has been drawn" or "must do work to erase"
+        UInt16 reserved		:13;	// pad it out
+} FormGadgetAttrType;
+
+typedef Boolean (FormGadgetHandlerType) (struct FormGadgetType *gadgetP, UInt16 cmd, void *paramP);
+
+struct FormGadgetType {
+        UInt16						id;
+        FormGadgetAttrType		attr;
+        RectangleType				rect;
+        const void *			   data;
+        FormGadgetHandlerType	*handler;
+};
+typedef struct FormGadgetType FormGadgetType;
+
+
+// All of the smaller form objects:
+
+typedef struct {
+        FormObjAttrType			attr;
+        PointType					pos;
+        UInt16		     			rscID;
+} FormBitmapType;
+
+
+typedef struct {
+        FormObjAttrType			attr;
+        PointType	      		point1;
+        PointType	      		point2;
+} FormLineType;
+
+
+typedef struct {
+        UInt16						id;
+        FormObjAttrType			attr;
+        RectangleType				rect;
+        UInt16     					frameType;
+} FormFrameType;
+
+
+typedef struct {
+        FormObjAttrType			attr;
+        RectangleType				rect;
+} FormRectangleType;
+
+
+typedef struct {
+        UInt16						id;
+        PointType					pos;
+        FormObjAttrType			attr;
+        FontID						fontID;
+        UInt8 						reserved;
+        Char *						text;
+} FormLabelType;
+
+
+typedef struct {
+        RectangleType				rect;
+        Char *						text;
+} FormTitleType;
+
+
+typedef struct {
+        UInt16						controlID;
+        UInt16						listID;
+} FormPopupType;
+
+
+typedef struct {
+        PointType					pos;
+} FrmGraffitiStateType;
+
+
+typedef union {
+        void *            		ptr;
+        FieldType *					field;
+        ControlType *				control;
+        GraphicControlType *		graphicControl;
+        SliderControlType *		sliderControl;
+        ListType	*					list;
+        TableType *					table;
+        FormBitmapType *			bitmap;
+//	FormLineType *				line;
+//	FormFrameType *			frame;
+//	FormRectangleType *		rectangle;
+        FormLabelType *			label;
+        FormTitleType *			title;
+        FormPopupType *			popup;
+        FrmGraffitiStateType *	grfState;
+        FormGadgetType *			gadget;
+        ScrollBarType *			scrollBar;
+} FormObjectType;
+
+// typedef FormObjectType *FormObjectPtr;
+
+
+typedef struct {
+        FormObjectKind				objectType;
+        UInt8 						reserved;
+        FormObjectType				object;
+} FormObjListType;
+
+
+typedef struct {
+        UInt16 usable			:1;	// Set if part of ui
+        UInt16 enabled			:1;	// Set if interactable (not grayed out)
+        UInt16 visible			:1;	// Set if drawn, used internally
+        UInt16 dirty			:1;	// Set if dialog has been modified
+        UInt16 saveBehind		:1;	// Set if bits behind form are save when form ids drawn
+        UInt16 graffitiShift	:1;   // Set if graffiti shift indicator is supported
+        UInt16 globalsAvailable:1; // Set by Palm OS if globals are available for the
+                                                                                // form event handler
+        UInt16 doingDialog	:1;	// FrmDoDialog is using for nested event loop
+        UInt16 exitDialog		:1;	// tells FrmDoDialog to bail out and stop using this form
+        UInt16 reserved		:7;	// pad to 16
+        UInt16 reserved2;				// FormAttrType now explicitly 32-bits wide.
+} FormAttrType;
+
+
+typedef Boolean FormEventHandlerType (EventType *eventP);
+
+typedef FormEventHandlerType *FormEventHandlerPtr;
+
+struct FormType {
+        WindowType					window;
+        UInt16						formId;
+   FormAttrType				attr;
+        WinHandle	       		bitsBehindForm;
+        FormEventHandlerType *	handler;
+        UInt16						focus;
+        UInt16						defaultButton;
+        UInt16						helpRscId;
+        UInt16						menuRscId;
+        UInt16						numObjects;
+        FormObjListType *			objects;
+};
+
+typedef struct FormType FormType;
+typedef FormType *FormPtr;
+
+
+// FormActiveStateType: this structure is passed to FrmActiveState for
+// saving and restoring active form/window state; this structure's
+// contents are abstracted because the contents will differ significantly
+// as PalmOS evolves
+// Added for PalmOS 3.0
+typedef struct FormActiveStateType {
+        UInt16	data[11];
+        } FormActiveStateType;
+
+
+
+
+
+
+
+
+
+//-----------------------------------------------
+// The Bitmap Structure.
+//-----------------------------------------------
+
+// bitmap version numbers
+#define BitmapVersionZero	0
+#define BitmapVersionOne	1
+#define BitmapVersionTwo	2
+
+// Compression Types for BitMap BitmapVersionTwo.
+typedef enum {
+        BitmapCompressionTypeScanLine = 0,
+        BitmapCompressionTypeRLE,
+
+        BitmapCompressionTypeNone = 0xFF
+} BitmapCompressionType;
+
+#ifndef PUBLIC_STUFF_STRIPPED
+// DOLATER ••• -- need to add #defines for each bit for endian portableness
+#endif // PUBLIC_STUFF_STRIPPED
+typedef struct BitmapFlagsType {
+        UInt16 compressed:1;  			// Data format:  0=raw; 1=compressed
+        UInt16 hasColorTable:1;			// if true, color table stored before bits[]
+        UInt16 hasTransparency:1;		// true if transparency is used
+        UInt16 indirect:1;				// true if bits are stored indirectly
+        UInt16 forScreen:1;				// system use only
+        UInt16 reserved:11;
+} BitmapFlagsType;
+
+// this definition correspond to the 'Tbmp' and 'tAIB' resource types
+typedef struct BitmapType {
+        Int16  				width;
+        Int16  				height;
+        UInt16  				rowBytes;
+        BitmapFlagsType	flags;
+        UInt8					pixelSize;			// bits/pixel
+        UInt8					version;				// version of bitmap. This is vers 2
+        UInt16	 			nextDepthOffset;	// # of DWords to next BitmapType
+                                                                                                        //  from beginnning of this one
+        UInt8					transparentIndex;	// v2 only, if flags.hasTransparency is true,
+                                                                                                        // index number of transparent color
+        UInt8					compressionType;	// v2 only, if flags.compressed is true, this is
+                                                                                                        // the type, see BitmapCompressionType
+
+        UInt16	 			reserved;			// for future use, must be zero!
+
+        // [colorTableType] pixels | pixels*
+                                            // If hasColorTable != 0, we have:
+                                            //   ColorTableType followed by pixels.
+                                                                                                        // If hasColorTable == 0:
+                                            //   this is the start of the pixels
+                                            // if indirect != 0 bits are stored indirectly.
+                                            //	  the address of bits is stored here
+                                            //   In some cases the ColorTableType will
+                                            //   have 0 entries and be 2 bytes long.
+} BitmapType;
+
+typedef BitmapType *BitmapPtr;
+
+
+// This is the structure of a color table. It maps pixel values into
+//  RGB colors. Each element in the table corresponds to the next
+//  index, starting at 0.
+
+typedef struct RGBColorType {
+        UInt8	index;									// index of color or best match to cur CLUT or unused.
+        UInt8	r;											// amount of red, 0->255
+        UInt8	g;											// amount of green, 0->255
+        UInt8	b;											// amount of blue, 0->255
+} RGBColorType;
+
+
+typedef struct ColorTableType {
+                                                                                                                // high bits (numEntries > 256) reserved
+        UInt16						numEntries;		// number of entries in table
+        // RGBColorType			entry[];			// array 0..numEntries-1 of colors
+                                                                                                                // starts immediately after numEntries
+} ColorTableType;
+
+
+
+
+
+
+
+
+
+
+
+// enum for WinScrollRectangle
+typedef enum { winUp = 0, winDown, winLeft, winRight } WinDirectionType;
+
+
+// enum for WinCreateOffscreenWindow
+typedef enum { screenFormat = 0, genericFormat } WindowFormatType;
+
+
+// enum for WinLockScreen
+typedef enum {winLockCopy, winLockErase, winLockDontCare} WinLockInitType;
+
+
+// operations for the WinScreenMode function
+typedef enum {
+        winScreenModeGetDefaults,
+        winScreenModeGet,
+        winScreenModeSetToDefaults,
+        winScreenModeSet,
+        winScreenModeGetSupportedDepths,
+        winScreenModeGetSupportsColor
+} WinScreenModeOperation;
+
+// Operations for the WinPalette function
+#define winPaletteGet 				0
+#define winPaletteSet 				1
+#define winPaletteSetToDefault	2
+
+// transfer modes for color drawing
+typedef enum {winPaint, winErase, winMask, winInvert, winOverlay, winPaintInverse, winSwap} WinDrawOperation;
+
+
+typedef enum { blackPattern, whitePattern, grayPattern, customPattern } PatternType;
+#define noPattern						blackPattern
+#define grayHLinePattern			0xAA
+#define grayHLinePatternOdd		0x55
+
+
+// grayUnderline means dotted current foreground color
+// solidUnderline means solid current foreground color
+// colorUnderline redundant, use solidUnderline instead
+typedef enum { noUnderline, grayUnderline, solidUnderline, colorUnderline } UnderlineModeType;
+
+#define WinMaxSupportedDepth	8
+#define WinNumSupportedColors 4
+
+typedef UInt8 IndexedColorType;				// 1-, 2-, 4-, or 8-bit index
+
+typedef UInt8 CustomPatternType [8];		// 8x8 1-bit deep pattern
+
+// for WinPalette startIndex value, respect indexes in passed table
+#define WinUseTableIndexes -1
+
+//-----------------------------------------------
+// Draw state structures.
+//-----------------------------------------------
+
+
+typedef struct DrawStateType {
+        WinDrawOperation	transferMode;
+        PatternType			pattern;
+        UnderlineModeType	underlineMode;
+        FontID				fontId;
+        FontPtr				font;
+        CustomPatternType	patternData;
+        IndexedColorType	foreColor;
+        IndexedColorType	backColor;
+        IndexedColorType	textColor;
+        UInt8					reserved;
+} DrawStateType;
+
+
+#define DrawStateStackSize 5		// enough for a control in a field in a window
+
+
+
+
+//-----------------------------------------------
+// The Window Structures.
+//-----------------------------------------------
+
+#ifndef PUBLIC_STUFF_STRIPPED
+// DOLATER ••• -- need to add #defines for each bit for endian portableness
+#endif // PUBLIC_STUFF_STRIPPED
+typedef union FrameBitsType {
+        struct {
+                UInt16 cornerDiam		: 8;				// corner diameter, max 38
+                UInt16 reserved_3		: 3;
+                UInt16 threeD			: 1;				// Draw 3D button
+                UInt16 shadowWidth	: 2;				// Width of shadow
+                UInt16 width			: 2;				// Width frame
+        } bits;
+        UInt16 word;									// IMPORTANT: INITIALIZE word to zero before setting bits!
+} FrameBitsType;
+
+typedef UInt16 FrameType;
+
+//  Standard Frame Types
+#define noFrame         0
+#define simpleFrame     1
+#define rectangleFrame  1
+#define simple3DFrame   0x0012			 // 3d, frame = 2
+#define roundFrame      0x0401          // corner = 7, frame = 1
+#define boldRoundFrame  0x0702          // corner = 7, frame = 2
+#define popupFrame      0x0205          // corner = 2,  frame = 1, shadow = 1
+#define dialogFrame     0x0302          // corner = 3,  frame = 2
+#define menuFrame       popupFrame
+
+
+#define winDefaultDepthFlag		0xFF
+
+#ifndef PUBLIC_STUFF_STRIPPED
+// DOLATER ••• -- need to add #defines for each bit for endian portableness
+#endif // PUBLIC_STUFF_STRIPPED
+typedef struct WindowFlagsType {
+        UInt16 format:1;      // window format:  0=screen mode; 1=generic mode
+        UInt16 offscreen:1;   // offscreen flag: 0=onscreen ; 1=offscreen
+        UInt16 modal:1;       // modal flag:     0=modeless window; 1=modal window
+        UInt16 focusable:1;   // focusable flag: 0=non-focusable; 1=focusable
+        UInt16 enabled:1;     // enabled flag:   0=disabled; 1=enabled
+        UInt16 visible:1;     // visible flag:   0-invisible; 1=visible
+        UInt16 dialog:1;      // dialog flag:    0=non-dialog; 1=dialog
+        UInt16 freeBitmap:1;	 // free bitmap w/window: 0=don't free, 1=free
+        UInt16 reserved :8;
+} WindowFlagsType;
+
+typedef struct WindowType {
+  Coord							displayWidthV20;		// use WinGetDisplayExtent instead
+  Coord							displayHeightV20;		// use WinGetDisplayExtent instead
+  void *							displayAddrV20;		// use the drawing functions instead
+  WindowFlagsType				windowFlags;
+  RectangleType				windowBounds;
+  AbsRectType					clippingBounds;
+  BitmapPtr						bitmapP;
+  FrameBitsType   			frameType;
+  DrawStateType *				drawStateP;				// was GraphicStatePtr
+  struct WindowType *		nextWindow;
+} WindowType;
+
+typedef WindowType *WinPtr;
+typedef WindowType *WinHandle;
+
+
+//-----------------------------------------------
+//  More graphics shapes
+//-----------------------------------------------
+typedef struct WinLineType {
+        Coord x1;
+        Coord y1;
+        Coord x2;
+        Coord y2;
+} WinLineType;
+
+// Rectangles, Points defined in Rect.h
+
+
+
+//-----------------------------------------------
+//  Low Memory Globals
+//-----------------------------------------------
+
+// This is the structure of a low memory global reserved for the Window Manager
+// In GRAPHIC_VERSION_2, it held a single drawing state.  In this version, it
+// holds stack information for structures that are allocated from the dynamic heap
+typedef struct GraphicStateType {
+        DrawStateType *	drawStateP;
+        DrawStateType *	drawStateStackP;
+        Int16					drawStateIndex;
+        UInt16				screenLockCount;
+} GraphicStateType;
+
+// ----------------------
+// Window manager errors
+// ----------------------
+#define	winErrPalette		(winErrorClass | 1)
+
+
+
+
+
+
+
+
+
+
+
+typedef struct AbsRectType {
+  Coord left;
+  Coord top;
+  Coord right;
+  Coord bottom;
+} AbsRectType;
+
+
+typedef struct PointType {
+  Coord x;
+  Coord y;
+} PointType;
+
+
+typedef struct RectangleType {
+  PointType  topLeft;
+  PointType  extent;
+} RectangleType;
+
+typedef RectangleType *RectanglePtr;
+
+
+
+
+
+
+
+
+
+
+
+
+// Fixed size data types
+typedef signed char		Int8;
+typedef signed short		Int16;
+typedef signed long		Int32;
+
+#if __DEFINE_TYPES_
+typedef unsigned char	UInt8;
+typedef unsigned short  UInt16;
+typedef unsigned long   UInt32;
+#endif
+
+
+// Logical data types
+#if __DEFINE_TYPES_
+typedef unsigned char	Boolean;
+#endif
+
+typedef char				Char;
+typedef UInt16				WChar;		// 'wide' int'l character type.
+
+typedef UInt16				Err;
+
+typedef UInt32				LocalID;		// local (card relative) chunk ID
+
+typedef Int16 				Coord;		// screen/window coordinate
+
+
+typedef void *				MemPtr;		// global pointer
+typedef struct _opaque *MemHandle;	// global handle
+
+
+typedef struct SysAppInfoType {
+        Int16				cmd;							// command code for app
+        MemPtr			cmdPBP;						// cmd ParamBlock
+        UInt16			launchFlags;				// launch flags
+
+        UInt32			taskID;						// AMX task ID of task that app runs in
+        MemHandle		codeH;						// code MemHandle of the main code segment
+        DmOpenRef		dbP;							// Application database access MemPtr of App
+        UInt8				*stackP;						// stack chunk for the App
+        UInt8				*globalsChunkP;			// globals chunk for the App
+
+        UInt16			memOwnerID;					// owner ID for Memory Manager chunks
+        MemPtr			dmAccessP;					// pointer to linked list of opened DB's
+        Err				dmLastErr;					// Last error from Data Manager
+        MemPtr			errExceptionP;				// ErrTry,Catch exception list
+
+        // PalmOS v3.0 fields begin here
+        UInt8				*a5Ptr;						// A5 MemPtr for this app
+        UInt8				*stackEndP;					// stack chunk end for the App (last byte)
+        UInt8				*globalEndP;				// global chunk end for the App (last byte)
+        struct SysAppInfoType *rootP;				// Points to the SysAppInfoType first
+                                                                                                                // allocated for this thread.
+        MemPtr			extraP;						// unused MemPtr for the App.
+        } SysAppInfoType;
+typedef SysAppInfoType *SysAppInfoPtr;

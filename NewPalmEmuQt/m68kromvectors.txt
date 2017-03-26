@@ -1,0 +1,39 @@
+ Vector      Address       Exception
+
+        0       000000  RESET-Initial SSP
+        1       000004  RESET-Initial PC
+        2       000008  Bus error
+        3       00000C  Address error
+        4       000010  Illegal instruction
+        5       000014  Division by zero
+        6       000018  CHK instruction
+        7       00001C  TRAPV instruction
+        8       000020  Privilege violation
+        9       000024  Trace
+        10      000028  Unimplemented instruction
+        11      00002C  Unimplemented instruction
+        12      000030
+        13      000034     Reserved by Motorola
+        14      000038
+        15      00003C  Uninitialised interrupt vector
+        16      000040  Reserved by Motorola
+        ..      ......     "     "     "
+        23      00005C     "     "     "
+        24      000060  Spurious interrupt
+        25      000064  Level 1 interrupt autovector
+        26      000068    "   2     "         "
+        27      00006C    "   3     "         "
+        28      000070    "   4     "         "
+        29      000074    "   5     "         "
+        30      000078    "   6     "         "
+        31      00007C    "   7     "         "
+        32      000080  TRAP #0 instruction
+        33      000084   "   #1      "
+        ..      ......   "           "
+        47      0000BC  TRAP #15     "
+        48      0000C0  Reserved by Motorola
+        ..      ......     "     "     "
+        63      0000FC     "     "     "
+        64      000100  User interrupt vectors
+        ..      ......   "       "        "
+        255     0003FF   "       "        "

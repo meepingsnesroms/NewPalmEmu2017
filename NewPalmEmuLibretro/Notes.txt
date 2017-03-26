@@ -1,0 +1,36 @@
+frmListObj may only describe one string of the list object
+Tapwave zodiac uses CFL3 as application compression
+eventtype size = header size + 4 longs
+
+WinOverlay mode -vvv-
+Write color-matched source pixel to the destination if the source pixel is not transparent.
+Transparent pixels are skipped. For a 1-bit display, the “off” bits are considered to be the transparent color.
+Note that this definition of winOverlay is new for Palm OS 5: in Palm OS 4.x, the destination is set (only) where
+the source pixels are “on.”
+-^^^-
+
+When the hasTransparency flag is set and the transfer mode is winPaint, only the non-transparent pixels
+are copied to the destination. With text and patterns, the Palm OS assumes that the “off” bits are the ones
+designated as transparent and acts as if the hasTransparency flag is always false. This assumption retains backwards
+compatibility and unifies the use of transparency across all source data.
+
+bit struct format
+struct{
+    UBYTE val1:1 //bit(7) ,bits start at 0 and go to numbits - 1
+    UBYTE val2:1 //bit(6)
+    UBYTE val3:1 //bit(5)
+    UBYTE val4:1 //bit(4)
+    UBYTE empty:4 //unused bits 3-0
+}name;
+
+
+
+
+mylittletank gave random  'ErrorResNotFound Type:ARMC,Id:000a,A0:0x00000000,App:2'  2 times
+
+//unknown reason
+NewPalmEmu(2912,0x7fff7ac30000) malloc: *** error for object 0x108681628: incorrect checksum for freed object - object was probably modified after being freed.
+*** set a breakpoint in malloc_error_break to debug
+
+
+str.c_str(); always has a null terminator on the end!!!

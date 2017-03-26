@@ -1,0 +1,28 @@
+Debugging starts
+CPU::Initialized
+Banks wanted:1,Ptr:0100
+Banks wanted:1,Ptr:0101
+Banks wanted:59,Ptr:0102
+Banks wanted:4,Ptr:013d
+JmptblOffset:00000020,Jmptblsize:00000008,AboveA5:00000028,A5:00121dbc,Gblsize:00001de4
+OutputDataStart:00120000
+CompressdDataEnd:010c1c4c
+OutputDataStart:00120000
+CompressdDataEnd:010c1c51
+OutputDataStart:00120000
+CompressdDataEnd:010c1c56
+Banks wanted:1,Ptr:0141
+Loading New Font
+Font Size: W:1200,H:11
+I - CPU Started
+HeapNum:0
+HeapNum:1
+A0:00121ea4,Size:00000026
+A0:00121eca,Size:00000b2c
+A0:001229f6,Size:00007e28
+Chunk:001229f6
+Chunk:00121eca
+Chunk:00121ea4
+Bus error: read a word from undefined memory address 0x681b1230
+PC=0x010b99c2
+Trap At:0x010b9f72,Api:sysTrapMemChunkFree,0xa012

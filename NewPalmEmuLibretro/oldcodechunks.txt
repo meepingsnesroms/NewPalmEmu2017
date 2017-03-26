@@ -1,0 +1,329 @@
+
+/*
+//send penDownEvent
+CPTR functionptr = get_long(objects[curuisquare].object + 16);
+CPU_pushlongstack(objects[curuisquare].object);
+CPU_pushwordstack(formGadgetHandleEventCmd);
+CPU_pushlongstack(eventptr);
+CPU_68kfunction(functionptr,notrequired);
+CPU_poplongstack();
+CPU_popwordstack();
+CPU_poplongstack();
+
+//create frmGadgetEnterEvent
+osevent penenterevt;
+penenterevt.type = frmGadgetEnterEvent;
+penenterevt.data.push_back(objects[curuisquare].objid);
+penenterevt.data.push_back(objects[curuisquare].object);
+addnewevent(penenterevt);
+*/
+
+
+//sysTrap***Dispatch functions
+//REG D2 is selector,switch(D2){case:*}
+
+
+
+/*
+inline void addbits(UBYTE** cntbytes,uint8* cntbits,uint8 addbits){
+        *cntbytes = *cntbytes + (*cntbits + addbits) / 8;
+        *cntbits = (*cntbits + addbits) % 8;
+}
+
+inline bool getbitfwd(UBYTE* cntbytes,uint8 cntbits){
+        return (*cntbytes & bit(7 - cntbits)) != 0;
+}
+
+inline bool getbitbwd(UBYTE* cntbytes,uint8 cntbits){
+        return (*cntbytes & bit(cntbits)) != 0;
+}
+
+inline void setbitfwd(UBYTE* cntbytes,uint8 cntbits,bool val){
+        if(val)*cntbytes |= bit(7 - cntbits);
+        else *cntbytes &= ~bit(7 - cntbits);
+}
+
+inline void setbitbwd(UBYTE* cntbytes,uint8 cntbits,bool val){
+        if(val)*cntbytes |= bit(cntbits);
+        else *cntbytes &= ~bit(cntbits);
+}
+
+enum{
+        FWD,
+        REV
+};
+
+class BoundlessType{
+                UBYTE* startaddr;
+                uint8 typesize;
+                uint8 bitdirection;
+
+                UBYTE* byteaddr;
+                uint8 bitaddr;
+                void makeme(uint32 value);
+                uint32 getme();
+public:
+                BoundlessType(void* begining,uint8 sizeinbits,uint8 direction);
+                void set(uint32 index,uint32 value);
+                uint32 get(uint32 index);
+};
+*/
+
+/*
+BoundlessType::BoundlessType(void* begining,uint8 sizeinbits,uint8 direction){
+        startaddr = (uint8*)begining;
+        typesize = sizeinbits;
+        bitdirection = direction;
+}
+
+void BoundlessType::makeme(uint32 value){
+        uint8 curbit;
+        switch(bitdirection){
+                case FWD:
+                        for(curbit = 0;curbit < typesize;curbit++){
+                                if(value & 1)setbitfwd(byteaddr,bitaddr,true);
+                                else setbitfwd(byteaddr,bitaddr,false);
+                                value >>= 1;
+                                addbits(&byteaddr,&bitaddr,1);
+                        }
+                        break;
+                case REV:
+                        for(curbit = 0;curbit < typesize;curbit++){
+                                if(value & 1)setbitbwd(byteaddr,bitaddr,true);
+                                else setbitbwd(byteaddr,bitaddr,false);
+                                value >>= 1;
+                                addbits(&byteaddr,&bitaddr,1);
+                        }
+                        break;
+        }
+}
+
+uint32 BoundlessType::getme(){
+        uint32 result = 0;
+        uint8 curbit;
+        switch(bitdirection){
+                case FWD:
+                        for(curbit = 0;curbit < typesize;curbit++){
+                                if(getbitfwd(byteaddr,bitaddr))result |= 1;
+                                result <<= 1;
+                                addbits(&byteaddr,&bitaddr,1);
+                        }
+                        break;
+                case REV:
+                        for(curbit = 0;curbit < typesize;curbit++){
+                                if(getbitbwd(byteaddr,bitaddr))result |= 1;
+                                result <<= 1;
+                                addbits(&byteaddr,&bitaddr,1);
+                        }
+                        break;
+        }
+        return result;
+}
+
+void BoundlessType::set(uint32 index,uint32 value){
+        byteaddr = startaddr + (index * typesize) / 8;
+        bitaddr = (index * typesize) % 8;
+        makeme(value);
+}
+
+uint32 BoundlessType::get(uint32 index){
+        byteaddr = startaddr + (index * typesize) / 8;
+        bitaddr = (index * typesize) % 8;
+        return getme();
+}
+*/
+
+
+
+//Universal header list (from palmwrapper.h)
+//#include <unordered_map>
+//#include <atomic>
+//#include <queue> //for event stack
+
+//#include "minifunc.h"
+//#include "memmap.h" //byte,word and long read/write
+//#include "newcpu.h" //PC,SP,D*,A*,USP,Status Register
+//#include "palmdefines.h" //names of values (enums and #defines)
+//#include "palmtypeaccess.h" //simple r/w of palms custom structs
+//#include "palmmalloc.h" //palm heap memory access
+//#include "resourcelocator.h" //app/database and resource locator
+//#include "stdlib68k.h"
+//#include "types.h" //bit types
+//#include "dataexchange.h" //endian,word alignment
+
+
+
+/*
+UBYTE* tAIBicon(){
+        size_t_68k uncompressedsize = rowbytes * height;
+        UBYTE* uncompresseddata = new UBYTE[uncompressedsize];
+        size_t_68k compressedsize = get_word(addr) - 2;//subtract length from its self
+        addr += 2;
+}
+*/
+
+
+/*
+//object types
+enum{
+        UIForm,
+        UIButton,
+        UIField,
+        UIBitmap,
+        UIMenubar,
+        UITable,
+        UICheckbox,
+        UIScrollbar,
+        UIPopup
+};
+*/
+
+/*
+enum{
+        FAST,
+        ACCURATE,
+        ACCURATE16BPP
+};
+*/
+
+
+
+//how much each attribute is worth
+int sizepriority;
+int colorpriority;
+int depthpriority;
+
+int simpleroot(int meep){
+        int root = 0;
+        while(meep >= 2){
+                meep /= 2;
+                root++;
+        }
+        return root;
+}
+
+ULONG totalgreatness(UBYTE bpp,LONG size){
+        ULONG finalvalue = 0;
+
+        /*every time the amount of colors is doubled priority is increased by 1 (1 = 0,2 = 1,4 = 2,8 = 3)*/
+        finalvalue += simpleroot(bpp) * depthpriority;
+
+        if(bpp > 4)finalvalue += colorpriority;
+
+        finalvalue += size;
+
+        return finalvalue;
+}
+
+TEMPHACK
+//support bitmaptypev3
+static CPTR getbestbitmap(CPTR startbitmap){
+        CPTR currentbestptr = startbitmap;
+        UWORD currentbestbpp = getbmpbpp(startbitmap);
+        LONG currentbestsize = ((WORD)get_word(startbmp)) * ((WORD)get_word(startbmp + 2));//stored as signed but is an error if negative
+        //ULONG currenttotalgreatness = ;
+
+
+        CPTR curbitmap = startbitmap;
+        while(true){
+                offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
+
+                UWORD testbpp = getbmpbpp(curbitmap);
+                LONG testsize = ((WORD)get_word(curbmp)) * ((WORD)get_word(curbmp + 2));//stored as signed but is an error if negative
+                ULONG testtotalgreatness =
+
+
+                if(nextbmp != 0)curbitmap += nextbmp;
+                else break;//no more bitmaps to check
+        }
+
+
+        return bestbitmap;
+}
+
+
+
+
+/*
+if(testbpp >= currentbestbpp){
+        if(testsize >= currentbestsize){
+                currentbestptr = curbitmap;
+                currentbestbpp = testbpp;
+                currentbestsize = testsize;
+        }
+}
+*/
+
+
+
+/*
+if(widthptr)width = get_long(widthptr);
+if(heightptr)height = get_long(heightptr);
+if(bppptr)bpp = get_long(bppptr);
+if(colenableptr)color = get_byte(colenableptr);
+*/
+
+
+
+//testbpp = 1;//version 0 bitmaps sometimes dont set there bpp attribute
+
+
+
+
+/*
+CPTR currentbestptr = startbitmap;
+UWORD currentbestbpp = getbmpbpp(startbitmap);
+LONG currentbestsize = ((WORD)get_word(startbitmap)) * ((WORD)get_word(startbitmap + 2));//stored as signed but is an error if negative
+*/
+
+
+
+
+
+
+/*
+inline void setwinforecolor(CPTR winptr,UBYTE index){
+        put_byte(getwindrawstate(winptr) + 18,index);
+}
+inline void setwinbackcolor(CPTR winptr,UBYTE index){
+        put_byte(getwindrawstate(winptr) + 19,index);
+}
+inline void setwintextcolor(CPTR winptr,UBYTE index){
+        put_byte(getwindrawstate(winptr) + 20,index);
+}
+
+
+inline UBYTE getwinforecolor(CPTR winptr){
+        return get_byte(getwindrawstate(winptr) + 18);
+}
+inline UBYTE getwinbackcolor(CPTR winptr){
+        return get_byte(getwindrawstate(winptr) + 19);
+}
+inline UBYTE getwintextcolor(CPTR winptr){
+        return get_byte(getwindrawstate(winptr) + 20);
+}
+
+
+inline void setwincoordsys(CPTR winptr,UWORD ratio){
+        put_word(getwindrawstate(winptr) + 32,ratio);
+}
+inline UWORD getwincoordsys(CPTR winptr){
+        return get_word(getwindrawstate(winptr) + 32);
+}
+
+
+inline void setwinfontid(CPTR winptr,UBYTE font){
+        put_byte(getwindrawstate(winptr) + 3,font);
+}
+inline UBYTE getwinfontid(CPTR winptr){
+        return get_byte(getwindrawstate(winptr) + 3);
+}
+
+
+inline void setwinfontaddr(CPTR winptr,CPTR fontaddr){
+        put_long(getwindrawstate(winptr) + 4,fontaddr);
+}
+inline CPTR getwinfontaddr(CPTR winptr){
+        return get_long(getwindrawstate(winptr) + 4);
+}
+*/

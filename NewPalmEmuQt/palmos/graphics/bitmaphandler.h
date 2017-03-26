@@ -1,0 +1,4 @@
+#ifndef BITMAPHANDLER_H
+#define BITMAPHANDLER_H
+
+#endif // BITMAPHANDLER_H
