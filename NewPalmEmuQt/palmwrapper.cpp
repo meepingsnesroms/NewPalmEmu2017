@@ -1,8 +1,8 @@
 #include <string.h>
+#include <stdlib.h>
 
 #include <thread>
 #include <chrono>
-#include <random>
 #include <mutex>
 
 #include "palmwrapper.h"
@@ -39,7 +39,6 @@ ULONG totalticks;
 //float partialticks;
 ULONG keymask;
 std::chrono::high_resolution_clock::time_point starttime;
-bool truerandom = false;//hack
 
 //events
 CPTR appexceptionlist;
@@ -53,11 +52,6 @@ bool oldgfxmodes;
 //ui
 CPTR oslcdwindow,lcdbitmaptype;
 
-//random numbers (not exposed to other files)
-std::random_device seedstore;
-std::mt19937 gentype(seedstore());
-std::uniform_int_distribution<uint32> getrandom(0,UINT32_MAX);
-
 //i/o thread safety
 std::mutex os_data_lock;
 
@@ -65,15 +59,11 @@ std::mutex os_data_lock;
 std::string lasttrap;
 //End of universal data
 
-
-uint32 randomnumber(){
-	return getrandom(gentype);
-}
-
 std::string directory;
 shared_img palm;
 std::thread palmcpu;
-bool running = false,started = false;
+bool started = false;
+bool running = false;
 bool hasbootableapp = false;
 
 
@@ -81,20 +71,13 @@ void get_palm_framebuffer(UWORD* copyto){
 	size_t_68k total = LCDW * LCDH;
 
 	//for old palm games that set the framebuffer address
+	/*
 	if(customlssa){
 		//parse custom display data
 		return;
 	}
-
-	//all apps start in lores mode,must be upscaled
-	/*
-	if(scalevideo){
-		expand2x(framebuffer,copyto,160,160);
-		return;
-	}
 	*/
 
-	//use memcpy since it is optimized for each platform
 	memcpy(copyto,framebuffer,total * sizeof(UWORD));
 }
 

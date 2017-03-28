@@ -81,8 +81,6 @@ void dmresetrecordstates();
 //memory
 void memsemaphorereserve();
 void memsemaphorerelease();
-void memmoveAPI();
-void memsetAPI();
 
 void memptrnew();
 void memptrunlock();
@@ -102,17 +100,6 @@ void memcardinfo();
 void memheapid();
 void memheapdynamic();
 void memheapcompact();
-
-
-//strings
-void strcopyAPI();
-void strlenAPI();
-void strncompare();
-void strncopy();
-void strcompare();
-void strchr();
-void stritoa();
-
 
 //preferences
 void prefgetapppreferencesv10();

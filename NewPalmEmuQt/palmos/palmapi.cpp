@@ -22,6 +22,7 @@
 #include "audiodriver.h"
 #include "floatlib.h"
 #include "stdlib68k.h"
+#include "palmlibc.h"
 
 
 std::vector<feature> featuretable;

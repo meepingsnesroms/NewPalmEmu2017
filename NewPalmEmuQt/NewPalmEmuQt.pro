@@ -36,8 +36,7 @@ INCLUDEPATH += libretro \
     hardware/arm/uarm \
     hardware/m68000 \
     palmos \
-    palmos/graphics \
-    staticlibxmi
+    palmos/graphics
 
 SOURCES += \
     hardware/m68000/cpu1.cpp \
@@ -94,7 +93,8 @@ SOURCES += \
     hardware/arm/uarm/rt.c \
     palmos/graphics/bitmaphandler.cpp \
     palmos/sdfilesystem.cpp \
-    palmos/zodiacapi.cpp
+    palmos/zodiacapi.cpp \
+    palmos/palmlibc.cpp
 
 
 
@@ -147,7 +147,8 @@ HEADERS  += \
     palmos/graphics/imagescaling.h \
     palmos/graphics/bitmaphandler.h \
     palmos/sdfilesystem.h \
-    palmos/zodiacapi.h
+    palmos/zodiacapi.h \
+    palmos/palmlibc.h
 
 
 FORMS    += mainwindow.ui \
@@ -167,7 +168,6 @@ DISTFILES += \
     android/gradlew.bat \
     ToDo.txt \
     debuglogOCT242015.txt \
-    oldcodechunks.txt \
     m68kromvectors.txt \
     Notes.txt \
     debuglogzapNOV112015.txt \

@@ -5,9 +5,6 @@
 #include "fbops.h"
 #include "m68k.h"
 
-using std::string;
-
-
 void drawbioschar(int x,int y,char letter){
 	int curx,cury;
 	inc_for(cury,7){
@@ -20,7 +17,7 @@ void drawbioschar(int x,int y,char letter){
 	}
 }
 
-void showBSOD(string message){
+void showBSOD(std::string message){
 	FB_data = framebuffer;
 	FB_width = LCDW;
 	FB_height = LCDH;

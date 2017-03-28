@@ -235,10 +235,7 @@ int loadfiletopalm(std::string path){
 		pass = prcparse(mempool,size);
 	}
 	else{
-		TEMPHACK;
-		//display some where other then the console
-		if(ftype == "pqa")dbgprintf("PQA is just a web page.(This is not a web browser.)\n");
-		else dbgprintf("Filetype:%s is not supported\n",ftype.c_str());
+		//PQA is just a formatted web page.(This is not a web browser.)
 		pass = NOTPALMFILE;
 	}
 

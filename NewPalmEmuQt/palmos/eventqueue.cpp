@@ -10,9 +10,6 @@
 //new list
 #include "palmdefines.h"
 
-using namespace std;
-
-
 void palmabrt();//hack
 
 std::mutex event_data_access;
@@ -283,11 +280,11 @@ void evtgetevent(){
 			//wait forever
 			while(!hasevent()){
 				//this_thread::sleep_for(chrono::milliseconds(1));
-				this_thread::sleep_for(palmTicks(1));
+				std::this_thread::sleep_for(palmTicks(1));
 			}
 		}else if(waittime > evtNoWait){
 			for(int32 count = 0;count < waittime;count++){
-				this_thread::sleep_for(palmTicks(1));
+				std::this_thread::sleep_for(palmTicks(1));
 				if(hasevent())break;
 			}
 		}

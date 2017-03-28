@@ -33,7 +33,6 @@ extern ULONG totalticks;
 //extern float partialticks;
 extern ULONG keymask;
 extern std::chrono::high_resolution_clock::time_point starttime;
-extern bool truerandom;
 
 //events
 extern CPTR appexceptionlist;
@@ -60,9 +59,6 @@ extern std::string lasttrap;
 //End of universal data
 
 
-uint32 randomnumber();
-
-
 enum{
 	Power,
 	Up,
@@ -87,7 +83,8 @@ enum{
 extern std::string directory;
 extern shared_img palm;
 extern std::thread palmcpu;
-extern bool running,started;
+extern bool started;
+extern bool running;
 extern bool hasbootableapp;
 
 
@@ -112,7 +109,7 @@ void sendkeyboardchar(char thiskey,bool state);
 //format is 16bit RGB565
 void get_palm_framebuffer(UWORD* copyto);
 
-//HACK add audio (udio of fleas)
+//HACK add audio
 
 std::string getclipboard();
 void setclipboard(std::string data);

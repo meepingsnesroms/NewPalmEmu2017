@@ -9,8 +9,6 @@
 
 void palmabrt();//hack
 
-using namespace std;
-
 //SndStreamRef is ULONG
 
 /*
@@ -44,6 +42,7 @@ void sndstreamsetvolume(){
 	stacklong(ampscale);
 
 	dbgprintf("Stream:%d,ScaleFactor:%d\n",sndstreamref,ampscale);
+
 
 	D0 = errNone;
 }
@@ -94,7 +93,7 @@ void snddocmd(){
 			if(pram3 == 0)break;//if amplitude is 0 return
 
 			//this function is blocking wait for (pram2) milliseconds
-			this_thread::sleep_for(chrono::milliseconds(pram2));
+			std::this_thread::sleep_for(std::chrono::milliseconds(pram2));
 			break;
 		case sndCmdFrqOn:
 			//same as above but dosent wait

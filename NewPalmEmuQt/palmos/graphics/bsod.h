@@ -2,4 +2,4 @@
 #define BSOD_H
 #include <string>
 void showBSOD(std::string message);
-#endif // BSODS_H
+#endif // BSOD_H
