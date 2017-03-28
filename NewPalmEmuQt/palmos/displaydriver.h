@@ -195,16 +195,8 @@ extern CPTR currentactivewindow;
 
 extern CPTR osdrawstate;
 
-//wether the framebuffer size needs to be doubled
+//if the framebuffer size needs to be doubled
 extern bool scalevideo;
-
-//virtual gpu ops
-void dot();
-void rectangle();
-void copyrectangle();
-void circle();
-void bitmap();
-void text();
 
 //event handlers
 void formeventhandler(CPTR formptr,CPTR eventptr);

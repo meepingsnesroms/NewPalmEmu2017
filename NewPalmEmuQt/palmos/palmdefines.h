@@ -14,10 +14,10 @@
 #define	keyBitHard4			0x40			// App #4
 
 //dpad keys
-#define keyBitNavLeft			0x01000000
-#define keyBitNavRight			0x02000000
-#define keyBitNavSelect			0x04000000
-#define keyBitNavLRS			0x07000000	/*Key state mask to check the five way navigation LEFT, RIGHT and SELECT buttons.*/
+#define keyBitNavLeft			0x01000000  /* Key state mask to check the five way navigation LEFT button. */
+#define keyBitNavRight			0x02000000  /* Key state mask to check the five way navigation RIGHT button. */
+#define keyBitNavSelect			0x04000000  /* Key state mask to check the five way navigation SELECT button. */
+#define keyBitNavLRS			0x07000000	/* Key state mask to check the five way navigation LEFT, RIGHT and SELECT buttons.*/
 
 
 #define	keyBitsAll			0xFFFFFFFF	// all keys
@@ -30,15 +30,8 @@
 #define vchrRockerCenter			0x0136		// 5-way rocker center/press
 
 #define navFtrCreator           	'fway'		/*Creator ID for 5-Way navigator.*/
-#define navFtrVersion           	0		/*Feature id for 5-Way.*/
+#define navFtrVersion           	0			/*Feature id for 5-Way.*/
 #define navVersion              	0x00010000	/*Version for 5-Way.*/
-
-#if 0
-#define keyBitNavLeft			0x01000000	/**< Key state mask to check the five way navigation LEFT button. */
-#define keyBitNavRight			0x02000000	/**< Key state mask to check the five way navigation RIGHT button. */
-#define keyBitNavSelect			0x04000000	/**< Key state mask to check the five way navigation SELECT button. */
-#define keyBitNavLRS			0x07000000	/**< Key state mask to check the five way navigation LEFT, RIGHT and SELECT buttons. */
-#endif
 
 #define navBitUp				0x0001		/**< Key mask for the five way navigation UP button. */
 #define navBitDown				0x0002		/**< Key mask for the five way navigation DOWN button. */

@@ -2,7 +2,6 @@
 #include "displaydriver.h"
 #include "eventqueue.h"
 #include "palmapi.h"
-#include "timing.h"
 
 //new list
 #include "m68k.h"
@@ -253,7 +252,6 @@ bool full_init(std::string& palmname, int w, int h){
 	lcd_init(w,h);
 
 	//cpu / memory
-	resetcycles();//cpu timer
 	initARM();//set up arm cpu,for palm os 5 native arm apps
 	if(CPU_init(&palm))return false;
 	resetmallocstate();//palm os memory state

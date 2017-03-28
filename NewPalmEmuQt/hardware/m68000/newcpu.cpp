@@ -6,7 +6,6 @@
 #include <thread>
 
 #include "m68k.h"
-#include "timing.h"
 #include "newcpu.h"
 #include "memmap.h"
 #include "virtualhardware.h"
@@ -326,11 +325,6 @@ void MC68000_run(){
 			InstructionStart_p = (Shptr->regs).pc_p;
 
 			//if (exectrace	dbgprintf("Traceing at %#032x\n",MC68000_getpc());
-
-			//we dont need a palm that runs at 2GHZ
-			//its also way slow because then the OS(on the host computer),display refresh,audio and input threads cant run
-			//HACK use real 68k cycle table
-			cycle();
 
 
 			opcode = nextiword();

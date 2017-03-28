@@ -4,7 +4,6 @@
 #include "rawimagetools.h"
 #include "eventqueue.h"
 #include "stdlib68k.h"
-#include "timing.h"
 #include <unordered_map>
 
 
@@ -18,8 +17,6 @@
 #include "dataexchange.h"
 
 #include "palmos/graphics/palette.h"
-
-using namespace std;//hack
 
 //display config //these are hardware abstraction layer values,the actual display size and depth are fixed
 UBYTE bpp;
@@ -69,21 +66,21 @@ CPTR currentdrawwindow;
 //what is on the display
 CPTR currentactivewindow;
 
-vector<CPTR> windowlist;
+std::vector<CPTR> windowlist;
 
-vector<CPTR> drawstates;
+std::vector<CPTR> drawstates;
 
 //form
 UWORD activeform;
 CPTR activeformptr;
 //form objects
-vector<UISQUARE> objects;
+std::vector<UISQUARE> objects;
 
 bool anyformsopen;
 bool sendwinenterondraw;
 
-unordered_map<UWORD,CPTR> openforms;
-vector<UWORD> openformids;//added to access open forms as a list
+std::unordered_map<UWORD,CPTR> openforms;
+std::vector<UWORD> openformids;//added to access open forms as a list
 
 void setdisplayaddr(CPTR displayaddr){
 	put_long(oslcdwindow + 4,displayaddr);
@@ -199,9 +196,6 @@ void copyrectangle(){
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.copyrect(hostwindow,srcx,srcy,srcw,srch,dstx,dsty);
-
-	//read ULONG / write ULONG (cycles = width * height) (copying as ULONG(2 pixels at once) and seperate read/write cancel out)
-	simulatecycles(srcw * srch);
 }
 
 void rectangle(){
@@ -223,9 +217,6 @@ void dot(){
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.setpixel(dstx,dsty,drwcolor);
-
-	//write UWORD
-	simulatecycles(1);
 }
 
 void bitmap(){
@@ -238,9 +229,6 @@ void bitmap(){
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	//FBWriter window(getbmpdata(winbmp),get_word(winbmp),getbmpbpp(winbmp));
 	window.draw(palmbmp,dstx,dsty);
-
-	//read ULONG / write ULONG (cycles = width * height) (copying as ULONG(2 pixels at once) and seperate read/write cancel out)
-	simulatecycles(palmbmp.width * palmbmp.height);
 }
 
 void text(){
@@ -401,7 +389,7 @@ void disableobject(CPTR objectptr,UBYTE type){
 COORD waitforpen(){
 	while(!PENDOWN){
 		KILLSWITCH;
-		this_thread::sleep_for(chrono::milliseconds(1));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
 	COORD loc;
@@ -416,7 +404,7 @@ COORD trackpen(){
 		KILLSWITCH;
 		//stalk the pen!! //later
 		//HACK the pen is not being tracked
-		this_thread::sleep_for(chrono::milliseconds(1));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
 	COORD loc;
@@ -2517,14 +2505,14 @@ void frmcustomalert(){
 
 	CPTR accessptr = alert + 8;
 
-	vector<string> alerttext(2);
+	std::vector<std::string> alerttext(2);
 	//string* alerttext = new string[2];
 	alerttext[0] = m68kstr(accessptr);
 	accessptr += alerttext[0].size() + 1;
 	alerttext[1] = m68kstr(accessptr);
 	accessptr += alerttext[1].size() + 1;
 
-	vector<string> buttontext(numbuttons);
+	std::vector<std::string> buttontext(numbuttons);
 	//string* buttontext = new string[numbuttons];
 	for(UWORD count = 0;count < numbuttons;count++){
 		buttontext[count] =  m68kstr(accessptr);

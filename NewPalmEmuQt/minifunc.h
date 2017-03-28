@@ -8,7 +8,7 @@
 #define dbgprintf	printf
 #else
 #define DEBUG(x)
-#define dbgprintf(x,...) //(0)
+#define dbgprintf(x,...)
 #endif
 
 #define TEMPHACK
@@ -23,21 +23,15 @@
 
 //basic misc functions
 
-
+//this needs to go
 #define inc_for(var,cmp) for(var = 0;var < cmp;var++)
 
-/*
-#define dec_for(var,cmp) for(var = 0;var > cmp;var--)
 
-#define for_2D(x,y,w,h) for(y = 0;y < h;y++)\
-	for(x = 0;x < w;x++)
-*/
+#define IS_EVEN(x)		(((x) & 1) == 0)
 
-#define nextboundry(x) (((x) + 1) & ~0x1)
+#define nextboundry(x)	(((x) + 1) & ~0x1)
 
-#define check_addr(x) (((x) & 1) == 0)
-
-#define bit(x) (1 << (x))
+#define bit(x)			(1 << (x))
 
 inline long smallest(long val1,long val2){
 	return val1 < val2 ? val1 : val2;

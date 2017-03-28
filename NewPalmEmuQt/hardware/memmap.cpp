@@ -106,50 +106,6 @@ void freedynchunks(){
 	}
 }
 
-
-#if 0
-//fake rom access
-
-UWORD rommemory[200];
-
-ULONG rom_lget(CPTR addr)
-{
-	return (((ULONG)rommemory[addr >> 1]) << 16) | rommemory[(addr >> 1) + 1];
-}
-
-UWORD rom_wget(CPTR addr)
-{
-	return rommemory[addr >> 1];
-}
-
-UBYTE rom_bget(CPTR addr)
-{
-	if(addr & 1)return rommemory[addr >> 1];
-	else return rommemory[addr >> 1] >> 8;
-}
-
-void rom_lput(CPTR addr, ULONG l)
-{
-	//cant write to rom
-	dbgprintf("RomLongWrite:%08x,Val:%08x\n",addr,l);
-	//palmabrt();//hack
-}
-
-void rom_wput(CPTR addr, UWORD w)
-{
-	//cant write to rom
-	dbgprintf("RomWordWrite:%08x,Val:%04x\n",addr,w);
-	//palmabrt();//hack
-}
-
-void rom_bput(CPTR addr, UBYTE b)
-{
-	//cant write to rom
-	dbgprintf("RomByteWrite:%08x,Val:%02x\n",addr,b);
-	//palmabrt();//hack
-}
-#endif
-
 /* Default memory access functions */
 int default_check(CPTR addr, ULONG offset)
 {
@@ -430,7 +386,7 @@ void byteput(CPTR addr, UBYTE b)
 
 ULONG get_long(CPTR addr) 
 {
-	if(check_addr(addr))return longget(addr);
+	if(IS_EVEN(addr))return longget(addr);
 	dbgprintf("Bus error: read a long from odd address 0x%08x\n", addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
     buserr = 1;
@@ -440,7 +396,7 @@ ULONG get_long(CPTR addr)
 
 UWORD get_word(CPTR addr) 
 {
-	if(check_addr(addr))return wordget(addr);
+	if(IS_EVEN(addr))return wordget(addr);
 	dbgprintf("Bus error: read a word from odd address 0x%08x\n", addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
     buserr = 1;
@@ -455,7 +411,7 @@ UBYTE get_byte(CPTR addr)
 
 void put_long(CPTR addr, ULONG l) 
 {
-	if(check_addr(addr)){
+	if(IS_EVEN(addr)){
 		longput(addr, l);
 		return;
 	}
@@ -469,7 +425,7 @@ void put_long(CPTR addr, ULONG l)
 
 void put_word(CPTR addr, UWORD w) 
 {
-	if(check_addr(addr)){
+	if(IS_EVEN(addr)){
 		wordput(addr, w);
 		return;
 	}
@@ -488,7 +444,7 @@ void put_byte(CPTR addr, UBYTE b)
 
 UWORD *get_real_address(CPTR addr)
 {
-    if (!check_addr(addr)) {
+	if (!IS_EVEN(addr)) {
 		dbgprintf("Bus error: attempted translation of odd address 0x%08x\n", addr);
 		dbgprintf("PC=0x%08x\n", MC68000_getpc());
 		printprcerror(MC68000_getpc());
@@ -499,7 +455,7 @@ UWORD *get_real_address(CPTR addr)
 
 int valid_address(CPTR addr, ULONG size)
 {
-    if (!check_addr(addr)) {
+	if (!IS_EVEN(addr)) {
 	dbgprintf("Bus error: attempted validation of odd address 0x%08x\n", addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
 	buserr = 1;

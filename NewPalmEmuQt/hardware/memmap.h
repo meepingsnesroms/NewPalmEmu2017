@@ -13,17 +13,14 @@
 #define SIZEOFBANK 0x10000
 #define TOTALBANKS 0x10000
 
-//cant write to odd address so discard 1 byte
-#define FAKEROM	   0x00000000
-#define FAKEROMEND 0x0000FFFE
+//cant write to odd addresses so discard 1 byte
 #define STACK	   0x00010000//1mb stack
-#define STACKEND   0x0010FFFE//1mb stack / Start here stack counts DOWN
+#define STACKEND   0x0010FFFE//1mb stack / Start here stack counts towards 0x0
 #define HEAP	   0x00120000//~15mb heap
 #define HEAPEND	   0x00DFFFFE//~15mb heap
 #define SAVEDATA    0x00E00000//1mb save
 #define SAVEDATAEND 0x00EFFFFE//1mb save
 
-#define FAKEROMSIZE (FAKEROMEND - FAKEROM)
 #define STACKSIZE (STACKEND - STACK)
 #define HEAPSIZE (HEAPEND - HEAP)
 #define SAVEDATASIZE (SAVEDATAEND - SAVEDATA)
@@ -32,8 +29,6 @@
 #define dyn_start	  0x01000000
 #define lcd_start	  0x1F000000
 #define custom_start  0xFFFF0000
-
-//#define LCDBANKS 5
 
 /* Default memory access functions */
 

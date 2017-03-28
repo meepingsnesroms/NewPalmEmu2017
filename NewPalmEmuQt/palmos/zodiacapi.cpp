@@ -2,7 +2,7 @@
 #include "m68k.h"
 #include "minifunc.h"
 #include "palmapi.h"
-#include "astrology.h"
+#include "zodiacapi.h"
 #include "dataexchange.h"
 #include "palmdefines.h"
 

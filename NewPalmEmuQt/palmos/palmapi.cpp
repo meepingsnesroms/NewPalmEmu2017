@@ -16,7 +16,7 @@
 //new list
 #include "m68k.h"
 #include "resourcelocator.h"
-#include "astrology.h"
+#include "zodiacapi.h"
 #include "datamanager.h"
 #include "displaydriver.h"
 #include "audiodriver.h"
@@ -1424,7 +1424,7 @@ void syscurappdatabase(){
 	stackptr(cardnoptr);//UWORD
 	stackptr(localidptr);//ULONG
 
-	put_word(cardnoptr,0);
+	put_word(cardnoptr,0);//app storage flash memory
 	put_long(localidptr,curapp + dmOpenRefOffset);
 
 	D0 = errNone;
@@ -1435,17 +1435,11 @@ void systickspersecond(){
 	D0 = TICKSPERSECOND;
 }
 
-//found real palm os sysrandom from palm password cracker
-ULONG seed;
+//from palm os password cracker,this is the original rng from palm os converted back to c++
 void sysrandom(){
 	stacklong(newseed);
 
-	//option to patch sysrandom() to use real random numbers
-	//instead of the palm os sequential modification algorithm.
-	if(truerandom){
-		D0 = (randomnumber() & 0x7fff);
-		return;
-	}
+	static ULONG seed;
 
 	if(newseed != 0)seed = newseed;
 	seed = (seed * 22695477) + 1;
@@ -1965,11 +1959,9 @@ bool emulateapi(int api){
 
 		default:
 			dbgprintf("Trap At:%#010x,Api:%s,0x%04x\n",MC68000_getpc(),lookup_trap(api),api);
-			char meep[100];
+			char meep[1000];
 			sprintf(meep,"Trap At:%#010x,Api:%s,0x%04x",MC68000_getpc(),lookup_trap(api),api);
 			std::string output = meep;
-			output += " Your freekum leaks wonderfly";
-			//showBSOD("Your freekum leaks wonderfly");
 			showBSOD(output);
 			palmabrt();
 			return false;

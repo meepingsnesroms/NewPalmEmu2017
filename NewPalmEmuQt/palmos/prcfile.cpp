@@ -41,7 +41,7 @@ CPTR avbytes;
 
 //returns the 68k address of what was installed
 static CPTR installresource(UBYTE *resource,size_t_68k size){
-	if(!check_addr(curmemloc)){
+	if(!IS_EVEN(curmemloc)){
 		currealaddr += 1;
 		curmemloc += 1;
 		avbytes -= 1;
@@ -49,7 +49,7 @@ static CPTR installresource(UBYTE *resource,size_t_68k size){
 	CPTR installaddr = curmemloc;
 	memcpy(currealaddr,resource,size);
 	//padding to word boundry for membyteswap
-	if(!check_addr(size))size++;
+	if(!IS_EVEN(size))size++;
 	membyteswap(currealaddr,size);
 	currealaddr += size;
 	curmemloc += size;

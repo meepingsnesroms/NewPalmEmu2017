@@ -57,9 +57,7 @@ SOURCES += \
     hardware/m68000/newcpu.cpp \
     hardware/dataexchange.cpp \
     hardware/memmap.cpp \
-    hardware/timing.cpp \
     hardware/virtualhardware.cpp \
-    palmos/astrology.cpp \
     palmos/audiodriver.cpp \
     palmos/datamanager.cpp \
     palmos/displaydriver.cpp \
@@ -95,7 +93,8 @@ SOURCES += \
     hardware/arm/uarm/math64.c \
     hardware/arm/uarm/rt.c \
     palmos/graphics/bitmaphandler.cpp \
-    palmos/sdfilesystem.cpp
+    palmos/sdfilesystem.cpp \
+    palmos/zodiacapi.cpp
 
 
 
@@ -106,10 +105,8 @@ HEADERS  += \
     hardware/m68000/newcpu.h \
     hardware/dataexchange.h \
     hardware/memmap.h \
-    hardware/timing.h \
     hardware/types.h \
     hardware/virtualhardware.h \
-    palmos/astrology.h \
     palmos/audiodriver.h \
     palmos/datamanager.h \
     palmos/displaydriver.h \
@@ -149,7 +146,8 @@ HEADERS  += \
     hardware/arm/armv5te.h \
     palmos/graphics/imagescaling.h \
     palmos/graphics/bitmaphandler.h \
-    palmos/sdfilesystem.h
+    palmos/sdfilesystem.h \
+    palmos/zodiacapi.h
 
 
 FORMS    += mainwindow.ui \

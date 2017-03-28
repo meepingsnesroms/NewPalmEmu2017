@@ -1,5 +1,5 @@
-#ifndef ASTROLOGY
-#define ASTROLOGY
+#ifndef ZODIAC
+#define ZODIAC
 
 /* this gives the selector base for tapwave interface */
 #define trapTwSelectorBase              256
@@ -232,5 +232,5 @@
 
 
 void tapwavedispatch();
-#endif // ASTROLOGY
+#endif // ZODIAC
 

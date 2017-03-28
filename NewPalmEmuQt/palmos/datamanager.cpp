@@ -806,7 +806,7 @@ void dmresetrecordstates(){
 		apps[dmopenref].parts[index].attr &= ~dmRecAttrBusy;
 	}
 
-	D0 = errNone;//hack //unsure this is an undocumented system use only function
+	D0 = errNone;//this is an undocumented system use only function
 }
 
 
@@ -837,10 +837,11 @@ void memmoveAPI(){
 	stackptr(source);
 	stacklong(size);
 
-	if(size == 0)palmabrt();//HACK
-
-	//size is a signed long
-	if(size & bit(31))palmabrt();//HACK
+	//read/write bytearray treat 0 as find string length so that is fixed here
+	if(size == 0){
+		D0 = errNone;//always returns 0/errNone
+		return;
+	}
 
 	//copy
 	UBYTE backup[size];
@@ -855,9 +856,6 @@ void memsetAPI(){
 	stackptr(dest);
 	stacklong(size);
 	stackbyte(val);
-
-	//size is a signed long
-	if(size & bit(31))palmabrt();//hack
 
 	memset68k(dest,val,size);
 	D0 = errNone;//always returns 0/errNone
@@ -889,7 +887,6 @@ void memptrheapid(){
 	if(testptr >= HEAP && testptr <= HEAPEND)D0 = 0;/*dynamic heap*/
 	else if(testptr >= SAVEDATA && testptr <= SAVEDATAEND)D0 = 1;/*storage heap*/
 	else if(testptr >= dyn_start && testptr < lcd_start)D0 = 1;/*storage heap*/
-	else if(testptr >= FAKEROM && testptr <= FAKEROMEND)D0 = 2;/*rom heap*/
 	else palmabrt();//hack /*unknown heap*/
 }
 

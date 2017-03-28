@@ -50,10 +50,8 @@ void selectappandstart(){
 
 	FBWriter display(lcd_start,LCDW,LCDBPP);
 
-	int cntx;
-	int cnty;
-	inc_for(cnty,LCDH){
-		inc_for(cntx,LCDW){
+	for(int cnty = 0;cnty < LCDH;cnty++){
+		for(int cntx = 0;cntx < LCDW;cntx++){
 			display.setpixel(cntx,cnty,SELECTORBCKGRNDCOLOR);
 		}
 	}
