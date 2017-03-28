@@ -24,15 +24,15 @@
 #include "stdlib68k.h"
 
 
-vector<feature> featuretable;
+std::vector<feature> featuretable;
 
 //from mame used for printing apicalls
 typedef struct{
 	const char *name;
 	UWORD trap;
-}oocak;
+}mamelist;
 
-oocak traps[] ={
+mamelist traps[] ={
     { "sysTrapMemInit", 0xA000 },
     { "sysTrapMemInitHeapTable", 0xA001 },
     { "sysTrapMemStoreInit", 0xA002 },
@@ -1295,7 +1295,7 @@ void ftrget(){
 	}
 
 	size_t count,tblsize = featuretable.size();
-	inc_for(count,tblsize){
+	for(count = 0;count < tblsize;count++){
 		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
 			put_long(retval,featuretable[count].value);
 			ftrexists = true;
@@ -1319,7 +1319,7 @@ void ftrset(){
 	dbgprintf("FTRSET: Creator:%.4s,Ftrnum:%d,Value:%d\n",(char*)&creator,ftrnum,value);
 
 	size_t count,tblsize = featuretable.size();
-	inc_for(count,tblsize){
+	for(count = 0;count < tblsize;count++){
 		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
 			featuretable[count].value = value;
 			D0 = errNone;
@@ -1355,7 +1355,7 @@ void systaskdelay(){
 
 	if(ticks < 0)palmabrt();//hack //cant wait less than 0 ticks
 
-	this_thread::sleep_for(palmTicks(ticks));
+	std::this_thread::sleep_for(palmTicks(ticks));
 	D0 = errNone;
 }
 
@@ -1504,9 +1504,9 @@ void sysnotifyregister(){
 
 
 void timgetticks(){
-	chrono::high_resolution_clock::time_point current = chrono::high_resolution_clock::now();
+	std::chrono::high_resolution_clock::time_point current = std::chrono::high_resolution_clock::now();
 	ULONG abovezero = (current - starttime) / palmTicks(1);
-	chrono::high_resolution_clock::duration belowzero = (current - starttime) % palmTicks(1);
+	std::chrono::high_resolution_clock::duration belowzero = (current - starttime) % palmTicks(1);
 	totalticks += abovezero;
 	starttime = current - belowzero;//preserve partial ticks
 	D0 = totalticks;
@@ -1565,7 +1565,7 @@ void clipboardgetitem(){
 	switch(cliptype){
 		case clipboardText:{
 				if(!hastextclipbank)textclipbank = getnewlinearchunks(1) << 16;//64k clipboard
-				string curclip = getclipboard();
+				std::string curclip = getclipboard();
 				put_word(lengthptr,curclip.size());
 				writestring(textclipbank,curclip);
 				A0 = textclipbank;
@@ -1693,7 +1693,7 @@ bool emulateapi(int api){
 				stackptr(formatstring);
 				stackptr(args);
 				dbgprintf("OutPtr:%08x,InPtr:%08x,ArgPtr:%08x\n",outstring,formatstring,args);
-				string str = m68kstr(formatstring);
+				std::string str = m68kstr(formatstring);
 				dbgprintf("Start:%s,ArgPtr:%08x\n",str.c_str(),args);
 				writestring(outstring,str);
 				//D0 = sprintf68k(outstring,formatstring,args);
@@ -1967,7 +1967,7 @@ bool emulateapi(int api){
 			dbgprintf("Trap At:%#010x,Api:%s,0x%04x\n",MC68000_getpc(),lookup_trap(api),api);
 			char meep[100];
 			sprintf(meep,"Trap At:%#010x,Api:%s,0x%04x",MC68000_getpc(),lookup_trap(api),api);
-			string output = meep;
+			std::string output = meep;
 			output += " Your freekum leaks wonderfly";
 			//showBSOD("Your freekum leaks wonderfly");
 			showBSOD(output);

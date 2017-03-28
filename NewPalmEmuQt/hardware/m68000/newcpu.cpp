@@ -382,7 +382,7 @@ void MC68000_run(){
 			}
 
 			while(specialflags & SPCFLAG_STOP){
-				this_thread::sleep_for(chrono::microseconds(100));
+				std::this_thread::sleep_for(std::chrono::microseconds(100));
 				//maybe_updateisr();
 				if(updateinterrupts)updateisr();
 				if(specialflags & (SPCFLAG_INT | SPCFLAG_DOINT)){
@@ -487,7 +487,7 @@ int CPU(shared_img *shptr){
 			dbgprintf("I - CPU Exit\n");
 			break;
 		default:
-			this_thread::sleep_for(chrono::milliseconds(1)); /* sleep for 1 ms */
+			std::this_thread::sleep_for(std::chrono::milliseconds(1)); /* sleep for 1 ms */
 			break;
 		}
 	}
@@ -515,27 +515,27 @@ int CPU_init(shared_img *shptr){
 void CPU_reset(shared_img *shptr){
   shptr->CpuReq = cpuReset;
   while(shptr->CpuState != cpuStopped){
-	this_thread::sleep_for(chrono::milliseconds(1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
 void CPU_start(shared_img *shptr){
   shptr->CpuReq = cpuStart;
   while(shptr->CpuState != cpuRunning){
-	  this_thread::sleep_for(chrono::milliseconds(1));
+	  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
 void CPU_stop(shared_img *shptr){
   shptr->CpuReq = cpuStop;
   while(shptr->CpuState != cpuStopped){
-	  this_thread::sleep_for(chrono::milliseconds(1));
+	  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
 void CPU_wait(shared_img *shptr){
   while(shptr->CpuState == cpuRunning){
-	  this_thread::sleep_for(chrono::milliseconds(1));
+	  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 

@@ -4,8 +4,6 @@
 #include "m68k.h"
 #include <string>
 
-using namespace std;
-
 //err codes
 enum{
 	WORKED = 0,
@@ -20,7 +18,7 @@ enum{
 void printprcerror(CPTR pc);
 
 //user functions
-int loadfiletopalm(string path);
+int loadfiletopalm(std::string path);
 void releasefilemem();
 
 #endif // PRCFILE

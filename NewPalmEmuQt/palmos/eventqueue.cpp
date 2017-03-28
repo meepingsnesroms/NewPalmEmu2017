@@ -79,7 +79,7 @@ void replaceeventtype(const osevent& newevent,bool inplace,ULONG eventid){
 	event_data_access.lock();
 
 	size_t evtcounter,totalevents = osevtqueue.size();
-	inc_for(evtcounter,totalevents){
+	for(evtcounter = 0;evtcounter < totalevents;evtcounter++){
 		if(newevent.type == osevtqueue[evtcounter].type && (!eventid || eventid == osevtqueue[evtcounter].id)){
 			if(inplace)osevtqueue[evtcounter] = newevent;
 			else{
@@ -286,8 +286,7 @@ void evtgetevent(){
 				this_thread::sleep_for(palmTicks(1));
 			}
 		}else if(waittime > evtNoWait){
-			int32 count;
-			inc_for(count,waittime){
+			for(int32 count = 0;count < waittime;count++){
 				this_thread::sleep_for(palmTicks(1));
 				if(hasevent())break;
 			}

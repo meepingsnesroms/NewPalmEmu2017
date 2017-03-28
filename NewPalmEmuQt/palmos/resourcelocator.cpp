@@ -6,11 +6,11 @@
 #include "resourcelocator.h"
 #include "rawimagetools.h"
 
-bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool zeroiswild,bool cmpisbigendian){
+bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool zeroiswild,bool swapendian){
 	bool typeequ = false;
 	bool creatorequ = false;
 
-	if(cmpisbigendian){
+	if(swapendian){
 		swaplong(cmptype);
 		swaplong(cmpcreator);
 	}
@@ -31,8 +31,7 @@ CPTR getresource(int dbnum, UWORD id, ULONG tp){
 	if(!apps[dbnum].resdb)return nullptr_68k;
 
 	uint16 end = apps[dbnum].parts.size();
-	uint16 cnt;
-	inc_for(cnt,end){
+	for(uint16 cnt = 0;cnt < end;cnt++){
 		//dbgprintf("In:(Type:0x%08x,Id:%d),Cmp:(Type:0x%08x,Id:%d)\n",type,id,belong(apps[appnum].parts[cnt].type.typen),apps[appnum].parts[cnt].id);
 		if(apps[dbnum].parts[cnt].id == id && belong(apps[dbnum].parts[cnt].type.typen) == tp){
 			return apps[dbnum].parts[cnt].location;
@@ -60,31 +59,28 @@ CPTR getrecord(int dbnum, uint16 index){
 
 UWORD resourcenumfromtypeid(int appnum, UWORD id, ULONG tp){
 	int end = apps[appnum].parts.size();
-	int cnt;
-	inc_for(cnt,end){
+	for(int cnt = 0;cnt < end;cnt++){
 		//dbgprintf("In:(Type:0x%08x,Id:%d),Cmp:(Type:0x%08x,Id:%d)\n",type,id,belong(apps[appnum].parts[cnt].type.typen),apps[appnum].parts[cnt].id);
 		if(apps[appnum].parts[cnt].id == id && belong(apps[appnum].parts[cnt].type.typen) == tp)return cnt;
 	}
 	return 0xFFFF;//0xFFFF = not found
 }
 
-int getnumfromname(int startdb,string& name){
+int getnumfromname(int startdb,std::string& name){
 	int goo;
 	int appvectorsize = apps.size();
 	for(goo = startdb;goo < appvectorsize;goo++){
-		if(string(apps[goo].name) == name)return goo;
+		if(std::string(apps[goo].name) == name)return goo;
 	}
 	return -1;
 }
 
 void getnumfromptr(CPTR addr,int* app,UWORD* index){
 	//apps can append records/resources so every record/resource must be checked
-	int count;
 	int appvectorsize = apps.size();
-	inc_for(count,appvectorsize){
+	for(int count = 0;count < appvectorsize;count++){
 		UWORD partvectorsize = apps[count].parts.size();
-		UWORD curindex;
-		inc_for(curindex,partvectorsize){
+		for(UWORD curindex = 0;curindex < partvectorsize;curindex++){
 			CPTR start = apps[count].parts[curindex].location;
 			CPTR end = start + apps[count].parts[curindex].size;
 			if(addr >= start && addr <= end){
@@ -153,7 +149,7 @@ CPTR getfontaddr(UBYTE fontid){
 //index to database info without endian wierdness
 dbinfo getdbinfo(int num){
 	dbinfo thisdb = {
-		string(apps[num].name),
+	    std::string(apps[num].name),
 		belong(apps[num].type.typen),
 		belong(apps[num].creator.typen)
 	};
@@ -169,9 +165,8 @@ ULONG getdbtype(int num){
 
 
 bool doesdbexist(dbinfo& dbstats){
-	int goo;
 	int appvectorsize = apps.size();
-	inc_for(goo,appvectorsize){
+	for(int goo = 0;goo < appvectorsize;goo++){
 		dbinfo cmp = getdbinfo(goo);
 		if(cmp == dbstats)return true;//that db already exists
 	}

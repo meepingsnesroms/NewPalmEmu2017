@@ -418,7 +418,7 @@ void RAWimg::get8bitpixelarr(){
 }
 
 void RAWimg::tobuff(){
-	if(pixelsize < 16)purifieddata = vector<UWORD>(width * height);//new UWORD[width * height];
+	if(pixelsize < 16)purifieddata = std::vector<UWORD>(width * height);//new UWORD[width * height];
 
 	bool cleanupcompression = false;
 	UBYTE* BKorgdat = orgdat;
@@ -460,7 +460,7 @@ void RAWimg::tobuff(){
 		case 16:
 			//palmabrt();
 			//16bit data can just use a pointer since it dosent need to be byteswapped or shifted
-			purifieddata = vector<UWORD>((UWORD*)orgdat,(UWORD*)orgdat + totalsize);
+			purifieddata = std::vector<UWORD>((UWORD*)orgdat,(UWORD*)orgdat + totalsize);
 			break;
 		default:
 			palmabrt();

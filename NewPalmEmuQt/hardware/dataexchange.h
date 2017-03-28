@@ -7,18 +7,21 @@
 #include "types.h"
 #include <string>
 
-using std::string;//HACK //this should be universal(possibly in "types.h")
-
 #define UNIVERSAL
 
-#ifdef FASTASM
-
-//hardware endian swap
-
-#else
+#ifndef BIGENDIAN
 
 #define beword(x) (((x) >> 8 & 0xFF) | ((x) << 8 & 0xFF00))
 #define belong(x) (beword((x) >> 16) | beword((x)) << 16)
+#define swapword(x) x = beword(x)
+#define swaplong(x) x = belong(x)
+
+#else
+
+#define beword(x) (x)
+#define belong(x) (x)
+#define swapword(x)
+#define swaplong(x)
 
 #endif
 
@@ -27,8 +30,7 @@ inline double64 rawdouble64(uint64 data){return *((double64*)&(data));}
 inline uint32 float32toraw(float32 data){return *((uint32*)&(data));}
 inline uint64 double64toraw(double64 data){return *((uint64*)&(data));}
 
-#define swapword(x) x = beword(x)
-#define swaplong(x) x = belong(x)
+
 
 #define putbyteifvptr(x,y) if((x))put_byte((x),(y))
 #define putwordifvptr(x,y) if((x))put_word((x),(y))
@@ -41,14 +43,13 @@ inline uint64 double64toraw(double64 data){return *((uint64*)&(data));}
 
 //HACK retain compatibility with functions that use m68kstr
 #define m68kstr(x) readstring(x)
-//std::string m68kstr(CPTR strptr);
 
 void membyteswap(UBYTE *start, size_t_68k size);
 
 void readbytearray(CPTR loc, UBYTE *dest, size_t_68k size);
 void writebytearray(CPTR loc, UBYTE *start, size_t_68k size);
-string readstring(CPTR loc);
-void writestring(CPTR loc,const string& str,size_t_68k forcelength = 0);
+std::string readstring(CPTR loc);
+void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0);
 
 
 

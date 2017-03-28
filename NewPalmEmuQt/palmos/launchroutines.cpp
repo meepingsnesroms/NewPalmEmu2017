@@ -248,7 +248,7 @@ bool launchapp(int num){
 	return true;
 }
 
-bool full_init(string& palmname, int w, int h){
+bool full_init(std::string& palmname, int w, int h){
 	//create lcd framebuffer
 	lcd_init(w,h);
 
@@ -268,7 +268,7 @@ bool full_init(string& palmname, int w, int h){
 	PENDOWN = false;
 
 	totalticks = 0;
-	starttime = chrono::high_resolution_clock::now();
+	starttime = std::chrono::high_resolution_clock::now();
 
 	textclipbank = getnewlinearchunks(1) << 16;
 	emulstate = getnewlinearchunks(1) << 16;

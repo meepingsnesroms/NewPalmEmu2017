@@ -2,8 +2,6 @@
 #include "palmosemulibretro.h" //needed for name mangleing
 #include <vector>
 #include <string>
-using std::vector;
-using std::string;
 
 //output framebuffer
 static UWORD libretro_fb[320 * 480];
@@ -12,9 +10,9 @@ static UWORD libretro_fb[320 * 480];
 static int mousex = 0,mousey = 0;
 
 //HACK make these varible
-static vector<string> appstoload;
+static std::vector<std::string> appstoload;
 static int res_x = 160,res_y = 160;
-static string palmname = "milkedflea";
+static std::string palmname = "milkedflea";
 
 
 

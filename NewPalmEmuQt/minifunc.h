@@ -23,12 +23,15 @@
 
 //basic misc functions
 
+
 #define inc_for(var,cmp) for(var = 0;var < cmp;var++)
 
+/*
 #define dec_for(var,cmp) for(var = 0;var > cmp;var--)
 
 #define for_2D(x,y,w,h) for(y = 0;y < h;y++)\
 	for(x = 0;x < w;x++)
+*/
 
 #define nextboundry(x) (((x) + 1) & ~0x1)
 

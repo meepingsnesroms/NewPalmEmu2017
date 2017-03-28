@@ -39,7 +39,7 @@ CPTR avbytes;
 
 //helper functions
 
-//CPTR is the 68k address of what was installed
+//returns the 68k address of what was installed
 static CPTR installresource(UBYTE *resource,size_t_68k size){
 	if(!check_addr(curmemloc)){
 		currealaddr += 1;
@@ -199,7 +199,7 @@ static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
 	return WORKED;
 }
 
-static inline string getfiletype(string filename){
+static inline std::string getfiletype(std::string filename){
 	unsigned int found = filename.find_last_of(".");
 	return filename.substr(found + 1,3);
 }
@@ -213,7 +213,7 @@ int loadfiletopalm(std::string path){
 	if(stat_buf.st_size == 0)return LOCKEDFILE;
 	size_t_68k size = stat_buf.st_size;
 	UBYTE *mempool = new UBYTE[size];
-	ifstream appfile (path,ios::in | ios::binary);
+	std::ifstream appfile (path,std::ios::in | std::ios::binary);
 	if (appfile.is_open()){
 		appfile.read((char*)mempool,size);
 	}
@@ -222,7 +222,7 @@ int loadfiletopalm(std::string path){
 	UWORD flags = (UWORD)mempool[0x20] << 8 | mempool[0x21];
 
 	int pass;
-	string ftype = getfiletype(path);
+	std::string ftype = getfiletype(path);
 	//working area
 	if(ftype == "prc" && (flags & dmHdrAttrResDB))pass = prcparse(mempool,size);
 	else if(ftype == "pdb" && !(flags & dmHdrAttrResDB))pass = pdbparse(mempool,size);
@@ -247,9 +247,8 @@ int loadfiletopalm(std::string path){
 }
 
 void releasefilemem(){
-	int bunfluff;
 	int appvectorsize = apps.size();
-	inc_for(bunfluff,appvectorsize){
+	for(int bunfluff = 0;bunfluff < appvectorsize;bunfluff++){
 		apps[bunfluff].parts.clear();
 	}
 	apps.clear();

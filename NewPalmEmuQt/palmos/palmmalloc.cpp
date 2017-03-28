@@ -64,8 +64,7 @@ size_t_68k avheapmem(){
 	//add up all small chunks and remander of heap stack
 	size_t_68k totaldata = 0;
 	unsigned int totalfrags = freememfragments.size();
-	unsigned int count;
-	inc_for(count,totalfrags){
+	for(unsigned int count = 0;count < totalfrags;count++){
 		totaldata += freememfragments[count].size;
 	}
 	totaldata += avheapdata;
@@ -247,9 +246,8 @@ void clensememory(){
 int memisalloc(CPTR address){
 	if(address <= HEAP || address >= SAVEDATAEND)return -1;
 
-	unsigned int count;
 	size_t_68k size = malloclist.size();
-	inc_for(count,size){
+	for(size_t_68k count = 0;count < size;count++){
 		//dbgprintf("Address:%08x,Cmp:%08x\n",address,malloclist[count].start);
 		if(malloclist[count].start == address && !malloclist[count].released)return count;
 	}

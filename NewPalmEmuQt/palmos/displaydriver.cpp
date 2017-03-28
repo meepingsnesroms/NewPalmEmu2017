@@ -275,7 +275,7 @@ void text(){
 		//dstindex = count + 1;//why does this exist?
 	}
 	else{
-		inc_for(count,srcsize){
+		for(count = 0;count < srcsize;count++){
 			curchr = (char)get_byte(srcptr + count);
 
 			//if(chraction(curchr) == TERMINATE || count >= srcsize)break;
@@ -477,7 +477,7 @@ bool relaytouchevent(CPTR eventptr){
 
 	size_t_68k totalobjs = objects.size();
 	offset_68k curuisquare;
-	inc_for(curuisquare,totalobjs){
+	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
 		if(inboundbox(objects[curuisquare],touch)){
 			//send here
 			dbgprintf("Object:%d has been pushed\n",curuisquare);
@@ -521,7 +521,7 @@ void relaygadgetevent(CPTR eventptr){
 
 	size_t_68k totalobjs = objects.size();
 	offset_68k curuisquare;
-	inc_for(curuisquare,totalobjs){
+	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
 		if(objects[curuisquare].objtype == frmGadgetObj && objects[curuisquare].objid == targetobj){
 			//found the target,now will it accept the event
 			UWORD attr = get_word(objects[curuisquare].object + 2);
@@ -553,7 +553,7 @@ void relaycontrolevent(CPTR eventptr){
 
 	size_t_68k totalobjs = objects.size();
 	offset_68k curuisquare;
-	inc_for(curuisquare,totalobjs){
+	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
 		if(objects[curuisquare].objtype == frmControlObj && objects[curuisquare].objid == targetobj){
 			controleventhandler(targetptr,eventptr);//controlptr is only used for penDownEvent
 			return;
@@ -570,7 +570,7 @@ void relayfieldevent(CPTR eventptr){
 
 	size_t_68k totalobjs = objects.size();
 	offset_68k curuisquare;
-	inc_for(curuisquare,totalobjs){
+	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
 		if(objects[curuisquare].objtype == frmFieldObj && objects[curuisquare].objid == targetobj){
 			fieldeventhandler(targetptr,eventptr);//controlptr is only used for penDownEvent
 			return;
@@ -1081,8 +1081,7 @@ void updateanddrawform(CPTR form){
 
 	//dbgprintf("Numobjs:%d,Formptr:%08x\n",numobjects,formptr);
 
-	UWORD count;
-	inc_for(count,numobjects){
+	for(UWORD count = 0;count < numobjects;count++){
 		placeformobj(form,count);
 	}
 
@@ -1859,7 +1858,7 @@ void winrgbtoindex(){
 	else{
 		UWORD closeness = 0xFFFF;//the bigger the more diffrence
 		CPTR curcolor = clut;
-		inc_for(count,tablesize){
+		for(count = 0;count < tablesize;count++){
 			UWORD thisdiff = getrgbdiff(red,green,blue,get_byte(curcolor + 1),get_byte(curcolor + 2),get_byte(curcolor + 3));
 			if(thisdiff < closeness){
 				closeness = thisdiff;
@@ -2459,8 +2458,7 @@ void frmsettitle(){
 	CPTR formobjlist = getformobjlist(formptr);
 	CPTR titleobj = nullptr_68k;
 	UWORD thisnumobjects = getformnumobjects(formptr);
-	UWORD count;
-	inc_for(count,thisnumobjects){
+	for(UWORD count = 0;count < thisnumobjects;count++){
 		if(get_byte(formobjlist + count * 6) == frmTitleObj){
 			titleobj = get_long(formobjlist + count * 6 + 2);
 			break;
@@ -2645,8 +2643,7 @@ void frmgetobjectindex(){
 	stackword(objid);//not resource id
 
 	uint16 formobjnum = getformnumobjects(form);
-	uint16 count;
-	inc_for(count,formobjnum){
+	for(uint16 count = 0;count < formobjnum;count++){
 		if(getformobjid(form,count) == objid){
 			D0 = count;
 			return;

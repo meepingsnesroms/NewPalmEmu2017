@@ -37,14 +37,12 @@ ULONG nextuid(){
 
 void forgeuniqueids(){
 	int totalapps = apps.size();
-	int count;
-	inc_for(count,totalapps){
+	for(int count = 0;count < totalapps;count++){
 		if(!apps[count].resdb){
 			uniqueidseed = apps[count].uuidseed;
 			//dbgprintf("Seed:%08x\n",uniqueidseed);
 			UWORD records = apps[count].parts.size();
-			UWORD reccount;
-			inc_for(reccount,records){
+			for(UWORD reccount = 0;reccount < records;reccount++){
 				apps[count].parts[reccount].uniqueid = nextuid();
 			}
 		}
@@ -53,8 +51,7 @@ void forgeuniqueids(){
 
 void reindexrecords(int db){
 	uint16 recordnum = apps[db].parts.size();
-	uint16 count;
-	inc_for(count,recordnum){
+	for(uint16 count = 0;count < recordnum;count++){
 		apps[db].parts[count].id = count;
 	}
 	apps[db].numrecords = recordnum;
@@ -111,7 +108,7 @@ void dmcreatedatabase(){
 	palmdb newdb;
 
 	offset_68k fish;
-	inc_for(fish,32){
+	for(fish = 0;fish < 32;fish++){
 		newdb.name[fish] = (char)get_byte(nameptr + fish);
 		if(newdb.name[fish] == '\0')break;
 	}
@@ -411,7 +408,7 @@ void dmgetresource(){
 	int totalapps = apps.size();
 	int openappscan;
 	CPTR resource;
-	inc_for(openappscan,totalapps){
+	for(openappscan = 0;openappscan < totalapps;openappscan++){
 		if(apps[openappscan].open)resource = getresource(openappscan,id,type);
 		if(resource)break;
 	}
@@ -584,7 +581,7 @@ void dmsetdatabaseinfo(){
 
 
 	if(nameptr){
-		string appname = m68kstr(nameptr);
+		std::string appname = m68kstr(nameptr);
 		if(appname.size() > 32){
 			D0 = dmErrInvalidDatabaseName;
 			return;
@@ -683,7 +680,7 @@ void dmfinddatabase(){
 	stackword(cardno);//dummy
 	stackptr(nameptr);
 
-	string name = m68kstr(nameptr);
+	std::string name = m68kstr(nameptr);
 
 	dbgprintf("Name:%s\n",name.c_str());
 
@@ -709,8 +706,7 @@ void dmfindrecordbyid(){
 
 	//check records
 	UWORD records = apps[dmopenref].parts.size();
-	UWORD count;
-	inc_for(count,records){
+	for(UWORD count = 0;count < records;count++){
 		if(apps[dmopenref].parts[count].uniqueid == uniqueid){
 			put_word(indexptr,count);
 			D0 = errNone;
@@ -774,8 +770,7 @@ void dmsearchresource(){
 	int appbackup = -1;
 	UWORD indexbackup;
 	int appvectorsize = apps.size();
-	int appscnt;
-	inc_for(appscnt,appvectorsize){
+	for(int appscnt = 0;appscnt < appvectorsize;appscnt++){
 		if(apps[appscnt].resdb && apps[appscnt].open){
 			UWORD resloc = resourcenumfromtypeid(appscnt,resid,restype);
 			if(resloc < 0xFFFF){
@@ -806,8 +801,7 @@ void dmresetrecordstates(){
 	//Utility to unlock all records and clear busy bits
 
 	UWORD itemnum = apps[dmopenref].parts.size();
-	UWORD index;
-	inc_for(index,itemnum){
+	for(UWORD index = 0;index < itemnum;index++){
 		apps[dmopenref].parts[index].lockcount = 0;
 		apps[dmopenref].parts[index].attr &= ~dmRecAttrBusy;
 	}

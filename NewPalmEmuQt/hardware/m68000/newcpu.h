@@ -29,18 +29,18 @@ void MC68000_runtilladdr(CPTR);
 
 
 //pilotcpu
-int CPU(shared_img *shptr);
-int CPU_init(shared_img *shptr);
-void CPU_wait(shared_img *shptr);
-void CPU_reset(shared_img *shptr);
-void CPU_start(shared_img *shptr);
-void CPU_stop(shared_img *shptr);
-void CPU_getregs(shared_img *shptr, struct regstruct *r);
-void CPU_setregs(shared_img *shptr, struct regstruct *r);
-int CPU_setexceptionflag(shared_img *shptr, int exception, int flag);
-void CPU_pushlongstack(ULONG val);
+int   CPU(shared_img *shptr);
+int   CPU_init(shared_img *shptr);
+void  CPU_wait(shared_img *shptr);
+void  CPU_reset(shared_img *shptr);
+void  CPU_start(shared_img *shptr);
+void  CPU_stop(shared_img *shptr);
+void  CPU_getregs(shared_img *shptr, struct regstruct *r);
+void  CPU_setregs(shared_img *shptr, struct regstruct *r);
+int   CPU_setexceptionflag(shared_img *shptr, int exception, int flag);
+void  CPU_pushlongstack(ULONG val);
 ULONG CPU_poplongstack();
-void CPU_pushwordstack(UWORD val);
+void  CPU_pushwordstack(UWORD val);
 UWORD CPU_popwordstack();
 //stack does not support byte ops,so no push/pop bytestack();
 
@@ -48,7 +48,7 @@ UWORD CPU_popwordstack();
 void CPU_68kfunction(CPTR addr, CPTR from);
 
 //easily and quickly remove * bytes from stack,used to clean up after calling back into 68k mode
-inline void CPU_cleanargsfromstack(int words){SP += words;}
+inline void CPU_cleanargsfromstack(int bytes){SP += bytes;}
 
 //debuging
 void printregs();

@@ -1,8 +1,6 @@
 #include "m68k.h"
 #include <string>
 
-using std::string;
-
 void membyteswap(UBYTE *start, size_t_68k size){
 	UBYTE temp;
 	offset_68k bunny;
@@ -27,8 +25,8 @@ void writebytearray(CPTR loc,UBYTE* start,size_t_68k size){
 	}
 }
 
-string readstring(CPTR loc){
-	string tempstr;
+std::string readstring(CPTR loc){
+	std::string tempstr;
 	char chr;//is needed to check if the last char was a null terminator before appending it
 	while(true){
 		chr = (char)get_byte(loc);
@@ -39,7 +37,7 @@ string readstring(CPTR loc){
 	return tempstr;
 }
 
-void writestring(CPTR loc,const string& str,size_t_68k forcelength = 0){
+void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0){
 	const char* strptr = str.c_str();
 	offset_68k goo = 0;
 	while(true){

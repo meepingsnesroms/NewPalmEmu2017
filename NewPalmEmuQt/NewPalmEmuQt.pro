@@ -26,12 +26,6 @@ CONFIG(debug, debug|release) {
     #release
 }
 
-#android clang fixes
-#android {
-    #fix arm only
-    #LIBS += $$(ANDROID_NDK_ROOT)/platforms/$$(ANDROID_NDK_PLATFORM)/arch-arm/usr/lib
-#}
-
 android {
    DEFINES += OS_ANDROID
 }
@@ -93,7 +87,6 @@ SOURCES += \
     palmos/graphics/fbops.cpp \
     libretro/palmosemulibretro.cpp \
     libretro/libretro.c \
-    other/random.cpp \
     palmos/graphics/biosfont.cpp \
     palmos/graphics/bsod.cpp \
     hardware/arm/armshim.cpp \
@@ -194,11 +187,5 @@ DISTFILES += \
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 SUBDIRS += \
-    NewPalmEmuLibretro.pro \
-    NewPalmEmuLibretro.pro \
-    NewPalmEmuLibretro.pro \
-    NewPalmEmuLibretro.pro \
-    NewPalmEmuLibretro.pro \
-    NewPalmEmuLibretro.pro \
     NewPalmEmuLibretro.pro
 

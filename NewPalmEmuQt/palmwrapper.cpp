@@ -23,7 +23,7 @@
 
 
 //Universal data storage/heap/osvalues
-vector<palmdb> apps;
+std::vector<palmdb> apps;
 
 //OS data
 void (*TouchDriver)(int,int,bool) = nullptr;
@@ -33,12 +33,12 @@ void (*ButtonDriver)(int,bool) = nullptr;
 int curapp;//open app
 int curoverlay;//open apps overlay(language file)
 CPTR appcall;//fake data saying how and why the app was launched
-string username;
-string clipboard;
+std::string username;
+std::string clipboard;
 ULONG totalticks;
 //float partialticks;
 ULONG keymask;
-chrono::high_resolution_clock::time_point starttime;
+std::chrono::high_resolution_clock::time_point starttime;
 bool truerandom = false;//hack
 
 //events
@@ -54,15 +54,15 @@ bool oldgfxmodes;
 CPTR oslcdwindow,lcdbitmaptype;
 
 //random numbers (not exposed to other files)
-random_device seedstore;
-mt19937 gentype(seedstore());
-uniform_int_distribution<uint32> getrandom(0,UINT32_MAX);
+std::random_device seedstore;
+std::mt19937 gentype(seedstore());
+std::uniform_int_distribution<uint32> getrandom(0,UINT32_MAX);
 
 //i/o thread safety
-mutex os_data_lock;
+std::mutex os_data_lock;
 
 //debug
-string lasttrap;
+std::string lasttrap;
 //End of universal data
 
 
@@ -70,9 +70,9 @@ uint32 randomnumber(){
 	return getrandom(gentype);
 }
 
-string directory;
+std::string directory;
 shared_img palm;
-thread palmcpu;
+std::thread palmcpu;
 bool running = false,started = false;
 bool hasbootableapp = false;
 
@@ -115,7 +115,7 @@ bool start(int bootfile){
 	bool launched = launchapp(bootfile);
 	if(!launched)return false;
 
-	palmcpu = thread(CPU,&palm);
+	palmcpu = std::thread(CPU,&palm);
     CPU_start(&palm);
 
 	//input drivers
@@ -134,7 +134,7 @@ bool resume(){
 	BTNTBL = 0x00000000;
 	PENX = 0x0000;
 	PENY = 0x0000;
-	starttime = chrono::high_resolution_clock::now();
+	starttime = std::chrono::high_resolution_clock::now();
     CPU_start(&palm);
 	running = true;
 	return true;
@@ -143,7 +143,7 @@ bool resume(){
 bool halt(){
 	if(!running)return false;
 
-	totalticks += (chrono::high_resolution_clock::now() - starttime) / palmTicks(1);
+	totalticks += (std::chrono::high_resolution_clock::now() - starttime) / palmTicks(1);
     CPU_stop(&palm);
 	running = false;
 	return true;
@@ -197,15 +197,15 @@ void sendkeyboardchar(char thiskey,bool state){
 	if(KeyDriver)KeyDriver(thiskey,state);
 }
 
-string getclipboard(){
-	string state;
+std::string getclipboard(){
+	std::string data;
 	os_data_lock.lock();
-	state = clipboard;
+	data = clipboard;
 	os_data_lock.unlock();
-	return state;
+	return data;
 }
 
-void setclipboard(string data){
+void setclipboard(std::string data){
 	os_data_lock.lock();
 	clipboard = data;
 	os_data_lock.unlock();
