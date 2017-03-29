@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1000" LOCALE="jpJP">
+		<FORM_ID> 1000 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 0 </LEFT>
+			<TOP> 0 </TOP>
+			<WIDTH> 160 </WIDTH>
+			<HEIGHT> 160 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> FALSE </MODAL>
+		<SAVE_BEHIND> FALSE </SAVE_BEHIND>
+		<HELP_ID> 0 </HELP_ID>
+		<MENU_ID> 1000 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="SubHunt Title">
+				<TEXT> "SubHunt" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Wave Label">
+				<ID> 1002 </ID>
+				<LOCATION>
+					<X> 129 </X>
+					<Y> 2 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Lvl" </TEXT>
+			</FORM_LABEL>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

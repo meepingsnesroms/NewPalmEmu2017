@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1001" LOCALE="frFR" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Incompatible avec le système" </TITLE>
+		<MESSAGE>
+			"La version 2.0 ou plus du système est exigée pour exécuter cette "
+			"application."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_DEFAULT_CATEGORY_RESOURCE RESOURCE_ID="1000" LOCALE="frFR" COMMENT="DO NOT LOCALIZE THIS RESOURCE">
+		<TEXT> "Games" </TEXT>
+	</APP_DEFAULT_CATEGORY_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1000" LOCALE="frFR">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 32 </WIDTH>
+				<HEIGHT> 32 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/AppIcon_Large-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 32 </WIDTH>
+				<HEIGHT> 32 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/AppIcon_Large-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1001" LOCALE="frFR">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/AppIcon_Small-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/AppIcon_Small-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="frFR" COMMENT="App Icon Name">
+		<TEXT> "HardBall" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.5" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1000" COMMENT="Board">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 160 </WIDTH>
+				<HEIGHT> 144 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1000-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1001" COMMENT="No Stone">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 26 </WIDTH>
+				<HEIGHT> 5 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1001-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1002" COMMENT="Obstacle Stone">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 7 </WIDTH>
+				<HEIGHT> 7 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1002-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1003" COMMENT="Brick 1">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1003-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1004" COMMENT="Brick 2">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1004-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1005" COMMENT="Brick 3">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1005-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1006" COMMENT="Brick 4">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1006-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1007" COMMENT="Brick 5">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1007-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1008" COMMENT="Brick 6">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 16 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./HardBallMisc/Bitmap_1008-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="frFR" COMMENT="Board View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Jeu" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 98 </WIDTH>
+					<HEIGHT> 60 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 24 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Nouveau" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Règles du jeu" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "Records" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Préférences" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 105 </ID>
+						<TITLE> "A propos: HardBall" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="frFR" COMMENT="Instructions String">
+		<TEXT>
+			"Règles du jeu HardBall \n"
+			"\n"
+			"L'objectif est d'enlever toutes les briques pour passer au niveau "
+			"supérieur.\n"
+			"\n"
+			"• Les boutons gauche et droit déplacent la palette vers la gauche et "
+			"la droite.\n"
+			"\n"
+			"• Le bouton du haut lance une balle vers le haut à partir de la "
+			"palette.\n"
+			"\n"
+			"• Le bouton du bas démarre un nouveau jeu.\n"
+			"\n"
+			"• La balle accélère lorsqu'elle heurte le mur d'en haut.\n"
+			"\n"
+			"• Pour donner de l'effet à la balle, frappez-la dans un mouvement de "
+			"la palette: la balle se met à tournoyer.\n"
+			"\n"
+			"• Des balles sont données en prime à 2.000, 4.000, 8.000 et 16.000 "
+			"points.\n"
+			"\n"
+			"• Pour assombrir la balle ou la palette, réglez le bouton du contraste "
+			"de l'écran.\n"
+			"\n"
+			"\n"
+			"Briques spéciales\n"
+			"\n"
+			"• La brique à balles libère une balle. Cette balle reste jusqu'à la "
+			"fin du niveau. Si vous avez déjà quatre balles en jeu, la balle sortie "
+			"s'ajoute aux balles restantes!\n"
+			"\n"
+			"• La brique à palettes ajoute une autre palette, qui reste jusqu'à la "
+			"perte de toutes les balles en jeu.\n"
+			"\n"
+			"\n"
+			"Records\n"
+			"\n"
+			"• Si votre nombre de points devient un record, le bip des records vous "
+			"le signale.\n"
+			"\n"
+			"• Le bip des records est émis une deuxième fois si vous battez tous "
+			"les records."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

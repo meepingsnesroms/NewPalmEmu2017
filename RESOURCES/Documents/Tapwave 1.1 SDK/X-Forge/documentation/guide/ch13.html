@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 13. Marketing Aids</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt05.html" title="Part V. Marketing Aids"><link rel="previous" href="pt05.html" title="Part V. Marketing Aids"><link rel="next" href="pt06.html" title="Part VI. Tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 13. Marketing Aids</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pt05.html">Prev</a> </td><th width="60%" align="center">Part V. Marketing Aids</th><td width="20%" align="right"> <a accesskey="n" href="pt06.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id430223"></a>Chapter 13. Marketing Aids</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch13.html#id430233">Introduction</a></dt><dt><a href="ch13.html#id430334">Taking Screenshots</a></dt><dt><a href="ch13.html#id429351">Double-Size Presentation Versions</a></dt><dt><a href="ch13.html#id431984">Recording Videos</a></dt><dt><a href="ch13.html#id430279">Frame-Rate Counters</a></dt></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430233"></a>Introduction</h2></div></div><p>
+X-Forge's desktop Windows version has some features which may be helpful in marketing. They all require some effort from developers but may well be worth the effort.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430334"></a>Taking Screenshots</h2></div></div><p>
+On all desktop Windows builds of X-Forge applications, you can use the F12 key to save screenshots. The screenshots are saved in the same directory as the application, with the name <tt>ss0000.bmp</tt>. Any subsequent screenshots are saved by the names <tt>ss0001.bmp</tt>, <tt>ss0002.bmp</tt>, etc.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429351"></a>Double-Size Presentation Versions</h2></div></div><p>
+When demonstrating a game on the desktop Windows version, it may often be useful to have a double-size version of the application. This is especially true when demonstrating a game on a laptop with a projector; a 176x208 window isn't all that impressive on a 800x600 desktop. A 352x416 window is much easier to appreciate.
+</p><p>
+Steps to make a double-sized version:
+</p><p>
+1. Call <tt>xfcUseGLDefaultUpsample()</tt> in <tt>xfcAppInit()</tt>.
+</p><pre class="programlisting">
+INT32 xfcAppInit()
+{    
+#if defined(DOUBLE_RES_PRESENTATION_VERSION)
+    xfcUseGLDefaultUpsample();
+#endif    
+...
+</pre><p>
+2. Double the preferred screen resolution.
+</p><pre class="programlisting">
+void xfcAppPref(XFcAppPrefs &amp;aPrefs)
+{
+    aPrefs.mResourceMemoryLimit = (INT32)(1.0 * 1024 * 1024);
+    aPrefs.mTotalMemoryLimit = (INT32)(1.5 * 1024 * 1024);
+    aPrefs.mPreferredWidth = 176;
+    aPrefs.mPreferredHeight = 208;
+#if defined(DOUBLE_RES_PRESENTATION_VERSION)
+    aPrefs.mPreferredWidth *= 2;
+    aPrefs.mPreferredHeight *= 2;
+    aPrefs.mResourceMemoryLimit *= 2;
+    aPrefs.mTotalMemoryLimit *= 2; // memory requirements also grow
+#endif
+...
+</pre><p>
+3. Make sure you create the GL using the upscale device instead of the stub.
+</p><pre class="programlisting">
+#ifdef DOUBLE_RES_PRESENTATION_VERSION
+// create GL
+mGL = XFcGL::create(101);
+#else
+// create GL
+mGL = XFcGL::create();
+#endif
+xfcGLUseDefaults();
+...
+</pre><p>
+As a result of these three steps you should now have a double-sized version. Make sure you use release build for demonstration purposes, as the upsampling takes some processing power.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id431984"></a>Recording Videos</h2></div></div><p>
+You can use the <tt>XFuVideoRecorder</tt> utility to record frames of animation from your desktop Windows version of your X-Forge application.
+</p><p>
+First add a pointer to a <tt>XFuVideoRecorder</tt> object in your application class. Next, create the object in your <tt>onAppInit</tt> method. Finally, add a <tt>tick()</tt> call to your application's <tt>onTick()</tt> method.
+</p><p>
+The <tt>XFuVideoRecorder</tt> class stores screenshots of your application at the frame rate you desired. If the application's framerate is lower than the desired, duplicate frames are stored. Typically a framerate of 15 or 24 is good for video. Make sure you're using release build of your application for video footage, as the resulting disk activity will make your application run slower.
+</p><p>
+The resulting screenshots can be imported to some video editing software to be converted to actual video files.
+</p><p>
+If you also wish to record audio, you can use any audio recording software, and set it to record &quot;what you hear&quot; while you run your application. Please note that you may need to apply some audio speed adjustment to the audio to get it to match with the video frames.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430279"></a>Frame-Rate Counters</h2></div></div><p>
+If you wish to display a frame rate (FPS) counter, you can use the <tt>XFuFPSCount</tt> utility class for calculating said value.
+</p><p>
+Simply add a pointer to a <tt>XFuFPSCount</tt> object in your rendering class, create the object on your <tt>initRenderer()</tt> method, and call the <tt>XFuFPSCount</tt> object's <tt>tick()</tt> once per frame. You can query the current FPS value by calling the <tt>getFPS()</tt> method.
+</p></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pt05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="pt06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Part V. Marketing Aids </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Part VI. Tools</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

@@ -1,0 +1,1025 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 9. 3D Graphics</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="ch08.html" title="Chapter 8. 2D Graphics"><link rel="next" href="ch10.html" title="Chapter 10. Audio"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 9. 3D Graphics</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="ch10.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id420869"></a>Chapter 9. 3D Graphics</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch09.html#id420879">Overview</a></dt><dt><a href="ch09.html#id423611">GL Device</a></dt><dd><dl><dt><a href="ch09.html#id420756">Acquiring a GL Device</a></dt><dt><a href="ch09.html#id423744">Setting the Viewport</a></dt><dt><a href="ch09.html#id423801">Setting the Rendering Target</a></dt><dt><a href="ch09.html#id423926">Clearing the Framebuffer</a></dt><dt><a href="ch09.html#id423522">Matrices and Space Transforms</a></dt><dt><a href="ch09.html#id424751">beginRender() and endRender()</a></dt><dt><a href="ch09.html#id424648">States</a></dt><dt><a href="ch09.html#id425798">Lights and Materials</a></dt><dt><a href="ch09.html#id426513">Billboards</a></dt><dt><a href="ch09.html#id424597">Custom Render Callback</a></dt><dt><a href="ch09.html#id426692">Render to surface</a></dt></dl></dd><dt><a href="ch09.html#id426765">Vertex Formats</a></dt><dt><a href="ch09.html#id427009">Vertex Buffers</a></dt><dd><dl><dt><a href="ch09.html#id427049">XFcGLVertexBuffer</a></dt><dt><a href="ch09.html#id427162">Rendering Vertex Buffers</a></dt><dt><a href="ch09.html#id427325">Custom Primitive</a></dt></dl></dd><dt><a href="ch09.html#id427384">Triangle Info Buffers</a></dt><dd><dl><dt><a href="ch09.html#id427538">XFcGLTriangleInfoBuffer</a></dt></dl></dd><dt><a href="ch09.html#id427742">GL Device Info</a></dt><dd><dl><dt><a href="ch09.html#id427812">XFcGLDeviceInfo</a></dt><dt><a href="ch09.html#id428076">Changing Devices</a></dt><dt><a href="ch09.html#id428168">Default Devices</a></dt></dl></dd><dt><a href="ch09.html#id428304">GL Enumerations</a></dt></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id420879"></a>Overview</h2></div></div><p>
+X-Forge 3D API is very similar to SGI's OpenGL and Microsoft's Direct3D. The API is a low-level graphics library which does not know about 3D objects or scenes but uses primitives ie. triangles, triangle strips and fans for rendering. As in OpenGL and Direct3D, the heart of the API is the graphics device which supplies different ways to present graphics. The different ways to display graphics depend on the particular device being used, a device might support hardware-assisted perspective corrected texturing where as another device might have hardware support for full scene anti-aliasing.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id423611"></a>GL Device</h2></div></div><p>
+To be able to present graphics from an X-Forge application, a GL device must be created. A GL device defined by the class <tt>XFcGL</tt> provides functionality to render primivites and means to access the framebuffer directly. When acquiring a GL device, one can choose what kind of functionality is required from the device and also the orientation of the screen.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420756"></a>Acquiring a GL Device</h3></div></div><p>
+Before creating a GL device, the API must be informed whether what kind of functionality is needed from the GL. This is to save memory usage and filesize since devices which are not referred will not be linked to the application. For this purpose there are global functions defined in XFcUse.h. These functions should be called in the application's global <tt>xfcAppInit()</tt> function to make sure they're part of the proper initialization flow.
+</p><p>
+The easiest way to acquire a GL device is to create the default GL device. The default device always gives the best performance speed-wise. The default orientation is always the same as the orientation of the operating system. The following example shows how to create the default GL device with default orientation:
+</p><pre class="programlisting">
+INT32 xfcAppInit()
+{
+// Inform API that the default GL device is required
+xfcUseGLDefault();
+}
+
+void MyApp::onAppInit()
+{
+// Create the default GL device
+XFcGL *gl = XFcGL::create();
+
+// Save pointer of GL device to internal variables etc.
+...
+}
+</pre><p>
+To create a GL device with a certain orientation the orientation flags found from the <tt>XFCGLCREATEENUMS</tt> enumeration can be used in the creation method:
+</p><pre class="programlisting">
+// Create the default GL device in landscape mode, rotated 180 degrees
+XFcGL *gl = XFcGL::create(XFCGLC_DEFAULT, XFCGLC_LANDSCAPE | XFCGLC_ROTATE_180);
+</pre><p>
+On some cases there will be several devices to choose from; a hardware-assisted device and a purely software device, for example. The hardware-assisted device may not contain all the required features, and thus it makes sense to choose another device instead. Other potential devices might be FSAA devices or low-resolution devices. To create a GL device with, for example, anti-aliasing support, the appropriate device has to be searched for from the list of available devices:
+</p><pre class="programlisting">
+INT32 xfcAppInit()
+{
+// Inform API that FSAA support is required
+xfcUseGLDefaultFSAA();
+}
+
+void MyApp::onAppInit()
+{
+XFcGL *gl = NULL;
+XFcDeviceInfo *glDeviceInfo = NULL;
+// Device ID, initialized to the default GL device ID
+UINT32 glDeviceID = XFCGLC_DEFAULT;
+
+// Get pointer to available device infos
+glDeviceInfo = XFcGL::getDeviceInfo();
+
+// Search through device infos
+while(glDeviceInfo != NULL)
+{
+    // Check if the device supports full scene anti-aliasing
+    if (glDeviceInfo-&gt;mRenderFeatures &amp; XFCGLDI_FSAA)
+    {
+        // Save devices ID for later use
+        glDeviceID = glDeviceInfo-&gt;mDeviceId;
+        break;
+    }
+
+    glDeviceInfo = glDeviceInfo-&gt;mNext;
+}
+
+// Create an FSAA GL device if possible, otherwise create the default device
+gl = XFcGL::create(glDeviceID);
+
+// Save pointer of GL device to internal variables etc.
+...
+}
+</pre><p>
+Once the <tt>XFcGL</tt> object has been created it can be reinitialized using <tt>recreate()</tt> method call to connect into another device. It may make sense to show some parts of the application through one device and others though others. As an example one might have a paletted hardware device, with normal and dithered GL devices; one might want to use the slower dithered device to show menus or other static graphic data, while one might want the game itself to be as fast as possible.
+</p><p>
+To reinitialize an <tt>XFcGL</tt> object to connect to, for example, the reference rasterizer, the following method can be used:
+</p><pre class="programlisting">
+// Reinitialize an initialized XFcGL object to connect to reference rasterizer
+gl-&gt;recreate(XFCGLC_REFERENCE);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423744"></a>Setting the Viewport</h3></div></div><p>
+The viewport defines a rectangle on the target surface to which primitives are rendered. Primitives are always rendered using the viewport's focal point as the screen space focal point thus the offsets and dimensions of the viewport do not affect the actual layout of primitives.
+</p><p>
+As default, creating a GL device sets the viewport to extend the whole target surface. The viewport can be changed with the <tt>setViewport()</tt> method:
+</p><pre class="programlisting">
+// Define a viewport
+XFcGLViewport viewport;
+viewport.mXScreenOffset = 10;    // Screen x-offset to 10 pixels
+viewport.mXScreenOffset = 20;    // Screen y-offset to 20 pixels
+viewport.mAreaWidth = 220;       // Screen width to 220 pixels
+viewport.mAreaHeight = 280;      // Screen height to 280 pixels
+viewport.mMinZ = REALf(0.0);     // Minimum possible z-value to 0
+viewport.mMaxZ = REALf(1.0);     // Maximum possible z-value to 1
+
+// Set viewport to an initialized GL device
+gl-&gt;setViewport(&amp;viewport);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423801"></a>Setting the Rendering Target</h3></div></div><p>
+Different surface targets can be used for rendering. One might want to, for example, render a scene to a bitmap and use that bitmap as a texture. Setting the rendering target is done by calling the <tt>setRenderTarget()</tt> and supplying the method call with an XFcGLSurface object (see chapter 'X-Forge 2D graphics', under 'core' for more information about surfaces). Using a NULL parameter will set the framebuffer as the rendering target.
+</p><p>
+After setting the render target, one should update the viewport settings to represent the selected surface, so that everything will be rendered properly to the target. After using the <tt>setRenderTarget()</tt> method, the <tt>getDeviceWidth()</tt> and <tt>getDeviceHeight()</tt> methods of XFcCore return values corresponding to the selected surface.
+</p><p>
+An example: 
+</p><pre class="programlisting">
+// Create a surface having a width and height a quarter of the device's width and height
+XFcGLSurface *surface = XFcGLSurface::create(XFcCore::getDeviceWidth() / 4, XFcCore::getDeviceHeight() / 4);
+
+// Set the new surface as the rendering target
+gl-&gt;setRenderTarget(surface);
+
+// Define a viewport for the new surface
+XFcGLViewport viewport;
+viewport.mXScreenOffset = 0;	                   // Screen x-offset to 0 pixels
+viewport.mXScreenOffset = 0;                       // Screen y-offset to 0 pixels
+viewport.mAreaWidth = XFcCore::getDeviceWidth();   // Screen width to match surface's width
+viewport.mAreaHeight = XFcCore::getDeviceHeight(); // Screen height to match surface's height
+viewport.mMinZ = REALf(0.0);                       // Minimum possible z-value to 0
+viewport.mMaxZ = REALf(1.0);                       // Maximum possible z-value to 1
+
+// Set viewport to an initialized GL device
+gl-&gt;setViewport(&amp;viewport);
+
+// Render to surface
+...
+
+// Reset render target back to framebuffer
+gl-&gt;setRenderTarget(NULL);
+
+// Update viewport to represent framebuffer's width and height
+viewport.mXScreenOffset = 0;	                   // Screen x-offset to 0 pixels
+viewport.mXScreenOffset = 0;                       // Screen y-offset to 0 pixels
+viewport.mAreaWidth = XFcCore::getDeviceWidth();   // Screen width to match framebuffer's width
+viewport.mAreaHeight = XFcCore::getDeviceHeight(); // Screen height to match framebuffer's height
+viewport.mMinZ = REALf(0.0);                       // Minimum possible z-value to 0
+viewport.mMaxZ = REALf(1.0);                       // Maximum possible z-value to 1
+
+// Set viewport to an initialized GL device
+gl-&gt;setViewport(&amp;viewport);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423926"></a>Clearing the Framebuffer</h3></div></div><p>
+To clear the framebuffer, the <tt>clear()</tt> method is used. The parameters include the colour which is used to fill the framebuffer, an optional z-value which is used to fill the possible z-buffer and optional flags which are currently reserved for later use.
+</p><p>
+An example: 
+</p><pre class="programlisting">
+// Clear the framebuffer with a bright red colour
+gl-&gt;clear(0xFF0000);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423522"></a>Matrices and Space Transforms</h3></div></div><p>
+X-Forge Core 3D API uses three transformations to change the 3D model coordinates into pixel coordinates ie. screen space coordinates. These transformations are world transform, view transform, and projection transform. The three transformations are defined by matrices. A matrix in X-Forge Core 3D API is a 4x4 homogenous matrix is defined by a <tt>XFcMatrix</tt> structure. The <tt>XFcMath</tt> class implements ways to create the most commonly used matrices, for example rotation, translation or projection matrices. 
+</p><p>
+The different transformations can be set with the <tt>setMatrix()</tt> method found in the GL device. The possible transformations are defined in the <tt>XFCGLMATRIXID</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLMAT_WORLD		- World matrix transformation.
+XFCGLMAT_VIEW		- View matrix transformation.
+XFCGLMAT_PROJECTION	- Projection matrix transformation.
+</pre><p>
+An example:
+</p><pre class="programlisting">
+// Set world transform matrix
+gl-&gt;setMatrix(XFCGLMAT_WORLD, objectWorldMatrix);
+
+// Set view transform matrix
+gl-&gt;setMatrix(XFCGLMAT_VIEW, cameraMatrix);
+
+// Set projection transform matrix
+gl-&gt;setMatrix(XFCGLMAT_PROJECTION, projectionMatrix);
+</pre><p>
+All vertices which are to be used in rendering are run throught the transformation pipeline and it involves all three transformations in the following order:
+</p><pre class="programlisting">
+Object's local coordinate space ==&gt; World space ==&gt; Camera space ==&gt; Screen space
+</pre><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id424310"></a>World Transform</h4></div></div><p>
+World transform controls how the 3D model's local coordinates are transformed into world coordinates. World transform can include rotations and translations but it does not apply to lights. The world transform is different for each 3D object and should be set before each attempt to render an object. To create a world transform matrix for an object, the matrix creation methods of the <tt>XFcMath</tt> class can be used. Simplest world transform is an identity matrix which actually does not use any scaling, rotation nor translation:
+</p><pre class="programlisting">
+// Create a 4x4 identity matrix
+XFcMatrix4 worldMatrix;
+XFcMath::matrixIdentity(worldMatrix);
+
+// Set world transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_WORLD, worldMatrix);
+</pre><p>
+To use rotation in the world transform, different methods can be used. Most common way is to use a rotation quaternion to define rotations over all axis and convert the quaternion to a rotation matrix:
+</p><pre class="programlisting">
+// Create an identity rotation quaternion
+XFcQuaternion q;
+XFcMath::quaternionIdentity(q);
+
+// Define a constant rotation on all three axis, for example, 0 on x-axis,
+// 180 degrees on y-axis and 90 degrees on z-axis
+XFcMath::quaternionRotationXYZ(q, REALf(0), REALf(PI), REALf(PI/2));
+
+// Create a world transform matrix with rotation from rotation quaternion
+XFcMatrix4 worldMatrix;
+XFcMath::matrixFromQuaternion(worldMatrix, q);
+
+// Set world transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_WORLD, worldMatrix);
+</pre><p>
+To use translation in the world transform, the <tt>matrixTranslate()</tt> method can be used:
+</p><pre class="programlisting">
+// Create a 4x4 identity matrix
+XFcMatrix4 worldMatrix;
+XFcMath::matrixIdentity(worldMatrix);
+
+// Create a world transform matrix, using a constant translation of, for example,
+// 0 on x-axis, 10 on y-axis and 300 on z-axis
+XFcMath::matrixTranslate(worldMatrix, XFcVector3(REALf(0), REALf(10), REALf(300));
+
+// Set world transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_WORLD, worldMatrix);
+</pre><p>
+To use rotation and translation at the same time, all the previous methods are used in the proper order:
+</p><pre class="programlisting">
+// Create a 4x4 identity matrix
+XFcMatrix4 worldMatrix;
+XFcMath::matrixIdentity(worldMatrix);
+
+// Create an identity rotation quaternion
+XFcQuaternion q;
+XFcMath::quaternionIdentity(q);
+
+// Define a constant rotation on all three axis
+XFcMath::quaternionRotationXYZ(q, REALf(0), REALf(PI), REALf(PI/2));
+// Create a rotation matrix from rotation quaternion
+XFcMatrix4 rotationMatrix;
+XFcMath::matrixFromQuaternion(rotationMatrix, q);
+
+// Apply constant rotation to world transform by multiplying the current world
+// matrix with the rotation matrix
+worldMatrix *= rotationMatrix;
+
+// Apply constant translation to world transform matrix
+XFcMath::matrixTranslate(worldMatrix, XFcVector3(REALf(0), REALf(10), REALf(300));
+
+// Set world transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_WORLD, worldMatrix);
+</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+X-Forge Core 3D API currently supports only rotations and translations in world transformation. If a scaled matrix is used in either one, the behaviour is undefined.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id424529"></a>View Transform</h4></div></div><p>
+View transform controls the transition from world coordinates into &quot;camera space&quot; or &quot;eye space&quot; determining camera position in the world. The view transform is the same for all objects in a scene and only needs to be set in the beginning of the rendering cycle. Commonly the view matrix is created from a look-at camera or a free camera. In a look-at camera, position and target of the camera have to be defined as well as a direction defining the camera's orientation, commonly referred to as the up-vector. X-Forge Core 3D API provides a way to easily create a look-at camera matrix which can be passed straight to the API as the view matrix:
+</p><pre class="programlisting">
+// Create a 4x4 matrix
+XFcMatrix4 cameraMatrix;
+
+// Define a look-at matrix with, for example, the position of camera as (30,40,0),
+// looking at (-100,0,0), up-vector straight along the y-axis
+XFcMath::matrixLookAt(cameraMatrix, XFcVector3(REALf(30), REALf(40), REALf(0)), 
+                                    XFcVector3(REALf(-100), REALf(0), REALf(0)), 
+                                    XFcVector3(REALf(0), REALf(1), REALf(0)));
+
+// Set camera transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_VIEW, cameraMatrix);
+</pre><p>
+A free camera is always &quot;looking&quot; along its z-axis. To create a free camera, a matrix with the rotation and translation of the camera can be defined and then an inverse matrix of the matrix is created as the camera matrix:
+</p><pre class="programlisting">
+// Create a 4x4 matrix
+XFcMatrix4 cameraMatrix;
+
+// Define a constant rotation of the camera as, for example, PI on x-axis
+XFcMath::matrixRotationX(cameraMatrix, REALf(PI));
+
+// Define a constant position of the camera in the world as, for example, (30,40,0)
+XFcMath::matrixTranslate(cameraMatrix, XFcVector3(REALf(30), REALf(40), REALf(0)));
+
+// Create an inverse matrix which can be given as view matrix to API
+XFcMath::matrixInverseFast(cameraMatrix);
+
+// Set camera transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_VIEW, cameraMatrix);
+</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+X-Forge Core 3D API currently supports only rotations and translations in view transformation. If a scaled matrix is used in either one, the behaviour is undefined.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id424694"></a>Projection Transform</h4></div></div><p>
+Projection transform changes the geometry from camera space into screen space. The projection transform is also the same for all 3D objects in a scene and only needs to be set in the beginning of a rendering cycle. The projection matrix defines aspect ratio of projected coordinates which is usually defined by the viewport width and height, a field of view and near and far clipping planes. X-Forge Core 3D API provides a method to creating a projection matrix of this kind:
+</p><pre class="programlisting">
+// Create a 4x4 matrix
+XFcMatrix4 projectionMatrix;
+
+// Get viewport information from GL device, used for aspecr ratio in projection matrix
+XFcViewport viewport;
+gl-&gt;getViewport(&amp;viewport);
+
+// Create a projection matrix with, for example, aspect ratio from viewport, a field of
+// view of 90 degrees, near clip plane at z=1, far clip plane at z=1000
+XFcMath::matrixToProjection(projectionMatrix,
+                            viewport.mAreaHeight,
+                            viewport.mAreaWidth,
+                            REALf(PI/2),
+                            REALi(1),
+                            REALi(1000));
+
+// Set projection transform to GL device
+gl-&gt;setMatrix(XFCGLMAT_PROJECTION, projectionMatrix);
+</pre></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id424751"></a>beginRender() and endRender()</h3></div></div><p>
+The GL device's methods <tt>beginRender()</tt> and <tt>endRender()</tt> define a special code block in the X-Forge Core 3D API. The code block defines an area of operations which should be done in a specific order. Prior to any rendering calls, the states which define the rendering method should be set. To render primitives correctly, all calls to <tt>renderPrimitive()</tt> or <tt>renderPrimitiveIndexed()</tt> should also be used inside a code block defined by beginRender() and endRender(). In software mode, primitives will be sorted properly only if their corresponding rendering calls are made inside the code block in question, also some hardware-assisted devices might require certain actions to be done in a particular order. Also, in software mode the actual rendering to screen is done only by calling <tt>endRender()</tt>. It is also common to set the viewport information, the camera and projection transformation matrices inside the described code block.
+</p><p>
+An example:
+</p><pre class="programlisting">
+// Begin rendering block
+gl-&gt;beginRender();
+
+// Set viewport, camera and projection matrices
+...
+
+// Set lights
+...
+
+// For all objects: set textures, materials, alphablending etc., call
+// renderPrimitive() or renderPrimitiveIndexed()
+...
+
+// End render block
+gl-&gt;endRender();
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id424648"></a>States</h3></div></div><p>
+Like OpenGL and Direct3D, X-Forge Core 3D API is a state machine. All aspects concerning rendering of primitives are achieved using different states; for example, setting the current texture map, current material etc. Unlike with hardware accelerated graphics cards in PCs, state changes in software rendering are not as costly because all data lies in system memory but the number of state changes should be minimized nonetheless, considering possible hardware support.
+</p><p>
+States work in a fashion that one can set a state and call a rendering function for primitives, set another set of states and call a rendering function again. The actual rendering might not be done immediately but the the states are saved to be used when rendering actually happens.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id424909"></a>Textures</h4></div></div><p>
+A texture can be thought of as a wallpaper that is shrink-wrapped onto a surface. You could place a texture representing wood onto a cube to make it look like the cube was actually made of wood. Using textures adds a lot of realism to the rendered scene but it is also costly to use it due to its slightly heavier calculations for primitives and because texturing a surface produces a memory access when the texture bitmap is read which is done per each pixel. Thus, the use of texturing should be well planned. In a scene with small objects that are hard to see, it is hardly worth use texturing on those objects instead one could use a few more surfaces for the objects and disable texturing.
+</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id424951"></a>Using Textures</h5></div></div><p>
+Using textures involves four different stages which have to be set up for texturing to work properly. These include creating a proper texture object, creating a vertex buffer with the proper vertex format and setting proper texture coordinates to vertex buffers or using a triangle info buffers for texture coordinates (see chapter XFcTriangleInfoBuffer) and enabling texturing from the GL device. 
+</p><p>
+Textures creation is explained in chapter 'X-Forge 2D graphics', under 'core'.
+</p><p>
+Texture coordinates have to be defined either directly to vertex buffers or to triangle info buffers. If texture coordinates are to be defined directly into vertex buffers, the vertex format has to be defined to include texture coordinates. Creating such vertex buffers will be described more properly in the chapter about vertex buffers (see chapter XFcGLVertexBuffer). Defining the texture coordinates to triangle info buffers is explained in chapter XFcGLTriangleInfoBuffer. X-Forge Core 3D API supports up to 4 different sets of textures coordinates in the vertex format but multitexturing is currently not supported.
+</p><p>
+Texture are normal two dimensional coordinates but the axis of texture coordinates are usually referred to u- and v-axis rather than x- and y-axis. Texture coordinates can have any value ranging from -infinity to infinity but normally the values are in the range of 0 and 1. The texture coordinate (0, 0) defines the top-left corner in the texture bitmap whereas (1,1) defines the bottom-right corner. If a texture coordinate exceeds 1 or goes below 0, the texture will &quot;tile&quot; and wrap around its edges; the texture coordinate (2,0) defines the same texture coordinate as (1,0) but it is tiled once. So, if a square and its texture coordinates were defined as follows:
+</p><pre class="programlisting">
+(0,0)      (1,0)
+  .----------.
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  |          |
+  '----------'
+(0,1)      (1,1)
+</pre><p>
+and a texture bitmap for it, where each of these numbers represent a different pixel colour:
+</p><pre class="programlisting">
+   1234567890
+   2345678901
+   3456789012
+   4567890123
+   5678901234
+   6789012345
+   7890123456
+   8901234567
+   9012345678
+   0123456789
+</pre><p>
+the resulting image, when the square was textured and positioned on the screen, would look like this:
+</p><pre class="programlisting">
+(0,0)      (1,0)
+  .----------.
+  |1234567890|
+  |2345678901|
+  |3456789012|
+  |4567890123|
+  |5678901234|
+  |6789012345|
+  |7890123456|
+  |8901234567|
+  |9012345678|
+  |0123456789|
+  '----------'
+(0,1)      (1,1)
+</pre><p>
+where as if the u-axis texture coordinate component of the right-side vertices were set to 2, the image would look like this:
+</p><pre class="programlisting">
+(0,0)      (2,0)
+  .----------.
+  |1357913579|
+  |2468024680|
+  |3579135791|
+  |4680246802|
+  |5791357915|
+  |6802468024|
+  |7913579157|
+  |8024680246|
+  |9135791579|
+  |0246802468|
+  '----------'
+(0,1)      (2,1)
+</pre><p>
+because of tiling. If the v-axis components were also set to 2, the texture would tile also in the other direction.
+</p><p>
+To enable texturing in X-Forge Core 3D API, the <tt>setTexture()</tt> method must be called prior to a rendering call for a primitive:
+</p><pre class="programlisting">
+// Sets a texture as the current texture in use in a GL device
+gl-&gt;setTexture(texture);
+</pre><p>
+To disable texturing when it is not needed, for example when rendering only flat polygons, texturing should be disabled by calling the same method with a NULL parameter.
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id425199"></a>Perspective Correction</h5></div></div><p>
+When 3D coordinates are projected to a 2D space, in this case the screen, and texturing is used, the fact that texture coordinates are linear in 3D space but should not be linear in 2D introduces a problem: the textures on surfaces stretch depending on the orientation of the surface. Proper way to correct this is to interpolate texture coordinates logarithmically instead of linearly.
+</p><p>
+Hardware 3D graphics accelerators introduced the ability to use perspective correction in real time. In 3D graphics accelerators, perspective correction is done per each pixel, whereas in software rendering perspective correction is only calculated every Nth-pixel and the texture coordinates are interpolated linearly between spans. Perspective correction is a very costly operation in software mode and should only be used if it was absolutely necessary.
+</p><p>
+To enable perspective correction in texturing, the <tt>XFCGLRS_PERSPECTIVECORRECTION</tt> state must be set:
+</p><pre class="programlisting">
+// Enable perspective correction
+gl-&gt;setStateI(XFCGLRS_PERSPECTIVECORRECTION, 1);
+</pre></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id425277"></a>Mipmaps</h5></div></div><p>
+A mipmap is a sequence of textures, each of which is a progressively lower resolution representation of the same image. The height and width of each image, or level, in the mipmap is a power of two smaller than the previous level. A high-resolution mipmap image is used for objects that are closer to camera, lower-resolution images are used as the object appears further away. Using mipmaps provides a better texture quality and a computational advantage at the expense of more memory being used.
+</p><p>
+Creating mipmaps is explained in chapter 'X-Forge 2D graphics', under 'core'.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425322"></a>Culling</h4></div></div><p>
+Culling can be used to minimize the amount of rendered polygons depending on their orientation and should always be used. When rendering primitives, there is no need to draw polygons which are facing away from the camera. Culling achieves this by indicating which polygons are facing the camera and which are not. Polygons are defined by their vertices and the order in which the vertices are given can be clock-wise or counter clock-wise. Therefore two culling methods are also required, clock-wise and counter clock-wise culling.
+</p><p>
+When using left-handed coordinates, polygons are defined in counter clock-wise order hence the default culling method is clock-wise. The culling method can be changed with the <tt>XFCGLRS_CULLING</tt> state:
+</p><pre class="programlisting">
+// Set clock-wise culling
+gl-&gt;setStateI(XFCGLRS_CULLING, XFCGLCULL_CW);
+</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425396"></a>Sorting</h4></div></div><p>
+Currently, X-Forge Core 3D API does not support depth buffering but uses polygon sorting. The sorting uses the average z-value of all the vertices in a polygon. After calculating the average value, a polygon offset is added to the value. This offset can be used to solve some of the problems which arise from polygon sorting, namely its inaccuracy. Because the z-value of each pixel is not evaluated like in depth buffering but an approximation for a complete polygon is made, polygons which should be rendered on top others polygons might actually be drawn under them.
+</p><p>
+Sorting can be enabled or disabled and the sorting direction can be set with the <tt>XFCGLRS_SORTING</tt> state:
+</p><pre class="programlisting">
+// Set ascending sorting
+gl-&gt;setStateI(XFCGLRS_SORTING, XFCGLSORT_ASCENDING);
+</pre><p>
+The polygon offset state can be used for example in a racing game to make sure the car is always rendered on top of the drive-way by setting either a positive or negative value as the offset, depending on the sorting direction, when rendering the car and zero when rendering the drive-way.
+</p><p>
+The polygon offset is a value of the type REAL and can be set with the <tt>XFCGLRS_POLYGONOFFSET</tt> state:
+</p><pre class="programlisting">
+// Set polygon offset to, for example, -5.7
+gl-&gt;setStateF(XFCGLRS_POLYGONOFFSET, REALf(-5.7));
+</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425499"></a>Shading Modes</h4></div></div><p>
+X-Forge Core 3D API supports three different shading methods for polygons: matte, flat and gouraud.
+</p><p>
+Matte and flat shading methods use a single color for a polygon. If lighting is not used, matte and flat shading both have similar output. Matte shading does not take lighting into account but flat shading does. The color of the polygon in both, matte and flat shading, is the color of the first vertex of the polygon. It is advisable to set the same color to all vertices of a polygon when it is being created.
+</p><p>
+Gouraud shading linearly interpolates the color of vertices across the face of a polygon. Gouraud shading results in a more realistic shading for objects but is also computationally more expensive. Each color component, red, green and blue, is interpolated separately and the three components combined is used as the resulting color. For example, if the color components of vertex 1 are (r=255, g=0, b=127) and the color components of vertex 2 are (r=0, g=31, b=255), using the Gouraud shading mode, the color components of the pixel at the midpoint of the line between these vertices are (r=127, g=15, b=191).
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425569"></a>Alpha Blending</h4></div></div><p>
+Alpha blending is used for rendering transparent or semi-transparent objects. Currently X-Forge Core 3D API supports five different blending modes: solid, additive, weighted average, inverse multiplicative. Alpha blending can be enabled by setting the <tt>XFCGLRS_ALPHABLEND</tt> state:
+</p><pre class="programlisting">
+// Enable alpha blending
+gl-&gt;setStateI(XFCGLRS_ALPHABLEND, 1);
+</pre><p>
+The different blending modes are activated by setting the source and destination blending modes using the <tt>XFCGLBLENDMODES</tt> enumeration. Source refers to the primitive being drawn and target to the surface it is being drawn to. Currently, valid combinations for source and destination blending modes are:
+</p><pre class="programlisting">
+Source blend		Target blend	
+XFCBLEND_ONE		XFCBLEND_ZERO		- Solid (ie. no blending).
+XFCBLEND_ONE		XFCBLEND_ONE		- Additive.
+XFCBLEND_SRCALPHA	XFCBLEND_INVSRCALPHA	- Weighted average.
+XFCBLEND_ZERO		XFCBLEND_INVSRCCOLOR	- Inverse multiplicative.
+</pre><p>
+To set, for example, weighted average blending mode, the <tt>XFCGLRS_SRCBLEND</tt> and <tt>XFCGLRS_TGTBLEND</tt> states must be set accordingly:
+</p><pre class="programlisting">
+// Set source blend mode to XFCBLEND_SRCALPHA
+gl-&gt;setStateI(XFCGLRS_SRCBLEND, XFCBLEND_SRCALPHA);
+
+// Set destination blend mode to XFCBLEND_INVSRCALPHA
+gl-&gt;setStateI(XFCGLRS_TGTBLEND, XFCBLEND_INVSRCALPHA);
+</pre><p>
+Additive is typically used for explosions and lighting effects. Inverse multiplicative is useful for soft shadows, and is more controllable than plain 
+multiplicative. Weighted average is typically used for other transparency effects such as stained glass.
+</p><p>
+The blend-factor is currently taken from the alpha-component of the color in the first vertex of a polygon. It is advisable to set the same alpha-component to the colors of all vertices of a polygon when it is being created.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425721"></a>Wireframe Mode</h4></div></div><p>
+The wireframe rendering mode draws single-colored lines between the vertices in a polygon. If a polygon is defined with three vertices, the wireframe mode draws lines from vertex 1 to vertex 2, vertex 2 to vertex 3 and vertex 3 to vertex 1. The color of the line is the color of the first vertex of the polygon. It is advisable to set the same color to all vertices of a polygon when it is being created.
+</p><p>
+Wireframe mode is mainly useful only for debugging because the lines are not clipped individually into the viewport, instead the polygons are clipped and the lines are drawn using the clipped vertex information.
+</p><p>
+To enable wireframe rendering mode, the <tt>XFCGLRS_WIREFRAME</tt> state must be set:
+</p><pre class="programlisting">
+// Enable wireframe mode
+gl-&gt;setStateI(XFCGLRS_WIREFRAME, 1);
+</pre></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id425798"></a>Lights and Materials</h3></div></div><p>
+In X-Forge Core 3D API, two different types of light can be used: ambient light and direct light. Each one has different attributes and each one interacts with the material of a surface in different ways. Ambient light is light that has been scattered so much that its direction nor source can not be determined: it maintains a low-level of intensity everywhere. Ambient light has no real direction or source, only a color and intensity. Ambient light does not contribute to specular reflection. Specular reflection is, however, not supported currently.
+</p><p>
+Direct light is the light generated by a light source within a scene. The light has color and intensity, and travels in a specified direction. Direct light interacts with the material of a surface and its direction is used as a factor in shading algorithms.
+</p><p>
+The material defined for an object affects what color the surface reflects when it receives light. Materials can have different reflectance traits on how the material reflects ambient, diffuse and specular light.
+</p><p>
+Lights are very expensive, especially on handheld platforms, so it's adviced to use them sparingly, if at all.
+</p><p>
+To enable lighting, the <tt>XFCGLRS_LIGHTING</tt> state must be set:
+</p><pre class="programlisting">
+// Enable lighting
+gl-&gt;setStateI(XFCGLRS_LIGHTING, 1);
+</pre><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id425908"></a>Light</h4></div></div><p>
+X-Forge Core 3D API currently supports three types of light objects: point lights, directional lights and spotlights. Point light sources have a position in a scene and emit light to all directions. Directional lights do not have a specific position but just emit light from a certain direction. Spotlights have a position and a emit a cone shaped light to a specific direction. Spotlights are currently not implemented. Eight different light sources can be enabled for a scene. 
+</p><p>
+Ambient light can be specified for a scene by setting the <tt>XFCGLRS_AMBIENTLIGHT</tt> state to a specific XRGB-value:
+</p><pre class="programlisting">
+// Set ambient color to, for example, an orange color
+gl-&gt;setStateI(XFCGLRS_AMBIENTLIGHT, 0xff05000);
+</pre><p>
+Direct lights are created as <tt>XFcGLLight</tt> objects which contains the following fields:
+</p><pre class="programlisting">
+INT32 mType;
+REAL mDiffuseR;
+REAL mDiffuseG;
+REAL mDiffuseB;
+REAL mSpecularR;
+REAL mSpecularG;
+REAL mSpecularB;
+REAL mAmbientR;
+REAL mAmbientG;
+REAL mAmbientB;
+XFcVector3 mPosition;
+XFcVector3 mDirection;
+REAL mRange;
+REAL mAttenuateConstant;
+REAL mAttenuateLinear;
+REAL mAttenuateSquared;
+REAL mHotspotAngle;
+REAL mFalloffAngle;
+</pre><p>
+The <tt>mType</tt> member specifies the type of the light source: point light, directional light or spotlight. The types are defined in the <tt>XFCGLLIGHTTYPES</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLL_POINTLIGHT	- Point light.
+XFCGLL_DIRECTIONAL	- Directional light.
+XFCGLL_SPOT		- Spotlight (currently not supported).
+</pre><p>
+<tt>mDiffuseR</tt>, <tt>mDiffuseG</tt> and <tt>mDiffuseR</tt> members define the diffuse color of the light. Values can range from -infinity to infinity; (r=0,g=0,b=0) defining a totally black color, (r=1,g=1,b=1) defining a totally white color.
+</p><p>
+<tt>mSpecularR</tt>, <tt>mSpecularG</tt> and <tt>mSpecularR</tt> members define the specular color of the light, value range as with diffuse color.
+</p><p>
+<tt>mAmbientR</tt>, <tt>mAmbientG</tt> and <tt>mAmbientR</tt> members define the ambient color of the light, value range as with diffuse color.
+</p><p>
+The <tt>mPosition</tt> specifies the position of the light in world space.
+</p><p>
+The <tt>mDirection</tt> specifies the direction of the light for directional light and spotlight; direction is ignored for point lights.
+</p><p>
+The <tt>mRange</tt> specifies the maximum distance, in world space, at which objects no longer receive light emitted by the light object.
+</p><p>
+<tt>mAttenuationConstant</tt>, <tt>mAttenuationLinear</tt> and <tt>mAttenuationSquared</tt> members control how the light's intensity decreases toward the maximum distance specified by the range property. Typically the linear attenuation member is set to 1.0 and the others to 0.0, resulting in a light intensity that changes as 1/D, where D is the distance from the light source to the vertex. The maximum light intensity is at the source, decreasing to 1/(light range) at the light's range.
+</p><p>
+<tt>mHotspotAngle</tt> and <tt>mHotspotFalloff</tt> are currently not supported.
+</p><p>
+After creating a light object, it must be set as a light source and enabled in the GL device with the <tt>setLight()</tt> and <tt>enableLight()</tt> methods. A typical code block which creates a light source and enables it might look something like this:
+</p><pre class="programlisting">
+// Create light object
+XFcGLLight light;
+light.mType = XFCGLL_POINTLIGHT;
+light.mDiffuseR = 1;
+light.mDiffuseG = 1;
+light.mDiffuseB = 1;
+light.mPosition = XFcVector3(10,3,7);
+light.mRange = 1000;
+light.mAttenuateConstant = 1;
+light.mAttenuateLinear = 0;
+light.mAttenuateSquared = 0;
+
+// Enable light in GL device
+gl-&gt;setLight(0, light);
+gl-&gt;enableLight(0, 1);
+</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id426258"></a>Material</h4></div></div><p>
+Materials describe the charasteristics of objects on how they reflect light or appear to emit light. Material properties include an ambient and diffuse color, a specular highlight color and an emissive, or self-illuminating, color. Also the the shininess of the object can be controlled with the specular exponent. Specular lighting is currently, however, not implemented.
+</p><p>
+The diffuse and ambient light properties describe how the material reflects the ambient and diffuse light in a scene. Diffuse reflection usually plays the largest part in determining color due to most scenes having more diffuse light than ambient light. Because diffuse light is directional, the angle of incidence for diffuse light affects the overall intensity of the reflection. Diffuse intensity is greatest when the light strikes a vertex parallel to the vertex normal. As the angle increases, the diffuse intensity diminishes. The amount of light reflected is the cosine of the angle between the incoming light and the vertex normal.
+</p><p>
+Diffuse and ambient reflection determine the perceived color of an object, and are usually identical values. For example, to render a blue object, a material that reflects only the blue component of the diffuse and ambient light is created. When lit with a white light, the object appears to be blue. However, if it is lit with a red light, the same object would appear to be black, because its material does not reflect red light.
+</p><p>
+The material's emissive color can be used to make objects appear self-illuminating. The object will not, however, emit light which would reflect from the surrounding objects. To achieve this, additional light sources must be included in the scene.
+</p><p>
+Specular reflection creates highlights on objects, making them appear shiny. The material's specular color and specular exponent properties define the color and shininess of the highlight. Different settings for specular color and specular exponent dramatically change the appearance of an objects. Setting the specular color to white and using a large exponent makes the object appear like plastic where as a totally matte look can be achieved by using a black specular color and zero exponent. Different appearances can easily be achieved with just adjusting the specular exponent.
+</p><p>
+Materials are created as <tt>XFcGLMaterial</tt> objects which contain the following fields:
+</p><pre class="programlisting">
+UINT32 mDiffuseColor;
+UINT32 mSpecularColor;
+UINT32 mAmbientColor;
+UINT32 mEmissiveColor;
+REAL mSpecularExponent;
+</pre><p>
+<tt>mDiffuseColor</tt>, <tt>mSpecularColor</tt>, <tt>mAmbientColor</tt> and <tt>mEmissiveColor</tt> describe the color properties as 32bit ARGB values. For example, a semi-transparent blue color would be defined as, 0x7F0000FF, in hexadecimal.
+</p><p>
+<tt>mSpecularExponent</tt> specifies the power exponent for the specular color. A zero value results in no specular highlight whereas larger values make the highlight sharper.
+</p><p>
+After creating a material, to set it for a particular object, the material must be set prior to a <tt>renderPrimitive()</tt> or <tt>renderPrimitiveIndexed()</tt> call just like other states. A typical code block defining a material and enabling it in the GL device might look like this:
+</p><pre class="programlisting">
+// Create a material
+XFcGLMaterial mat;
+
+mat.mEmissiveColor = 0;
+mat.mAmbientColor = 0xFF773311;
+mat.mDiffuseColor = 0xFFFF7733;
+mat.mSpecularColor = 0xFFFFFFFF;
+
+// Set material as current material in GL device
+gl-&gt;setMaterial(mat);
+</pre></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id426513"></a>Billboards</h3></div></div><p>
+The basic idea behind billboarding is to render 2D objects in a way that makes them appear to be 3D objects. Billboards are most commonly used for particle effects, lens flares and glows. X-Forge Core 3D API makes using billboards very easy by introducing a billboard rendering method in the GL device. In X-Forge Core 3D API, a billboard does not need to be generated with vertex buffers but instead a single vertex along with width, height and rotation specify a billboard.
+</p><p>
+When billboards are rendered, the same states are used as with rendering other primitives. The texture which is used for the billboard is specified with the normal <tt>setTexture()</tt> method as it is when rendering vertex buffers. The same blend modes can also be applied to billboards.
+</p><p>
+X-Forge Core 3D API does introduce a requirement for billboards however: only two pairs of texture coordinates are defined for a billboard. One pair which specifies the texture coordinates of the top-left corner, other pair which specifies the texture coordinates of the bottom-right corner. The other texture coordinates are calculated from the two given pairs and the are assumed to form a rectangle with the given coordinates.
+</p><p>
+The following example shows how a billboard could be rendered:
+</p><pre class="programlisting">
+// Set texture for billboard
+gl-&gt;setTexture(billboardTexture);
+
+// Draw a billboard, for example, to coordinates (x=0,y=20,z=300)
+// with width=20, height=30, texture coordinates defining a square
+// from (0,0) to (1,1), no transformation, white color
+gl-&gt;drawSprite3dBillboard(REALi(0), REALi(20), REALi(300), 
+                          REALi(20), REALi(30), 
+                          REALi(0), REALi(0),
+                          REALi(1), REALi(1), 
+                          NULL, 0xffffffff);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id424597"></a>Custom Render Callback</h3></div></div><p>
+X-Forge Core 3D API provides a method to create custom rendered objects. The rendering pipeline applies sorting, projection and possible lighting calculations to custom rendered objects like any other primitives. The callback method is called when the rendering pipeline should draw the object.
+</p><p>
+To create a custom renderer, a class must extend the <tt>XFcGLCustomRenderCallback</tt> and implement its method <tt>customRender()</tt> method which is responsible for the actual rendering of the object. The following code example shows how a simple custom renderer is created:
+</p><pre class="programlisting">
+// Definition of a custom renderer class
+class MyRenderer extends XFcGLCustomRenderCallback
+{
+    virtual void customRender(XFcGLCustomVertex &amp;aVertex, INT32 aCustomData);
+    
+    MyRenderer();
+};
+
+// Implementation of the custom rendering method
+void MyRenderer::customRender(XFcGLCustomVertex &amp;aVertex, INT32 aCustomData)
+{
+    // Render something to secondary buffer according to given parameters
+}
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id426692"></a>Render to surface</h3></div></div><p>
+X-Forge Core 3D API provides a method to set the render target to any surface, instead of just the framebuffer. The API is very simple:
+</p><pre class="programlisting">
+    INT setRenderTarget(XFcGLSurface *aSurface);
+</pre><p>
+In order to pick a new render target, just call <tt>gl-&gt;setRenderTarget(surface)</tt>; to reset the render target back
+to the framebuffer, call the function with <tt>NULL</tt> as a parameter. It is advisable that you do so before returning from
+the rendering function.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The render target setting may not be supported by all GL devices. For the default software rasterizer, the target surfaces must be in 565 format, and their width must be divisable by 2.
+</p></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id426765"></a>Vertex Formats</h2></div></div><p>
+In X-Forge Core 3D API, the vertex format describes the contents of vertices stored in a single data stream. The use of of vertex format codes makes it possible to use only the vertex components which are truly needed, eliminating those components that aren't used. By using only the needed vertex components, memory in conserved and the processing bandwidth required to render models is minimized. How the vertices are formatted is described by using a combination of the vertex format flags.
+</p><p>
+Possible vertex format flags are defined in the <tt>XFCGLVERTEXFLAGS</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLVF_XYZ			- Position.
+XFCGLVF_RHW			- RHW component.
+XFCGLVF_NORMAL			- Vertex normal.
+XFCGLVF_DIFFUSECOLOR		- Diffuse color.
+XFCGLVF_SPECULARCOLOR		- Specular color (not supported).
+XFCGLVF_TEXTURE1		- Texture coordinate set 1.
+XFCGLVF_TEXTURE2		- Texture coordinate set 2.
+XFCGLVF_TEXTURE3		- Texture coordinate set 3.
+XFCGLVF_TEXTURE4		- Texture coordinate set 4.
+XFCGLVF_CLIPINFO		- Clipping information (not supported).
+</pre><p>
+When creating vertex buffers, the creation method accepts a combination of these flags. When the primitive defined by the vertex buffer is being rendered, the vertex format describes how the system should handle it. Basically, these flags inform the system which vertex components - position, normal, colors, the number of texture coordinates - are used and, indirectly, which parts of the rendering pipeline should be applied to them.
+</p><p>
+X-Forge 3D API places one significant requirement on how the vertices are formatted, the order in which the data appears in memory. The following list describes the required order for all possible vertex components in memory, and their associated data types:
+</p><pre class="programlisting">
+Position (untransformed or transformed x-, y- and z-coordinates)
+- X-coordinate (1 REAL).
+- Y-coordinate (1 REAL).
+- Z-coordinate (1 REAL).
+
+RHW (transformed vertices only)
+- RHW component (1 REAL).
+
+Vertex normal (untransformed vertices only)
+- Normal x-component (1 REAL).
+- Normal y-component (1 REAL).
+- Normal z-component (1 REAL).
+
+Diffuse color
+- Diffuse color in ARGB format (1 UINT32).
+
+Specular color (currently ignored)
+- Specular color in ARGB format (1 UINT32).
+
+Texture coordinates set 1 (u- and v-coordinates)
+- U-coordinate (1 REAL).
+- V-coordinate (1 REAL).
+
+Texture coordinates set 2 (u- and v-coordinates)
+- U-coordinate (1 REAL).
+- V-coordinate (1 REAL).
+
+Texture coordinates set 3 (u- and v-coordinates)
+- U-coordinate (1 REAL).
+- V-coordinate (1 REAL).
+
+Texture coordinates set 4 (u- and v-coordinates)
+- U-coordinate (1 REAL).
+- V-coordinate (1 REAL).
+
+Clipping information
+- Clipping flags (1 UINT32, 6 bits needed, 26 bits used for padding).
+</pre><p>
+X-Forge Core 3D API supplies a set of standard vertex formats. The following code samples show these vertex formats and their corresponding class structures:
+</p><pre class="programlisting">
+#define XFCGL_VERTEX (XFCGLVF_XYZ | XFCGLVF_NORMAL | XFCGLVF_TEXTURE1)
+
+class XFcGLVertex
+{
+public:
+    REAL mX;
+    REAL mY;
+    REAL mZ;
+    REAL mNX;
+    REAL mNY;
+    REAL mNZ;
+    REAL mU;
+    REAL mV;
+};
+</pre><pre class="programlisting">
+#define XFCGL_LVERTEX (XFCGLVF_XYZ | XFCGLVF_DIFFUSECOLOR | XFCGLVF_TEXTURE1)
+
+class XFcGLLVertex
+{
+public:
+    REAL mX;
+    REAL mY;
+    REAL mZ;
+    UINT32 mDiffuseColor;
+    REAL mU;
+    REAL mV;    
+};
+</pre><pre class="programlisting">
+#define XFCGL_TLVERTEX (XFCGLVF_XYZ | XFCGLVF_RHW | XFCGLVF_DIFFUSECOLOR | XFCGLVF_TEXTURE1)
+
+class XFcGLTLVertex
+{
+public:
+    REAL mX;
+    REAL mY;
+    REAL mZ;
+    REAL mRHW;
+    UINT32 mDiffuseColor;
+    REAL mU;
+    REAL mV;    
+};
+</pre></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id427009"></a>Vertex Buffers</h2></div></div><p>
+Vertex buffers are memory buffers that contain vertex data. Vertex buffers can contain any vertex type - transformed or untransformed, lit or unlit - that can be rendered through the use of the rendering methods in GL devices. The vertex format used when creating the vertex buffer defines the operations which the GL device applies to the vertex data. In X-Forge Core 3D API, all 3D models are defined as vertex buffers. The <tt>XFcGLVertexBuffer</tt> class implements the functionality of a vertex buffer.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id427049"></a>XFcGLVertexBuffer</h3></div></div><p>
+The following example describes how to create a vertex buffer with one of standard vertex formats:
+</p><pre class="programlisting">
+// Create a vertex buffer with, for example, 32 vertices using the untransformed,
+// unlit vertex format with one set of texture coordinates
+XFcGLVertexBuffer *vb = XFcGLVertexBuffer::create(XFCGL_VERTEX, sizeof(XFcGLVertex), 32);
+</pre><p>
+Once created, the vertex buffer may be locked for reading and writing. After using the vertex buffer, it must also be unlocked to make it accessible by the GL device again. By default, when locking a vertex buffer for writing, it is assumed all data is overwritten without caring about the original content. This behavior can be changed by defining the wanted access method in the <tt>lock()</tt> call. Possible access method flags are defined in the <tt>XFCGLVBLOCKFLAGS</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLVBLOCK_READ	- Values in vertex buffer are only read.
+XFCGLVBLOCK_MODIFY	- Values in vertex buffer are read and written.
+</pre><p>
+A typical code block which locks a vertex buffer for writing and writes data to it might look something like this:
+</p><pre class="programlisting">
+// Lock vertex buffer and create a XFcGLVertex pointer to vertex data
+XFcGLVertex *v = (XFcGLVertex *)vb-&gt;lock(0);
+if (!v) return ERROR;
+
+// Assign vertex position values
+v[0].mX = REALi(0);
+v[0].mY = REALi(10);
+v[0].mZ = REALi(5);
+
+// Assign vertex normal values
+v[0].mNX = REALi(0);
+v[0].mNY = REALi(1);
+v[0].mNZ = REALi(0);
+
+// Assign texture coordinate values
+v[0].mU = REALi(0);
+v[0].mV = REALi(0);
+
+// Unlock vertex buffer
+vb-&gt;unlock();
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id427162"></a>Rendering Vertex Buffers</h3></div></div><p>
+Vertex buffers are rendered with the <tt>renderPrimitive()</tt> or <tt>renderPrimitiveIndexed()</tt> method. The rendering pipeline handles the actual vertex data according to the primitive type which is defined in the rendering calls. X-Forge Core 3D API supports four different primitive types: triangle lists, triangle strips, triangle fans and custom primitives. Indexed vertex buffers can be used for triangle lists, triangle strips and triangle fans.
+</p><p>
+The different primitive types are defined as follows:
+</p><pre class="programlisting">
+Triangle list (every 3 vertices make a new triangle):
+
+    1.        4. 
+    |  .      |  . 
+    |    .    |    . 
+    2-----3   5-----6
+
+Triangle strip (every vertex after the 2 initial ones create a new triangle):
+
+    2.----4.    6 
+    |  .  |  . 
+    |    .|    . 
+    1-----3-----5 
+
+Triangle fan (same as strip, except that first vertex is used in every triangle):
+ 
+    3.----4----.5 
+    |  .  |  . 
+    |    .|. 
+    2-----1     6 
+</pre><p>
+Supported primitive type flags are defined in the <tt>XFCGLPRIMITIVETYPES</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLPT_TRIANGLELIST	- Triangle list.
+XFCGLPT_TRIANGLESTRIP	- Triangle strip.
+XFCGLPT_TRIANGLEFAN	- Triangle fan.
+XFCGLPT_CUSTOM		- Custom primitive.
+</pre><p>
+The <tt>renderPrimitive()</tt> and <tt>renderPrimitive()</tt> methods take parameters which specify the used vertex buffer, primitive type, offset to vertex buffer, number of vertices to use, indices of first and last vertices which should be run through the transformation and lighting pipeline and a possible triangle info buffer. When using indexed vertex buffers, the offset and the indices of the first and last vertices which should be processed refer to the actual vertex buffer indices, not the index array.
+</p><p>
+A typical code block which renders a vertex buffer as, for example, a triangle list might look like this:
+</p><pre class="programlisting">
+// Render a vertex buffer as triangle list, using 0 offset, having 30 vertices,
+// processing all vertices and having no triangle info buffer
+gl-&gt;renderPrimitive(vb, XFCGLPT_TRIANGELIST, 0, 30, 0, 29, NULL);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id427325"></a>Custom Primitive</h3></div></div><p>
+A custom primitive is created by creating a vertex buffer with a single vertex must with <tt>XFCGL_LVERTEX</tt> vertex format, setting the custom render callback state to the object which implements the custom rendering method, possibly setting a custom render callback data which will be delivered to the rendering method and calling <tt>renderPrimitive()</tt> with <tt>XFCGLPT_CUSTOM</tt> primitive format:
+</p><pre class="programlisting">
+// Create a custom renderer
+MyRenderer *customRenderer = new MyRenderer();
+
+// Create a vertex buffer with a single vertex using XFCGL_LVERTEX vertex format
+XFcGLVertexBuffer *vb = XFcGLVertexBuffer::create(XFCGL_LVERTEX, sizeof(XFcGLLVertex), 1);
+
+// Write vertex into vertex buffer
+XFcGLLVertex *v = (XFcGLLVertex *)vb-&gt;lock(0);
+if (!v) return ERROR;
+
+// Assign vertex position values
+v[0].mX = REALi(0);
+v[0].mY = REALi(10);
+v[0].mZ = REALi(5);
+
+// Set world matrix for custom object
+gl-&gt;setMatrix(XFCGLMAT_WORLD, worldMatrix);
+
+// Set custom render callback state
+gl-&gt;setCustomCallback(customRenderer);
+// Set possible custom render callback data
+gl-&gt;setCustomCallbackData(0);
+
+// Render custom object
+gl-&gt;renderPrimitive(vb, XFCGLPT_CUSTOM, 0, 1, 0, 0, NULL);
+</pre></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id427384"></a>Triangle Info Buffers</h2></div></div><p>
+Triangle info buffers offer an alternative way to specify the characteristics of rendered triangles. Traditionally data such as color or texture coordinates comes from the vertices of the triangle. When using triangle info buffers this data can be specified independently from the vertices.
+</p><p>
+An example: if two triangles were defined like this:
+</p><pre class="programlisting">
+v0          v1
+  .----------.
+  |.         |
+  | .        |
+  |  .    B  |
+  |   .      |
+  |    .     |
+  |     .    |
+  |      .   |
+  |  A    .  |
+  |        . |
+  |         .|
+  '----------'
+ v3          v2
+</pre><p>
+If triangle A would be wanted to be rendered as white and triangle B as black, there would be at least two approaches:
+</p><div class="orderedlist"><ol type="1"><li><p>
+Creating a vertex buffer with vertices having a diffuse color component. Since a vertex only has a single color component vertices v0 and v2 would need to be specified twice.
+</p></li><li><p>
+Creating a vertex buffer with vertices specifying only location, then creating a triangle info buffer for two triangles and specifying colors for the triangles there.
+</p></li></ol></div><p>
+The disadvantage for approach 1 is that six vertices have to be specified where as in approach 2 only four is needed. This is important because while rendering each vertex goes through a number of calculations so keeping vertex count as low as possible is the key to high performance.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id427538"></a>XFcGLTriangleInfoBuffer</h3></div></div><p>
+Three kinds of data can be specified in a triangle info buffer: diffuse colors, vertex normals and texture coordinates. As with vertex buffers, four sets of texture coordinates can be defined. Also, as with vertex formats, a triangle info format describes the contents of triangle infos in a single data stream. Triangle info buffers are bound by the same requirement as vertex buffers: the order in which the data appears in memory.
+</p><p>
+Possible triangle info buffer format flags are defined in the <tt>XFCGLTRIANGLEFLAGS</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLTR_DIFFUSECOLOR	- Diffuse color.
+XFCGLTR_NORMAL		- Triangle normal.
+XFCGLTR_TEXTURE1	- Texture coordinate set 1.
+XFCGLTR_TEXTURE2	- Texture coordinate set 2.
+XFCGLTR_TEXTURE3	- Texture coordinate set 3.
+XFCGLTR_TEXTURE4	- Texture coordinate set 4.
+</pre><p>
+The following list describes the required order for all possible triangle info components in memory, and their associated data types:
+</p><pre class="programlisting">
+Diffuse color
+- Diffuse colors for three vertices in ARGB format (1 UINT32 for each vertex).
+
+Triangle normal
+- Normal x-component (1 REAL).
+- Normal y-component (1 REAL).
+- Normal z-component (1 REAL).
+
+Texture coordinates set 1 (u- and v-coordinates)
+- U-coordinate for three vertices (1 REAL for each vertex).
+- V-coordinate for three vertices (1 REAL for each vertex).
+
+Texture coordinates set 2 (u- and v-coordinates)
+- U-coordinate for three vertices (1 REAL for each vertex).
+- V-coordinate for three vertices (1 REAL for each vertex).
+
+Texture coordinates set 3 (u- and v-coordinates)
+- U-coordinate for three vertices (1 REAL for each vertex).
+- V-coordinate for three vertices (1 REAL for each vertex).
+
+Texture coordinates set 4 (u- and v-coordinates)
+- U-coordinate for three vertices (1 REAL for each vertex).
+- V-coordinate for three vertices (1 REAL for each vertex).
+</pre><p>
+An example triangle info buffer format and its corresponding class structure is defined in X-Forge Core 3D API:
+</p><pre class="programlisting">
+#define XFCGLTRIANGLEINFO XFCGLTR_DIFFUSECOLOR | XFCGLTR_NORMAL | XFCGLTR_TEXTURE1
+
+class XFcGLTriangleInfo
+{
+public:
+    UINT32 mDiffuseColor[3];
+    REAL mNX;
+    REAL mNY;
+    REAL mNZ;
+    REAL mU[3], mV[3];
+};
+</pre><p>
+The following example describes how to create a triangle info buffer with the standard triangle info format:
+</p><pre class="programlisting">
+// Create a triangle info buffer with, for example, 8 triangle infos using a diffuse
+// color, triangle normal and one set of texture coordinates format
+XFcGLTriangleInfoBuffer *tib =
+    XFcGLTriangleInfoBuffer::create(XFCGLTRIANGLEINFO, sizeof(XFcGLTriangleInfo), 8);
+</pre><p>
+Like vertex buffers, once a triangle info buffer is created, it may be locked for reading and writing. After using the buffer, it must be unlocked to make it accessible by the GL device. A typical code block which locks a triangle info buffer and writes data to it might look something like this:
+</p><pre class="programlisting">
+// Lock triangle info buffer and create a XFcGLTriangleInfo pointer to triangle info data
+XFcGLTriangleInfo *ti = (XFcGLTriangleInfo *)tib-&gt;lock();
+if (!tib) return ERROR;
+
+// Assign diffuse colors for all vertices of the first triangle
+ti[0].mDiffuseColor[0] = 0xFFFFFFFF;
+ti[0].mDiffuseColor[1] = 0xFFFFFF00;
+ti[0].mDiffuseColor[2] = 0xFFFF0000;
+
+// Assign triangle normal values
+ti[0].mNX = REALi(0);
+ti[0].mNY = REALi(1);
+ti[0].mNZ = REALi(0);
+
+// Assign texture coordinate values for all vertices of the first triangle
+ti[0].mU[0] = REALi(0);
+ti[0].mV[0] = REALi(0);
+ti[0].mU[1] = REALi(1);
+ti[0].mV[1] = REALi(0);
+ti[0].mU[2] = REALi(0);
+ti[0].mV[2] = REALi(1);
+
+// Unlock triangle info buffer
+tib-&gt;unlock();
+</pre></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id427742"></a>GL Device Info</h2></div></div><p>
+X-Forge supports multiple rendering devices in a single application. A rendering device may be one that uses hardware acceleration, or displays output in a different way, such as the FSAA renderer. Application can dynamically switch between different devices at runtime.
+</p><p>
+Application can query information about the installed devices by asking for an <tt>XFcGLDeviceInfo</tt> object from XFcGL by calling the static <tt>XFcGL::getDeviceInfo()</tt> method.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+The <tt>getDeviceInfo()</tt> and <tt>getCurrentDeviceInfo()</tt> methods return a pointer to read-only data owned by the core. Application should not try to delete the pointer.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id427812"></a>XFcGLDeviceInfo</h3></div></div><p>
+The <tt>XFcGLDeviceInfo</tt> object contains the following fields:
+</p><pre class="programlisting">
+XFcGLDeviceInfo *mNext;
+UINT32 mDeviceId;
+UINT32 mDeviceWidth;
+UINT32 mDeviceHeight;
+UINT32 mDevicePixelFormat;
+UINT32 mRenderFeatures;
+UINT32 mBlendModes;
+UINT32 mAcceleratedFeatures;
+UINT32 mAcceleratedBlendModes;
+INT32 mPreferabilityScore;
+const CHAR *mPrintableName;
+</pre><p>
+The <tt>mNext</tt> member points to the next <tt>XFcGLDeviceInfo</tt> object, or NULL if this was the last one. In search for the wanted device, a loop can be run through the <tt>XFcGLDeviceInfo</tt> objects.
+</p><p>
+The <tt>mDeviceId</tt> member is used to initialize the device.
+</p><p>
+The <tt>mDeviceWidth</tt>, <tt>mDeviceHeight</tt> and <tt>mDevicePixelFormat</tt> members describe the device's output format. In the case of an FSAA device, for example, the device screen size is different from the physical device.
+</p><p>
+The <tt>mRenderFeatures</tt> member is a bit field marking the device's rendering features. The bit field is a combination of the flags defined in the <tt>XFCGLDIFEATUREFLAGS</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLDI_SECONDARY_ACCESS	- Secondary buffer can be accessed.
+XFCGLDI_ZBUFFER			- Support for depth buffer.
+XFCGLDI_FSAA			- Support for full-screen anti-alising.
+XFCGLDI_FLAT			- Support for flat-shaded polygons.
+XFCGLDI_GOURAUD			- Support for gouraud-shaded polygons.
+XFCGLDI_LINEARTEXTURE		- Support for linear texture mapping.
+XFCGLDI_PERSPECTIVETEXTURE	- Support for perspective correct texture mapping.
+XFCGLDI_GOURAUDTEXTURE		- Support for gouraud-shaded texture mapping.
+XFCGLDI_TEXTURE1555		- Support for 1-bit alpha texture format.
+XFCGLDI_GOURAUDTEXTURE1555	- Support for gouraud-shaded 1-bit alpha texture.
+XFCGLDI_WIREFRAME		- Support for wireframe.
+XFCGLDI_AAWIREFRAME		- Support for anti-aliased wireframe.
+</pre><p>
+The <tt>mBlendModes</tt> member is a bit field marking the device's renderer's blend mode support. The bit field is a combination of the flags defined in the <tt>XFCGLDIBLENDFLAGS</tt> enumeration:
+</p><pre class="programlisting">
+XFCGLDI_BLENDNONE	- Support for ONE, ZERO blend mode.
+XFCGLDI_BLENDALPHA	- Support for SRCALPHA, INVSRCALPHA blend mode.
+XFCGLDI_BLENDMUL	- Support for ZERO, SRCCOLOR blend mode.
+XFCGLDI_BLENDADD	- Support for ONE, ONE blend mode.
+XFCGLDI_BLENDINVMUL	- Support for ZERO, INVSRCCOLOR blend mode.
+</pre><p>
+The <tt>mAcceleratedFeatures</tt> and <tt>mAcceleratedBlendModes</tt> members list the features that are hardware-accelerated on the device and are a combination of the flags defined in the <tt>XFCGLDIBLENDFLAGS</tt> enumeration.
+</p><p>
+The <tt>mPreferabilityScore</tt> member is a value based on which the device is selected on default creation time. The higher the value, the more likely it is selected. FSAA devices, for example, have a very low preferability value, while a hardware-accelerated device might have a very high value.
+</p><p>
+The <tt>mPrintableName</tt> member contains a printable name for the device.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428076"></a>Changing Devices</h3></div></div><p>
+The application can change the rendering device without destroying the <tt>XFcGL</tt> object by calling its <tt>recreate()</tt> method.
+</p><pre class="programlisting">
+INT recreate(UINT32 aDeviceId = XFCGLC_DEFAULT, UINT32 aFlags = XFCGLC_DEFAULT);
+</pre><p>
+The <tt>aDeviceId</tt> may be set to a value found in the <tt>mDeviceId</tt> member of the <tt>XFcGLDeviceInfo</tt> object, or <tt>XFCGLC_DEFAULT</tt>, which will try to find a suitable device.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3>
+The <tt>recreate()</tt> call may fail. Should this happen, the application should re-create the default device. If that fails as well, it is recommended that the application exits with a <tt>XFcCore::systemPanic()</tt> call, as the system is most likely unstable at that point.
+</div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428168"></a>Default Devices</h3></div></div><p>
+The X-Forge distribution, as of this writing, comes with the following devices:
+</p><div class="orderedlist"><ol type="1"><li><p>
+<span class="emphasis"><em>Stub</em></span> - this device always exists. It does not contain any fillers, and some other functionality is also missing. All applications should work fine with just the stub device; any 3D graphics is not displayed.
+</p></li><li><p>
+<span class="emphasis"><em>Default</em></span> - the default renderer. Under ARM platform contains assembler-optimized fillers. This device is currently always selected if <tt>XFCGLC_DEFAULT</tt> is used.
+</p></li><li><p>
+<span class="emphasis"><em>FSAA</em></span> - this device extends the default rasterizer and tells the application that the screen is four times as large as it actually is. Downscaling with averaging is performed at display time. The FSAA device is rather slow, but may be usable in some programs.
+</p></li><li><p>
+<span class="emphasis"><em>Upscale</em></span> - this device works the opposite from the FSAA, telling the application that the screen is only a quarter from the physical device, and performs upscaling at display time. The upscale renderer is only useful if the application is very much fill-bound.
+</p></li><li><p>
+<span class="emphasis"><em>ZBuffer</em></span> - this device is still under construction, and is not meant to be used at this time.
+</p></li></ol></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id428304"></a>GL Enumerations</h2></div></div><p>
+This section will be described in future versions.
+</p></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 8. 2D Graphics </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 10. Audio</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

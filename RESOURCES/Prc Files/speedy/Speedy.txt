@@ -1,0 +1,525 @@
+Speedy v7.1
+===========
+
+  Version 7.1 - May 31, 2008
+
+  Speedy is a freeware program
+  Copyright (C) 2001-2008 Laurent Duveau
+       Web Site = http://www.aldweb.com
+       e-Mail   = info@aldweb.com
+
+
+
+Overview
+--------
+
+Speedy is a benchmark utility for PalmOS based devices.
+Speedy performs three resource taking routines (calculation, 
+memory access and graphical display) to measure the real 
+performance of your device.
+Speedy is especially useful in different cases :
+- to check that your PalmOS based device behaves and 
+  performs like it should;
+- to see the impact of CPU down/over-clocking upon your 
+  device's performance;
+- to see how a specific software or hardware modifies your
+  device's performance;
+- to really compare different devices and benchmark them.
+Your device's performance is ranked on several charts against
+baseline measurements of other common PalmOS compatible devices. 
+Speedy reports both a CPU frequency and a relative 
+index (100% is for the Palm Vx at 20 MHz).
+
+
+
+Notice for Speedy results with ARM devices
+------------------------------------------
+
+Speedy was initially designed to work with the former generation 
+of Palm OS based devices running a DragonBall processor.
+
+In its current version, Speedy has been upgraded to take into 
+account the specificities of the new ARM based devices and to 
+re-evaluate the accuracy of the results returned.
+
+But, when the benchmark would run during 15 seconds for a 20 MHz 
+DragonBall device, it runs in less than one second for the new 
+high speed ARM devices. As a consequence, precision is a little
+bit depreciated with the new devices.
+
+
+
+Advertisement!
+--------------
+
+If you need a processor overclocking (and downclocking) utility, 
+you might want to consider my SYSINFO shareware program which 
+includes this functionality for Motorola DragonBalls processors.
+
+SysInfo is to be found on my web site: http://www.aldweb.com
+You will also find other great Palm applications on my website :-)
+
+I also decided to add a not too boring advertisement screen to 
+Speedy (it can even be unactivated in the options if you’d rather 
+have the standard "Please wait…" message), while waiting for the 
+Speedy’s initial processes to be operated. This is a way for me 
+to promote my other applications.
+
+I am open to discuss for eventual partnerships & sponsoring to 
+provide advertising for other companies.
+
+
+
+Donate...
+---------
+
+Speedy is free to use. However, if you like it, please consider
+making a donation to show your support. Any amount will be 
+highly appreciated. To proceed, just connect to: 
+  http://give.aldweb.com/ (secured PayPal transaction)
+For your information, the usual donation amount is of US$ 10 = EUR 10
+
+Please let me express here a personal thought: very few people 
+donated for Speedy so far. I think that this is a pity given 
+the number of downloads and of people using it on a regular 
+basis: http://trackerdog.a0soft.com/ reports Speedy as one of 
+the TOP 30 popular Palm software!
+I hope that you can understand the feeling of a developer who 
+spent so many hours, as a hobby, to provide you this software 
+for free and who feels to receive very little consideration 
+in return...
+
+Therefore, I thank from the bottom of my heart all people who 
+donated, as well as all of those who sent me an e-mail to say 
+thank you or to participate by providing their device's 
+benchmark values (see paragraph Speedy's database relies on 
+you! here under).
+
+
+
+How to install Speedy?
+----------------------
+
+Minimum Palm OS requirement is version 2.0
+
+Speedy is Palm OS version 5 compliant.
+
+Speedy is a PRC file that is installed like any other 
+Palm OS file using HotSync. So, extract Speedy.PRC from the
+ZIP archive file. Double-click on it and the Palm install tool
+will popup. Speedy.PRC will be transferred to your Palm
+device next time you synchronize your device with your PC with
+HotSync.
+
+Black & white, gray scaled and color versions of Speedy are
+available. Whether your device is color enabled or not, 
+Speedy will automatically detect it and adapt to display
+all items in black & white, in gray scale or in color.
+
+IMPORTANT NOTICE:
+  Uninstall any version earlier than 5.2 of Speedy before
+  installing this one on your device. This version of 
+  Speedy may be installed on top of version 5.2 and all later
+  versions.
+
+
+
+Credits
+-------
+
+I would like to address here a very special THANK YOU to 
+THE one person who keeps helping me improving and updating 
+Speedy: Jérôme Fresnay.
+Thank you Jérôme, your help is really appreciated.
+
+Thank you Schtunks for designing the new Speedy icons, they are 
+really beautiful!
+
+Let's also thank all people who helped me at the early stages 
+of the Speedy project: @tomic, Daniel Brettnacher, Yves Duveau,
+Claude Fauvel, all folks from the PalmSpirit and the PeekPocket 
+forums.
+
+
+
+Speedy's database relies on you!
+--------------------------------
+
+Thanks also to all people who e-mailed me their device's results. 
+
+There is still quite a substantial list of devices for which full 
+benchmark information (Calc, Mem, Graph Tests and Total results) 
+is currently missing in Speedy's database. 
+
+As expected, the information is given for the most widely spread 
+devices. But it would be great to also have the benchmark value 
+for the rare devices.
+
+So, please, keep sending me results for your devices! 
+
+New as of version 7.0: Speedy works like a charm in the StyleTap
+Platform (www.styletap.com). StyleTap is a Palm OS emulator for 
+Windows Mobile devices. So, you also may want to send me the 
+results of the Speedy benchmark for these devices.
+
+
+
+Updates Description
+-------------------
+
+  7.1 (05/31/08)
+    - added benchmark values for the Palm Centro device
+    - added partial benchmark result for the GSL Xplore M28 
+      and M70
+    - added the best ever obtained benchmark on a device after
+      overclocking, this was on my own Palm Tungsten C using
+      Lightspeed. Would you succeed to get a better one 
+      on another device, please let me know :-)
+    - added explanations in the Devices screen (i) about what 
+      the used abbreviations ([-], [*], [P], [L], [f+], [WM], 
+      [66%] and [100%]) mean
+
+  7.0 (03/24/08)
+    - added detection of Speedy running in the StyleTap Palm OS 
+      emulator for Windows mobile devices (www.styletap.com)
+    - added benchmark values for the HTC S710 device (Windows
+      Mobile 6.0 for Smartphone), running Speedy inside the 
+      StyleTap platform  
+    - added benchmark values for the Palm Treo 755p device
+    - updated the benchmark value for the Palm Treo 680 (the 
+      previous reference record for the Graph Test was 0.1 sec 
+      too pessimistic on the average) 
+    - refined the number of devices' counter, it was previously
+      counting twice the same device when this device could have
+      benchmark results in portrait or landscape modes (for 
+      example, the Palm TX was in this case)
+    - added a bunch of exotic devices in the database, even if
+      no benchmark results were ever provided for them, so as 
+      to have an exhaustive database of Palm OS based devices 
+      in Speedy's knowledge base
+
+  6.4 (09/05/07)
+    - added full details of benchmark value for the Handpsring
+      Visor Neo
+    - added one-handed navigation feature
+    - fixed default button in the Detail Device and the
+      Advertisement screens
+    - added a new paragraph in the user manual, about how 
+      listening to music running in the background affects the
+      device's performance and how Speedy helps evaluating it
+
+  6.3 (12/02/06)
+    - added benchmark values for the Palm Treo 680 device
+
+  6.2 (09/18/06)
+    - added benchmark values for the Palm Treo 700p and Aceeca 
+      Meazura devices
+
+  6.1 (11/14/05)
+    - fixed a bug from version 6.0 that would cause a very bad 
+      crash in some rare cases
+      upgrading from version 6.0 is highly recommended
+    - added high resolution icons in the Detail Device screen
+    - a few other minor cosmetic changes in the About Box
+
+  6.0 (10/26/05)
+    - added benchmark values for Palm IIIe, Palm VIIx, Palm TX,
+      Palm Z22 and GSL Xplore M68
+    - upgraded processor information for GSL Xplore M28 and
+      Hunetec H500, although results for these devices are 
+      still badly missing in Speedy's database...
+    - massive review of the source code, which was quite required 
+      after more than 4 years of patching Speedy upon each new
+      version
+    - the application's Saved Preferences were also "revamped",
+      Speedy will from now on remember your selection of devices 
+      and your [last] and [saved] results when upgrading
+    - when the benchmark would run during 15 seconds for a 
+      20 MHz DragonBall device, it runs in less than one second 
+      for the new high speed ARM devices. As a consequence, 
+      accuracy was a little bit depreciated with the new devices
+      => now the Speedy benchmark is run 5 times for ARM devices,
+      and the average benchmark value is calculated in order to 
+      increase results accuracy (of about 0.01 sec) 
+    - moved the "Save [last]" and "Save [now]" menu items from
+      the Options menu to the Application menu
+    - the "Save [last]" and "Save [now]" menu items now 
+      correctly update the benchmark graph screen with the
+      newly [saved] values
+    - a few minor cosmetic changes (a space character was 
+      inserted between "Speedy" and the version number in the 
+      title when saving results to memo, the "Please wait..." 
+      initial message was centered vertically)
+    - the "Please wait..." initial message is now provided with
+      a progress bar
+    - added an advertisement screen for my other applications,
+      to replace the standard "Plase wait..." initial message ;-)
+      But, if you find it "boring", there is a user friendly 
+      option to remove it... :-)
+    - finally took the time to integrate the nice high 
+      resolution icon that Schtunks had designed especially for
+      Speedy, well just 2 years ago!
+    - registered the CreatorIDs for the SCells, SMatches and 
+      SNumerus sample timing applications; I had to change SCells'
+      CreatorID to LDsC because the older one used was already
+      reserved by another application 
+    - last but not least, upgraded the documentation (Speedy.PDF 
+      file) which had not evolved in the last 2 years
+
+  5.2 (06/06/05)
+    - added benchmark values for Palm LifeDrive and Garmin 
+      iQue 3200
+    - source code optimization (~2% decrease of the program 
+      size) and slightly faster initial program loading
+
+  5.1 (05/11/05)
+    - added benchmark values for Palm Tungsten E2 and Tapwave 
+      Zodiac 2
+    - changed benchmark values for Palm Tungsten E because they
+      were not correct (overestimated)
+    - added bookmarks in the user manual (PDF file) for easier
+      browsing through the documentation
+
+  5.0 (03/14/05)
+    - added a new {No device} selection to allow choosing less 
+      than 5 reference devices to display and compare your 
+      device with
+    - Speedy now unactivates pen interactions when running the 
+      benchmark routines so as not to distort benchmark results
+      (available for devices with Palm OS < 5 only, as PACE for
+      Palm OS 5 considers the "system use only" related API 
+      calls as NOPS, i.e. No OPerationS) 
+    - added benchmark values for Fossil Wrist PDA, Sony Clié 
+      N760C, Palm VII (1st generation, simple DragonBall 
+      processor) and AlphaSmart Dana Wireless, and partial 
+      benchmark information for IBM Workpad (10u), IBM Workpad 
+      (20X), IBM Workpad (40U), IBM Workpad 2 (22X), IBM 
+      Workpad 2 (30X), IBM Workpad c3, IBM Workpad c500 and IBM 
+      Workpad c505
+    - in a search to be exhaustive, I added some 50 devices to 
+      Speedy's database, even if most of the new devices come
+      with no benchmark data so far
+    - given that there are now some 126 devices in Speedy's
+      database, I upgraded the source code to sort and list all 
+      devices automatically and, therefore, ease my work for 
+      future upgrades!
+    - Speedy now reports the number of devices with full 
+      benchmark data, partial benchmark data or missing 
+      benchmark information
+    - even though so few people donated for Speedy so far (and
+      I think that this is a pity given the number of downloads
+      and of people using it... see the Donate paragraph above), 
+      I updated the donation URL
+
+  4.1 (12/02/04)
+    - added benchmark values for Palm IIIxe, Handspring Treo 
+      180, Handspring Visor Platinum, PalmOne Treo 650 and 
+      PalmOne Tungsten T5
+
+  4.0 (10/04/04)
+    - split all ARM devices by processor model (Texas 
+      Instrument OMAP, Intel XScale, Motorala i.MX1/i.MXL and 
+      Sony CDX2230GA).
+      Upgraded the Devices & Color Picker options accordingly,
+      and also added processor type vizualisation in the 
+      devices' details window
+    - moved the devices database from the internal code to 
+      dedicated resources. As a result the program size 
+      became 20% smaller for the same number of devices (54 in 
+      version 3.5), and program size remained the same (when 
+      compared to version 3.5) even with all additional 
+      features of this new version 4.0
+    - added benchmark values for Sony Clié TJ35 and for 
+      Samsung SGH-i530
+    - added devices with partial or empty information for the 
+      following 16 devices: GSpda Xplore G18, GSpda Xplore 
+      G88, HandEra TRGPro, Handspring Treo 180, Handspring 
+      Treo 180G, Handspring Visor Neo, Handspring Visor 
+      Platinum, Handspring Visor Pro, Palm i705, Palm IIIe, 
+      Palm IIIxe, Samsung SGH-i505, Samsung SPH-i500, Sony 
+      Clié N760C, Sony Clié NR70 and Sony Clié S360. 
+      These devices are marked with a [*] or [-] sign in 
+      Speedy's database depending on whether they are with 
+      partial or no results.
+      The devices' details window was upgraded to reflect 
+      this partial knowledge 
+    - the devices' details window was fully redesigned to
+      look nicer and with additional information (processor)
+    - added a button to switch automatically from Speedy to 
+      some processors overclocking software (this is very 
+      convenient when you want to validate down/over-clocking
+      settings). These software are: 
+        FastCPU - for DragonBall overclocking
+          http://www.megasoft2000.com/
+        Lightspeed - for ARM overclocking
+          http://www.clievideo.com/
+        PXA Clocker - for ARM overclocking
+          http://www.hexview.com/pxa/
+        SysInfo - for DragonBall overclocking, my own software!
+          http://www.aldweb.com/  
+    - buttons are now hidden while the benchmark is running,
+      so as not to sidestep the issue of the benchmark results 
+      if the user presses a button by mistale at that time 
+    - Speedy can now work with the new Memos application
+      introduced in PalmOS 5.2.8?, PMem/DATA creator/type 
+    - removed the Save to Memo option of benchmark results for 
+      the now very old Palm OS 2.0 PalmPilot devices because of 
+      a memory stack overflow bringing to a soft reset 
+
+  3.5 (06/05/04)
+    - added benchmark values for Sony Clié TJ27, Palm Zire 31 
+      and Palm Zire 72
+    - added a new Color Picker option to allow customizing the
+      colors of the bars according to processors types 
+
+  3.4 (04/06/04)
+    - added benchmark values for Sony Clié TH55, Sony Clié TJ37 
+      and Palm Zire 21
+    - Speedy now "automagically" detects the Kyocera 7135 device,
+      so I removed the Kyocera 7135 specific version
+    - added the number of registered devices in the About box
+
+  3.3 (02/17/04)
+    - replaced device short name by device full name in the
+      benchmark details window
+    - added a new menu option giving the number of devices 
+      registered in Speedy's database and inviting you to send 
+      me the benchmark results for devices not yet listed 
+    - reviewed the benchmark reference value for Palm Tungsten T
+      which was wrong (thanks to Mike Shofield for pointing it 
+      out)
+    - added benchmark values for Garmin iQue 3600 and for 
+      Acer s10
+
+  3.2 (01/19/04)
+    - added access to the Devices list and selection window 
+      from the Detail Device popup window
+    - in the Detail Device popup window, now shows the name
+      of the device
+    - added benchmark values for Sony Clié UX50, Sony Clié TJ25
+      and Palm Tungsten W
+    - optimized source code
+
+  3.1 (10/22/03)
+    - changed values for Palm Zire 71 (was wrong) and for 
+      Palm Tungsten T3 too (T3 suffers from slowdown bug 
+      in some cases: http://www.clievideo.com/T3Bugfix.zip or
+      http://t3optimizer.mobilevoodoo.com/ for explanations)
+    - added benchmark values for Tapwave Zodiac, for Sony Clié
+      SJ22 and for Kyocera 7135
+    - created a Kyocera 7135 version of Speedy (standard one
+      does not work with this device)
+    - upgraded Devices choice window by reordering all 
+      devices in company name & device model alphabetical
+      order and also by having the popup list of devices 
+      remember and prompt the selected device
+    - added Top DragonBall, Top ARM, Load and Save My Set 
+      buttons in the Devices choice window
+    - Save to Memo option now considers localized system date
+      and time format preferences
+    - changed application icon (thanks to Schtunks)
+    - added the Credits section in this readme file
+
+  3.0 (10/12/03)
+    - upgraded the benchmark for ARM devices, so as to be
+      more realistic with these devices
+    - upgraded the ARM Notice and the Speedy.pdf files
+      accordingly 
+    - added benchmark values for Sony Clié NZ90, Sony Clié
+      SJ33, Sony Clié NX73V, Palm Zire 71, Palm Tungsten T2,
+      Palm Tungsten T3 (landscape and portrait), Palm 
+      Tungsten E and Treo 600
+    - code optimization for a smaller Speedy.PRC file size
+    - minor cosmetic change in the Detail Device window and 
+      the Save To Memo option
+    - updated the Thanks information
+
+  2.6 (05/13/03)
+    - added benchmark values for Handspring Treo 90, Sony 
+      Clié TG50 and Palm Tungsten C
+
+  2.5 (03/13/03)
+    - fixed bug that came with v2.4 in which Visor Prism was 
+      replaced by another device.
+
+  2.4 (01/01/03)
+    - added benchmark values for Palm Tungsten T and Sony 
+      Clié NX70V (first devices with ARM processors)
+    - upgraded scaling of the bar chart for displaying 
+      correctly the results obtained on the new devices
+      with high speed ARM processors
+    - added warning notice about results returned by the 
+      new generation of devices (with ARM processors and 
+      running Palm OS 5)
+    - added benchmark AutoRun option at Speedy launch
+    - added version number in saved memo
+
+  2.3 (10/31/02)
+    - added values for Palm 105, Palm Zire, Palm m130 and
+      Visor Prism in the devices list
+    - fixed a bug appeared with version 2.2 that would hang
+      Speedy for some devices in "Currently running..." state
+    - added version number in the title bar
+
+  2.2 (10/14/02)
+    - added values for Sony Clié SJ30, Sony Clié T675C and
+      Palm Pilot Professional in the devices list
+    - added color to devices bars according to the devices
+      processors (blue for DragonBall, green for DragonBall EZ,
+      purple for DragonBall VZ and orange for DragonBall Super VZ)
+    - optimized source code, benchmark evaluation now runs faster
+    - changed default initial view from MHz to %
+    - updated the Thanks information
+
+  2.1 (09/18/02)
+    - added values for Palm IIIc, Handspring Treo 270, Sony  
+      Clié SL10 and Sony Clié T615C in the devices list
+    - upgraded on board help with detailed explanations
+    - added Donation information
+    - minor cosmetic changes in the user interface
+    - reduced size of PDF help file (from 644 KB to 95 KB !)
+
+  2.0 (07/05/02)
+    - user selection of devices to compare with
+    - various devices values added
+    - save benchmark results to memo option added
+    - changed About window
+
+  1.7 (05/24/02)
+    - replaced III reference value by Clié N770C
+    - minimum Palm OS version check
+    - update of contact info (web site, e-mail)
+    - minor cosmetic changes in the user interface
+    - code update for Palm OS v5 compliancy
+    - updated the detailed documentation (PDF file)
+
+  1.6 (12/11/01)
+    - minor cosmetic changes in the user interface
+    - color icon and small icon for list views
+
+  1.5 (11/05/01)
+    - minor cosmetic changes in the user interface
+
+  1.4 (10/24/01)
+    - added % (relative timing) and MHz (frequency) buttons
+      on bar chart for quick view switching
+
+  1.3 (10/22/01)
+    - replaced IIIxe and IIIc reference values by III and
+      Visor Deluxe
+    - can now save [last] result and no more only the [now] one
+    - save from detailed benchmark results view
+    - open detailed benchmark view by ticking on one device
+      in the bar chart
+    - Thanks and Tips windows
+    - detailed documentation (PDF file)
+
+  1.2 (08/30/01)
+    - two views of the results : frequency (original one) 
+      and relative timing
+
+  1.1 (08/19/01)
+    - detailed benchmark results view of [last] results
+
+  1.0 (08/18/01)
+    - initial release

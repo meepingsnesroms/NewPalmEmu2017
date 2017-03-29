@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1001" LOCALE="zhCN" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "系统不兼容" </TITLE>
+		<MESSAGE> "运行此应用程序需要系统 2.0 或以上的版本。" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "确定" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="zhCN" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="”Œœ∑">
+				<TITLE> "游戏" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 72 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 27 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "完成拼图" </TITLE>
+						<COMMAND> "S" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "说明" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "关于拼图" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="zhCN" COMMENT="Please wait">
+		<TEXT> "请稍等…" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="zhCN" COMMENT="Instructions String">
+		<TEXT>
+			"拼图游戏说明\n"
+			"\n"
+			"本游戏的目的是要将图块按数字顺序排列，空的方块应位于右下角。\n"
+			"\n"
+			"·点击“新拼图”按钮开始。图块将随意排列。\n"
+			"\n"
+			"·点击和空方块同行或同列的图块。这会使图块向空方块方向移动，并且会移动它与空方块之间的任何图块。\n"
+			"\n"
+			"·要完成拼图，在“游戏”菜单下选择“完成拼图”条目。\n"
+			"\n"
+			"\n"
+			"祝您好运！\n"
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

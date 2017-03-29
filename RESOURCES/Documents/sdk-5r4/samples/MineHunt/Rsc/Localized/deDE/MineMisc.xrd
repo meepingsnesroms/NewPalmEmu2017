@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1002" LOCALE="deDE" COMMENT="Game Won Alert">
+		<ALERT_TYPE> INFORMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "MineHunt" </TITLE>
+		<MESSAGE>
+			"HERZLICHEN GLÜCKWUNSCH!\n"
+			"\n"
+			"SIE HABEN GEWONNEN!"
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1003" LOCALE="deDE" COMMENT="New Game Alert">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "MineHunt" </TITLE>
+		<MESSAGE> "Neues Spiel starten?" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "Ja" </TEXT>
+			<TEXT> "Nein" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1004" LOCALE="deDE" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Mit System nicht kompatibel" </TITLE>
+		<MESSAGE>
+			"Zur Ausführung dieser Anwendung benötigen Sie System Version 2.0 oder "
+			"köher."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1000">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1000-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1001">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1001-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1002">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1002-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1003">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1003-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1004">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1004-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1005">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1005-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Spiel" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 101 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 31 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Spielanleitung" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Einstellungen" </TITLE>
+						<COMMAND> "P" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "MineHunt-Info" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="deDE" COMMENT="Game Tips String">
+		<TEXT>
+			"MineHunt-Spielanleitung\n"
+			"\n"
+			"Im Spielfeld sind mehrere Minen versteckt. Die Nummer oben auf dem "
+			"Bildschirm bedeutet die Anzahl der Minen.  Ziel ist, sie zu finden.\n"
+			"\n"
+			"Tippen Sie auf ein Kästchen, um es aufzudecken. Dabei wird die Anzahl "
+			"der angrenzenden Minen angezeigt. Wird eine Mine aufgedeckt, "
+			"explodiert sie und das Spiel beendet.\n"
+			"\n"
+			"Um ein Kästchen als Mine zu kennzeichnen, tippen Sie einmal darauf, "
+			"wobei Sie die Bild-auf- bzw. die Bild-ab-Taste herunterhalten. Der "
+			"Minenzähler oben auf der Anzeige gibt an, wieviele Minen noch "
+			"gekennzeichnet werden müssen.\n"
+			"\n"
+			"Um ein Kästchen als unbekannt zu kennzeichnen, tippen Sie zweimal "
+			"darauf, wobei Sie die Bild-auf- bzw. die Bild-ab-Taste "
+			"herunterhalten.\n\n"
+			"Um ein als Mine gekennzeichnetes Kästchen in unbekannt umzuändern, "
+			"tippen Sie einmal darauf, wobei Sie die Bild-auf- bzw. die "
+			"Bild-ab-Taste herunterhalten.\n"
+			"\n"
+			"Um ein als Mine gekennzeichnetes Kästchen zu löschen, tippen Sie "
+			"zweimal darauf, wobei Sie die Bild-auf- bzw. die Bild-ab-Taste "
+			"herunterhalten.\n"
+			"\n"
+			"\n"
+			"Den Schwierigkeitsgrad können Sie unter 'Einstellungen' im Spielmenü "
+			"auswählen."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

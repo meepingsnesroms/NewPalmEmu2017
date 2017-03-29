@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2000" LOCALE="esES" COMMENT="Alphabetic Sort">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Ordenar alfabéticamente" </TITLE>
+		<MESSAGE>
+			"Si se ordenan las notas alfabéticamente, se perderá el orden actual. "
+			"¿Está seguro que desea ordenarlas?"
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "Sí" </TEXT>
+			<TEXT> "No" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_DEFAULT_CATEGORY_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="DO NOT LOCALIZE THIS RESOURCE">
+		<TEXT> "Main" </TEXT>
+	</APP_DEFAULT_CATEGORY_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="esES">
+		<TEXT> "Bloc notas" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_INFO_STRINGS_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Category Labels">
+		<STRINGS>
+			<TEXT> "Sin archivar" </TEXT>
+			<TEXT> "Profesional" </TEXT>
+			<TEXT> "Particular" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+		</STRINGS>
+	</APP_INFO_STRINGS_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.5" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="List View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="List View Record">
+				<TITLE> "Registro" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 112 </WIDTH>
+					<HEIGHT> 22 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 52 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Transmitir categoría" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Enviar categoría" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="List View Options">
+				<TITLE> "Opciones" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 36 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 122 </WIDTH>
+					<HEIGHT> 44 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 56 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 52 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 200 </ID>
+						<TITLE> "Fuente…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 201 </ID>
+						<TITLE> "Preferencias…" </TITLE>
+						<COMMAND> "P" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 202 </ID>
+						<TITLE> "Seguridad…" </TITLE>
+						<COMMAND> "H" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 203 </ID>
+						<TITLE> "Acerca de Bloc de notas" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1100" LOCALE="esES" COMMENT="Edit View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="Edit View Page Menu">
+				<TITLE> "Registro" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 115 </WIDTH>
+					<HEIGHT> 49 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 52 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Nota nueva" </TITLE>
+						<COMMAND> "N" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Eliminar nota…" </TITLE>
+						<COMMAND> "L" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Transmitir nota" </TITLE>
+						<COMMAND> "R" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "Enviar nota" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Edit View Options Menu">
+				<TITLE> "Edición" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 28 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 130 </WIDTH>
+					<HEIGHT> 82 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 56 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 41 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 10000 </ID>
+						<TITLE> "Deshacer" </TITLE>
+						<COMMAND> "Z" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10001 </ID>
+						<TITLE> "Cortar" </TITLE>
+						<COMMAND> "X" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10002 </ID>
+						<TITLE> "Copiar" </TITLE>
+						<COMMAND> "C" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10003 </ID>
+						<TITLE> "Pegar" </TITLE>
+						<COMMAND> "V" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10004 </ID>
+						<TITLE> "Selec. todo" </TITLE>
+						<COMMAND> "E" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10005 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10006 </ID>
+						<TITLE> "Teclado" </TITLE>
+						<COMMAND> "T" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10007 </ID>
+						<TITLE> "Ayuda de Graffiti 2" </TITLE>
+						<COMMAND> "G" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Edit View Options Menu">
+				<TITLE> "Opciones" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 36 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 122 </WIDTH>
+					<HEIGHT> 33 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 97 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 52 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 300 </ID>
+						<TITLE> "Fuente…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 301 </ID>
+						<TITLE> "Buscar teléfono" </TITLE>
+						<COMMAND> "B" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 302 </ID>
+						<TITLE> "Acerca de Bloc de notas" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="100" LOCALE="esES" COMMENT="Find Header Title">
+		<TEXT> "Notas" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Beam Description String">
+		<TEXT> "una nota" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="esES" COMMENT="Beam Filename String">
+		<TEXT> "Memo.txt" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1002" LOCALE="esES" COMMENT="Exchange Description String">
+		<TEXT> "Nota" </TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

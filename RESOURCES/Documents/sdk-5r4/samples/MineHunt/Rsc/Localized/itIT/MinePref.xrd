@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1200" LOCALE="itIT" COMMENT="Preferences">
+		<FORM_ID> 1200 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 2 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 156 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 0 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE>
+				<TEXT> "Preferences" </TEXT>
+			</FORM_TITLE>
+			<FORM_CHECKBOX COMMENT="Classic">
+				<ID> 1201 </ID>
+				<BOUNDS>
+					<LEFT> 17 </LEFT>
+					<TOP> 96 </TOP>
+					<WIDTH> 95 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Classic Appearance" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> TRUE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_BUTTON COMMENT="OK">
+				<ID> 1202 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 139 </TOP>
+					<WIDTH> 25 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1203 </ID>
+				<BOUNDS>
+					<LEFT> 36 </LEFT>
+					<TOP> 139 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Cancel" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_CHECKBOX COMMENT="Scrolling">
+				<ID> 1204 </ID>
+				<BOUNDS>
+					<LEFT> 17 </LEFT>
+					<TOP> 115 </TOP>
+					<WIDTH> 97 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Automatic Scrolling" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> TRUE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_PUSH_BUTTON COMMENT="Difficulty:Easy">
+				<ID> 1210 </ID>
+				<BOUNDS>
+					<LEFT> 18 </LEFT>
+					<TOP> 32 </TOP>
+					<WIDTH> 120 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Easy" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Difficulty:Intermediate">
+				<ID> 1211 </ID>
+				<BOUNDS>
+					<LEFT> 18 </LEFT>
+					<TOP> 45 </TOP>
+					<WIDTH> 120 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Intermediate" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Difficulty:More Difficult">
+				<ID> 1212 </ID>
+				<BOUNDS>
+					<LEFT> 18 </LEFT>
+					<TOP> 58 </TOP>
+					<WIDTH> 120 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "More Difficult" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Difficulty:Impossible">
+				<ID> 1213 </ID>
+				<BOUNDS>
+					<LEFT> 18 </LEFT>
+					<TOP> 71 </TOP>
+					<WIDTH> 120 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Impossible" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

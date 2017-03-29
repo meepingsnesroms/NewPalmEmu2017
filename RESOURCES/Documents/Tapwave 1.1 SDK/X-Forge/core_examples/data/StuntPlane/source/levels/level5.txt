@@ -1,0 +1,60 @@
+# Bumpy
+
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 2900, 0, 0, BUMPY RIDE...
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 128
+
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 14
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop1.pcx,   0,   0,  200,   0,   0,  20.0,   -
+HOOP=hoop0.pcx,	  0,   20,  400,   0,   0,  20.0,  o
+HOOP=hoop0.pcx,   -20,   -10, 520,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   10,   -20,   800,   0,   0,  20.0,   o
+HOOP=hoop1.pcx,   0,   0,   1000,   0,   0,  20.0,   -
+HOOP=hoop6.pcx,   30,   30,  1200,   0,   0,  20.0,   x
+HOOP=hoop0.pcx,   -10,   20, 1370,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   40,   -10,  1600,   0,   0,  20.0,    o
+HOOP=hoop1.pcx,   0,   0,  1800,   0,   0,  20.0,  -
+HOOP=hoop1.pcx,   -20,   20,  2000,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,	  30,   -10,  2200,   0,   0,  20.0,   /
+HOOP=hoop0.pcx,   -10,   10, 2375,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   -30,   -20,   2525,   0,   0,  20.0,   o
+HOOP=hoop1.pcx,   20,   -40,   2650,   0,   0,  20.0,   -
+HOOP=hoop0.pcx,  -10,   20,  2750,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   -30,   -10, 2825,   0,   0,  20.0,   o
+HOOP=hoop4.pcx,   0,   0,  2875,   0,   0,  20.0,    \
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,     0,  10,   680,   20
+BONUS=bonusballoon.pcx,   -30,  20,  1100,   30
+#BONUS=bonusballoon.pcx,   -50, -80,  1385,   50
+BONUS=bonusballoon.pcx,    0, -40,  1550,   20
+BONUS=bonusballoon.pcx,   -40, -10, 1910,   20
+BONUS=bonusballoon.pcx,    30, -10,  2175,   5
+BONUS=bonusballoon.pcx,    10,   40, 2275,   20
+BONUS=bonusballoon.pcx,   -20,  10, 2790,   20
+#BONUS=bonusballoon.pcx,    0,    0, 1350,   20
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  10,  40,  25 

@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 6. Application Framework</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="ch05.html" title="Chapter 5. Overview"><link rel="next" href="ch07.html" title="Chapter 7. File I/O"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 6. Application Framework</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="ch07.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id417013"></a>Chapter 6. Application Framework</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch06.html#id416533">Overview</a></dt><dt><a href="ch06.html#id416604">Program Flow</a></dt><dd><dl><dt><a href="ch06.html#id412952">xfcAppPref()</a></dt><dt><a href="ch06.html#id416526">xfcAppInit()</a></dt><dt><a href="ch06.html#id417466">The Uses-Interface</a></dt><dt><a href="ch06.html#id417786">Application Class</a></dt><dt><a href="ch06.html#id418270">Renderer Class</a></dt><dt><a href="ch06.html#id418396">Controller Input Class</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416533"></a>Overview</h2></div></div><p>
+This chapter describes the core application framework of the X-Forge engine. The application flow is designed to work, without any changes, on multiple platforms, some of which are more restrictive than others. The second important design goal was to keep the application complexity as low as possible and to shield the application developers from most of the complexity that happens behind the scenes on some platforms.
+</p><p>
+Some of the complexity cannot be hidden, such as the lack of explicit &quot;show this on screen&quot; commands, and the fact that the &quot;main loop&quot; is not inside the application. Additionally, the application must not use any global data in order to be portable to, for example, Symbian platforms.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+While global data does work on other platforms, it is recommended that no global data is used in order to make porting to Symbian as easy as possible. Removing global data afterwards is more difficult than designing the whole application not to use it in the first place.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416604"></a>Program Flow</h2></div></div><p>
+Every X-Forge application contains two global functions, <tt>xfcAppPref()</tt> and <tt>xfcAppInit()</tt>.
+</p><p>
+In addition to these, a typical application extends the three callback interfaces <tt>XFcApp</tt>, <tt>XFcRenderer</tt> and <tt>XFcInput</tt>. The input interface contains callbacks for button and pointer events. Renderer interface calls the application whenever rendering should be performed, and finally the App interface contains application initialization, deinitialization and device state callbacks. The application class is also important in that the program can request the address for the application object globally (being the only thing that the application can access globally).
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id412952"></a>xfcAppPref()</h3></div></div><p>
+The first call the application gets is the <tt>xfcAppPref()</tt> global function.
+</p><pre class="programlisting">
+void xfcAppPref(XFcAppPrefs &amp;xfcAppPrefs)
+</pre><p>
+This function may only alter the contents of the <tt>xfcAppPrefs</tt> object. No memory management has been initialized at this point, so file access or any other memory-allocating action will cause a crash.
+</p><p>
+The <tt>XFcAppPrefs</tt> class contains, at the moment, the following members:
+</p><pre class="programlisting">
+INT32 mTotalMemoryLimit;
+INT32 mResourceMemoryLimit;
+INT32 mPreferredWidth;
+INT32 mPreferredHeight;
+const CHAR * mTitleString;
+INT32 mUID;
+INT32 mMinimumExtraMemory;
+const CHAR * mOutOfMemoryErrorString;
+</pre><p>
+The total memory limit is the amount of memory the application requires to function. After the <tt>xfcAppPref()</tt> call, the memory pool is initialized. If there is not enough memory for the memory pool, the user is informed of this with a dialog and the application will exit.
+</p><p>
+The resource memory limit is the maximum amount of memory that resources may take from memory. For example all textures are resources. Whenever the application is allocating memory, and not enough memory is found, the resource manager automatically frees up the least recently used resources, until enough memory was found, or it becomes clear that the application has run out of memory. Whenever a resource is needed, it is recreated if it is not in memory.
+</p><p>
+The preferred width and height only affect the desktop Windows version, and can be used to develop software for screens that are not 240x320.
+</p><p>
+The title string is used on platforms with a title bar, and will replace the default &quot;X-Forge/Platform&quot; title.
+</p><p>
+The mUID value is required on Symbian platform. This is the application's unique id.
+</p><p>
+The mMinimumExtraMemory tracks how much extra memory should be left unallocated on the system after the memory pool has been allocated. This is due to the fact that at least on some Symbian platforms, if the operating system (or some other applications on the device) can't get enough memory, random applications will start crashing. If core cannot detect this much unallocated system memory after the pool has been allocated, the application will exit with an 'out of memory' error. It's recommended that this value is set to at least 128KB on Symbian platforms.
+</p><p>
+With the mOutOfMemoryErrorString pointer, the text in the out of memory dialog can be customized. Leaving the string to NULL will give a rather technical error message which might not be desirable in a finished product.
+</p><p>
+After the <tt>xfcAppPref()</tt> call, the memory pool and other core mechanisms are initialized.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The <tt>XFcAppPref()</tt> may be called several times on application startup.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id416526"></a>xfcAppInit()</h3></div></div><p>
+After the core has initialized, the application's <tt>xfcAppInit()</tt> function is called.
+</p><pre class="programlisting">
+INT xfcAppInit() 
+</pre><p>
+This function should, at least, use the 'uses' interface and initialize the application class object. If it can detect that something is wrong, it should return a non-zero value, in which case the core deinitializes and quits the application. At this point the memory pool has been initialized, so the application can try to do anything. Nothing can be displayed on the screen, however, since the rendering loop has not started yet.
+</p><p>
+After the <tt>xfcAppInit()</tt> call, the application class <tt>onAppInit()</tt> is called, after which the rendering loop starts.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id417466"></a>The Uses-Interface</h3></div></div><p>
+In order to minimize the application size at link-time, the application can decide not to use certain parts of the X-Forge engine. The current set of use-functions is as follows:
+</p><pre class="programlisting">
+xfcUseDefaults();
+xfcUseCFLFilterZlib();
+xfcUseGLDefault();
+xfcUseImageFilterPCX();
+xfcUseImageFilterTGA();
+xfcUseGLDefaultFSAA();
+xfcUseGLDefaultUpsample();
+xfcUseGLZBuffer();
+xfcUseNetwork(INT aCommHandlerArraySize);
+</pre><p>
+You can find these function prototypes in <tt>XFcUse.h</tt> header file.
+</p><p>
+The <tt>xfcUseDefaults()</tt> includes <tt>CFLFilterZlib</tt>, <tt>GLDefault</tt>, <tt>ImageFilterPCX</tt> and <tt>ImageFilterTGA</tt>. The <tt>DefaultFSAA</tt>, <tt>DefaultUpsample</tt> and <tt>UseGLZbuffer</tt> rasterizers extend the default rasterizer. 
+</p><p>
+The FSAA rasterizer tells the default rasterizer that the screen is actually twice as wide and twice as high as it really is, and then does 2x2 downsampling, averaging these four pixels. Being a very slow device, it is meant only for rather static or very low-framerate use.
+</p><p>
+The Upsample rasterizer is the reverse of the FSAA rasterizer, and speeds up the application if and only if most of the time is spent in the actual rasterization.
+</p><p>
+Another use for the Upsample rasterizer is to make double-pixel desktop versions for presentation purposes. Just double the preferred resolution in <tt>xfcAppPrefs</tt>, initialize the Upsample rasterizer instead of the default one, and you're done. (Also remember that the upsample rasterizer eats somewhat more memory, so you may need to increase the memory pool size).
+</p><p>
+The zbuffer rasterizer is still under construction, and is not meant to be used at this time. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Please note that the linker drops things out based on reference, not execution path. So if you have <tt>xfcUseGLDefault()</tt> somewhere in the code, even inside an if clause, the default rasterizer is always included in your application.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id417656"></a>xfcGLUse</h4></div></div><p>
+New since X-Forge 1.1, you can trim down the executable size by only enabling the fillers you actually need. The 40 or so fillers in X-Forge fill approximately 100k of your executable size, so it makes sense to only enable the ones that you're actually using.
+</p><p>
+Since the Default rasterizer automatically links with all of the fillers, you should not call <tt>xfcUseGLDefault()</tt> or <tt>xfcUseDefaults()</tt> in your application. (Note that the Upsample rasterizer also uses the default rasterizer and initializes
+all of the fillers).
+</p><p>
+After creating or recreating the GL object, you must call the <tt>xfcGLUseXXX()</tt> functions to activate the fillers you need. Any fillers not activated will point at a stub rasterizer, so if some of your polygons are not being rendered, you most probably haven't activated the correct filler.
+</p><p>
+Here's a partial list of the <tt>xfcGLUseXXX()</tt> functions; full list can be found in the <tt>XFcUse.h</tt> header file.
+</p><pre class="programlisting">
+void xfcGLUseDefaults();
+void xfcGLUseFillerFlat();
+void xfcGLUseFillerFlatAdd();
+void xfcGLUseFillerFlatAlpha();
+void xfcGLUseFillerFlatInvmul();
+void xfcGLUseFillerGouraud();
+void xfcGLUseFillerGouraudAdd();
+void xfcGLUseFillerGouraudAlpha();
+void xfcGLUseFillerGouraudInvmul();
+void xfcGLUseFillerTexture();
+void xfcGLUseFillerTexture1555();
+</pre><p>
+The <tt>xfcGLUseDefaults()</tt> function initializes all of the fillers. Most of the functions are self-descriptive; the 1555 methods are those that read the 1555 ARGB texture format.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id417786"></a>Application Class</h3></div></div><p>
+The application class has two important functions. First, it serves as a callback host for application initialization and deinitialization, device state and tick calls. Second, it is the only object that can be accessed from anywhere in the system, so it is the prime candidate for any data that has to be global.
+</p><p>
+Only one instance of application class can exist at any time. The <tt>XFcApp</tt> constructor registers the class with the core, and the core makes sure the application object gets deleted.
+</p><p>
+The initialization / deinitialization callbacks are named as follows:
+</p><pre class="programlisting">
+void onAppInit();
+void onAppDeinit();
+</pre><p>
+The application initialization function is called after the <tt>xfcAppInit()</tt> call. The deinitialization gets called before the core deinitializes.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+While the core takes care of most deinitializations automatically (such as freeing the memory pool), it is still a very healthy habit of having zero memory leaks, no open files, no open audio streams, etc. when the application quits. The <tt>onAppDeinit()</tt> is a handy place to keep any global cleanup code.
+</p><p>
+Also note that core doesn't automatically kill off any extra threads you may have launched, so be sure to clean them off here.
+</p></div><p>
+Sometimes the device's state changes in a way that affects the application. These state changes include loss of focus, loss of audio, incoming phone calls, etc. These state changes are reported via the following callback:
+</p><pre class="programlisting">
+INT onDeviceStateEvent(INT32 aEvent, INT32 aSeverity, void *aMoreInfo);
+</pre><p>
+The <tt>aEvent</tt> parameter describes the event. Currently listed events include:
+</p><pre class="programlisting">
+XFCDSE_FOCUSLOST    Application has lost focus.
+XFCDSE_FOCUSGAIN    Application has (re)gained focus.
+XFCDSE_AUDIOLOST    Application has lost audio. 
+XFCDSE_KILLSIGNAL   Operating system tells program to terminate.
+XFCDSE_MEDIACHANGED Removable media has been removed or inserted.
+XFCDSE_LOWMEMORY    Operating system is calling for more memory. 
+XFCDSE_PHONEEVENT   Some phone event (incoming call, SMS, etc) has occured.
+</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Before X-Forge 1.1, most of these events were reported via separate callbacks, including <tt>onLostFocus()</tt> and <tt>onRegainFocus()</tt>. These callbacks are now deprecated and users should move to the new system.
+</p></div><p>
+The <tt>aSeverity</tt> parameter describes the severity of this event. 
+There are three severity levels:
+</p><pre class="programlisting">
+XFCDSE_SEVERITY_NOTE     Application may choose to ignore this event.
+XFCDSE_SEVERITY_MODERATE Application should go to a pause mode, and shut down audio.
+XFCDSE_SEVERITY_CRITICAL Application should shut down its threads and terminate immediately.
+</pre><p>
+Events such as 'focusgain' and 'lowmemory' are categorized as 'note' events, and can in most cases be ignored. 'Focus lost' and 'audio lost' are moderate events, and should cause some action, but the application can still continue. 'Kill signal' is an example of a critical event, and the application should make sure all of its threads are shut down and quit as soon as possible.
+</p><p>
+The <tt>aMoreInfo</tt> pointer is platform- and event-specific, and is reserved for future use.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Although we list 'phone event' as one event, we unfortunately cannot detect this on (most) current phone systems. Thus, loss of focus may be the only notification you get when the device receives a phone call. Thus it is critical to pause all audio and go to a pause mode whenever this happens.
+</p><p>
+The application will still lose focus even if we can detect a phone event.
+</p></div><p>
+The application may lose focus for many reasons on a PDA or a smartphone. It may be that some calendar alert pops up, or you get a phone call. You should at the least pause the game whenever this happens. Stopping audio is especially critical. Automatically saving the game at this point is also recommended. If you can restore your application state completely from disk, it's best if you save the state and exit completely.
+If you decide to go into a pause mode, you should pause all audio and call the <tt>XFcCore</tt> 
+method <tt>setExclusiveMode()</tt> to set non-exclusive mode, and then call <tt>sleep()</tt> (also in <tt>XFcCore</tt>) a lot. This behavior will ensure that the phone user can call and receive calls while your application is running.
+</p><p>
+Sometimes there is a situation where the system decides to ask for the application to terminate. The default action is to simply exit the application. You can override this behavior; you can even decide not to exit at all. Do note, however, that the terminate request is most likely critical. You can simulate this by pressing the little 'x' on top right corner of the window in the Desktop Windows platform.
+</p><p>
+Sometimes the audio system is lost. Re-initializing the audio system right away doesn't neccessarily help, if the cause of the audio system loss is still active. The application may try to re-initialize audio later.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Some lostfocus/regainfocus call pairs are very brief, such as the PocketPC cradle handshake window popup. Should you implement a total application shutdown, it is best to wait in idle mode for a second or so before deciding whether to exit.
+</p></div><p>
+Finally, the application gets called on every rendering loop.
+</p><pre class="programlisting">
+void onTick();
+</pre><p>
+This call happens just before the renderer class render call. While the renderer class can change, there may only be one application class, and thus the onTick function is a good candidate for application-wide events.
+</p><p>
+A pointer to the application object can be acquired from anywhere in the application by calling the <tt>XFcCore</tt> static member function <tt>getApp()</tt>. In practice you will have to cast the pointer to your actual application class pointer in order to access your global data.
+</p><pre class="programlisting">
+void foo::bar()
+{
+    MyApp * myApp = (MyApp *)XFcCore::getApp();
+    myApp-&gt;globalFunction();
+}
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id418270"></a>Renderer Class</h3></div></div><p>
+The <tt>XFcRenderer</tt> class is the interface for renderer callbacks. Its interface is rather simple:
+</p><pre class="programlisting">
+void render();
+void initRenderer();
+void deinitRenderer();
+INT updateScreen(void *aMoreInfo);
+</pre><p>
+Render is called whenever the rendering loop reaches the point where something should be rendered on screen. In practice the rendering will be done through an <tt>XFcGL</tt> object.
+</p><p>
+The init and deinit calls are done whenever a new renderer is set via the static <tt>XFcCore</tt> function <tt>setRenderer()</tt>.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+All rendering is done via a double-buffered interface. On some devices the buffers are actually on video memory, and thus forgetting to render the whole screen in subsequent frames may cause flickering.
+</p></div><p>
+The reason why the renderer and controller objects are separate from the application object is that you can have separate controller and renderer objects for different states of your application. One for menus, one for game, etc.
+</p><p>
+The <tt>updateScreen()</tt> call exists so that the application can override X-Forge's normal screen update functionality. Most of the time the application should not need to do this, but on some platforms the application may wish to perform some hardware-accelerated operations, such as color-keyed blit from video memory.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id418396"></a>Controller Input Class</h3></div></div><p>
+The <tt>XFcInput</tt> class is the interface for controller callbacks. 
+</p><pre class="programlisting">
+void onPointerDown(INT32 aX, INT32 aY);
+void onPointerMove(INT32 aX, INT32 aY);
+void onPointerUp(INT32 aX, INT32 aY);
+void onKeyDown(INT32 aCode);
+void onKeyUp(INT32 aCode);
+void onControlDown(INT32 aCode);
+void onControlUp(INT32 aCode); 
+void onCharEntered(CHAR aChar);
+void onJoystickMoved(INT32 aX, INT32 aY);
+</pre><p>
+Pointer down, move and up calls are made whenever a pointer (mouse on desktop, stylus on a PDA) does something. For the mouse, move calls are only called if the button is pressed. There is no 'mouse hover' functionality as you cannot 'hover' with a stylus.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+The pointer resolution and update frequency are very platform-specific.
+</p></div><p>
+<tt>onKeyDown()</tt> and <tt>onKeyUp()</tt> calls are made whenever a button is pressed or released. These calls report the actual scancode the device reports. On desktop, all keyboard keys are buttons. On most phones, the numeric keypad also works.
+</p><p>
+<tt>onControlDown()</tt> and <tt>onControlUp()</tt> calls are made based on a translation table in the core. The codes are enumerated:
+</p><pre class="programlisting">
+XFCCL_LEFT
+XFCCL_RIGHT
+XFCCL_UP
+XFCCL_DOWN
+XFCCL_FIRE1
+XFCCL_FIRE2
+..
+XFCCL_FIRE8
+XFCCL_WHEELDOWN
+XFCCL_WHEELUP
+</pre><p>
+These codes are, by default, mapped to a 'sensible' configuration. Fire1 is meant to be the &quot;most accessible&quot; fire, and Fire8 is meant to be the &quot;least accessible&quot; fire. Naturally, most devices don't even have 8 separate fire buttons; Microsoft GAPI (Game API for PocketPC) only supports 4.
+</p><p>
+The wheeldown/wheelup controls are for devices which have a wheel control. When the wheel is used, call for controldown and controlup are done immediately, as the wheel does not have a 'depressed' state. The only device with such control so far is the Ericsson P-800. (On Desktop Windows, the mouse wheel also works).    
+</p><p>
+The <tt>onCharEntered()</tt> method gets called whenever the operating system reports that a character has been entered. While the keys on the keyboard have scancodes that match their corresponding keys, this is not a rule; pressing 'left' arrow key, for instance, has a scancode that is still printable. In order to create input fields, you should use this callback for text input on devices that can support it, and have virtual keyboards for other platforms.
+</p><p>
+<tt>onJoystickMoved()</tt> is reserved for analog joystick input.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id418594"></a>Mapping controls</h4></div></div><p>
+The controls can be remapped using the following static <tt>XFcCore</tt> functions:
+</p><pre class="programlisting">
+void mapControlCode(INT32 aControlCode, INT32 aHardwareScanCode);
+void unmapControlCode(INT32 aControlCode, INT32 aHardwareScanCode);
+UINT32 getControlMappingCount();
+void getControlMapping(UINT32 aControlIndex, INT32 &amp;aControlCode, INT32 &amp;aHardwareScanCode);
+void resetControlMappings();
+</pre><p>
+You can map a scan code to a control code using <tt>mapControlCode()</tt>. Please note that you can map a single scan code to several control codes, and vice versa. You can unlink control code and scan code using the <tt>unmapControlCode()</tt> method. In order to iterate the controls, you can get the control map count using the <tt>getControlMappingCount()</tt> method, and you can get the actual map using the <tt>getControlMapping()</tt> method, looping <tt>aControlIndex</tt> from 0 to whatever <tt>getControlMappingCount()</tt> retuned, minus one. Finally, you can reset the control mappings to default by using the <tt>resetControlMappings()</tt> method.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Please note that this API is different from pre-1.1 X-Forge. Earlier version only supported one-to-one mappings, which was found to be too limiting. In this system you can map both the numeric keypad and the joystick on a phone to directional keys.
+</p><p>
+The 'hardware' in <tt>aHardwareScanCode</tt> was also added for clarification.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id418732"></a>Screen Buttons</h4></div></div><p>
+On devices with a touch screen you can create virtual screen buttons using the following static <tt>XFcCore</tt> methods:
+</p><pre class="programlisting">
+void addScreenButton(XFcRectangle &amp;aRect, INT32 aScanCode);
+void resetScreenButtons();
+</pre><p>
+The <tt>addScreenButton</tt> adds a single screen button. Whenever stylus (or, in most cases, the player's thumb) enters or leaves this rectangle, <tt>onKeyDown</tt> and <tt>onKeyUp</tt> methods are called with the scancode with which the screen button was created. These scancodes can be mapped to control codes just as if the scancode came from a physical button.
+</p><p>
+The <tt>resetScreenButtons()</tt> method removes all screen buttons.
+</p><p>
+Please note that screen buttons are <span class="emphasis"><em>not</em></span> widgets; they do not have any visual representation, nor do they act like a button widget would.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Due to their nature, only one screen button can be pressed at the same time. Result of overlapping screen buttons is undefined.
+</p></div></div></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch07.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Overview </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 7. File I/O</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

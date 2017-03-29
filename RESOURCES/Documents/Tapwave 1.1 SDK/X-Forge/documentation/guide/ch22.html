@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 22. XFF Player</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt07.html" title="Part VII. Core Examples"><link rel="previous" href="ch21.html" title="Chapter 21. StuntPlane"><link rel="next" href="ch23.html" title="Chapter 23. Multiplayer Example"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 22. XFF Player</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Prev</a> </td><th width="60%" align="center">Part VII. Core Examples</th><td width="20%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id435535"></a>Chapter 22. XFF Player</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch22.html#id435545">Introduction</a></dt><dt><a href="ch22.html#id435582"> Principal classes</a></dt><dd><dl><dt><a href="ch22.html#id435592">XFFPlayer</a></dt><dt><a href="ch22.html#id435374">Gamegraph</a></dt><dt><a href="ch22.html#id435397">Node</a></dt><dt><a href="ch22.html#id435430">Group</a></dt><dt><a href="ch22.html#id434878">Mesh</a></dt><dt><a href="ch22.html#id434900">Material</a></dt><dt><a href="ch22.html#id434919">PRSAnimation</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id435545"></a>Introduction</h2></div></div><p>
+The XFF Player example is a simple example on how to build an 3d engine on top of xfcore.
+XFFPlayer implements a simple gamegraph and can load a scene from XFF file. The example is kept as simple as possible,
+and as such, it contains little or no speed optimizations to preserve clarity. NOTE: Even though the lite exporter exports node attributes,
+they are just skipped in the xff loader. Adding support for them is straightforward, and is left as an exercise for the reader.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id435582"></a> Principal classes</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id435592"></a>XFFPlayer</h3></div></div><p>
+The main application class. XFFPlayer class contains one instance of Gamegraph object.
+See chapter Getting started for details on GL initialization etc.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id435374"></a>Gamegraph</h3></div></div><p>
+The Gamegraph class contains everything that is needed to render the scene. It takes care of all
+the resources connected under it and also holds pointer to the root node of the scene graph.
+The gamegraph class can be accessed for example to find a node of a certain id.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id435397"></a>Node</h3></div></div><p>
+The node class is the base class for everything that the gamegraph contains.
+Every object (group, mesh, camera, texture, material etc) in gamegraph is inherited from Node.
+Node contains the object's id and the actual type of the node. It also introduces virtual initLoad()-method
+that the class can hook up to init itself after all the nodes have been loaded.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id435430"></a>Group</h3></div></div><p>
+Group class is the main 'object' class in the gamegraph. A group has local transformation matrix, a parent group and child groups.
+All the groups in the scene form the actual scene graph of the 3d world. Cameras and meshes inherit from Group.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id434878"></a>Mesh</h3></div></div><p>
+Mesh inherits from a group. Mesh contains 0 or more submeshes of which each has its own material and triangleinfo / vertexbuffers.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id434900"></a>Material</h3></div></div><p>
+Material contains the info on how the submesh needs to be rendered.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id434919"></a>PRSAnimation</h3></div></div><p>
+A simple controller class to animate groups.
+To keep the implementation simple, the controller just streams the PRS data to the group every time the controller is ticked.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch21.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt07.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch23.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 21. StuntPlane </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 23. Multiplayer Example</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

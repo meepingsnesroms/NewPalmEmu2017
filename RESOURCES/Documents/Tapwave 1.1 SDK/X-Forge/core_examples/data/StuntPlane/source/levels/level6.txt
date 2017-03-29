@@ -1,0 +1,65 @@
+# Corkscrew
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 3150, 0, 0, CORKSCREW
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 150
+
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 2
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop1.pcx,   0,   0,  200,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,	  -60,   -60,  400,   0,   0,  20.0,   /
+HOOP=hoop3.pcx,   -120,   -120, 600,   0,   0,  20.0,   |
+HOOP=hoop4.pcx,   -60,   -60,   800,   0,   0,  20.0,   \
+HOOP=hoop1.pcx,   0,   0,   1000,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,   60,   60,  1200,   0,   0,  20.0,   /
+HOOP=hoop3.pcx,   120,   120, 1400,   0,   0,  20.0,   |
+HOOP=hoop4.pcx,   60,   60,  1600,   0,   0,  20.0,    \
+HOOP=hoop1.pcx,   0,   0,  1800,   0,   0,  20.0,  -
+HOOP=hoop3.pcx,   0,   0, 1900,   0,   0,  20.0,   |
+HOOP=hoop1.pcx,   0,   0,  2000,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,	  -60,   -60,  2200,   0,   0,  20.0,   /
+HOOP=hoop3.pcx,   -110,   -110, 2375,   0,   0,  20.0,   |
+HOOP=hoop4.pcx,   -70,   -70,   2525,   0,   0,  20.0,   \
+HOOP=hoop1.pcx,   -40,   -40,   2650,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,  -20,   -20,  2750,   0,   0,  20.0,   /
+HOOP=hoop3.pcx,   -10,   -10, 2825,   0,   0,  20.0,   |
+HOOP=hoop4.pcx,   0,   0,  2875,   0,   0,  20.0,    \
+HOOP=hoop1.pcx,   10,   10,   2925,   0,   0,  20.0,   -
+HOOP=hoop2.pcx,   20,   20,  2975,   0,   0,  20.0,   /
+HOOP=hoop3.pcx,   30,   30, 3025,   0,   0,  20.0,   |
+HOOP=hoop4.pcx,   40,   40,  3075,   0,   0,  20.0,    \
+HOOP=hoop5.pcx,   40,   40,  3125,   0,   0,  20.0,    +
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,   -30, -30,   280,   5
+BONUS=bonusballoon.pcx,   -90, -90,  510,   5
+BONUS=bonusballoon.pcx,   -90, -90,  705,   5
+BONUS=bonusballoon.pcx,   -30, -30,  895,   5
+BONUS=bonusballoon.pcx,    30,  30, 1075,   5
+BONUS=bonusballoon.pcx,    90,  90, 1275,   5
+BONUS=bonusballoon.pcx,    90,  90, 1500,   5
+BONUS=bonusballoon.pcx,    30,  30, 1710,   5
+BONUS=bonusballoon.pcx,    30,    30, 3150,   5
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+#WIND = 0,  0,  150,  0 

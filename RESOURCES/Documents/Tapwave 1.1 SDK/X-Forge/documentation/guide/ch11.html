@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 11. X-Forge Utils</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt04.html" title="Part IV. Utility Library (xfutil)"><link rel="previous" href="pt04.html" title="Part IV. Utility Library (xfutil)"><link rel="next" href="ch12.html" title="Chapter 12. Multiplayer Games"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 11. X-Forge Utils</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pt04.html">Prev</a> </td><th width="60%" align="center">Part IV. Utility Library (xfutil)</th><td width="20%" align="right"> <a accesskey="n" href="ch12.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id424015"></a>Chapter 11. X-Forge Utils</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch11.html#id424025">Introduction</a></dt><dt><a href="ch11.html#id424060">XFuConfiguration</a></dt><dt><a href="ch11.html#id429603">XFuConfigurationData</a></dt><dt><a href="ch11.html#id424002">XFuFastRandom</a></dt><dt><a href="ch11.html#id429736">XFuRandom</a></dt><dt><a href="ch11.html#id429791">XFuParticleSystem</a></dt><dt><a href="ch11.html#id429930">XFuPrinter</a></dt><dt><a href="ch11.html#id429983">XFuRLESpritePrinter</a></dt><dt><a href="ch11.html#id430027">XFuTokenizer</a></dt><dt><a href="ch11.html#id430094">XFuXMPlayer</a></dt><dt><a href="ch11.html#id430137">XFuFPSCount</a></dt><dt><a href="ch11.html#id430161">XFuWavLoad</a></dt><dt><a href="ch11.html#id430181">XFuVideoRecorder</a></dt></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id424025"></a>Introduction</h2></div></div><p>
+The xfutil library is a collection of routines that are not part of the core, but are not part of the engine proper either. They are still used by the engine or any games built directly on top of the X-Forge Core.
+</p><p>
+The classes in the util library are small, helpful routines that can be used in small projects without using the engine at all.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id424060"></a>XFuConfiguration</h2></div></div><p>
+The <tt>XFuConfiguration</tt> class is a configuration container. It wraps an <tt>.ini</tt> file parser and a hash table.
+</p><p>
+Each row of the .ini file contains a name and a value, like thus:
+</p><pre class="programlisting">
+fileName=HelloWorld.xff
+</pre><p>
+Rows with a leading # are treated as comments.
+</p><p>
+To create an <tt>XFuConfiguration</tt> object, you call either <tt>create()</tt> to create an empty configuration set, or <tt>create(const CHAR *aFilename)</tt> to load an <tt>.ini</tt> file to populate the object.
+</p><p>
+You can also populate an existing <tt>XFuConfiguration</tt> object by loading more <tt>.ini</tt> files with the <tt>load()</tt> method, or by adding single configuration keys with the <tt>put()</tt> method.
+</p><p>
+You can clear the object of all keys with the <tt>clear()</tt> method. Finally, you can get a value for a key with the <tt>get()</tt> method.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429603"></a>XFuConfigurationData</h2></div></div><p>
+The <tt>XFuConfigurationData</tt> class is a configured data container, extending <tt>XFuConfiguration</tt>. It reads and parses a set of configuration data keys from a file. The format of the configuration file is such that there is one property on each row in a text file. Each property is a pair of a key and a value, delimited by a '=' char, for example:
+</p><pre class="programlisting">
+fileName = HelloWorld.xff 
+</pre><p>
+
+Optionally the key can also have a type prefix which is delimited from the rest of the key with a ':' (colon) char, for example: 
+</p><pre class="programlisting">
+image : cursor = arrow.tga 
+</pre><p>
+</p><p>
+Recognized builtin types are parsed when the configuration file is processed. For some types the data is also loaded at the same time. Note that for recognized types the key is reformatted to use the short form before adding to the data container, which affects only fetching of data with regular get-method instead of a type specific getType-style method. If multiple keys refer to exact same value which results in loading of a resource, the resource is loaded only once so that the same loaded resource is shared between the keys.
+Builtin types have getType-style methods which can be used to read the data easily by the key omitting the type prefix. Builtin types also have both long and short forms of the type, so the previous example could be also written: 
+</p><pre class="programlisting">
+i:cursor = arrow.tga 
+</pre><p>
+</p><p>
+Recognized built-in types are <tt>image</tt> (short form: i), <tt>printer</tt> (p), <tt>sound</tt> (s) and <tt>music</tt> (m). Leading and trailing spaces are trimmed. Lines starting with character '#' are treated as comment lines and are ignored. Optional parts of value strings can be omitted. 
+</p><p>
+Please refer to the API-documentation for detailed description of usage.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id424002"></a>XFuFastRandom</h2></div></div><p>
+The <tt>XFuFastRandom</tt> class contains an implementation of a fast pseudorandom number generator. 
+</p><p>
+The random number generator has not been scientifically tested, and is most probably rather poor at generating truly random numbers. Thus it is good for whenever you need somewhat random numbers, fast.
+</p><p>
+After creating the <tt>XFuFastRandom</tt> object, you can get random numbers with the <tt>next()</tt> method. You can set the random number seed with the <tt>seed()</tt> method.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429736"></a>XFuRandom</h2></div></div><p>
+The <tt>XFuRandom</tt> class is an implementation of the &quot;Mersenne Twister&quot; pseudorandom number generator, considered widely to be one of the best pseudorandom number generators. More information about the algorithm can be found at <tt>http://www.math.keio.ac.jp/~matumoto/emt.html</tt>.
+</p><p>
+After creating the <tt>XFuRandom</tt> object, you can get random numbers with the <tt>next()</tt> method. You can set the random number seed with the <tt>seed()</tt> method.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429791"></a>XFuParticleSystem</h2></div></div><p>
+The <tt>XFuParticleSystem</tt> implements a particle system. The particle systems can be edited with the ThinGamaJig editor found in the X-Forge distribution.
+</p><p>
+The particle system has been designed so that it is used as it is inside the particle system editor, with embedded X-Forge providing realtime preview of the particle system.
+</p><p>
+The <tt>load()</tt> method is used to load a particle system configuration. These files are created with the ThinGamaJig editor.
+</p><p>
+The <tt>save()</tt> method can be used to save the particle system settings. 
+</p><p>
+The <tt>loadTextures()</tt> method is used to load the textures. The <tt>load()</tt> method does not load textures.
+</p><p>
+The <tt>tick()</tt> method is used to make the particle system calculate the particle movements. The method takes current time as parameter, instead of taking the current tick from the system; this can be used to alter the flow of time.
+</p><p>
+The <tt>render()</tt> method is used to render the particle system. The <tt>XFuParticleSystem</tt> class does not change any of the <tt>XFcGL</tt> matrices.
+</p><p>
+The <tt>restart()</tt> method can be used to restart the whole animation from beginning. This can be useful for explosion-style particle systems.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429930"></a>XFuPrinter</h2></div></div><p>
+The <tt>XFuPrinter</tt> is a primitive bitmap font printer.
+</p><p>
+The font itself must be in an 8-bit paletted pcx or tga file or a 32-bit tga file. The printer is internally 8-bit, so using a 32-bit image won't bring any advantage. In the image all characters must be listed in ASCII order starting from character 33 (the exclamation mark, &quot;!&quot;), so that the image has one character per row.
+</p><p>
+The image file must be as wide as a single character is high, ie. for a 8x8 font with 20 characters and one character, the image dimensions would be 8x160. 
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429983"></a>XFuRLESpritePrinter</h2></div></div><p>
+The <tt>XFuRLESpritePrinter</tt> extends the <tt>XFuPrinter</tt> class, using RLE compressed sprites instead of normal <tt>XFcGLSurface</tt> objects. It was designed to be a drop-in replacement for <tt>XFuPrinter</tt>, and the only thing you may wish to change is the creation.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430027"></a>XFuTokenizer</h2></div></div><p>
+The <tt>XFuTokenizer</tt> class implements a simple string tokenizer. 
+</p><p>
+Sample usage:
+</p><pre class="programlisting">
+const CHAR blah=&quot;some; string with ; different tokens&quot;;
+
+XFuTokenizer myTokens;
+myTokens.tokenize(blah,XFUSTR(&quot;;&quot;));
+for (int i=0;i&lt;myTokens.getTokenCount();i++)
+   if (tokenEqualsNocase(XFUSTR(&quot;String wIth&quot;))
+       printf(&quot;token number d is our token&quot;,i);
+</pre><p>
+You can create a simple parser by using two <tt>XFuTokenizer</tt> objects. Run one through the whole line, using newline and carrier return characters as delimiters, and use second to tokenize a single line at a time.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430094"></a>XFuXMPlayer</h2></div></div><p>
+The <tt>XFuXMPlayer</tt> is an XM music player, implemented as an X-Forge audio stream. 
+</p><p>
+The XM format is an advanced descendant of the Amiga .MOD format. An .XM file contains sample and note data, enabling the composer to create high-quality audio in rather small file sizes.
+</p><p>
+Decoding XM files is also much lighter operation than, for example, decoding MP3 files.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430137"></a>XFuFPSCount</h2></div></div><p>
+The FPS counter utility class can be used to track average framerate within the last N frames. You can also create several, and track the average framerate for the last 5 and 50 frames, for instance.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430161"></a>XFuWavLoad</h2></div></div><p>
+The WAV loader utility loads noncompressed PCM wave files directly into audio buffers.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430181"></a>XFuVideoRecorder</h2></div></div><p>
+The video recorder utility can be used to store sequential frames from desktop builds of X-Forge applications
+at a constant framerate, useful for promotional videos.
+</p></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pt04.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch12.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Part IV. Utility Library (xfutil) </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 12. Multiplayer Games</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

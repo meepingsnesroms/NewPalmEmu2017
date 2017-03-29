@@ -1,0 +1,16 @@
+uncfl todo-list
+--
+$Id: TODO,v 1.1 2001/11/20 12:29:48 jetro Exp $
+$Revision: 1.1 $
+------------------------------------------------------------------------
+
+- ask if an existing file will be overwritten or skipped
+- option to force overwriting of all files
+- option to strip directories from filenames
+- option to create directory tree in filenames
+- handle invalid filenames (create alternative filename or ask for one?)
+- possibility to extract only files matching wildcard arguments
+  (e.g. "uncfl file.cfl *.foo bar*")
+- option to simulate what will be happen without actually writing files
+- option to delete all files from disk listed in the cfl file
+- option to print the software license

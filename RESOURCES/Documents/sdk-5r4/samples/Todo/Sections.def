@@ -1,0 +1,3 @@
+application { "Address" ADDR }
+
+multiple code { "code1" "code2" }

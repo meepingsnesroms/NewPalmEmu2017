@@ -1,0 +1,36 @@
+/***************************************************************************\
+*
+* File: Application.rcp
+*
+****************************************************************************/
+
+/*
+ * Rom Incompatible Alert
+ */
+ALERT ID 1000
+  DEFAULTBUTTON 0
+  ERROR
+BEGIN
+  TITLE "System Incompatible"
+  MESSAGE "A Tapwave device is required to run this application."
+  BUTTONS "OK"
+END
+
+/*
+ * Tapwave Native Application resource for Palm OS Simulator.
+ */
+HEX  "SIMC" ID 1	"XMatrix" 0x00 "__ARMlet_Startup__" 0x00
+
+/*
+ * Application category, default is Games.
+ */
+HEX  "taic" ID 1000     "Games" 0x00
+
+/*
+ * Application Preferences for ARM:
+ *
+ *  UInt32 priority;        // default is 100
+ *  UInt32 stackSize;       // default is 4096
+ *  UInt32 minHeapSpace;    // default is 4096
+ */
+//HEX  "aprf" ID 0        0x64 0x00 0x00 0x00 0x00 0x10 0x00 0x00 0x00 0x10 0x00 0x00

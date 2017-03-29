@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 8. 2D Graphics</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="ch07.html" title="Chapter 7. File I/O"><link rel="next" href="ch09.html" title="Chapter 9. 3D Graphics"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 8. 2D Graphics</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch07.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="ch09.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id418975"></a>Chapter 8. 2D Graphics</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch08.html#id418985">Overview</a></dt><dt><a href="ch08.html#id417056">Creating Surfaces</a></dt><dd><dl><dt><a href="ch08.html#id420894">XFcGLSurface</a></dt><dt><a href="ch08.html#id421440">XFcGLTexture</a></dt><dt><a href="ch08.html#id422028">XFcGLResourceSurface</a></dt></dl></dd><dt><a href="ch08.html#id422118">Getting Surface Information</a></dt><dt><a href="ch08.html#id422160">Locking Surfaces</a></dt><dt><a href="ch08.html#id422371">Blitting Surfaces</a></dt><dd><dl><dt><a href="ch08.html#id422396">Color Keys</a></dt><dt><a href="ch08.html#id422506">Basic Blitting</a></dt><dt><a href="ch08.html#id422626">Blending</a></dt><dt><a href="ch08.html#id422881">Transforms</a></dt></dl></dd><dt><a href="ch08.html#id423028">2D Graphics Primitives</a></dt><dd><dl><dt><a href="ch08.html#id423055">Filled Rectangles</a></dt><dt><a href="ch08.html#id423131">Lines</a></dt></dl></dd><dt><a href="ch08.html#id423184">RLE compressed sprites</a></dt><dd><dl><dt><a href="ch08.html#id423194">XFcRLESprite</a></dt><dt><a href="ch08.html#id423257">Using RLE compressed sprites</a></dt></dl></dd><dt><a href="ch08.html#id423338">XFcGLSurfaceToolkit</a></dt><dd><dl><dt><a href="ch08.html#id423360">Surface resampling</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id418985"></a>Overview</h2></div></div><p>
+Two-dimensional graphics under X-Forge core is based mainly on graphics surfaces. A graphics surface is practically a wrapper for the actual pixel data, with additional functionality. Surfaces can be blitted on surfaces with optional scaling, blending and color keying, and they clip automatically to the target surface. 
+</p><p>
+Additionally, rectangle filling and line drawing is supported. Surfaces can also be locked and the surface data accessed directly.
+</p><p>
+In order to display graphics on screen, the back buffer is also a surface, and can be used just like any other surface. 
+</p><p>
+When locking a surface, you can select the pixel format in which you want the surface to be locked. If this format is not the same as the surface's native format, automatic pixel conversion will take place.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Locking a surface with alpha channel data in a format that does not have alpha data will destroy the alpha channel data.
+</p></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Pixel format conversions are heavy operations and should not be done on a per-frame basis.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id417056"></a>Creating Surfaces</h2></div></div><p>
+An <tt>XFcGLSurface</tt> object is created via the static <tt>XFcGLSurface::create()</tt> call.
+</p><p>
+Alternatively, the application can use the <tt>XFcImageLoader</tt> interface to load an image file directly into a surface. Yet another way is to create a <tt>XFcGLResourceSurface</tt> instead, which creates a surface which is also a resource (and can be destroyed and re-created by the system as space is needed).
+</p><p>
+X-Forge application can also gain access to surfaces via texture objects, or by asking for secondary surface from <tt>XFcGL</tt>.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420894"></a>XFcGLSurface</h3></div></div><p>
+An application has two basic ways to create <tt>XFcGLSurface</tt> objects; either by using the <tt>create()</tt> method, or by using the <tt>XFcImageLoader</tt> class.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id420927"></a>XFcGLSurface::create()</h4></div></div><p>
+The <tt>XFcGLSurface</tt> class static method <tt>create()</tt> takes three parameters:
+</p><pre class="programlisting">
+XFcGLSurface * create(INT32 aWidth = 256,
+                      INT32 aHeight = 256,
+                      INT32 aFormat = XFCGF_DEFAULT);
+</pre><p>
+The width and height parameters describe the desired width and height of the surface, in pixels. The format is one of the following:
+</p><pre class="programlisting">
+XFCGF_DEFAULT
+XFCGF_R5G6B5 
+XFCGF_X8R8G8B8
+XFCGF_A1R5G5B5
+XFCGF_A8R8G8B8
+XFCGF_X6X5X5  
+XFCGF_1X5X5X5
+</pre><p>
+The enumerations describe the bit patterns of the pixel formats. R5G6B5 format has 5 bits for red, 6 for green and 5 for blue, in that order, totaling 16 bits per pixel. X bits are ignored.
+</p><p>
+The default mode is platform dependent, but currently all platforms use the R5G6B5 pixel format.
+</p><p>
+The last two pixel formats are special formats that can be used for some special effects. The X6X5X5 format, for example, is actually 32 bit format with bit masks X5G6X5R5X6B5. This format can be used, for example, to calculate average of two pixels with one 'add', 'shift' and 'and' instruction. The 1X5X5X5 format is the same, except that it also contains one bit for alpha.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+These enumerations, like all other 2D graphics enums, can be found in the <tt>XFcCoreEnums.h</tt> header file.
+</p></div><p>
+The create function, like all other create functions, will return NULL if failed.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id418936"></a>XFcImageLoader</h4></div></div><p>
+A much more typical way to create surfaces is to load image files directly into surfaces. This can be done through the <tt>XFcImageLoader</tt> class. The class includes several static member functions which can be used to load images in different ways. The most typical way is to just load image into a surface:
+</p><pre class="programlisting">
+XFcGLSurface * load(const CHAR *aFilename,
+                    INT32 aSurfaceFormat = XFCGF_DEFAULT);
+</pre><p>
+The filename is the name of the file to be loaded, and the desired surface format is one of the surface format flags, above. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+With <tt>XFCGF_DEFAULT</tt>, if the source image has a alpha channel (32bit TGA file, for instance), the target pixel format will be 1555 instead of 565.
+</p></div><p>
+The <tt>XFcImageLoader</tt> class also contains functions to load image files in several other ways. You can query information about a file with <tt>loadImageInfo()</tt>:
+</p><pre class="programlisting">
+void loadImageInfo(const CHAR *aFilename, 
+                   INT32 *aWidth,
+                   INT32 *aHeight, 
+                   INT *aAlphaLayer,
+                   INT *aPaletted);
+</pre><p>
+With the exception of <tt>aFilename</tt>, all of the parameters are pointers to variables which will receive the information. If <tt>aWidth</tt> or <tt>aHeight</tt> are reported as zero, image loading has failed. If some information is not desired, the parameter can be left as NULL. The <tt>aAlphaLayer</tt> and <tt>aPaletted</tt> parameters are flags.
+</p><p>
+To load the image data itself, you can load it in paletted image or in 32bit ARGB form.
+</p><pre class="programlisting">
+UINT32 * loadImage8888(const CHAR *aFilename);
+</pre><p>
+The 32bit loader will always work, if the image can be loaded at all, and there's enough memory. If the image file is paletted, it is automatically converted to 32bit format. If some error occurs, the returning pointer will be NULL.
+</p><pre class="programlisting">
+void loadImagePaletted(const CHAR *aFilename,
+                       UINT8 **aPalettePtr,
+                       UINT8 **aBitmapPtr);
+</pre><p>
+You can only load paletted image files with the paletted image loader. No automatic conversion is done from direct-color images. If you try to load a direct-color image with the paletted loader, the pointers will be set to NULL.
+</p><p>
+Finally, you can load an image directly to a buffer.
+</p><pre class="programlisting">
+INT loadImageToBuffer(const CHAR *aFilename, void *aBuffer,
+                      INT32 aPitch,
+                      INT32 aFormat = XFCGF_DEFAULT);
+</pre><p>
+The pitch is in bytes. The target buffer must be big enough to contain the image.
+</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id421219"></a>Extending ImageLoader</h5></div></div><p>
+In order to enable <tt>XFcImageLoader</tt> to support other image file formats than supported by default, you can extend the <tt>XFcImageLoader</tt> class.
+</p><p>
+At minimum, you must extend three functions, and call one method in the constructor.
+</p><pre class="programlisting">
+    INT validateImage(const CHAR *aFilename, XFcFile *aFile)
+</pre><p>
+This function should, with minimum effort, check whether this filter can handle the image file. The <tt>aFile</tt> parameter is an already opened file handle to the image file. The file pointer may point at any place in the file, so it is best to seek it to the beginning. (It is also considered good manners to seek it to the beginning after you've done with it). If for some reason you cannot use the ready file pointer, you can use the filename instead. In any case you should not close the file handle.
+</p><pre class="programlisting">
+void getImageInfo(const CHAR *aFilename, XFcFile *aFile,
+                  INT32 *aWidth, INT32 *aHeight, INT *aAlphaLayer,
+                  INT *aPaletted)
+</pre><p>
+This member will be called to get file information. Please note that the pointers may be NULL, in which case the parameters should be ignored. The file pointer rules are the same as with the <tt>validateImage()</tt> method. If an error occurs, the width and height should be set to 0.
+</p><pre class="programlisting">
+UINT32 * getImage8888(const CHAR *aFilename, XFcFile *aFile)
+</pre><p>
+This member should allocate 32bit buffer big enough to contain the image data, and then load the data into it. If the source file is always paletted, you do not need to extend this member at all; the default implementation calls the paletted image loader and does the conversion as needed. The file pointer rules are the same as with <tt>validateImage()</tt>. If an error occurs, the function should clean up any allocated space and then return NULL.
+</p><pre class="programlisting">
+void getImagePaletted(const CHAR *aFilename, XFcFile *aFile,
+                      UINT8 **aPalettePtr, UINT8 **aBitmapPtr);
+</pre><p>
+This member should allocate 8bit buffer for the image and 768-byte buffer for the palette, and then load the image to it. The palette should be 8-bit triplets of RGB. Some paletted image formats only use 6 bits of the color components; these should be shifted left by two bits. If the source file format is always direct-color, you should not extend this function at all. If an error occurs, the function should clean up any allocated memory and then set the target pointers to NULL. The rules for the file pointer are the same as with <tt>validateImage()</tt>.
+</p><pre class="programlisting">
+void registerImageLoader(XFcImageLoader *aFilter)
+</pre><p>
+Upon construction, the class should call this member function to register itself in the list of image loading filters. 
+</p><p>
+Please note that due to the fact that the applications should not use any static data, the class should be constructed at application start. The core will delete the object on shutdown.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+There is an example implementation of a BMP loader in the core examples.
+</p></div></div></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id421440"></a>XFcGLTexture</h3></div></div><p>
+A texture is a special collection of surfaces. Internally, a texture is an array of surface headers and a single resource containing all of the actual image data. The different surfaces in a texture object represent the mipmaps of the texture.
+</p><p>
+The easiest way to create texture objects is to use the <tt>XFcGLTextureFromFile</tt> class. You can also create textures manually by extending <tt>XFcGLTextureBuilder</tt>, and then calling XFcGLTexture::create with the texture builder object as a parameter. It is usually easier to use the <tt>XFcImageLoader</tt> extendibility, though.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Texture resolution must be in the powers of two, and the maximum resolution is 256. Legal texture resolutions include 256x128, 64x8, 2x32 etc.
+</p></div><p>
+In order to access a surface in a texture object, you must lock the texture. A simple example that draws all the mipmap levels of a texture onto the screen:
+</p><pre class="programlisting">
+INT32 surfCount = tex-&gt;getSurfaceCount();
+XFcGLSurface *fb = mGL-&gt;getSecondary();
+INT32 y = 0;
+INT32 i = 0;
+while (i &lt; surfcount)
+{
+    XFcGLSurface *texSurf = tex-&gt;lock(i);
+    if (texSurf)
+    {
+        fb-&gt;drawImage(texSurf, 0, y);
+        y += texSurf-&gt;getHeight();
+        tex-&gt;unlock(i);
+    }
+    i++;
+}
+</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+While the surfaces in a texture can be used just like any other <tt>GLSurface</tt>, it should be noted that any changes drawn to the surface will be lost if the resource manager decides to remove it from memory. 
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id421564"></a>Extending TextureBuilder</h4></div></div><p>
+In order to extend the <tt>TextureBuilder</tt> class, you must extend the following five methods.
+</p><pre class="programlisting">
+INT32 getSurfaceCount()
+</pre><p>
+This method returns the number of surfaces required for the texture. If mipmaps are not in use, this value should be one. Otherwise it should return the number of mipmap layers the texture builder will generate.
+</p><pre class="programlisting">
+void getSurfaceParams(INT32 aSurfaceNumber, INT32 &amp;aWidth,
+                      INT32 &amp;aHeight, INT32 &amp;aFormat)
+</pre><p>
+This method returns the surface parameters for a given surface number. Typically, all surfaces share a common pixel format, but have different width and height.
+</p><pre class="programlisting">
+INT fillSurface(INT32 aSurfaceNumber, 
+                void *aBuffer,
+                XFcGLComplexSurfaceResource *aComplexSurfaceResource)
+</pre><p>              
+This method fills the requested surface. The surfaces are always requested in linear order, and thus you can trust that the earlier surfaces exist. See below for an example on filling out all of the mipmap levels.
+</p><pre class="programlisting">
+INT sameClassEquals(XFcGLTextureBuilder *aBuilder)
+</pre><p>
+Since the resource manager tries not to load a single texture several times, it needs a method of identifying duplicate textures, and it does this by comparing texture builders. First check is to see whether the two texture builders have the same class; this check is done via the <tt>mBuilderUniqueID</tt> member variable, which should be set to some unique value. (The value for the <tt>TextureFromFile</tt> class is 1). Once two builders with the same class are found, they are compared with <tt>sameClassEquals()</tt>. It is up to the texture builder itself to figure out if the two builders are equal.
+</p><pre class="programlisting">
+~XFcGLTextureBuilder()
+</pre><p>
+The destructor should clean up any data the <tt>TextureBuilder</tt> object has allocated.    
+</p><p>
+An easy way to fill out all of the mipmap levels of the texture is to lock the earlier (bigger) surface and use <tt>XFcGLTexture</tt>'s mipmap filters to calculate the smaller surfaces. Here's the code that does that:
+</p><pre class="programlisting">
+XFcGLSurface *upper = aComplexSurfaceResource-&gt;lock(aSurfaceNumber - 1);
+if (mTextureFormat == XFCGF_A1R5G5B5)
+{
+    if (mFlags &amp; XFCTC_MIPMAP_POINTSAMPLE)
+    {
+        XFcGLTexture::filterMapPointSample1555(upper, aBuffer);
+    }
+    else
+    {
+        XFcGLTexture::filterMapLinear1555(upper, aBuffer);            
+    }
+}
+else 
+if (mTextureFormat == XFCGF_R5G6B5)
+{
+    if (mFlags &amp; XFCTC_MIPMAP_POINTSAMPLE)
+    {
+        XFcGLTexture::filterMapPointSample565(upper, aBuffer);
+    }
+    else
+    {
+        XFcGLTexture::filterMapLinear565(upper, aBuffer);            
+    }
+}
+aComplexSurfaceResource-&gt;unlock(aSurfaceNumber - 1);
+</pre><p>
+You do, naturally, still have to fill out the first surface yourself.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+If you wish to mimic <tt>TextureFromFile</tt> in functionality, ie. to have the <tt>create()</tt> call return <tt>XFcGLTexture</tt> objects directly, make sure that you initialize the texture builder completely before calling the <tt>XFcGLTexture::create()</tt> method.
+</p></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+When defining flags, make sure that you do not overlap flags with the resource manager. As we did with <tt>XFCTC</tt> flags, leave the bottom 8 bits to zero.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id421843"></a>XFcGLTextureFromFile</h4></div></div><p>
+The only usable public member of the <tt>XFcGLTextureFromFile</tt> is the create function. Since it returns <tt>XFcGLTexture</tt> objects, the other functions are never exposed to the application.
+</p><pre class="programlisting">
+XFcGLTexture * create(const CHAR *aFilename,
+                      INT32 aFlags = XFCTC_MIPMAP_POINTSAMPLE,
+                      UINT32 aColorKey = 0xff000000);
+</pre><p>
+The filename is the name of the file to be loaded. The <tt>XFcGLTextureFromFile</tt> uses the <tt>XFcImageLoader</tt> class internally, so all image formats supported by the system work.
+</p><p>
+The flags can be a combination of the following:
+</p><pre class="programlisting">
+XFCTC_MIPMAP_NOMIPMAPS
+XFCTC_MIPMAP_POINTSAMPLE
+XFCTC_MIPMAP_LINEAR
+XFCTC_UNIQUE
+XFCTC_COLORKEY
+</pre><p>
+If <tt>NOMIPMAPS</tt> is used (and <tt>POINTSAMPLE</tt> or <tt>LINEAR</tt> are not used), the resulting texture will not have any mipmaps. The <tt>POINTSAMPLE</tt> and <tt>LINEAR</tt> alter the way the mipmaps are generated. The <tt>POINTSAMPLE</tt> mode is faster, but usually results in uglier mipmaps.
+</p><p>
+If <tt>UNIQUE</tt> is used, the resource manager will create a new resource for this texture even if a texture was created from the same image file with same parameters earlier. This is useful mostly if you wish to edit the textures at runtime (but keep in mind that the resource manager may still decide to re-create the texture).
+</p><p>
+The colorkey flag must be added if you wish to use the color key parameter.
+</p><p>
+Additionally, the flags may contain resource manager flags. It is recommended that those are not used unless absolutely neccessary, however.
+</p><p>
+The color key can be used to create a texture with alpha layer even though the source image contains no alpha information. Select a color to be transparent, set that as the colorkey parameter and include the <tt>XFCTC_COLORKEY</tt> flag.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id422028"></a>XFcGLResourceSurface</h3></div></div><p>
+The <tt>XFcGLResourceSurface</tt> is a surface that is also a resource. It uses <tt>XFcImageLoader</tt> internally to recreate itself if needed.
+</p><pre class="programlisting">
+XFcGLResourceSurface * create(const CHAR *aPictureFilename,
+                              INT32 aFormat = XFCGF_DEFAULT,
+                              INT32 aFlags = 0);
+</pre><p>
+The picture filename and format are the same as with the <tt>XFcGLTextureFromFile::load()</tt> function, above. The flags are sent to the resource manager, and it is recommended that they are left as zero.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+While the <tt>ResourceSurface</tt> can be used just like any other <tt>XFcGLSurface</tt>, it should be noted that any changes drawn to the surface will be lost if the resource manager decides to remove it from memory. 
+</p></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id422118"></a>Getting Surface Information</h2></div></div><p>
+The <tt>XFcGLSurface</tt> class contains three functions with which the application can query the width, height and pixel format of the surface. The functions are <tt>getWidth()</tt>, <tt>getHeight()</tt> and <tt>getFormat()</tt>, respectively.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id422160"></a>Locking Surfaces</h2></div></div><p>
+In order to manipulate pixel data directly, a surface must be locked. This can be done via the <tt>lock()</tt> call. The method prototype is as follows:
+</p><pre class="programlisting">
+INT32 lock(void ** aBuffer, INT32 aMode = XFCGF_DEFAULT,
+           INT32 aFlags = XFCGFX_DISCARDCONTENTS);
+</pre><p>
+The first parameter is a pointer to the pointer variable that receives the address of the pixel data. Mode is the pixel format; default means the surface's pixel format. Flags can contain <tt>XFCGFX_DISCARDCONTENTS</tt>, <tt>XFCGFX_DISCARDCHANGES</tt> or nothing. 
+</p><p>
+If the graphics mode is different from the surface's internal format, automatic pixel conversion occurs. If <tt>XFCGFX_DISCARDCONTENTS</tt> is used, the conversion from original format is skipped, but the resulting data is converted to internal format on <tt>unlock()</tt>; if <tt>XFCGFX_DISCARDCHANGES</tt> is used, the original data is converted to desired format, but conversion back is skipped. 
+</p><p>
+The return value is the pitch of the surface, in bytes. In some cases the pitch may be different from surface width.
+</p><p>
+Always remember to <tt>unlock()</tt> your surfaces after you're finished with it. You cannot use the surface in any other operation (including blitting) while it's locked.
+</p><p>
+Typical surface locking code looks like this:
+</p><pre class="programlisting">
+XFcGLSurface *surf = XFcGLSurface::create(16, 16);
+UINT16 *p;
+INT32 pitch = surf-&gt;lock((void**)&amp;p);
+if (p != NULL)
+{
+    pitch /= 2;
+    INT32 i, j;
+    for (i = 0; i &lt; 16; i++)
+    {
+        for (j = 0; j &lt; 16; j++)
+        {
+            p[i * pitch + j] = (i &lt;&lt; 2) + (j &lt;&lt; 12);
+        }
+    }
+    surf-&gt;unlock();
+}
+</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+<tt>XFCGFX_DISCARDCHANGES</tt> and <tt>XFCGFX_DISCARDCONTENTS</tt> flags are meant only for optimization, and should not be trusted; ie. if you lock a surface with <tt>XFCGFX_DISCARDCHANGES</tt>, but the pixel format you choose is equal to the format used internally by the surface, the changes will NOT be discarded.
+</p></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Locking a surface with alpha channel data in a format that does not have alpha data will destroy the alpha channel data.
+</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+On X-Forge version 0.24.1 and earlier, the default locking pixel format always meant the RGB565 format.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id422371"></a>Blitting Surfaces</h2></div></div><p>
+One major use for surfaces is the blitting of surfaces, or drawing the contents of one surface on another. The <tt>XFcGLSurface</tt> object supports multiple different ways of blitting.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id422396"></a>Color Keys</h3></div></div><p>
+The surface object supports making parts of the image transparent by selecting a color key. The &quot;color keying&quot;
+is controlled via the following function calls:
+</p><pre class="programlisting">
+void setColorKey(INT32 aColorKey);    
+void enableColorKey(INT aFlag);
+INT32 getColorKey();
+</pre><p>
+Color key, ie. the color which will become transparent, is set via the <tt>setColorKey()</tt> call. The color key must be in XRGB8888 format. The color keying can be set on or off via the <tt>enableColorKey()</tt> call; the default is off. Finally, you can get the current color key value with the <tt>getColorKey()</tt> call.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+In X-Forge versions 0.24.1 and earlier, this functionality was called 'alpha masking'; the <tt>setAlphaMask()</tt>, <tt>enableAlphaMask()</tt> and <tt>getAlphaMask()</tt> functions no longer exist.
+</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The color keying refers to the surface you're about to draw over some other surface, and not vice versa. In other words, the pixels in source image surface that are &quot;color keyed&quot; do not get drawn on the target surface.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id422506"></a>Basic Blitting</h3></div></div><p>
+The surface blitting is performed using the <tt>drawImage()</tt> calls on the target surface. In the easiest form, the blitting looks like this:
+</p><pre class="programlisting">
+targetSurface.drawImage(sourceSurface);
+</pre><p>
+If you wish to draw the source surface to some other place than upper left corner of the target surface, you can add the coordinates:    
+</p><pre class="programlisting">
+targetSurface.drawImage(sourceSurface, tX, tY);
+</pre><p>
+Please note that these coordinates can also be negative; the blitter performs clipping as needed.
+</p><p>
+The blitter can also scale your images, using either only width or both width and height value (if only width is used, height is calculated so that aspect ratio stays the same)
+</p><pre class="programlisting">
+targetSurface.drawImage(sourceSurface, tX, tY, tWidth, tHeight);
+</pre><p>
+If you don't want to draw the whole source surface to the target, you can use the variants that support source rectangle:
+</p><pre class="programlisting">
+targetSurface.drawImage(sourceSurface, 
+                        XFcRectangle(5,5,10,10));    
+targetSurface.drawImage(sourceSurface, 
+                        XFcRectangle(5,5,10,10), tX, tY);    
+targetSurface.drawImage(sourceSurface, 
+                        XFcRectangle(5,5,10,10), tX, tY, tWidth);    
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id422626"></a>Blending</h3></div></div><p>
+For somewhat more interesting effects, you can do blitting with different blending modes. These blending modes are separate from the 3D pipeline. The currently supported blending modes are:
+</p><pre class="programlisting">
+XFCBLEND_NONE
+</pre><p>
+No blending; default
+</p><pre class="programlisting">
+XFCBLEND_ALPHA
+</pre><p>
+Cross-fade blend. At 0%, the target pixels are not changed at all, and at 100% the target pixels are completely covered.
+</p><pre class="programlisting">
+XFCBLEND_ALPHA_FAST
+</pre><p>
+Cross-fade blend special case; same as alpha blend at 50%.
+</p><pre class="programlisting">
+XFCBLEND_MUL
+</pre><p>
+Multiplicative blend. Source and target pixels are multiplied together. At 0%, the result is always completely black, and at 100% the result is plain <tt>srcPixel</tt> * <tt>tgtPixel</tt>.
+</p><pre class="programlisting">
+XFCBLEND_MUL_FAST
+</pre><p>
+Multiplicative blend special case; same as multiplicative at 100%    
+</p><pre class="programlisting">
+XFCBLEND_ADD
+</pre><p>
+Additive blend. The source and target pixels are added together and guarded against overflow, so 60% + 60% = 100%.
+</p><pre class="programlisting">
+XFCBLEND_ADD_FAST
+</pre><p>
+Additive blend special case; same as additive at 100%    
+</p><pre class="programlisting">
+XFCBLEND_INVMUL
+</pre><p>
+Inverse multiplicative blend. More useful than its inverse, at 0% the target pixels are not changed at all, and at 100%, the source and target are multiplied together.
+</p><pre class="programlisting">
+XFCBLEND_INVMUL_FAST
+</pre><p>
+Inverse multiplicative special case; same as inverse multiplicative at 100%    
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+These enumerations, like all other 2D graphics enums, can be found in the <tt>XFcCoreEnums.h</tt> header file.
+</p></div><p>
+To use the blending modes, use the <tt>drawImageBlend()</tt> family of functions. Their functionality is the same as the simple ones, with two additional parameters.
+</p><pre class="programlisting">
+void drawImageBlend(XFcGLSurface *aImage, 
+                    INT32 aBlendType, INT32 aBlendValue);
+</pre><p>
+Blend type is one of the enums listed above, and blend value is the value mentioned above. The range for the blend value is 0..255.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id422881"></a>Transforms</h3></div></div><p>
+The blitter also supports simple geometry transforms:
+</p><pre class="programlisting">
+XFCTRANSFORM_FLIP_HORIZONTAL
+</pre><p>
+Flip contents horizontally    
+</p><pre class="programlisting">
+XFCTRANSFORM_FLIP_VERTICAL
+</pre><p>
+Flip contents vertically    
+</p><pre class="programlisting">
+XFCTRANSFORM_ROTATE_0
+XFCTRANSFORM_ROTATE_90
+XFCTRANSFORM_ROTATE_180
+XFCTRANSFORM_ROTATE_270
+</pre><p>
+Rotate the surface by N degrees.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+These enumerations, like all other 2D graphics enums, can be found in the <tt>XFcCoreEnums.h</tt> header file.
+</p></div><p>
+The flags can also be combined. Please note, for example, that combining <tt>ROTATE_180</tt> with <tt>FLIP_VERTICAL</tt> and <tt>FLIP_HORIZONTAL</tt> nulls the effects of all three flags.
+</p><p>
+To use the transformations, use the <tt>drawImageTransform()</tt> family of functions. They work exactly like the simple ones, with the additional flags parameter.
+</p><pre class="programlisting">
+void drawImageTransform(XFcGLSurface * aImage, 
+                        UINT32 aFlags);
+</pre></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id423028"></a>2D Graphics Primitives</h2></div></div><p>
+Currently, the <tt>XFcGLSurface</tt> supports only filled rectangle and line drawing. The support for other graphics primitives are in the plans, but are still under construction.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423055"></a>Filled Rectangles</h3></div></div><p>
+The <tt>XFcGLSurface</tt> class supports filling rectangles with a single color using the <tt>drawFilledRect()</tt> call.
+</p><pre class="programlisting">
+void drawFilledRect(INT32 aX, INT32 aY,
+                    INT32 aWidth, INT32 aHeight, 
+                    UINT32 aColor);
+</pre><p>
+The color is in ARGB8888 format.
+</p><p>
+If used on back buffer and graphics device supports it, this call is accelerated by hardware.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The color format used to be XRGB8888 instead of ARGB8888 in X-Forge versions 0.24.1 and earlier. When alpha is set to 0, nothing is drawn, so older programs may fail to draw filled rectangles correctly.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423131"></a>Lines</h3></div></div><p>
+The <tt>XFcGLSurface</tt> class supports drawing lines and anti-aliased lines.
+</p><pre class="programlisting">
+void drawAALine(XFcFixed aX1, XFcFixed aY1, 
+                XFcFixed aX2, XFcFixed aY2,
+                UINT32 aColor);
+
+void drawLine(XFcFixed aX1, XFcFixed aY1, 
+              XFcFixed aX2, XFcFixed aY2,
+              UINT32 aColor);  
+</pre><p>
+The color is in ARGB8888 format.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id423184"></a>RLE compressed sprites</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423194"></a>XFcRLESprite</h3></div></div><p>
+<tt>XFcRLESprite</tt> is a packed form of a surface, suitable for 2D blitting. <tt>XFcRLESprite</tt> is suitable especially for drawing overlay graphics, since it has several benefits over using plain surfaces in some situations. <tt>XFcRLESprite</tt> compresses transparent areas and uniformly colored spans to smaller space. Therefore it usually consumes much less memory than a plain surface, and is also faster to blit. <tt>XFcRLESprite</tt> also supports alpha channel, thus allowing anti-aliased or semi-transparent graphics. There are a few drawbacks also when using <tt>XFcRLESprites</tt>: blitting can't be scaled and it's not possible to blit into the <tt>XFcRLESprite</tt>. Once created, the <tt>XFcRLESprite</tt> can't be modified.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423257"></a>Using RLE compressed sprites</h3></div></div><p>
+<tt>XFcRLESprite</tt> can be constructed from a surface. The construction takes a pointer to the surface, a base mask and a base color. Base values can be used to specify the transparent color for the surface. For instance mask value of 0x00ffffff will mean that all color components (but not alpha) will be included in the transparent color check. In a case like this, having base color of 0xff0000 will mean that bright red will be the transparent key color.
+</p><p>
+To construct <tt>XFcRLESprite</tt> from a 32-bit ARGB surface so that alpha channel would be compressed as the transparent colour, the base mask should be 0xff000000 and the base color 0. The graphics file should be in 32-bit Targa format (to save disk space, use RLE-compressed Targa files), and the image should be loaded in 32-bit ARGB mode. The following code sample demonstrates this:
+</p><pre class="programlisting">
+XFcGLSurface *tempSurface;
+XFcRLESprite *hudSprite;
+tempSurface = XFcImageLoader::load(XFCSTR(&quot;hud.tga&quot;),XFCGF_A8R8G8B8);
+hudSprite = XFcRLESprite::create(tempSurface, 0xff000000, 0x00000000);
+delete tempSurface;
+</pre></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id423338"></a>XFcGLSurfaceToolkit</h2></div></div><p>
+<tt>XFcGLSurfaceToolkit</tt> provides methods for manipulating surfaces.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id423360"></a>Surface resampling</h3></div></div><p>
+<tt>XFcGLSurfaceToolkit</tt> has a method <tt>resampleSurface()</tt> that can be used for scaling images with higher quality than just scaled blit. Scaling with <tt>resampleSurface()</tt> uses bilinear interpolation and box filtering algorithms, whereas scaled blit uses just point sampling. The scaling can be used for instance when the same graphical content should be used for various screen sizes. It is adviced that the scaling is done after loading the content, not in real time, as the algorithms can't necessarily provide interactive speeds.
+</p><pre class="programlisting">
+static XFcGLSurface * resampleSurface(XFcGLSurface *aSurface,
+                                      REAL aXScale,
+                                      REAL aYScale);
+</pre></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch07.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 7. File I/O </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 9. 3D Graphics</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

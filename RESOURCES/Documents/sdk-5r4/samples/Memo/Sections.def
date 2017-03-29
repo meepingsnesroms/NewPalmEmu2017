@@ -1,0 +1,3 @@
+application { "Memo" MEMO }
+
+multiple code { "code1" "code2" }

@@ -1,0 +1,55 @@
+# Tunnel
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 2420, 0, 0, TUNNELS 
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 128
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 5
+
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop0.pcx,  0,  0,  300,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  20,  20,   500,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  60,  10,  700,   0,   0,  20.0,  o
+HOOP=hoop0.pcx,	 80,  -10,  900,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  40,  -40,  1100,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  40,  -40,  1125,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -20,  -60,  1325,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -20,  -60,  1350,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,	 30,  10,  1550,   0,   0,  20.0,  o
+HOOP=hoop0.pcx,  20,  20, 1650,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  10,  30,  1750,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  0,  20,  1850,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -40,  60,  2000,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -40,  60,  2025,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,   0,  0,  2150,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   -10,  -10, 2200,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,   0,   -20,  2250,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,   10,   -10,  2300,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,   20,   0,  2350,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,   30,   10,  2400,   0,   0,  20.0,    o
+
+
+
+# NO BALLOONS FOR FIRST LEVEL
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+#BONUS=bonusballoon.pcx,     0,  10,   680,   50
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+# example: constant wind of magnitude 30 to the left on the whole level: 
+WIND =    0,  0,  90,  5 

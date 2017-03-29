@@ -1,0 +1,611 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 2. Platforms</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt02.html" title="Part II. Getting Started"><link rel="previous" href="pt02.html" title="Part II. Getting Started"><link rel="next" href="ch03.html" title="Chapter 3. Platform Independent"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 2. Platforms</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pt02.html">Prev</a> </td><th width="60%" align="center">Part II. Getting Started</th><td width="20%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id408573"></a>Chapter 2. Platforms</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch02.html#id408346">Desktop Windows</a></dt><dd><dl><dt><a href="ch02.html#id408356">Overview</a></dt><dt><a href="ch02.html#id408259">Installing Visual C++ 6.0</a></dt><dt><a href="ch02.html#id327864">Creating the First Project</a></dt><dt><a href="ch02.html#id409029">Desktop windows differences</a></dt><dt><a href="ch02.html#id409068">Where to go from Here?</a></dt></dl></dd><dt><a href="ch02.html#id409105">Symbian</a></dt><dd><dl><dt><a href="ch02.html#id409115">Overview</a></dt><dt><a href="ch02.html#id409536">Installation</a></dt><dt><a href="ch02.html#id409924">
+Working with the Symbian tools
+</a></dt><dt><a href="ch02.html#id410442">
+X-Forge Examples
+</a></dt><dt><a href="ch02.html#id410808">
+Troubleshooting
+</a></dt></dl></dd><dt><a href="ch02.html#id410892">PocketPC</a></dt><dd><dl><dt><a href="ch02.html#id410902">Overview</a></dt><dt><a href="ch02.html#id410969">Installation</a></dt><dt><a href="ch02.html#id411096">First Program</a></dt></dl></dd><dt><a href="ch02.html#id411636">Tapwave Zodiac</a></dt><dd><dl><dt><a href="ch02.html#id411645">Overview</a></dt><dt><a href="ch02.html#id411709">Installation</a></dt><dt><a href="ch02.html#id411738">Using Tapwave Tools</a></dt><dt><a href="ch02.html#id412003">Tapwave Zodiac differences</a></dt><dt><a href="ch02.html#id412638">Palmsim Notes</a></dt><dt><a href="ch02.html#id412712">Troubleshooting</a></dt></dl></dd><dt><a href="ch02.html#id412868">Linux</a></dt><dd><dl><dt><a href="ch02.html#id412877"></a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id408346"></a>Desktop Windows</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id408356"></a>Overview</h3></div></div><p>
+This section walks you through getting an X-Forge application to compile and run under the desktop Windows platform.
+</p><p>
+While not a real release platform, the desktop Windows platform is useful for rapid development of X-Forge applications. Debugging is also often much simpler under the desktop platform, thanks to much more mature tools available.
+</p><p>
+Additionally, the desktop Windows platform of X-Forge has been designed to be embeddable into other applications. The core examples-directory includes an example of a simple MFC application that has X-Forge embedded in it.
+</p><p>
+The preferred development environment for desktop Windows is Microsoft Visual C++ 6.0 Professional (also included in the Microsoft Visual Studio 6.0 Professional package). Other versions may also work. The Desktop Windows platform has been tested with Visual C++ 7.0 (included in the Visual Studio .NET package) as well.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id408259"></a>Installing Visual C++ 6.0</h3></div></div><p>
+Insert Visual Studio CD1, and wait for the installer to launch. If you have the autolaunch disabled, you will have to open the CD with Windows Explorer and run install.exe.
+</p><p>
+In the installer, click 'Next', accept the EULA, click 'Next' again, enter the product id (found on a sticker on the back side of the CD cover), and click on 'Next' again.
+</p><p>
+Pick 'Install Visual Studio 6.0', and not the server applications package, click on 'Next'. If the default installation directory for common files is ok by you, click on 'Next'.
+</p><p>
+Click on 'Continue', and you will see your product id. You can get this on the 'About' box of Visual Studio later if you need it. Click on 'OK'.
+</p><p>
+Next click on the icon that has the Visual Studio infinity-sign drawn over some installation icon. On the package selection screen make sure Visual C++ is installing; the default options should be ok. Feel free to select or deselect other options as long as the C++ default packages are installing. When you're done, click on 'Continue'.
+</p><p>
+Make sure the 'Register environment variables' tick box is ticked, then click on 'OK'. After this the installer should start installing Visual Studio. If asked, insert different CDs. After the installation is done, click on 'OK' and 'Restart Windows'.
+</p><p>
+After reboot, the installer will ask whether you wish to install MSDN. Insert the MSDN install CD and answer 'Yes'. Click on 'Next', 'Continue', and you should be offered a product id again. Click on 'OK', agree to the EULA, select 'Full installation', and the installer should start installing again. If asked, insert different CDs.
+</p><p>
+Once the MSDN installation is complete, click on 'OK', and the installer should ask whether you wish to install InstallShield VC6 Edition. You can install this if you want, but we'll skip it here. Clicking on 'Next' will (depending on your edition) give you the choice of installing back office SDKs. We'll skip these as well. Click on 'Next'.
+</p><p>
+Next screen will let you register Visual Studio, and then you can click on 'Finish'.
+</p><p>
+Download and install VC6 service pack 4 or later. As of this writing you can find it at the following location:
+</p><pre class="programlisting">
+http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp4/default.asp
+</pre><p>
+The service pack installer will ask you to agree to another EULA; otherwise it is pretty straightforward.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id327864"></a>Creating the First Project</h3></div></div><p>
+If you haven't done so already, create a folder in your hard drive and copy the X-Forge distribution into it. We'll use <tt>c:\fathammer\</tt> but you can put the distribution anywhere you wish.
+</p><p>
+Launch Visual Studio, at Start / Programs / Microsoft Visual Studio 6.0 / Microsoft Visual C++ 6.0.
+</p><div class="mediaobject"><img src="images/vs_workspace.gif"></div><p>
+The Visual Studio workspace.
+</p><div class="mediaobject"><img src="images/vs_new.gif"></div><p>
+Close the tip of the day, then select file / new.
+</p><div class="mediaobject"><img src="images/vs_newproject.gif"></div><p>
+Select 'Win32 Application', set the location to where you wish to create your projects; we'll use <tt>c:\fathammer\</tt> for these as well. Next, enter project name, we'll use 'tutorial'. You will notice that the location changes to <tt>c:\fathammer\tutorial</tt>. Click on 'OK', and select 'Empty project' at the next dialog. Click on 'Finish', and 'OK' to the final dialog.
+</p><div class="mediaobject"><img src="images/vs_addfile.gif"></div><p>
+Click on the 'File view' bottom tab (near left bottom of the window), click on the plus sign on the tree view. Next, right-click on the 'Source files' item, and select 'Add files to folder'. In the file open dialog, type <tt>tutorial.cpp</tt> and click on 'OK'. You will receive a dialog asking whether to add a non-existent file to the project; answer 'Yes'.
+</p><p>
+Next, click on the little plus that appeared next to the 'Source files' in the tree view, and double-click on <tt>tutorial.cpp</tt>. Answer 'Yes' to the question whether to create the file.
+</p><p>
+Depending on your preferences of the development environment, you may wish to maximize the editor window at this point.
+</p><p>
+Type in the following source code (or, at your preference, copy it from <tt>core_examples/tutorial/e1_minimal/source/e1_minimal.cpp</tt>).
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470001;
+}
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  return 0;
+}
+
+</pre><div class="mediaobject"><img src="images/vs_saveall.gif"></div><p>
+Make sure you save at this point. Saving can be done through 'Control-S' for the current file, or 'Alt-F L' to save all files and the workspace. You can also click on the &quot;stack of disks&quot; icon to save everything.
+</p><p>
+Next we'll set up the paths in Visual Studio. You won't need to do this step but once per installation.
+</p><div class="mediaobject"><img src="images/vs_options.gif"></div><p>
+Go to Tools / Options, and select the 'Directories' tab. 
+</p><div class="mediaobject"><img src="images/vs_includepath.gif"></div><p>
+By default the dialog shows the include paths. Add include path to the X-Forge distribution include directory (in our example, <tt>c:\fathammer\xforge\include</tt>). Next, select 'Library Paths' from the selection box, and add the X-Forge library path to the list (in our example, <tt>c:\fathammer\xforge\lib\windows</tt>). Click on 'OK'.
+</p><p>
+If you try to compile now, you'll get lots of error messages. We'll need to link to several libraries and set some compile parameters first.
+</p><div class="mediaobject"><img src="images/vs_buildsettings.gif"></div><p>
+Go to Project / Settings. Select the 'Link' tab. 
+</p><div class="mediaobject"><img src="images/vs_projectset_libs.gif"></div><p>
+Add the following libraries to the <span class="emphasis"><em>beginning</em></span> of the library list: <tt>xfcored.lib</tt>  <tt>xfutild.lib</tt> <tt>zlib.lib</tt> <tt>winmm.lib</tt> <tt>wsock32.lib</tt> 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+We're configuring the debug build here, as you can see from the top left side of the dialog. The release mode configuration is exactly the same, except that you would link to <tt>xfcore.lib</tt> and <tt>xfutil.lib</tt> instead of the 'd' versions.
+</p></div><p>
+Next, go to the 'C/C++' tab. Here, add <tt>XFC_PLATFORM_DESKTOPWINDOWS</tt> to the preprocessor directives list. The desktopwindows platform tells X-Forge which platform we're running. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+When embedding X-Forge into another windows application, you should also add <tt>XFC_MEMMGR_DISABLE</tt> to the above list, and link towards <tt>xfcoreemb.lib</tt> instead of <tt>xfcore.lib</tt>. The memory manager has to be disabled so that the memory manager does not conflict with MFC, for instance.
+</p></div><div class="mediaobject"><img src="images/vs_build.gif"></div><p>
+Next, click on 'OK', and you're ready for compilation. Click on 'Build' in the 'Build' menu, or just press 'F7' for the same effect.
+</p><p>
+If you try running the application (F5), you will get a dialog about missing DLL. The application requires <tt>zlib.dll</tt>. You can find this in the <tt>xforge/lib/windows</tt> directory of the X-Forge distribution. Copy it to the same directory where the executable is (in our example, <tt>c:\fathammer\tutorial\Debug\</tt>), and try again. You should have a black, empty X-Forge window.
+</p><div class="mediaobject"><img src="images/vs_emptyapp.gif"></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id409029"></a>Desktop windows differences</h3></div></div><p>
+The Desktop windows platform contains several differences that are designed to help in development. Assertion failures are more descriptive, and more error situations are checked, such as filename case differences.
+</p><p>
+Also, in the desktop windows versions, F12 saves screenshots. The shots are saved as BMP files
+with the name of <tt>ss0001.bmp</tt>. The number in the filename increases when you save more screenshots.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id409068"></a>Where to go from Here?</h3></div></div><p>
+If you wish, you can continue straight to the platform-independent 'Getting Started' chapter and get into X-Forge programming without delay (starting with explanation of what the above program actually does).
+</p><p>
+Alternatively you can read some other platform-specific getting started chapter, if you want to see how to make things run on an actual device first.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id409105"></a>Symbian</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id409115"></a>Overview</h3></div></div><p>
+This section introduces you to the Symbian platform specific features. X-Forge currently supports developing with the Series 60 SDK (e.g. for Nokia 7650) and the free UIQ SDK (e.g. for Sony Ericsson P800). For the latter the Symbian recommended development environment is Metrowerks CodeWarrior, and to run applications in the UIQ emulator requires it. However, we don't currently have support for the CodeWarrior, but might add it at some point. You will have to do without the emulator on UIQ, but you'll most probably be spending most of the time developing for the desktop Windows platform with your X-Forge projects anyway.
+</p><p>
+In general, Symbian development is a bit different from desktop system programming. The development tool chain is a bit more complicated. Debugging on the target device is not straightforward, and the emulator behaves differently from the actual device. In order to test the application on the device, you have to build the whole installation package and transfer it to the device.
+For these reasons it is recommended that the application is first developed on desktop Windows platform and then recompiled to the Symbian environment to test in on the device. This way the development cycle becomes much shorter.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+It is recommended that you <span class="emphasis"><em>do not</em></span> use the Symbian emulator when developing your X-Forge application. Do the main development on desktop Windows platform and test the application in the actual target device on Symbian platform.
+</p></div><p>
+Under Symbian platform each of your applications will need a unique identifier or UID. As of this writing, the UID's have to be ordered from Symbian. However, if you want a few UID's just for development, you can use numbers in the range 0x00000001 - 0x0FFFFFFF. These UID's should not appear in any released products. For instructions on how to order UID's, please refer to Symbian documentation for up-to-date information.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+As of this writing, the UID ordering information can be found at <tt>http://www.symbian.com/developer/techlib/papers/tn_uid/uidinfo.html</tt>
+on the Symbian site.
+</p></div><p>
+The UID's must be specified on the epoc project definition files (<tt>.mmp</tt>). If you open the project definition file of the cube example (<tt>core_examples/graphics/cube/build/symbian/cubecommon.mmp</tt>) you can see a line specifying the UID. The first number on the UID line specifies the type of the file being built, and is always the same (0x100039CE) for applications (<tt>.app</tt>'s). The UID must also be specified in the package file (<tt>.pkg</tt>) you write to make installers. If you decide to build an application information file (<tt>.aif</tt>) to go with your application, you have to write a resource file (<tt>.rss</tt>), in which you must also specify the UID. This will associate the aif-file with your application. When you build applications with X-Forge you must state the UID in the code, as well. This is done in the main application class, in function <tt>xfcAppPref()</tt>, for example:
+
+</p><pre class="programlisting">
+
+// Configure the app
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+    ...
+    aAppPrefs.mUID = 0x0F470001;
+}
+
+</pre><p>
+
+You can see the UID plays a big role, and subsequentially it is also a common source of problems. It's one of the first things you should check if you run into problems.
+</p><p>
+Making the installer files is briefly explained later in this chapter. Please refer to the Symbian documentation for building application information files, and thus writing the resource files.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+You must ALWAYS make sure that your projects have a unique UID specified. Failure to do so will cause some very cryptic problems.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id409536"></a>Installation</h3></div></div><p>
+Install Visual C++ 6.0 if you haven't already. See 'Getting started -&gt; Desktop Windows', above, for install instructions. Other versions may also work, but they're not verified on the Symbian platform.
+</p><p>
+You should also install the latest service pack since the Symbian tools will give a warning if you don't have at least service pack 3.
+</p><p>
+When installing the Symbian tools and SDK's we recommend installing them in a way, that the installation folder looks like it was the root of a drive. This way you are most likely to avoid problems if installing other Symbian SDK's. After the installation you will have two directories added to your <tt>PATH</tt> environment variable, for example <tt>X:\epoc32\gcc\bin;X:\epoc32\tools;</tt> If you install other Symbian SDK's specify a different drive letter. In that case you should remove the drive letters from these directories in the <tt>PATH</tt> variable and point them to the root: <tt>\epoc32\gcc\bin;\epoc32\tools;</tt>. This way the tools from the right SDK will be used, because you will be building your programs from the command line and thus already be on the correct drive. After the installation you should also have the environment variable <tt>EPOCROOT</tt> specified. It should point to the directory containing the <tt>epoc32</tt> directory, in the above case the root: <tt>\</tt>.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id409638"></a>Series 60 SDK installation</h4></div></div><p>
+Make a folder called e.g. <tt>EpocSDKs</tt> and under it a folder 
+<tt>Series60</tt>. &quot;Subst&quot; the <tt>EpocSDKs/Series60</tt> so that the drive points there. From the command line:
+</p><pre class="programlisting">
+subst x: c:\EpocSDKs\Series60
+</pre><p>
+Start the setup program for the Series 60 SDK. When the setup program asks where to install replace both default paths with the root of the newly substed drive e.g. <tt>x:\</tt>. When the installation is complete you will need to reboot your computer. After each reboot you'll naturally need to &quot;subst&quot; the drive again.
+</p><p>
+Copy the <tt>epoc32</tt> folder from <tt>xforge/lib/Symbian/N7650</tt> of the X-Forge distribution on top of the <tt>x:\epoc32</tt> folder.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id409747"></a>UIQ SDK installation</h4></div></div><p>
+The installation is similar to that of the Series 60 SDK. Make a folder called e.g. <tt>EpocSDKs</tt> and under it a folder 
+<tt>UIQ</tt>. &quot;Subst&quot; the <tt>EpocSDKs/UIQ</tt> so that the drive points there. From the command line:
+</p><pre class="programlisting">
+subst y: c:\EpocSDKs\UIQ
+</pre><p>
+Start the setup program for the UIQ SDK. When the setup program asks where to install the Kit installer and the corresponding Kit, replace the default path with the root of the newly substed drive e.g. <tt>y:\</tt>. After each reboot you'll naturally need to &quot;subst&quot; the drive again.
+</p><p>
+Copy the <tt>epoc32</tt> folder from <tt>xforge/lib/Symbian/UIQ</tt> of the X-Forge distribution on top of the <tt>y:\epoc32</tt> folder.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+We've had some problems with the UIQ installers along the way. Sometimes the installation would fail because the installer is a Java software, and can be picky of the JRE version. Sometimes the root folder just hasn't been ok for the installer, and we've installed to a temporary directory, and later copied the directory to a &quot;substed&quot; root and modified the environment variables. Sometimes the installer would even delete the directory you are pointing it to. This has happened after the installer has complained with a dialog that the directory is not empty etc., and you've pressed 'Next' anyway. Nothing visible happens in the installer, however.
+</p></div></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Nothing prevents you from installing the Symbian SDK to the folder you want to. But if you later want to install other Symbian SDK's, and use them concurrently, you'll have to always edit the environment variables <tt>EPOCROOT</tt> and <tt>PATH</tt> for the right SDK to function properly.
+</p></div><p>
+Please consult to the installation instructions found in the corresponding SDK packages for additional information.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id409924"></a>
+Working with the Symbian tools
+</h3></div></div>
+
+This section briefly describes the tools and procedures that you'll need in building your projects for Symbian. For more extensive information on the tools or file formats, please refer to the Symbian SDK documentation.
+
+<div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id409938"></a>
+Compiling your application
+</h4></div></div><p>
+When compiling your own programs for Symbian you need to create two files:
+</p><div class="itemizedlist"><ul type="disc"><li>
+A project definition file (<tt>.mpp</tt> file) that describes a project to be built. This is a file that can be used by the tools to produce make files for any of the supported target environments. It also defines resource files and application information files to be built.
+</li><li>
+A component description file (<tt>bld.inf</tt>), which lists all the projects in a component, and gives additional build instructions. Usually this file will only specify a single project mmp file.
+</li></ul></div><p>
+</p><p>
+When you create a new project, you write these files (or typically copy existing similar files and modify them) in a text editor.
+These project files are used by a program called 'bldmake'.
+You then run it from the directory where the <tt>bld.inf</tt> file is located: 
+
+</p><pre class="programlisting">
+bldmake bldfiles
+</pre><p>
+
+This creates a batch file, <tt>abld.bat</tt>, which you will be using for the rest of the compiling process.
+</p><p>
+To build the project run 
+
+</p><pre class="programlisting">
+abld build [architecture] [variant]
+</pre><p>
+
+Architecture would be 'WINS' for emulator builds and 'ARMI' for device builds (e.g. Nokia 7650 and Sony Ericsson P800).
+Variant can be either 'UDEB' or 'UREL', meaning debug and release builds.
+If you leave the architecture and variant away, the project will be built for all valid targets with both release and debug mode.
+You'll most probably be compiling for the target to test your application, and you'll then run
+
+</p><pre class="programlisting">
+abld build armi urel
+</pre><p>
+
+This will create the application executable (<tt>.app</tt>) compiled for the target device in <tt>/epoc32/release/armi/urel/appname.app</tt>
+</p><p>
+Running
+
+</p><pre class="programlisting">
+abld clean
+</pre><p>
+
+will clean up executables and temporary object files (equals 'make clean'). To really make sure all the intermediate files (some files that were copied in the build process and individual makefiles) will be erased, use
+</p><pre class="programlisting">
+abld reallyclean
+</pre><p>
+, and use it twice. (Not kidding.)
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+If your project definition changes you should do a clean up, and must then run <tt>bldmake</tt> to create the <tt>abld.bat</tt> again.
+</p></div><p>
+There are two important X-Forge libraries you'll need to know about for development with X-Forge:
+</p><div class="itemizedlist"><ul type="disc"><li><tt>xfcorestatic.lib</tt> - the X-Forge core static link library
+</li><li><tt>xfutil.lib</tt> - a precompiled library for everything under the <tt>xfutil</tt> folder of the X-Forge distribution
+</li></ul></div><p>
+There's also a big bunch of Symbian libraries, you'll have to link against. Please take a look in the examples provided with X-Forge to cover most of them. You'll tell <tt>abld.bat</tt> to link your application against the libraries in the mpp-file.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id410247"></a>
+Installing your application
+</h4></div></div><p>
+With some configurations you are able to directly browse the directory structure on your Symbian device. You can then make a folder <tt>appname</tt> under <tt>/system/apps/</tt> on your Symbian &quot;drive&quot; and copy <tt>appname.app</tt> in that folder. To this folder you should copy also other files needed by the application, usually <tt>zlib.dll</tt> and the data files. However, we are encouraging you to start making installation packages from your applications right from the start. That procedure is common to all Symbian platforms, and is something you'll have to do if you plan to release an application.
+</p><p>
+These packages (<tt>.SIS</tt> files) are created using an application called 'makesis'. The package creation process is controlled with a configuration file (<tt>.pkg</tt>). It is a text file describing the files needed in the package and their intended target directories on the target device. Unless explicitly specified, the name of the new installation file will be the same as the package file, but with the .SIS extension.
+For an example of a simple .pkg-file, please refer to <tt>helloworld.pkg</tt>
+in the 'Hello World' engine example. Please note the product id, that is required and different for each platform installer.
+For Series 60 platforms the package file should state
+</p><pre class="programlisting">
+(0x101F6F88), 0, 0, 0, {&quot;Series60ProductID&quot;}
+</pre><p>
+and for Sony Ericsson P800 and P802 (UIQ)
+</p><pre class="programlisting">
+(0x101F80BE), 1, 0, 0, {&quot;SonyEricssonP80xPlatformProductID&quot;}
+</pre><p>
+</p><p>
+Once you have created the .pkg-file, you can create the installation package by running
+</p><pre class="programlisting">
+makesis appname.pkg
+</pre><p>
+This will create the installer (named <tt>appname.SIS</tt> by default), which can be transferred to the target device. For example on Nokia 7650, the easiest way to do this is to send it over BlueTooth.
+</p><p>
+For more information on installing / transferring the .SIS-file to the device, please refer to the device documentation.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id410442"></a>
+X-Forge Examples
+</h3></div></div><p>
+This section describes building two X-Forge examples for the Series 60.
+</p><p>
+Every example has a Symbian folder that includes the required Symbian makefiles to compile them. The makefiles have a part common to all Symbian platforms, and then in a sub-folder the SDK specific project files, <tt>Series60</tt> in this case. The common part is always included from them.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id410481"></a>
+Example 1 - HelloWorld
+</h4></div></div><p>
+This procedure describes compiling the HelloWorld example for a Series 60 phone.
+</p><p>
+The engine examples need additional data files to function properly. There are prebuilt installer package files to take care of them, but it's important to notice this fact.
+</p><p>
+Make a new folder on the root of your Symbian development drive and copy the X-Forge distribution there. Change into the folder <tt>
+\engine_examples\HelloWorld\build\symbian\Series60</tt>
+</p><p>
+Type
+</p><pre class="programlisting">
+bldmake bldfiles
+</pre><p>
+
+This will create the <tt>abld.bat</tt> file. Now type
+</p><pre class="programlisting">
+abld build armi urel
+</pre><p>
+
+This will do the actual compiling of the application and create a release version for ARM processors.
+After the build is over your application can be found in <tt>/epoc32/release/armi/urel/helloworld.app</tt>
+</p><p>
+In the current directory there should also be a package file <tt>helloworld.pkg</tt>. Run the installer generator: </p><pre class="programlisting">
+makesis helloworld.pkg
+</pre><p>
+
+You should now have <tt>helloworld.SIS</tt> ready to be installed and run on the device. Carry out the installation according to the instructions in your device documentation.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id410616"></a>
+Example 2 - Cube Example
+</h4></div></div><p>
+This procedure describes compiling the Cube Example for the Series 60 emulator.
+</p><p>
+If you haven't already, make a new folder on the root of your Symbian development drive and copy the X-Forge distribution there. Change into the folder <tt>core_examples/graphics/cube/build/symbian/Series60</tt>
+</p><p>
+Type
+</p><pre class="programlisting">
+bldmake bldfiles
+</pre><p>
+
+This will create the <tt>abld.bat</tt> file. Now type
+</p><pre class="programlisting">
+abld build wins udeb
+</pre><p>
+
+This will do the actual compiling of the application and create a unicode debug version, that will work with the emulator.
+After the build is over your application can be found in the folder <tt>epoc32/release/wins/udeb/z/system/apps/cube</tt>
+</p><p>
+Now run the emulator from <tt>epoc32/release/wins/udeb/epoc.exe</tt>. Click on the cube icon and the application should run. You should note that the emulator limits the maximum fps count somewhere close to ten, which is not the case when running on an actual device. Where your application appears varies under different flavours of Symbian OS. With Nokia 7650 your applications will appear under the 'Other' folder of the applications 
+screen.
+</p><p>
+Notice that some of the core examples need additional data files to run, as well. You must copy them by hand from the <tt>core_examples/data</tt> folder into the 
+<tt>epoc32/wins/c/system/apps/appname</tt> folder, <tt>appname</tt> being the name of the application. You must create this folder if it doesn't exist.
+</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Symbian core has been changed to disable backlight turning off after a few seconds of keyboard inactivity. In later versions there might be an interface to control this state.
+</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+When pressing buttons on dialog boxes the Symbian event handling sometimes sends the control up event of the keypress to the application that receives focus after the dialog box. This may cause undesirable effects if game pause mode is set off with control up event. Resuming game should in this case be mapped to control down event.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id410808"></a>
+Troubleshooting
+</h3></div></div><p>
+Q: Why is my application not visible on the emulator ?
+</p><p>
+A: Check that your application really has appeared under
+   <tt>epoc32/release/wins...</tt> folder and your <tt>myapp.app</tt> is under a
+   folder called <tt>myapp</tt>. If it is there then you have probably 
+   got a case of a bad UID or you are using the same UID for 
+   two applications. In the latter case only one of the
+   two applications will appear on the emulator.
+</p><p>
+Q: Why does my application say 'System Error' on start-up ?
+</p><p>
+A: You are missing a DLL, bitmap or some other resource file.
+   Make sure you have all the required files included in the installation.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id410892"></a>PocketPC</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id410902"></a>Overview</h3></div></div><p>
+This chapter walks through the steps of getting your program
+to compile on the PocketPC platform. The platform-independent getting started
+chapter continues from where this document ends.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+X-Forge mainly targets PocketPC2000 instead of PocketPC2002 in order to support the widest
+possible range of PocketPC devices. PocketPC2002 mainly included UI updates and desktop
+synchronization fixes, neither of which affect X-Forge in any way. PocketPC2000 applications
+run in PocketPC2002, but not necessarily vice versa.
+</p><p>
+Only negative side effect this has is that when doing remote debugging with a PocketPC2002 device,
+you will be prompted every time whether you wish to continue, since the platform ids do not match.
+The remote debugging will work despite of this warning.
+</p><p>
+X-Forge 1.1 onwards includes PocketPC2002 and Smartphone2002 libraries as well as normal PocketPC libraries. There is no gain for using PocketPC2002 libraries over PocketPC ones, apart from getting rid of the above warning message.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id410969"></a>Installation</h3></div></div><p>
+Install the Microsoft eMbedded Visual Studio (available from
+<tt>http://www.microsoft.com/mobile/downloads/emvt30.asp</tt> as a free
+download as of this writing).
+</p><p>
+After this you have to set up the include and library directories for eVC. This can be done by either configuring eVC's directories or you may opt to add these paths to every project separately.
+</p><p>
+If you want to set up the directories in eVC, go to Tools / Options / Directories. Then:
+</p><pre class="programlisting">
+1) Make sure the Platform reads &quot;Pocket PC&quot; (and not, for 
+   example, &quot;Pocket PC 2002&quot;)
+2) Make sure 'include files' is visible
+3) add the path to the include root directory 
+   (for example \xforge\include)
+4) Go through all the CPUs in the list, add the same include
+   path to all of them.
+</pre><p>
+Then, change from 'include files' to 'library files' and add the library file paths to all platforms as well. You should set the 
+ARM CPU library path to include xforge\lib\wince\arm, x86em CPU path to include xforge\lib\wince\x86em, etc.
+</p><p>
+If you're developing for PocketPC2002 or SmartPhone 2002, you will need to add the same paths for all of the CPUs in those platforms as well.
+</p><p>
+If you want to set up the directories in each project separately instead of the above, after having created a project open it and
+go to Project / Settings / c/c++ / preprocessor, then select, in the 'settings for' pulldown on the left side of the dialog (above the tree view) 'all configurations'. After this, add the X-Forge include path to the 'additional include directories' field.
+</p><p>
+Then go to Link / Input and add the X-Forge library path to the 'additional library paths' field. You will still have to set the
+library path separately for each CPU you wish to target (most likely x86em and ARM).
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id411096"></a>First Program</h3></div></div><p>
+Now you can start a new project. Make sure you select 'pocket pc application' (and not, for example, 'pocket pc 2002 application').
+</p><p>
+I chose to call this project &quot;tutorial&quot;. Select 'empty project' from the wizard, then click on finish. Change to file view from the bottom left side of the screen, click open the 'tutorial files', right-click on 'source files' and add a new file. Type <tt>app.cpp</tt> in the file dialog, and say yes when asked whether to add a non-existent file. Now click the <tt>app.cpp</tt> open (it will ask again whether to create a new file).
+</p><p>
+Here's the source code for the minimal program:
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470001;
+}
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  return 0;
+}
+
+</pre><p>
+(This source code can also be found at <tt>core_examples/tutorial/e1_minimal.cpp</tt>).
+</p><p>
+If you try to compile you will get a error message starting with: &quot;Please define X-Forge Core platform in order to compile.&quot;
+Since some compilers are used to produce code for several different platforms (gcc and visual studio for instance) we cannot automatically detect which platform you wish to build for. Thus, we need to specify the platform (and some other bits) in the compile options.
+</p><p>
+Go to Project / Settings, in &quot;settings for&quot; select 'all configurations', go to the 'c/c++' tab, and add to the end of 'preprocessor definitions' the following: &quot;,XFC_PLATFORM_WINCE&quot; (without the quotes).
+</p><p>
+After this go to the 'link' tab, and add <tt>xfcored.lib</tt> as the FIRST library in the 'object/library modules' list. Also add <tt>xfutild.lib</tt>, <tt>gx.lib</tt>, <tt>winsock.lib</tt> and <tt>zlib.lib</tt> and make sure that <tt>aygshell.lib</tt> is there as well. (For release build you should use <tt>xfcore.lib</tt> and <tt>xfutil.lib</tt> instead of the 'd' versions).
+</p><p>
+And while we're changing the settings, go to 'Debug' tab and change the 'Download directory' to &quot;<tt>\my documents</tt>&quot; (it should say &quot;<tt>\windows\start menu</tt>&quot; by default).
+</p><p>
+Now if you try to compile you should get several warnings that certain header files are missing (<tt>e32base.h</tt> for example). This happens when eVC is building the automatic precompiled header set, and unfortunately tries to find files that it should not (those includes have been conditionally compiled out). You can safely ignore these warnings. The initial build may take a while as eVC is looking for files, so if your PC seems to have hung, be patient.
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+If you wish to get rid of the &quot;missing header file&quot; warnings, you can create dummy header files
+somewhere in the include path. These files must have a non-zero length, or otherwise the compiler will
+give an error.
+</p></div><p>
+Apart from the above your program should compile fine. Right above the file tree view and text editor you should have a toolbar with the build configuration. If it is not visible, just right-click on any toolbar and make sure 'WCE configuration' is checked. Make sure the bar says, from left to right: your project name, &quot;Pocket PC&quot;, &quot;Win32 (WCE x86em) Debug&quot;, &quot;Pocket PC Emulation&quot;. Press F7 to compile.
+</p><p>
+If you press F5 to run now, the emulator pops up and you get a dialog box saying &quot;unable to locate dll&quot;. Please note that if you try to execute the program (control-F5) the emulator will not say anything, but doesn't start the program either.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+'Run' means to run the application with debugger enabled, while 'execute' means to run the application on its own. If you try to 'run' an application with no debug information the IDE will give you a warning.
+</p></div><p>
+In order to run your program, the target machine must contain <tt>gx.dll</tt> and <tt>zlib.dll</tt>, either in the same directory as the application or in the Windows directory.  These files can be found in the library directory in the X-Forge distribution (for instance, for the PocketPC emulator, the dlls are in <tt>xforge\library\wince\x86em</tt>). Emulator platforms (x86, x86em) may not include the <tt>gx.dll</tt> file, since the emulators do not support the GX interface.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+PocketPC emulator uses <span class="emphasis"><em>x86em</em></span> libraries while PocketPC2002/Smartphone2002 emulators use <span class="emphasis"><em>x86</em></span> libraries.
+</p></div><p>
+Now we want to know where the executable was copied. As you remember we set the 'download directory' in Project / Settings / Debug tab to <tt>\my documents</tt>. This is the directory on the emulator. The emulator itself is by default located at
+</p><pre class="programlisting">
+X:\Windows CE Tools\wce300\MS Pocket PC\emulation\palm300
+</pre><p>
+Copy the <tt>zlib.dll</tt> for x86em into the <tt>\my documents</tt> directory of the emulator. (This file could be copied into the <tt>\Windows</tt> directory as well, or the proper directory for WinCE programs, <tt>\program files\yourprogramdir</tt>, but we will do things as simply as possible for this time. When copying the DLLs onto an actual device, remember to copy the <tt>gx.dll</tt> as well). 
+</p><p>
+If, when you're copying the DLLs, you notice that the executable is not in the download directory, you can check whether the download directory is correct by checking Project / Settings / Debug tab.
+</p><p>
+If you try to execute the program (control-F5 or F5 if you want to run with the debugger) after this you should get an application that does nothing and cannot be exited from. You can shut down the emulator from the round button below the screen.
+</p><p>
+Please continue to the platform independent 'getting started' chapter next, which goes through the program, and gets you into the X-Forge philosophy.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id411636"></a>Tapwave Zodiac</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id411645"></a>Overview</h3></div></div><p>
+This section introduces the Tapwave Zodiac platform and its specific differences for X-Forge developers. 
+</p><p>
+The Zodiac uses a modified version of Palm OS 5. These modifications enable convenient use of ARM code, large memory allocations and other changes that make it better suited for high-end mobile gaming. Using X-Forge you don't need to know about Palm programming, although it helps if you wish to use some of the functionality in the device that are not exposed by the X-Forge APIs.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+At the time of writing, the development tools are still much under development. Familiarity with the codewarrior environment is assumed, and many of the paths and library names are subject to change.
+ARMlets are going away and will be replaced by Tapwave Native Applications (TNAs) or PACE Native Objects (PNOs).
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id411709"></a>Installation</h3></div></div><p>
+You will need Codewarrior 9.2 for Palm OS from Metrowerks, possibly with Tapwave extensions installed, and the Tapwave SDK available from <tt>http://www.tapwave.com/developer/</tt>.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id411738"></a>Using Tapwave Tools</h3></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id411747"></a>Contents of a Tapwave Native Application project</h4></div></div><p>
+A Tapwave Native Application (TNA) project consists of a small Dragonball (68k) code side and an ARM code side.
+</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id411767"></a>Dragonball Files</h5></div></div><p>
+The Dragonball side of a TNA consists of the following files:
+</p><p>
+ARMC0001.bin - the ARM code block, generated by the compiler.
+</p><p>
+Application.cpp - the Dragonball stub, which mainly locates the ARM code and jumps to it. It may also contain checks to make sure the application can run on the current device, and display error message if not. (Right now it shouldn't be a problem as most TNAs are too large to fit into older Palm devices, but some future Palm device might be able to support the file sizes, but not the Tapwave APIs).
+</p><p>
+PalmOSRuntime*.lib - Palm Dragonball runtime library.
+</p><p>
+Application.rcp - PRC file resource script. Contains the application category, icons, and palmsim support resources.
+</p><p>
+*.bin - Any resources required by the application (such as pxFs0000.bin).
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id411832"></a>ARM files</h5></div></div><p>
+The ARM side of the application consists of the following files:
+</p><p>
+ARMlet.cpp - This is ARM counterpart to Application.cpp, and takes care of relocation, memory management etc. In general you shouldn't need to touch the contents of this file.
+</p><p>
+Runtime_PNO.a - Palm ARM runtime library.
+</p><p>
+MSL_C_PNO.a - Standard C library, required by X-Forge.
+</p><p>
+xfcore.a - X-Forge Core library.
+</p><p>
+xfutil.a - X-Forge Util library.
+</p><p>
+*.cpp - Any project source files.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id411900"></a>Important Compile Options</h4></div></div><p>
+The TNA project has two build targets, PACE native object (PNO) and the application itself. 
+</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id411918"></a>Application Project Settings</h5></div></div><p>
+In the 'Palm OS 68K Target' tab, you can set the file name of the target application, plus application name ('tAIN') as it will be shown on the device. 
+</p><p>
+In the 'PRC File Settings' there's a 'Creator' field. This field has to contain a creator id that has to be unique for all applications (much like the unique id's on Symbian platforms). You can register creator IDs at PalmSource's web site at <tt>http://dev.palmos.com/creatorid/</tt>. Thus tab also contains 'DB name' field, which should be set to something sensible (such as your application name). All database names must also be unique, and Palmsource recommends postfixing the database name with the creator code, for instance &quot;example-XFe1&quot;.
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="id411970"></a>PNO Project Settings</h5></div></div><p>
+In the 'PACE Native Object Target' tab, make sure the 'Generate relocation lists' checkbox is checked. Without this, virtual functions will not work. Also, make sure the Instruction Set is set to &quot;ARM&quot;.
+</p><p>
+In 'Access Paths', system paths should be, in this order: Tapwave's SDK:s include directory, ARM_EABI_Support, X-Forge's include directory and finally the project's own include directory (if any).
+</p><p>
+Finally, the xfcore.a should be first in the link order for the memory management to work.
+</p></div></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id412003"></a>Tapwave Zodiac differences</h3></div></div><p>
+The Tapwave Zodiac platform uses a modified Palm operating system. The main differences on this platform compared to other X-Forge platforms are:
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412023"></a>Threads</h4></div></div><p>
+Applications cannot use threads. Trying to launch threads will fail. This also means that using the X-Forge Engine asyncLoad() call will fail; use load() instead. The operating system itself, however, does use threads, for instance for the audio.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412055"></a>Filesystem</h4></div></div><p>
+See 'Files and pxFs' chapter, below.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412072"></a>Analog controller</h4></div></div><p>
+The Zodiac has an analog controller, which is mapped to <tt>onJoystickMoved</tt> call on <tt>XFcInput</tt>. Moving the controller will also send normal digital joystick calls, but it is recommended that applications use the analog controller, as it has a much better feel to it.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412107"></a>2d hardware acceleration</h4></div></div><p>
+While the Zodiac device has some 2d acceleration features, X-Forge does not currently abstract its use. See 'Graphics Output', below.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412128"></a>Files and pxFs</h4></div></div><p>
+Traditionally, a Palm device does not contain any 'internal volume' where files could be stored, but uses a database instead. However, one of the Tapwave extensions to the Palm operating system is such a volume. For an X-Forge application the internal volume looks just the same as the filesystem on a memory card.
+</p><p>
+All launchable <tt>.prc</tt> files should be located in the directory <tt>/PALM/launcher/</tt> on a memory card. All files associated to a program should be located in <tt>/PALM/programs/databasename-creatorcode/</tt>. The database name and creator code were set in the 'PRC File Settings' in Codewarrior. As an example, if the application database name was 'example' and the creator code was 'XFe1', the proper directory would be <tt>/PALM/programs/example-XFe1/</tt>. If the database name is already postfixed with the creatorcode, that is not duplicated (ie. the directory will not become example-XFe1-XFe1).
+</p><p>
+X-Forge will automatically open files in the proper place. When opening files, they are first looked for on the same volume where the application was launched, and then on all volumes in the device. To override this behavior, you can prefix the filename with <tt>//</tt>. For instance, to find files in the <tt>/foo</tt> directory, use <tt>///foo/</tt>. To find a file in the first slot, you can use <tt>//a:/foo</tt>. For second slot, use b:, for the internal volume, use z:, and finally, to open files in the pxFs, use x:. If you don't follow the : character with a / character, the application's proper storage directory is used (for instance, <tt>//a:foo.dat</tt> would try open the file <tt>/PALM/programs/example-XFe1/foo.dat</tt> on any volume in the first memory card slot).
+</p><p>
+As an alternative to storing data on the volumes, you can also use pxFs, or Palm X-Forge Filesystem. It's a read-only virtual filesystem built on top of the Palm database. The good side of using pxFs is that you get a single self-contained .prc file that contains all the data for your application. The bad side is that your .prc file might become rather large, and might not fit into users' devices, while when having the data files stored externally the user can leave the data files on a memory card.
+</p><p>
+Much like when building CFL files, the pxFs files are built with a command-line tool called <tt>palmxfs</tt>.
+</p><p>
+Create a text file with one filename per line, and give this text file as a parameter to <tt>palmxfs</tt>. You should then have one or more files named <tt>pxFs????.bin</tt>. Add these .bin files to your project and your application can then use the files as if they were on a ROM card on a normal filesystem. (Yes, you can put CFLs inside the pxFs).
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Tapwave recommends storing data files externally, and to save game state in the application preferences database. 
+</p><p>
+X-Forge doesn't currently abstract database access, and Fathammer recommends using files normally for game state and configuration storage for maximum portability.
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412378"></a>Graphics Output</h4></div></div><p>
+X-Forge doesn't have abstraction for the 2d accelerator. The application can, however, use the 2d accelerator directly with the TwGfx library by overriding the normal screen update. This can be done by overriding the <tt>updateScreen()</tt> callback in <tt>XFcRenderer</tt> class.
+</p><p>
+The <tt>updateScreen</tt> call receives a pointer. Under the Tapwave Zodiac platform, the pointer points at the following structure:
+</p><pre class="programlisting">
+struct xfcUpdateScreenInfo
+{
+    TwGfxSurfaceType *mBackSurface;
+    TwGfxSurfaceType *mScreenSurface;
+    TwGfxType *mTwGfx;    
+};
+</pre><p>
+Normal screen update (currently) follows the following pattern:
+</p><p>
+1. Transfer secondary framebuffer to <tt>mBackSurface</tt> using <tt>TwGfxWriteSurface()</tt>
+</p><p>
+2. Bitblt the <tt>mBackSurface</tt> to <tt>mScreenSurface</tt> (<tt>TwGfxBitBlt</tt>)
+</p><p>
+It is possible to replace the standard screen update and use the 2d acceleration to draw sprites etc.
+</p><p>
+Please note that the above structure and screen update pattern may change as the Zodiac hardware evolves.
+</p><p>
+Additionally, there are two global functions, specified as follows:
+</p><pre class="programlisting">
+extern &quot;C&quot; void xfcTapwaveSetOutBlitAlpha(INT32 aValue);
+extern &quot;C&quot; void xfcTapwaveSetVBlankWait(INT32 aValue);
+</pre><p>
+The <tt>xfcTapwaveSetOutBlitAlpha()</tt> function can be used to create a &quot;motion blur&quot; effect in hardware. The <tt>aValue</tt> can range from 0 to 255. Set it to 255 or above to disable the alpha blitting. A value of 127 or 192 is pretty good for the motion blur effect.
+</p><p>
+The <tt>xfcTapwaveSetVBlankWait()</tt> function can be used to force vertical blank waiting before blitting out. If you're experiencing severe tearing, you can use this function to make X-Forge wait until the next vertical blank before updating the screen.
+</p><p>
+You can also use graffiti with X-Forge applications. This is achieved by setting X-Forge to nonexclusive mode, and then instructing the operating system to show graffiti. It is recommended that you also disable the screen rotation feature, as using it causes some glitches. You might also want to disable the 'hide graffiti' feature.
+</p><pre class="programlisting">
+XFcExclusiveModeSettings settings;
+XFcCore::setExclusiveMode(0,settings); // set non-exclusive mode
+PINSetInputAreaState(pinInputAreaShow);     // show graffiti
+SysSetOrientationTriggerState(sysOrientationTriggerDisabled);
+</pre><p>
+You can call <tt>XFcCore::setExclusiveMode(0,settings)</tt> repeatedly to get the currently active screen region. To get back to exclusive mode, do the following:
+</p><pre class="programlisting">
+XFcExclusiveModeSettings settings;
+XFcCore::setExclusiveMode(1,settings); // set exclusive mode
+SysSetOrientationTriggerState(sysOrientationTriggerEnabled);
+PINSetInputAreaState(pinInputAreaHide);     // Hide graffiti
+StatHide();                                 // Hide status bar
+</pre></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id412638"></a>Palmsim Notes</h3></div></div><p>
+Palmsim works by running Dragonball code under emulation, much like the actual device does. It doesn't, however, emulate ARM code, but instead all PNO code is compiled as a normal x86 DLL.
+</p><p>
+In Tapwave applications, the Application.rcp contains a resource with the code &quot;SIMC&quot; (SIMulator Code) which is used to figure out which dll is related to this PRC.
+</p><p>
+In order to build X-Forge applications for palmsim, you'll have to define the following preprocessor directives (in vc6, go to project, settings, c/c++, preprocessor directives): <tt>,__PALMOS_ARMLET__,XFC_PLATFORM_PALM,XFC_FORCEDEVICE_TAPWAVE,USE_TAPWAVE_NEW=0</tt>
+</p><p>
+Please refer to the Palm documentation on further use of the palmsim.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Fathammer recommends using the X-Forge 'desktop windows' platform instead of the palmsim for most of the development.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id412712"></a>Troubleshooting</h3></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412722"></a>Known issues of note</h4></div></div><p>
+Some features of the Tapwave port may be unfinished or untested. 
+</p><pre class="programlisting">
+- All file access is case sensitive. This includes directory names.
+  Some memory card writers actually write filenames in all caps although
+  they are shown as mixed case.
+- If a file is found on several volumes (memory cards, internal storage)
+  it will be listed several times with filefind.
+- Filefind only iterates through the proper storage directories 
+  (eg. example-pxFs)
+- File rename and remove, as well as directory remove do not care about
+  the 'drive letters' and will act on the first file/directory found.
+- Directory create will try to create the directory on all volumes.
+- Network code is not stable.  
+- Most examples have not been made to work with the Tapwave device 
+  specifically; features such as the screen size and analog joystick 
+  are not used. Also, the lack of threads may cause some examples to 
+  work differently.
+- Examples do not have ready pxFs files. Copy example data to the 
+  proper directory on a memory card before running the examples, or build
+  the pxFs files and add their .bin files to the projects before build.
+- The Tapwave port uses slightly more memory from the memory pool than
+  the desktop windows platform, due to file IO caching.
+- Palmsim projects have seen minimal testing.  
+</pre></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id412779"></a>Debugging</h4></div></div><p>
+If you develop on a memory card, and your application crashes, the device cannot remove the temporary copy from its memory and thus a copy is left on the device. Remember to delete it from the device, or otherwise the device may not use the version you have on the memory card.
+</p><p>
+One way of locating a crash address is to insert debug print lines in the code. An easy way to do this is to declare the following extern;
+</p><pre class="programlisting">
+extern &quot;C&quot; void xfcPalmDebugprint(const char *aString);
+</pre><p>
+Calling this function will print some text on screen immediately. (Internally this call uses WinPaintChars(), but using xfcPalmDebugprint saves you from including any Palm headers).
+</p><p>
+Also remember that you can use <tt>XFcCore::systemPanic()</tt> to make sure that a certain piece of code gets executed.
+</p><p>
+Please continue to the platform independent 'getting started' chapter next, which goes through the program, and gets you into the X-Forge philosophy.
+</p></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id412868"></a>Linux</h2></div></div><div class="sect2"><div class="titlepage"></div><p>
+The Linux Platform Package is available separately. Contact your X-Forge contact person or support for more information.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pt02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Part II. Getting Started </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 3. Platform Independent</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

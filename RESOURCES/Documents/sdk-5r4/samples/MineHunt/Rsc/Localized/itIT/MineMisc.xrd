@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1002" LOCALE="itIT" COMMENT="Game Won Alert">
+		<ALERT_TYPE> INFORMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Mine Hunt" </TITLE>
+		<MESSAGE> "CONGRATULATIONS - YOU WON!" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1003" LOCALE="itIT" COMMENT="New Game Alert">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Mine Hunt" </TITLE>
+		<MESSAGE> "Start a new game?" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "Yes" </TEXT>
+			<TEXT> "No" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1004" LOCALE="itIT" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "System Incompatible" </TITLE>
+		<MESSAGE>
+			"System Version 3.5 or greater is required to run this application."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2001" COMMENT="covered">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1001">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2001-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2001-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2002" COMMENT="unknown">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1002">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2002-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2002-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2003" COMMENT="marked">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1003">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2003-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2003-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2004" COMMENT="mine">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1004">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2004-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2004-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2005" COMMENT="not mine">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1005">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2005-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2005-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2006" COMMENT="empty">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2006-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2102" COMMENT="custom unknown">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1002">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2102-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2103" COMMENT="custom marked">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1003">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2103-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2104" COMMENT="custom mine">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1004">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2104-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="2105" COMMENT="custom not mine">
+		<BITMAPS>
+			<BITMAP COMMENT="Bitmap ID 1005">
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_2105-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="itIT" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Game" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 95 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Instructions" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Preferences" </TITLE>
+						<COMMAND> "P" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "About MineHunt" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="itIT" COMMENT="Game Tips String">
+		<TEXT>
+			"MineHunt Instructions\n"
+			"\n"
+			"There are several mines hidden in the playing field.  The number of "
+			"mines is indicated by the number at the top of the screen.  The "
+			"objective is to find out where they are located.\n"
+			"\n"
+			"To uncover a square, tap on the square.  This will reveal the number "
+			"of adjacent mines, if any.  If you expose a mine, it blows up and the "
+			"game is over.\n"
+			"\n"
+			"To mark a square as a mine, tap on the square once while holding the "
+			"page-up or the page-down button.  The mine counter at the top of the "
+			"display indicates how many mines still need to be marked.\n"
+			"\n"
+			"To mark a square as unknown, tap on the square twice while holding the "
+			"page-up or the page-down button.\n"
+			"\n"
+			"To change a square marked as a mine into unknown, tap on the square "
+			"once while holding the page-up or the page-down button.\n"
+			"\n"
+			"To clear a square marked as a mine, tap on the square twice while "
+			"holding the page-up or the page-down button.\n"
+			"\n"
+			"The level of difficulty can be selected by choosing the Preferences "
+			"item from the Game menu.\n"
+			"\n"
+			"The \"Classic Appearance\" preference will determine whether to use "
+			"the classic game colors, or to use the current system colors.\n"
+			"\n"
+			"Select the \"Automatic Scrolling\" checkbox to automatically "
+			"reposition the game board and display covered squares.  Uncheck this "
+			"preference to scroll manually."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

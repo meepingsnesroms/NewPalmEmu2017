@@ -1,0 +1,1986 @@
+Quick Reference for HotPaw(tm) Basic for PalmOS  v1.4.5
+
+Important Notes and Limitations regarding this version:
+
+  - Please see the LICENSE included in this document for important
+    terms and limitations.  If you do not agree with the license
+    you are not authorized to use the HotPaw Basic application.
+    
+  - Registration of your copy of HotPaw Basic will remove all DEMO
+    and TRIAL mode restrictions.
+    
+    You can register your copy of HotPaw Basic at
+    PalmGear.com:
+      <http://www.palmgear.com/software/showsoftware.cfm?prodID=5221>  
+    Handango:
+      <http://www.handango.com/PlatformProductDetail.jsp?productId=9223>
+    or pdassi.de (a European distributor):
+      <http://pdassi.de/product.php?prod_id=3032>  
+
+    Contact rhn@HotPaw.com for information regarding site licenses.
+    
+  - PalmOS 3.0 or later (Palm III, Palm Vx, etc.) is REQUIRED.
+  
+  - The MathLib.prc (1.0 or 1.1) library is required.  See:
+      <http://www.probe.net/~rhuebner/mathlib.html>  or
+      <ftp://ftp.rahul.net/pub/rhn/mathlib11.zip>
+  
+  - This application is still being tested to find and remove bugs
+    in the application and errors in the documentation.  Please be
+    sure to make backup copies of all your important data prior to
+    installing and using this application.
+    
+  - The documentation is still very very preliminary, is subject to
+    change without notice, and may not completely or accurately
+    describe the current version of HotPaw Basic.
+    
+    * New improved documentation is currently under development *
+
+  - The database name of this version of HotPaw Basic, "yBasic",
+    may change to "Basic" in future versions.
+    
+The latest version of this documentation can be found at:
+
+  <http://www.hotpaw.com/rhn/hotpaw/cbpb-readme.txt>  
+  
+Important Notes for previous cbasPad classic (0.xx) users:
+
+ - HotPaw Basic now runs programs from the MemoPad.
+ 
+ - Many commands and functions have changed or been removed!
+ 
+ - Some cbasPad programs may be compatible; one needs to test
+   each program for compatibility.
+
+Important Notes for new HotPaw Basic users:
+
+ - The current preliminary documentation assumes you already know
+   a little about using the classic BASIC programming language.
+
+
+*** *** *** ***  	  README	  *** *** *** ***
+  
+Command Summary for HotPaw cbasPad Pro Basic
+  
+This summary contains a description of HotPaw Basic, a BASIC programming
+language interpreter and scripting utility for 3Com PalmOS handhelds. 
+  
+  Please see the Revision History for important changes.
+  HotPaw Basic is NOT compatible with cbasPad (although many programs
+  written for latter versions of cbasPad may run).
+
+Contents:
+  Introduction
+  History of the Basic language
+  Program Execution
+  Basic Statement, Command & Function Summary
+  Additional PalmOS Commands & Functions
+  Some Warnings
+  Examples
+  Revision History
+  FAQ
+  Copyright and Disclaimer notice
+
+Introduction
+
+  BASIC is an easy to learn computer programming language, invented at
+  Dartmouth college around 1963.  Various Tiny Basic implementations
+  were written around 1976 for use in early personal computers with
+  very limited memory configurations (8 KBytes, or less).
+
+  The original cbasPad interpreter was written as an experiment in
+  writing a small Basic interpreter (in portable C) that could run in
+  the very tight memory requirements of a Pilot 1000 (PalmOS 1.0).
+  cbasPad has many deficiencies due to these restrictions.
+
+  HotPaw cbasPad Pro Basic is an new interpreter for a full version
+  of the Basic language, takes advantage of many of the features of
+  PalmOS 3.0 and above, and includes much better support for 
+  accurate floating point math and for database access.
+  
+  
+  More History of the Basic language
+
+  The BASIC programming language was developed in 1963 at Dartmouth
+  College by Professors John G. Kemeny and Thomas Kurtz.  It was meant
+  as an simple, easy to learn method for even non-science students to
+  learn to write computer programs.  The acronym "BASIC" originally
+  stood for "Beginner's All-purpose Symbolic Instruction Code".
+
+  The year 1964 was in an era when even the smallest computers were
+  larger than refrigerators and cost several times more than a single
+  family house.  Computers sat inside special rooms and had to be
+  shared by many students and researchers.  Students would communicate
+  with these minicomputers via teletypes, which were consoles that had
+  keyboards, but no pointing device and no video display, instead
+  having only a slow printer capable of printing one line at a time.
+
+  Because of the simplicity and small size of the original Basic
+  programming language, it was widely adopted in the late '70's and
+  early '80's as the most common and prevalent language for almost
+  all personal computers.  Microsoft's first product was a Basic
+  interpreter for the Altair computer.  Most personal computers of
+  this era (the Apple II, TRS-80, Commodore-64, Timex Sinclair, and
+  the original IBM PC) came with a Basic interpreter included.  Many
+  dozens of book on programming in Basic were also published during
+  this era.  Since this was before the internet and CDROMS was widely
+  available, most people typed-in Basic programs that were printed
+  in books and magazines.
+
+  Most early Basic interpreters had an interactive mode, where one
+  could type simple commands and see results after hitting the
+  "return" key. For instance, typing the commands:
+
+    LET A = 7
+    LET B = A + 2
+    PRINT B
+
+  would result in the console printing "9" (the result of 7 + 2).
+
+  These simple Basic interpreters also had a stored program mode,
+  where one would write a multi-line program, with each line with a
+  line number, be able to save the program and then to run the
+  program at a later time.
+
+  Since Basic is a complete programming language it includes
+  statements that allow calculation, simple logic, input, output,
+  looping and conditional branching.
+  
+  Currently, the Basic programming language is used as the core of
+  Visual Basic, Visual Basic for Application (VBA), and VBScript
+  (or basicscript) for web page scripting.
+
+
+***
+The HotPaw cbasPad Pro Basic BASIC Programming Language
+
+   You can write a Basic program in the built-in Palm MemoPad.
+   Memos are limited to about 4000 characters in length.  To create
+   longer programs, one can use the
+	#include <#TITLE>
+   comment/pragma.
+   HotPaw Basic will look for a Memo entitled "#TITLE" ; and insert
+   lines from that memo as in-line statements.  The #include
+   pragma may NOT be nested.  Including a Memo will ONLY work when
+   in "Show Programs" mode.  (check the Options menu).
+   
+   The HotPaw Basic language is mostly compatible with books on
+   programming in the BASIC language that were published between 1977
+   and 1988.  Since these books are mostly out of print, your best bet
+   is to try your local public library.  HotPaw Basic is a subset of
+   the full Basic language; so some features present in a full version
+   of the Basic language are not present.  One key difference from
+   "classic" BASIC programming is that line numbers are optional and
+   not required in HotPaw Basic (when running programs written in
+   the MemoPad).
+   
+   There is a fairly complete list of www pointers to information on
+   the generic Basic language near the end of my 'Basic' web page:
+   <http://www.nicholson.com/rhn/basic/>
+   
+   ALL keywords must entered in be lower case.
+   Multiple statements may be used on one line when separated
+   by the colon (":") character.
+   All lines have a maximum length limit of 80 characters.
+   Comment lines in HotPaw Basic can start with the '#' character.
+  
+***
+Program Execution
+
+  Unnumbered statements in the MemoPad are automatically given
+  sequential line numbers incrementing by 1 from the previous line.
+  Any numeric line number labels present should be in increasing order
+  and differ by at least the number of intervening lines plus one.
+
+  All statements after the first "run" command are ignored.
+  A "run" command is automatically assumed at the end of a Basic
+  program contained in the MemoPad.
+
+  Program execution terminates after encountering the "end" statement.
+
+  The Basic Scratchpad is for mostly for use of direct execution
+  statements, e.g. calculation statements that require no branches,
+  loops or subroutines.  Very short Basic program may be written in
+  the Scratchpad, but with several limitations: programs must start
+  with a "new" statement and end with a "run" statement (without line
+  numbers), all other statements must have sequential and
+  non-overlapping line numbers.  This mode is only for backward
+  compatibility with a few older cbasPad programs.
+   
+  Statements in the ScratchPad view without line numbers can be
+  executed by selecting the statement you wish to have executed,
+  and then hitting the "Exec" button.
+
+  To stop a running program, hit the "Done" button or the Calendar
+  application button.  To stop a running program when an input dialog
+  is present, use the "Stop" menu item.
+  
+  If you have a Basic program entitled "#startup.bas" (without the
+  quote marks, of course) in your MemoPad, then you may use the
+  included yLaunch.prc application to launch yBasic and automatically
+  run your startup Basic program.
+
+  
+
+***
+
+Some Examples:
+
+  # this is a comment line (because of the leading '#').
+  # multiple statements per line allowed.
+  
+    x = 7 : y = 3 + 4
+
+  # a "?" statement prints 1 line to a dialog box.
+
+    ? "hello ", 23+7
+
+  # Arrays must be dimensioned before use.
+  # Here's an example of a loop to initialize an array:
+  
+    dim a(4) : for i=0 to 4 : a(i) = i : next i
+
+***
+Basic Statement, Command & Function Summary:
+
+Operators, Statements, Functions and other reserved Keywords:
+
+  Operators:
+  
+    +  -  *  /  mod  ^
+    =   <>  >  >=  <  <=   and  or  xor  not
+    &
+
+  Commands and Statement Keywords:
+  
+    let 
+    if  then  else endif  elseif
+    for  to  step  next
+    while wend exit
+    goto  gosub  return
+    end  run  new  stop  :  rem
+    dim
+    data read restore
+
+  Functions:
+  
+    int() abs() sgn()  rnd() bool()  asin() acos()  pi
+    sqr() exp() log() log10()  sin() cos() tan() atn() 
+    len()  val()  str$() chr$() hex$() mid$() asc()
+    ucase$() lcase$() right$() left$() field$()  instr()
+    
+  Special functions and commands:
+  
+    msgbox
+    inputbox  input$()
+    print  input
+    ?  display
+    sub()  end sub
+    fre   timer
+    peek()  poke  call  varptr()
+    fn  op   draw   sound   morse
+    peek$()  float()  randomize
+    on as  using
+    open close  eof
+    eval()  fn  form
+    db db$() get$() put find() kill
+    def  tab
+    
+  Reserved words (for future use):
+    option base  
+    output append load save  random lof loc get
+    files  fseek  usr  bload bsave  exec
+    quit cont  renum  clear elseif
+    date$ time$ timer  erase  say
+    home cls gotoxy htab vtab pos  button field
+    graphics sprite pset moveto lineto window scrn
+    push pop  isarray  mat  select case  function
+    type class extends  string integer double
+    sinh cosh tanh floor ubound  err erl
+    dprint
+
+Variables and Constants:
+
+  Variable names may be up to 15 characters in length.
+  
+  Floating point constants may use the "e" notation.
+    e.g. 7.0, -3.5e10, 6.022e23, 6.6261e-34
+
+  Floating point numbers and variable are represented by a format
+  similar to IEEE double.  This is a binary format, which means
+  that many decimal fractions will not be exactly represented.
+
+  Hex constants may be entered by preceding with "0x".
+  
+  Integer variable names end with the '%' character.
+  Alternately, an integer variable name may be defined by:
+    dim x as integer
+  Integer variables are stored as 32-bit signed integers.
+
+String Variables:
+
+  String variables end with the '$' character.
+  Alternately, a string variable name may be defined by:
+    dim a as string
+
+  There is a limit of 63 string variables.
+  Strings may contain a maximum of 126 or 127 characters.
+
+  String arrays must be dimensioned before use (except s$() and
+  r$()).  String arrays are limited to one dimension and may
+  not be redimensioned.
+
+  There are 2 built-in string array: r$() and s$(), both
+  auto-dimensioned to 64 elements: e.g. r$(0) .. r$(63)
+  
+  The string array s$(0) to s$(63) is for passing parameters and
+  for temporary use by many of the built-in database, dialog,
+  display and code resource functions and commands.
+  
+Numeric Arrays:
+
+    dim a(10), b(10,10)
+    
+  Creates and allocates memory for an array.  Numeric arrays must
+  be dimensioned before use with the DIM statement.  Numeric
+  array may be multidimensional but are limited to 3 dimensions.
+  
+    option base 0
+    
+  Only option base 0 is allowed. Arrays indexes start with 0
+  (zero), so dim a(n) creates an array with n+1 elements.
+	
+
+Expressions and Operators
+
+  Assignment:
+    
+    let a = b + 2
+    
+  Using the "let" keywoard before an assignment is optional.
+    
+    a = b + 3
+	
+  Arithmetic expressions are limited in complexity to around
+  8 levels of parenthesis so as to not overflow the very small
+  PalmOS application stack.
+   
+    a = (b^2 + (d/(2+2))) * c
+
+  The "and", "or" and "xor" operators do bit-wise operations;
+  "not" is a boolean operator and only returns 1 or 0.
+    
+  Use either the "&" or the "+" operator for string concatenation.
+  
+    a$ = "hello "
+    b$ = a$ & "there!"	:' -> result is the string "hello there!"
+
+Flow-of-Control Statements
+
+    :
+    	A colon may be used to seperate multiple statements
+    	on one line.
+
+    end
+
+  	Program execution ends at the first end or stop command.
+
+    if then endif
+
+    	Standard single line IF THEN
+    	
+    		if x > 1 then y = 2
+    		if y = 3 then goto 300
+ 
+    	Multistatement IF THEN  (acts as a single block if-endif)
+    	
+    		if x > 1 then y = 2 : z = 3
+ 
+    	Multiline block IF ENDIF  (No "then" keyword used.)
+    	
+    		if (x > 1)
+    			y = 2
+    			z = 3
+    		endif
+
+    	Multiline block IF ELSEIF ELSE ENDIF
+
+    		if (x = 1)
+    		  y = 11
+    		elseif (x = 2)
+    		  y = 22
+    		else
+    		  y = 33
+    		endif
+
+
+    for step next
+
+    	for i=1 to 5 step 2 : print i : next i
+
+    while wend
+
+    	n = 1
+    	while (n < 100) : rem - loop until this condition is false
+    	  n = n * 2
+    	wend
+    	print n
+
+    gosub sub return
+
+    	Standard BASIC subroutine usage:
+    		100 gosub 500
+    		200 end
+    		...
+    		500 print x+1
+    		510 return
+
+    	Named subroutines usage:
+    		gosub foo(5)
+    		end
+    		...
+    		sub foo(x)
+    		print x+1
+    		end sub
+
+    	(Note that HotPaw Basic user-defined subroutines
+    	are static (no true local variables), and may not
+    	be used recursively.  The name of a user-defined
+    	subroutine may be used as a global return variable.)
+
+    goto N
+
+    	(No example.  See old Basic programming books.)
+
+    on N goto M
+
+    	(No example.  See old Basic programming books.)
+
+    labelx :
+    goto labelx
+
+	(An initial variable name followed by a colon is a
+	label that can be used as a target by a GOTO statement;
+	thus one can program without using line numbers.)
+
+	
+Special PalmOS Commands and Functions:
+
+Output Commands
+
+    msgbox(message$ [ , title$ [ , n ] ] )
+  	'- displays a message box with a message string.
+  	'-   if n = 2 then display "OK" & "Cancel" buttons
+  	'- the text message will word-wrap up to 2 lines.
+
+    msgbox( line1$ + chr$(10) + line2$ [...] )
+    	'- displays 2 lines  (up to 3 lines are possible)
+    	'-  seperated by 0x0A linefeeds.
+
+    print a,b	'- display a and b in a message box.
+    		'- (for compatibility with old programs)
+    
+    ?		'- same as PRINT command
+    		'- (for compatibility with old programs)
+
+    print at x,y
+    		'- Sets print-to-window-mode for all following
+    		'-   print statements.  Try: print at 2,15 
+    		'- To turn off mode use: print at -1,0
+    
+    print ..., tab(x), ...
+    		'- adds spaces so that following item is
+    		'-   printed after at least x total chars
+    	'-   (not too useful when using variable width fonts)
+    
+    put "clipboard", t$
+    		'- puts text string in the clipboard.
+    put "clipboard+", t$
+    		'- appends text string to the clipboard.
+ 
+    put "IrExg", t$
+    		'- beams 1 string via Ir port to a copy of
+    		'-	HotPaw Basic running on another Palm.
+		'-	see get$("IrExg", 0) for reading data.
+		'- Uses the IrDA Exchange Manager.
+
+Input Functions:
+
+    input$( prompt$ )
+    input$( prompt$, title$ )
+    input$( prompt$, title$ , default$ )
+    input$( prompt$, title$ , n)
+  		'-  displays input dialog & returns entered string
+  		'-   if n = 1 then only display "OK" button
+  		'-   if n = 2 then display both "OK" & "Cancel"
+        	'- use  val( input$(prompt$) )  to input a number
+ 
+    inputbox(...)
+    		'- same as input$(...)
+
+    input [ prompt$ , ] stringvar$
+    		'- uses input$() dialog to LINE INPUT one string
+    		'- (for compatibility with old programs)
+    		
+    		'- Input commands also return the input in s$(20)
+
+    input$(1)	'- waits for 1 graffiti char or button press
+          	'-   captures presses on the rightmost 5 button.
+  		'-   (11 up, 12 down, 5,6,7 = 3 app buttons)
+  	  	'-   leftmost app button halts interpreter
+
+    fn gkey$(1)	'- waits for 1 graffiti char, but ALSO captures 
+    		'-   Graffiti entered in the middle of the display
+
+    inkey$	'- checks for 1 graffiti char or button press
+  		'-   nonblocking, returns "" for no input
+
+  		'- input$(1) blocks , inkey$ polls and continues
+
+    fn pen(0)   '- waits for a pen tap (blocking); returns x
+    fn pen(1)   '- returns last pen x coordinate
+    fn pen(2)   '- returns last pen y coordinate
+    fn pen(3)	'- returns tickcount time of last pen tap 
+    fn pen(4)   '- returns non-zero if the pen is still down
+    fn pen(5)	'- waits for a display tap, key or graffiti char;
+    		'-   return 0 for a tap or ascii value for graffiti
+  
+    get$("data", n)	'- returns line from current program page
+  			'-   with "#" comment character stripped
+
+    get$("IrExg", 0)	'- returns Ir beamed text string
+    			'-   or "" for none sent.
+
+    get$("clipboard")	'- gets contents of clipboard
+    			'-   up to 127 characters
+
+Dialog Form functions:
+
+    form(9,n,title$)	'- displays n line 2 column form
+  			'- from 2 to 9 lines
+	s$(0), s$(2) ... are the prompt strings
+  	s$(1), s$(3) ... are the default & return values
+  	return value is 1 for OK, 2 for A button, 3 for B button
+
+    form(10,n,title$)	'- displays n line single column form
+    
+  	s$(0), s$(2) ... will display text, 1st line bolded
+  	if s$(0) is empty, s$(1) will display as an input field
+
+    form(12,0,title$)	'- displays 2 column form (with 8 rows)
+    			'- with a calculator keypad
+
+  	s$(0) and s$(1) display text at the top & bottom
+	s$(2), s$(4) ...  are the prompt strings
+  	s$(3), s$(5) ...  are the default & return values
+  	return values are 0 for Done, 1 for OK
+  	  2 for Calc button, and 3 for Calc2 button
+
+    form(0)	'- returns last msgbox or dialog button status
+    		'-   also clears the button status to 0.
+
+Math Functions:
+
+    sqr(x) 	'- square root
+    exp(x) 	'- e ^ x
+    log(x) 	'- natural log of x
+    log10(x) 	'- log base 10 of x
+
+  Mathlib.prc should be installed for accurate transcendental functions.
+    
+    sin(a) cos(a) tan(a)  '- trig functions for a in radians
+    atn(x) asin(x) acos(x)  '- inverse trig, returns radians
+    atn(x,y)	'- 4 quadrant arctan
+    		'- (trig fn's available only if MathLib is present).
+    rnd(n) 	'- returns a pseudo random integer in the range 0..n-1
+    int(x) 	'- truncates toward minus infinity.
+    int(x,0)	'- returns integer part, truncates towards zero.
+    round(x)	'- rounds to nearest integer.
+    round(x,d)	'- rounds to d places right of the decimal point.
+    round(x,0,n)	'- rounds to about n significant digits.
+    fn floor(x)	'- truncates to minus infinity
+    fn bits32(x) '- converts 32-bits to an integer without overflow
+
+    fn deg(r)	'- converts radians to degrees, returns degrees
+    fn rad(d)	'- converts degrees to radians, returns radians
+
+    option degrees	'- changes trig functions to use degrees
+    option radians	'- use angle(s) in radians (the default)
+
+    fn fact(n)  '- returns the factorial of integer n (n!)
+
+    fn byteswap32(n)	'- swaps byte order (big<->little endian)
+    fn bswap64(x)	'- swaps float endianess (from ARM fp)
+
+Advanced Math Functions:
+
+    fn sinh(x)		'- hyperbolic functions in MathLib
+    fn cosh(x)
+    fn asinh(x)
+    fn acosh(x)
+
+    fn snorm(x)	'- (stat lib) standard normal integral(-inf to x)
+    	'- ** this function requires a plugin to work
+    	'- ** bcmdsnorm.prc must be installed to use fn snorm()
+    	
+    fn min( x, y )	'- returns minimum of variables x or y
+    fn max( x, y )	'- returns maximum value
+    		'- BUG: 
+       		'- expressions are not allowed in fn min or max
+    		'-  unless they start with a numeric constant.
+    		'-  e.g. fn min( 1 * x * n, 0 + y/m ), etc.
+    			
+    fn min( a(n to m))	'- finds min in array a (elements n to m)
+    fn man( a(n to m))	'- finds max
+    fn sum( a(n to m))	'- sums elements of array
+    fn mean(a(n to m))	'- calculates average mean
+    fn variance(a(n to m))  '- returns statistical variance
+    fn stdev(a(n to m))	'- returns standard deviation of array
+
+Beta Test Advanced Math Functions:
+
+    fn solve1(eqn$, v$, x)
+    		'- Attempts to solve the equation in eqn$ for the
+    		'- variable in v$, starting with the value in x.
+    		'- Uses modified Newton's Method and 20 iterations.
+    		'- Equation should be continuous and non-chaotic
+    		'-   and have no more than one equal sign ("=").
+    		'- Assigns the result to the variable named in v$
+    		'-   if convergence is "close" enough.
+
+String functions:
+
+    len(a$)   	'- returns length of string a$
+    val(a$)   	'- returns numeric value of a$ or 0
+    str$(x) 	'- returns string representation of number x
+    str$(x,n)	'- returns string padded to n characters
+    str$(x,n,d)	'- returns string rounded to d decimal places
+    str$(x,1,14)	'- double precision (15 place) E conversion
+    chr$(c) 	'- returns a 1 character string of ascii value c
+    asc(a$)	'- returns the ascii value of the first character
+    hex$(n) 	'- returns hex string of value n
+    ucase$(a$)	'- returns uppercase string
+    lcase$(a$)	'- returns lowercase string
+    right$(a$,n)  	'- returns the right justified substring of a$
+    left$(a$,n)   	'- returns the leftmost n char substring of a$
+    mid$(a$, n, m)  	'- returns substring starting at n of length m
+    mid$(a$, n, 1)  	'- returns a single character out of a$
+    field$(a$,n, "," )	'- returns the Nth field (comma seperated)
+    instr(a$, b$)	'- finds b$ in a$ or returns 0 for not found
+    eval(q$)  	'- evaluates string q$ as a numeric expression ("1+2")
+
+    fn strw(a$,n,0) '- width in screen pixels of 1st n chars of a$
+    fn trim$(a$)	'- trims off leading and trailing white space
+    fn ltrim$(a$)	'- trims leading space characters from a$
+    fn bin$(n)		'- returns binary string representation of n
+    fn bin$(n, b)	'- returns a binary string b bits long
+    fn space$(n)	'- returns a string of n space charaters
+
+Advanced Math statements:
+
+			'- where a, b and c are dimensioned arrays
+    			'-   and must not be integer arrays
+    mat a = b		'- matrix assignment (copy)
+    mat a = b + c	'- matrix addition/subtraction
+    mat a = b * c	'- matrix multiplication
+    mat a = a * k	'- scale matrix by * k  (if k is scalar)
+
+			'- where a and b are square arrays
+			'-   with a max size of 30x30
+    			'-   NOTE: dim x(2,2) creates a 3x3 matrix
+    mat a = transpose b	'- sets a to the tranposes of matrix b
+    mat a = invert b	'- sets a to the inverse of matrix b
+    mat a = invert b else LABEL	'- goto LABEL if b is singular
+
+    mat origin 1	'- changes the matrix origin to 1
+    			'-   NOTE: the default origin is 0
+
+    def fn foo(x) = ...	 '- define a one-line function of x
+    fn foo(x)		 '- use a previously defined function
+
+Date and Time Functions:
+
+    timer   	'- returns running seconds timer
+
+    timer(100)  '- returns running tickcount timer
+    		'- (100ths of a second on a Palm III)
+
+    fn date$()	'- returns todays date as in text form
+  			'-   e.g. "Dec 25, 1999"
+    fn date$(0)	'- returns todays date as 8-digit string
+  		'-   in YYYYMMDD format.  e.g. "19991225"
+    fn date$(-1)    '- returns 8-digit string from date chooser
+    fn time$()	    '- returns time in "12:01 pm" format
+    fn time$(0)	    '- returns current time as 6-digit string
+    		    '-   in HHMMSS format.  e.g. "120000"
+    fn time$(-1)    '- results from time chooser dialog
+    fn days(m)	'- converts 8-digit date number to days from 1904
+    fn days(d$)	'- converts 8-digit date string to days from 1904
+    fn dayow(n)	'- returns day-of-week (1=Sunday) from 8-digit date
+    fn date$(n)	'- converts days from 1904 to 8-digit string
+
+    fn wait(n)	'- delays n seconds (uses 0.02 second increments).
+  		'- returns > -1 if a screen tap occured before timeout
+    fn sleep(n)	'- sleeps for between n & n+60 seconds (n >= 120).
+  		'- returns approximate seconds elapsed
+
+    fn settime(x)   '- sets the clock time to x
+    		    '- where x is a 6-digit number in HHMMSS format
+    	'- ** bcmdsettime.prc must be installed to use fn settime()
+    
+
+Financial Functions:
+    
+    fn pmt(p, r, n)	'- calculate payment, given
+  		'-  principle, interest% and number of periods
+    fn pv(a, r, n)	'- calculate present value
+    fn fv(a, r, n)	'- calculate future value
+
+    fn format$(v, "$##,###.##")	'- formatted number conversion
+    			'- converts v into a formatted string
+    			'- with optional comma's period's and $.
+
+Graphics Commands:
+
+    cls			'- clears the middle of the display
+    draw -1		'- also clears the middle of the display
+    draw x1,y1,x2,y2	'- draw line on display [0..159]
+    draw x1,y1,x2,y2, 2	'- draw a gray line
+    draw x1,y1,x2,y2,-1	'- erases a line
+    draw x1,y1, w,h, 4	'- draw a rectangle (topLeft, extent)
+    draw x1,y1, w,h, 5	'- draw a gray rect
+    draw x1,y1, w,h, 7	'- paint a filled rect
+    draw x1,y1, w,h,-7	'- erases a rect
+    draw circle x1,y1,r		'- draw circle of radius r
+    draw circle x1,y1,r,7	'- paint a filled circle
+    
+    moveto x1,y1	'- sets current pen location to x1,y1
+    lineto x2,y2	'- draws a line from current loc to x2,y2
+    
+    draw t$, x,y [,f]	'- draw text t$ (optionally with font f)
+    
+    draw t$, x,y, 32	'- draw text using SingleHander jumbo font.
+    	'- this requires installation of the singlehand.prc app
+    	
+    fn colord()		'- returns the color depth available
+    			'-   or 0 for PalmOS versions prior to 3.5
+    fn colord(n)	'- where n = 1,2,4 (& PalmOS >= 3.5 only)
+    			'-   sets grayscale depth to n if possible
+    			'- returns prior depth
+    			
+    fn scrn(x,y,k)	'- returns index, r, g or b value of screen
+    			'-  pixel at (x,y) for k = 0, 1, 2 or 3 
+    			'-  respectively under PalmOS 3.5 or later.
+
+    draw x,y, w,h, 100,a$(0)	'- draws a 1 bit/pix bitmap
+    		'- w & h must be less than or equal to 32
+    		'- bitmap described row-wise by hex strings which
+    		'-   are contained in string array a$(0) .. a$(n)
+    		'-   bitmap strings must be multiples of 4 in length
+    		'-   and the beginning of each row is byte aligned.
+
+    draw x,y, 0,k, 400, s$	'- draws resource ('Tbmp') bitmap
+    		'- uses bitmap with resource ID k contained in 
+    		'-   the prc or app named by the variable s$.
+    		'- draws nothing if prc or resource is missing.
+    		
+    draw x,y, 0,128+n, 400, "Icons-DATEBK4"
+    		'- draws DateBK5 color icon #n at location (x,y)
+
+  If you have the new PalmOS 3.5 color ROMS:
+
+    draw color r,g,b,c	'- sets the foreground color for c = 1
+    			'- background color for c = 2
+    			'- text color for c = 3
+    	'- r,g,b for red green blue respectively [0 thru 255]
+
+    draw color i,-1,0,c	'- sets the color by color index [0-255]
+
+    fn rgb2i(r,g,b)	'- returns color index of nearest RGB color
+
+    draw circle x1,y1,r,a1,a2
+    			'- paint a filled arc from a1 to a2 radians
+    			
+    draw tri x1,y1,x2,y2,x3,y3,1
+    			'- paint a filled triangle
+
+    fn plot( 0, eqn$, "x", "y", x0, x1, n)
+    			'- plots the equation in the eqn$ string
+    			'- with variable x ranging from x0 to x1
+    			'- evaluated over n points (120 max)
+    			'- autoscales plot height
+    fn plot( 1, eqn$, "x", "y", x0, x1, n)
+    			'- add a new line to existing plot
+    			'- uses scale of the previous fn plot 0
+    
+    fn plot( 4, eqn$, "a", "", a0, a1, n)
+    			'- autoscaling polar plot (a in radians)
+    			
+    fn plot(32, eqn$, "x", "y", x0, x1, n)
+    			'- 3d plot of equation in 2 variables (x,y)
+    			'- evaluated over n*n points (32 max n)
+    fn plot(35, "", "", "", rot, tilt, height)
+    			'- set 3d rotation and tilt (in radians)
+    			'-   and plot height (in pixels)
+    
+    			'- example:
+    fn plot(35, "", "", "", 0.3, 0.5, 24)
+    fn plot(32, "x^3*y-x*y^3", "x", "y", -2, 2, 16)
+
+    fn plot(16, eqn$, "x", "y", x0, x1, n)
+    			'- slopefield plot of equation in 2 vars
+    			'- x0 to x1 used as range for both x and y
+
+    fn plot( 2, "para", n, x(0), y(0) )
+    			'- draw autoscaled parametric plot using
+    			'-   n points from arrays x and y
+    fn plot(10, "para", n, x(0), y(0) )
+    			'- draw autoscaled scatter plot using
+    			'-   n points from arrays x and y
+    fn plotinfo( 300, 0, 0,0 )
+    			'-   label plot coordinates
+    			
+Sound Commands:
+
+    sound { frequency in Hz }, { duration in mS }, { vol 0..63 }
+
+    morse string$, wpm
+    morse string$, wpm, freq, vol [ , cwpm-Farnsworth ]
+
+    	'- example:  morse "sos",13,660,2,13 :' 13 wpm @ 660 Hz
+    	'- string$ can contain dots and dashes only for custom codes
+    	'- example:  morse "... --- ...",8,880,99
+
+
+Memo (file) Database commands:
+
+    open "memo",t$ as #1  '- opens memo with title string t$
+   			'- #1 thru #4 are legal file #'s for read
+    			'- only #4 will work for write
+
+    open "memo",t$ as #1 else LABEL
+  			'- goto LABEL if memo not found
+
+    open new "memo",title$ as #4
+    			'- creates and opens new memo
+  			'- the title string must not be blank
+  			'- only filenum #4 can be used for new
+    db.index		'- returns the new memo index number
+    
+    db.find("memo",t$)  '- finds memo starting with string t$
+    			'- returns memo index number
+
+    open "memo",n as #1	    '- opens memo by index n for r/w
+    			'- use db.find() to get n from title$
+
+    input #1, a$	'- inputs one line from open memo
+    			'- this statement may modify s$(0)
+
+    eof			'- true if input was past end-of-memo
+    
+    fn pos(n)		'- returns current memo read position
+
+    print #4, x$	'- appends to open memo
+    			'- memos are limited to 4k characters
+    			'- use db.len to check for truncation
+
+    close #1		'- closes file
+
+    kill "memo",(db.find("MemoDB")), n, -9  '- deletes memo #n
+
+    chain n		'- runs Basic program in memo index #n
+    			'-   does not clear variables
+    		'-  use db.find("memo", title$) to find n
+    		'-     n must be greater than 0
+    		'-  Note: the MemoPad "All" list displays (n+1)
+    		'-  chain is not legal in ScratchPad execution.
+    		'-  use fn launch() to start other applications.
+
+  Only descriptors #1 thru #4 are allowed for MemoPad files.
+
+MemoPad (file)Database functions:
+
+    db.find("memo", t$)	'- finds memo with title t$, returns index
+    	'- searches in reverse order, so always finds last/latest
+    	'- returns -1 if no match found
+
+    db.find("memo", t$, 0)  '- searches in forward order
+    db.len("memo", n)	'- returns length of memo #n
+
+    db$("memo", n, k)	'- returns text at byte offset k
+    		'- note: parameter n should be a single variable,
+    		'-       not an expression
+    		'- Warning:
+    		'-  not for use on lines over 120 characters long
+
+    eof			'- returns true if last input or
+    			'-   db$ read was past end of memo
+
+    db.eol 	'- returns eol character of last memo or file read
+    		'-  if not 10 or 0 line may have been truncated.
+    db.cat	'- returns category number of last read memo.
+    fn newcat(c)	'- returns 0
+    	'-  sets the category of the next new record or memo to c
+
+Advanced Form statements:
+
+  Dynamic objects (buttons, field, checkboxes) should only be added
+  near the beginning of a program (after a "draw,-1" statement)
+  and before any user interaction (print or input).  Form buttons
+  should be created before any other form items.  There is a limit
+  of 30 form buttons, 4 pop-up list and 60 total form items.  The
+  total amount of list selections among all pop-up lists is 127.
+
+  See the "#counter.bas" example program, which uses both form
+  commands to create buttons, and database commands to save data
+  between program runs.
+
+  Use "draw -1" to clear the form before adding any dynamic objects.
+  Draw text and graphics only when done creating all form items.
+
+  Dynamic objects will change the behavior of the current running
+  main Basic program form.  Form statements may only be used in a
+  program contained in a Memo or run from a program select view.
+  Form statements will produce an error message when run from the
+  ScratchPad Edit view.
+
+  ** Note that the use of dymamic forms on PalmOS 3.0 and earlier
+  is NOT recommended by Palm. **  These commands have only been
+  tested under PalmOS 3.1 and later. **
+
+    form btn x,y,w,h, title$, 1		'- creates one button
+    		 '- x,y location.  w,h width & height.
+    		
+    fn setformkey(fn formindex(), k)	'- set input key code
+    		 '- sets ascii keycode of last button created to k
+	
+    fn btnkey()  '- returns ascii keycode of last button created.
+    
+    fn formbtn() '- return keycode of last button tapped.
+    
+  Use the "input$(1)" function to wait for a button press on a form.
+
+  If you don't use "fn setformkey()", then the first button created
+  will return ascii key chr$(14) to the "input$(1)" function.  Note
+  that if you use the "form btn" statement multiple times, you will
+  get multiple buttons which will return different key codes.  Use
+  "fn setformkey()" to set the keycode, or "fn btnkey()" to get the
+  keycode for each new button.  Also, one can use "fn pen(2)" to
+  differentiate between button presses and graffiti input.
+	
+    form fld x,y, w,h, default$, 1
+    		'- creates a text input field
+    		'- w is in pixel units, h is normally set to 12
+    		'-   if h >= 24 you get a multiline field
+    		'-   dynamic fields have a 126 character limit
+
+    form cbx x,y, 0,c, "", 1
+    		'- creates a 14x14 checkbox
+    		'- if c=1 then initialize with a checkmark.
+    		
+    		'- After a form btn press, the first field
+    		'-   or checkbox returns a string in s$(0),
+    		'-   the 2nd field or checkbox in s$(1), etc.
+
+    form lst x,y, n,sel, a$, 1
+    		'- creates a pop-up list with trigger at x,y
+    		'- n is the number of items in a list
+    		'- a$ must be a dimensioned array larger than n
+    		'- the 1st list element is taken from a$(1)
+    		'- sel is the initially selected item number
+    		'- max of 127 total list items (all lists).
+
+  Form fields, checkboxes and lists return their value in array
+  strings s$(0) thru s$(19) after a dynamic form button is pressed.
+  s$(0) gets the value of the first field or checkbox created,
+  s$(1) the next field or checkbox, etc...
+
+    form title 0,0,0,0, newtitle$,1
+    		'- changes form title to the string newtitle$
+
+    form redraw 0,0,0,0, "", -1
+    		'- erases all graphics except for form objects.
+
+    form reset 0,0,0,0, newtitle$, -1
+    		'- clears all dynamic objects from dynamic form
+    		'-  and resets initial btnkey count to 14
+
+    form btn 0,160,0,0, qbtn$, 1
+    		'- if qbtn$ is less than 6 characters in length,
+    		'-   changes the title of the "Quit" button to 
+    		'-   the contents of qbtn$, and sets that button
+    		'-   to produce the keycode ctrl-c (ASCII 3)
+
+    form fld 0,n, 0,0, t$, 1
+    		'- changes contents of field #n to t$
+    		'- to get the index number #n of a field, use
+    		'-   fn formindex() after the field is created.
+
+    form cbx 0,n, 1,c, "", 1
+    		'- changes status of checkbox #n to c (1 or 0)
+    		'- to get the index number #n of a checkbox, use
+    		'-   fn formindex() after a checkbox is created.
+    		
+    fn qkeyboard()	'- brings up keyboard to edit field
+
+    x = fn setuicolor(t,i)
+    		'- set ui object subtype t to use color index i
+    		'- returns previous color index in use
+    		'- some form object subtypes:
+    			 0 object (button) frame
+    			 1 object fill
+    			 3 object foreground
+    			10 field background
+    			11 field text
+    			12 field underline
+    			21 form frame
+    			22 form fill
+
+  An "About This Application" Menu selection will appear when a
+  program is running and a dynamic form is in view and frontmost.
+  The following function will set up customized information for
+  this dialog box. 
+
+    x = fn myabout()
+    		'- sets up a custom Get Info... About Box
+    		'- title from s$(0) which must not be blank
+    		'- s$(1) ... s$(3) 3 bold lines of text
+    		'- s$(4) ... s$(6) 3 more lines of text
+
+
+Scripting the built-in applications:
+
+    db.find("date",   0, 19991225 )
+  	'- finds 1st non-repeating DateBook record on Dec 25, 1999
+  	'-   use  val(fn date$(0))  for todays date
+  	'- return -1 in none found
+    db.find("date", -12, date8num)
+  	'- finds subsequent non-repeating DateBook records
+  	'-   date8num is an 8 digit number in the form YYYYMMDD
+    db.find("date", -21, date8num)
+  	'- finds 1st repeating DateBook record (slow)
+  	'-   only if repeating event has not been modified
+    db.find("date", -20, date8num)
+  	'- finds subsequent repeating DateBook record (slow)
+
+    get$("date", n, 10)
+  	'- reads DateBook record #n into s$(20 thru 29)
+  	'-  non-repeated entries only
+  	s$(20)	= title
+  	s$(21)	= year
+  	s$(22)	= month
+  	s$(23)	= day
+  	s$(24)	= hour	(blank for "UnTimed")
+  	s$(25)	= minute
+  	s$(26)	= ending hour
+  	s$(27)	= ending minute
+  	s$(28)	= alarm minutes (0 for no alarm)
+  	s$(29)	= first 63 characters of note
+
+    put "date",new,10
+  	'- creates new DateBook entry from data in s$(20..29)
+
+    db.find("todo", title$, n)
+  	'- finds ToDo record with given title
+  	'-  starting search with record n
+  	'- return -1 for none found
+    db.find("todo", -11, d)
+  	'- finds 1st ToDo record matching 8-digit date d
+    db.find("todo", -12, d)
+  	'- finds subsequent ToDo's matching 8-digit date d
+    db.find("todo", -13, d)
+  	'- finds 1st undone ToDo record due on or before d
+    db.find("todo", -14, d)
+  	'- finds subsequent undone ToDo's due
+    db.find("todo", -16, n)
+  	'- finds ToDo record modified since last HotSync
+  	'-  starting search with record n
+    fn todocatname(n)
+    	'- returns string with name of category n
+    get$("todo", n, 10)
+  	'- reads ToDo list record #n into s$(20 thru 29)
+  	'- s$(20) will contain "error" if the ToDo is not found
+  	s$(20)	= description (up to 63 characters only)
+  	s$(21)	= year	(or blank for no Due Date)
+  	s$(22)	= month
+  	s$(23)	= day
+  	s$(24)	= priority
+  	s$(25)	= done
+  	s$(26)	= category number
+  	s$(27)	= category name
+  	s$(29) 	= first 63 characters of note
+
+    put "todo", new, 10
+  	'- creates ToDo entry from data in s$()
+    put "todo", n, 10
+  	'- modifies ToDo record #n
+  	'-   modifying only non-blank fields in s$(20..29)
+  	'- a category number will override any category name
+  	
+  	'- Warning: Modifying a ToDo will go much faster if
+  	'-  only the s$ fields you want to change are non-blank.
+  	'- * If you don't want to truncate a description or note
+  	'-  longer than 63 characters, leave that field blank.
+  	
+  	'- Warning: The order of records (possibly every
+  	'-  record number) is changed in the ToDo database when
+  	'-  any ToDo record is changed or modified.   So you
+  	'-  can't just loop through the ToDoDB by record number.
+
+    db.find("addr", name$)
+    	'- finds Address/Phone List entry starting with name
+
+    get$("addr", n, 20)
+  	'- reads Address/Phone List entry n into s$(20..39)
+  	'- * Only 63 characters of each entry are returned.
+
+    x = fn launch(app$, n)
+    	'- launch application by app Creator or appname
+    	'-   use -1 for no data index
+    	'-   e.g. i = fn launch("lnch", -1) to return to Launcher.
+
+Database functions:
+
+    db.open xyz$	'- returns access index for named database
+  			'-   or negative number for not found
+
+    db.len(dbname$)	'- returns number of records in database
+    db.len(dbname$, r)	'- returns length in bytes of record r
+    db.find(dbname$)	'- returns db index# of named database
+    			'-  return negative number for not found
+
+    err		'- returns a negative number if any database
+    		'-  open or read errors occur.
+    err(0)	'- returns error code and then clears it.
+
+  The formats of 5 Database applications are directly supported:
+  
+  List - Freeware 3 column database application,
+  	creator = "LSdb",
+	found at <http://www.magma.ca/~roo/list/list.html>  
+  DB 0.2.5 - old version free open source database application,
+  	creator = "DBOS",
+	found at <http://vger.rutgers.edu/~tdyas/pilot/>  
+  JFile 1.x - old database application, creator = "JBas",
+  JFile - commercial database application,
+          creator = "JFil" or "JFi5" (JFile 5),
+	  found at <http://www.land-j.com/pilprogs.html>  
+  HanDBase - commercial database, creator = "HanD" or "PmDB",
+  MobileDB - commercial database, creator = "Mdb1".
+
+  The level of support varies for each type of database.
+  The freeware List database applications is fully supported;
+  HotPaw Basic can create new databases of creators "LSdb".
+  HanDBase databases are supported by calling routines the actual
+  HanDBase application itself; if the HanDBase application is not
+  present and registered, commands to access its databases will
+  fail.  Only field reads are supported for MobileDB databases.
+  Note that for MobileDB databases, the actual data records start
+  with record number 4.
+
+  Reading cells (row, col) also works for MiniCalc spreadsheet
+  databases (creator = 'PiMC') if the MiniCalc application is
+  installed.
+
+  Creating new List databases:
+    
+    db.open name$ as new "LSdb",3
+  		'- creates a new List database named with name$
+  		'-   with 3 fields per record.
+ 
+    db.index	'- returns last created or opened db index
+
+  Only one new database can be created and accessed at a time.
+  Creating a new database will close all other databases.
+  Therefore any new database should be created before opening
+  any other databases for access.
+  
+  Database access:
+  
+  Support for each type of database varies, depending on the
+  capabilities of the database application, and the information
+  supplied by the database application vendor.
+  
+  == Reading data from a MiniCalc cell:
+  
+    db$(dbname$, r, c)	'- returns cell in column c of row r
+
+  == Reading from a database field:
+  
+    db$(dbname$, r, f)	'- returns field f of record r
+  			'-  first record has r = 0
+  	'- only returns first 63 characters of any longer fields.
+  	'- only fields 1 thru 3 are valid for List db's.
+  	'- this function may modify s$(20) thru s$(29)
+  	
+    db$(dbname$, r, f, z)
+    	'- if field f of record r is longer than z characters
+    	'-   then returns up to 63 characters of field f
+    	'-   starting with the z-th byte (offset).
+
+    db$(d, r, f) 	'- returns field f of database index d
+  			'-  database d must be opened first.
+  			'-    as in d = db.open( somename$ )
+
+    open DATABASE_NAME$	'- open for r/w
+    db.index		'- returns last opened db index
+
+  Note that for MobileDB databases, the first regular data record
+  starts with record number r = 4.
+  
+  == Searching a database:
+
+  For List, old DB 0.2.5 or JFile type databases:
+
+    db.find(dbname$, x$)
+	'- finds x$ in 1st record of database dbname$
+	'- returns -1 for failure to find matching string
+
+  For HanDBase type databases:
+  
+    db.find(fname$, x$, n)
+	'- finds x$ in n-th field of HanDBase database fname$
+	'- for the first field use n = 1
+	'- returns -1 for failure to find matching string
+
+  == Modifying a database field:
+  
+  If the database is of creator "JBas", "JFil", "JFi5", or
+  "HanD" or "PmDB", then:
+  
+    let db$(dbname$, r, f) = x$
+  	'- modifies 1 field of a database, record r field f
+  	'- this statements may modify s$(20 thru 39)
+  	'- the LET keyword is optional
+
+    let db$(d, r, f) = x$	'- with database id #d
+  	'- r must be in range and d must be open
+
+  If the database is of creator "LSdb" then the above statement
+  will work only if all fields are shorter than 63 characters.
+  *Warning* :  Any fields longer than 63 characters in a List
+  database record may be silently truncated by this command.
+  
+    db.len(dbname$, -16)
+    	'- returns count of non-deleted records in database
+    	'- Note that deleted records may appear in the
+    	'- middle of some databases.
+
+  == Adding database records:
+  
+  It is up to you to make sure that you only add records of the
+  proper format.  Only text fields are currently supported.
+  
+  For HanDBase or JFile databases then
+  
+    put d,new,(n)		'- adds a new db record
+  	'- with n fields taken from s$(20) thu s$(20+n)
+  	'-   (max of 19 fields usable)
+  	'- database d must be opened first.
+
+    db.index	'- get record index of last put new command
+
+  If the database is of creator "LSdb" then
+  
+    put d,new,103		'- adds a new db record
+  	'- with n fields taken from s$(20) thu s$(23)
+
+  == Creating a new database:
+  
+  For a database of creator "LSdb" then
+  
+    db.open dbname$ as new "LSdb",3
+  	'- creates a new List database with 3 fields per record
+
+    db.open ... else LABEL
+  	'- goto statement@LABEL on open error
+
+    kill dbname$, dbindex, n, -9	'- deletes record n
+    kill dbname$, dbindex,-99,-9  	'- deletes database
+  	'- to make sure you really mean to do this, the dbindex
+  	'-   must match the index of the named database.
+  	'-   see db.find()
+
+Doc format database functions and commands:
+
+  For a database of creator "REAd"  (Aportis "Doc" format):
+  
+    db$(d, r, k)
+    	'- Reads a string from record r starting at offset k
+    	'- Uncompresses compressed Doc format if necessary
+    	'- a max of 127 characters at a time can be read
+    	'- returned string may include a CR or LF at the end.
+    	'- Sets eof if k is past end of record.
+    	'- record number r must be greater than 0
+    	'- Use db.find() to get the database index d
+
+    open "doc:", dbname$ for input as #1
+    			'- opens a Doc file for input
+    			'- only 1 Doc file may be open at a time
+    			
+    input #1, a$	'- reads text from Doc file into a$
+    			'- reads a max of 127 characters
+    			'- sets eof true at end of document
+    			'- sets db.eol to line ending char
+
+
+Database Advanced Functions:
+
+  The db.peek() function allows reading raw unformatted pdb
+  record contents. 
+  
+    db.find(dbname$)	'- returns dbindex of named database
+
+    db.peek(dbindex, r, n, 1)	'- returns byte n of record r
+    db.peek(dbindex, r, n, 2)
+    	'- returns 16-bit word starting of byte n of record r
+    	'-   r must be even (word aligned).
+    db.peek(dbindex, r, n, 64)
+    	'- returns string (127 chars max) starting at offset n
+    
+    db.peek(dbindex,-19,0,64) 	'- returns database name
+    db.peek(dbindex,-17,0,64) 	'- returns database type string
+    db.peek(dbindex,-18,0,64) 	'- returns database creator string
+    db.peek(dbindex,-20,0, 4) 	'- returns database attributes code
+
+  To peek at string resources inside prc databases use:
+  
+    db.peek(dbindex, 0x74535452, r, 64)
+    	'- where r is the resource id number
+
+  -1 is returned if the referenced data cannot be found or read.
+
+
+Beta Test Advanced Database Functions:
+
+    db.edit("memo",r, n,m, s$)	'- Edits text in Memo #r
+    	'- replaces m characters starting at offset n with s$
+    	'-   s$ must be no longer than length parameter m
+    	'-   returns new length of edited Memo
+
+
+Serial Port commands:
+
+    open "com1:",baud_rate as #5  '- opens serial port
+    			'- at baud_rate { 2400,9600,19200,38400 }
+    print #5, a$	'- prints to serial port
+    put #5,byte		'- serial output one byte
+    fn serial(5)	'- returns number of input bytes waiting
+    get$(#5, n)		'- returns a string up to n bytes long
+    get$(#5, 0)		'- returns an integer instead of a string
+    			'-   returns 1 ascii byte from serial port,
+    			'-   return 0 for NULL byte received,
+  			'-   or returns -1 if no input is waiting
+    input #5, a$	'- waits for 1 line of text
+    put #5,-3		'- start break
+    put #5,-2		'- stop break
+    fn serial(-5)	'- get CTS (2) and DSR (1) status
+    fn serbufsz(n)	'- sets serial input buffer size to n
+    			'-   effective on next serial open operation
+    			'-   initial default size is 1023 bytes
+    fn serctrl(7,2,0)	'- sets 7 bits, even parity, no stop bit
+    close #5		'- closes serial port
+
+    open ... #5 else LABEL	'- goto statement@LABEL on open error
+    open "com1:",rate,hhs as #5	'- open port w/ hardware handshaking
+    open "com1:",rate,ir as #5	'- opens port in serial Ir mode (SIR)
+    	'- NOTE: serial infrared mode does not work under PalmOS 5.x
+    	'- IR output data may get echo'd to input on some 4.x models
+
+    open "PalmPrint" for output as #5
+    		'- enables Stevens Creek Software Print Server
+
+  The serial port only stays open during a program execution, and is
+  automatically closed at the end of a program or "exec selection".
+  
+  Only descriptor #5 is allowed for serial port use.
+
+
+Beta Test serial communications commands (OS 5 only):
+
+    open "com1:", rate, "ircomm" as #5
+    		'- opens IRComm virtual serial port
+    open "com1:", rate, "bluetooth" as #5
+    		'- opens Bluetooth virtual serial port client
+
+
+Misc functions:
+
+    fre		'- returns amount of dynamic heap memory left
+    fre	1	'- returns available storage heap in bytes
+    
+    varptr(y)	'- returns memory address of variable y (or y$).
+    peek(a)	'- returns the 8-bit byte at address a
+    peek(a,2)	'- ... 16-bit value at word aligned address a
+    peek(a,4)	'- ... 32-bit value at word aligned address a
+    peek(a,8)	'- ... 64-bit double floating point value ...
+    peek$(a)	'- returns zero terminated string at address a
+    
+    fn assign2var( name$, y )
+    		'- assigns y to the variable named by name$
+    		'- returns y
+
+    fn osver(1) '- returns PalmOS version recognized
+    fn osver(2) '- returns yBasic version number
+    
+    fn battery() '- returns scaled battery voltage (V*100)
+    
+    fn set_auto_off(n)	'- sets Auto-Off timer to n seconds;
+    		'- use n = 0 to set Auto-Off time to never; also
+    		'- displays a warning dialog for n > 5 minutes.
+    		'- Old Auto-Off value restored at end of program.
+    		'- returns 0
+
+    fn ftr(sig$, n)  '- returns Feature Manager 32-bit integer
+
+Obsolete functions included for backwards compatibility:
+
+    fn p(19)   '- returns length of the clipboard text
+    fn p(36)   '- returns current memo get$ offset
+    fn p(66)   '- force warm reset of PalmOS
+    fn p(67)   '- restarts the yBasic application (relaunch)
+    
+  Warning: Use of undocumented fn or fn p() numbers may cause your
+  Pilot to crash or Corrupt data!
+
+Advanced Features:
+
+  Code Plugin functions.
+
+  HotPaw cbasPad Pro can call 'code' resource plugins modules.
+  These can be developed similarly to DA code modules.  The resource
+  type must be 'bCmd' or 'BCmd', and the code ResID must be 1000.
+  The executable routine must be at the start of the code resource,
+  use no globals, and should be prototyped:
+  'bCmd'
+  	long int main(long int param, long int param2, char *s64);
+  'BCmd'
+  	double main(double param, double param2, char *s64);
+  Call from yBasic by using:
+  
+    x = fn bcmd("module_name", param)	'- returns a -1 on errors
+    
+  The database name in this example should be "bcmdmodule_name".
+  The second calling parameter is optional and set to zero
+  if not present in the bcmd function call. 
+  The s64 character pointer will point to s$(48) which is only
+  64 chars in length.
+  
+  There is a source code example on the HotPaw web site.
+  
+  DA (Desk accessory) modules may also be called; the parameter
+  is ignored.  See  <http://member.nifty.ne.jp/yamakado/da/>  for
+  details on using and writing DA's.
+  
+  OS 5 armlets (ARM code resources of type 'armc') can be called
+  by using the fn armlet(d$, i, ptr) function: where d$ is
+  the database name, i is the resource id number of the 'armc'
+  resource, and ptr is a pointer to a block of memory passed to
+  the armlet for it to use.  (e.g. ptr = varptr(x(0)) with x
+  dimensioned big enough.)  Call ARM code modules at your own
+  risk.
+  
+  Feature Manager Data Storage.
+  
+  To set a Feature Manager feature (32-bit), use the command
+  
+    put "ftr", "cBA3", n, d
+    
+  with the feature number #n in the range 1024..1123 and d is the
+  data you wish to store.
+  
+  Network support:
+  
+    fn aton(ip$)	'- converts dotted ip string to a number
+    fn ntoa$(n)		'- converts n to dotted ip address string
+  
+  Beta Test NetLib socket support functions:
+    
+    You need to Connect first by using the Network Panel in Prefs
+    before using the following tcp/ip network functions.
+    
+    fn tcp( 2, h$ , p)	'- opens socket at hostname h$, port p
+    fn tcp( 1, ip$, p)	'- opens socket at dotted ip address ip$
+    			'-   returns 0 if successful
+    fn tcp( 4, s$, n)	'- sends n bytes of s$, returns number sent
+    fn tcp( 8, "", n)	'- returns bytes received (up to n) in s$(0)
+    			'-   uses an automatic 10 second timout
+    fn tcp(-1, "", 0)	'- closes network socket
+
+    fn dns(h$)		'- returns 32-bit ip address for hostname h$
+
+  Beta Test SD/MMC card file system (VFS) support:
+
+    open "vfs:",filepath$ for input as #1
+    			'- filepath$ usually starts with "/Palm/"
+    			'- only one vfs file can be open at a time
+
+    input #1, a$	'- read text from VFS Text or Doc file
+    			'-   sets eof when at end of file
+ 
+    fn vfsrd(f$, offset, len)	'- reads VFS text or data file
+    			'- read up to <len> bytes into s$(0)
+    			'- useful for non-text data
+    			'- returns 0 for no error
+
+    fn vfsdocrd(f$, record, offset)  '- reads text from VFS Doc file
+    			'- read up to 127 bytes into s$(0)
+    			'- string includes CR/LF characters at end
+    			'- sets eof and db.eol
+    			'- returns 0 for no error
+
+    fn vfsfiles(filepath$, n)	
+    			'- enumerate n-th VFS filename in path
+       			'- set n = 1 for the 1st directory entry
+    			'- returns 0 for filename found
+    			'- returns -1 for last file name
+    			'- returns -1 for no more entries
+    			'- returns file or dir name in s$(0)
+    			'- returns file type in s$(1)
+    			'-   for a subdirectory, filetype = 16
+
+    fn vfswrite(fpath$, t$,  0) '- creates VFS file, writes t$
+    fn vfswrite(fpath$, t$, -1) '- appends t$ to above
+    			'- returns non-zero values on error
+    			'- only one VFS file writeable at a time
+    			'- may need to append chr$(10) line endings
+
+    fn vfskillfile(f$)	'- deletes a VFS file
+
+    #include <VFSPATH>	'- includes VFS text file
+			'- example:
+    #include </PALM/Data/app1.bas>
+    		'- must be on one line with no trailing comment
+
+
+  Beta Test Doc format database write commands:
+
+    open "doc:", dbname$ for output as #4
+    		'- opens an uncompressed Doc file for output
+    		'-   only 1 Doc file may be open at a time
+    		'-   only file number #4 is allowed
+    			
+    print #4, a$	'- prints text to Doc database
+
+    close #4		'- closes Doc database output
+    
+
+  Beta Test OS 5 Bluetooth Exchange Manager support:
+
+    fn beam dbname$		'- beam database dbname$
+    
+    fn beam "?_send:" + dbname$		'- Bluetooth send DB
+    
+    fn beam "?_send;_beam;" + dbname$	'- BT or IrComm send
+
+
+  Beta Test OS 5 and Sony CLIE 320x320 display support:
+
+    draw x1,y1,x2,y2,320  '- draw fine line in hires mode
+    			  '- x2,y2 in HiRes range [0 to 320]
+
+    draw txt$, x1,y1,320  '- draw text using tiny font
+    			  '- x2,y2 in HiRes range [0 to 320]
+  
+    print at x,y, 320	  '- Sets print-to-window-mode
+    			  '-   using a half size font
+    		'- To turn off this mode use: print at -1,0
+    
+
+  Alpha Test OS 5 cbasPad5 integration:
+
+    fn cbas5x(n, "memo#")	'- have cbasPad5 run Memo #n
+    			'- copies s$(0)..s$(6) to/from cbasPad5
+    			'-   before/after running cbasPad5 Memo
+    			'-   for string parameter passing.
+    			'-   Use db.find to find a Memo number.
+
+    
+  WARNING!  Alpha Test functions may go away in future releases.
+  
+
+Advanced Features (with registered copies of HotPaw Basic only):
+
+  Doc format support:
+  
+    chain 1, docfilename$
+	'- runs a program contained in a Doc file.
+	'- (maximum program length of 8k characters).
+
+  pedit32 support:
+  
+    chain n, "Memo32DB"
+	'- runs a program contained in pedit32 memo #n
+	'- Note that you can NOT chain to the very 1st memo
+
+    db.find("Memo32DB", title$)
+    	'- finds pedit32 memo by title string.
+
+  The "chain" statement only works when used in "Show Programs"
+  mode (e.g. with the main program in the MemoPad).
+  
+  There is also a Preference (Menu Option) for using the pedit
+  Memo32DB instead of the MemoPad database.
+  
+  Applet creation:
+  
+    The bcmd add-in named "bcmdmakelauncher.prc" adds the capability
+    to create applets that are visible in the PalmOS launcher and
+    which contain the text of your Basic program.  You can then
+    distribute these applets to alow anyone else who has HotPaw Basic
+    installed to run your Basic program.  (HotPaw Basic is required
+    to run these applets.  There is no separate Basic runtime library.
+    It would be the same size as HotPaw Basic, so the yBasic prc
+    serves as the runtime library.)  Please note that the
+    makelauncher bcmd can only create applets when when running
+    on a registered copy of HotPaw Basic.  But the resulting applets
+    themselves can be used with either unregistered or registered
+    copies of HotPaw Basic.
+  
+    The applets can be titled with any name not in use.  You also
+    need to give your applets a creator ID registered with Palm at
+    this website: <http://www.palmos.com/dev/tech/palmos/creatorid/>
+    The creator ID must be 4 characters in length, not all lower case,
+    and not used by another PalmOS application.
+    
+    The source for the applets must fit in one memo with no include
+    or chain statements.  If you use the pedit editor, you can create
+    longer applets.
+    
+    Note that applets cannot be run from card memory, or if yBasic
+    is installed in card memory.
+
+    example applet creation program:
+
+    	# my applet creator .bas
+    	memotitle$ = "#myprogram.bas"	 :' your Memo title
+    	r = db.find("memo", memotitle$)  :' find your Memo
+    	name$ = "myApplet" 	:' your applet name here
+	creator$ = "yB01" 	:' * example creator ID only *
+	s$(49) = name$		:' bcmd parameters 48-63
+	s$(50) = creator$
+	s$(51) = "appl"
+	errno = -401
+	d = 0
+	if (r > 0) then errno = fn makelauncher(r, d)
+	if (errno = 0) then x = fn setbackup(name$, 1)
+	print r, errno
+
+      For pedit32 applets, instead use:
+            r = db.find("Memo32DB", title$)
+      and:  d = db.find("Memo32DB")
+
+      Error codes returned by bcmdmakelauncher:
+           0 : OK
+          -3 : illegal s$() parameters
+  	-101 : please delete yLaunchTmp or yLaunch4 temporary files
+  	-102 : your applet name is already in use
+  	-103 : illegal creator ID
+	-110 : not enough storage memory to create app
+	-200 : HotPaw Basic registration problem
+        -401 : can't use the very first memo
+	
+      To have applets exit to the launcher instead of yBasic, use
+      the pragma:
+        #run_and_exit
+      before the first executable Basic program line.
+
+
+Debugging Aids:
+
+  In order to save memory, HotPaw Basic does not store the text
+  of program lines or the text location when loading a program.
+  Thus, the only way for it to display a program line with a given
+  line number is to actually load the program again from the main
+  program selector view.  The "fn debugline(n)" function will set
+  a listing breakpoint that will stop loading whenever the next
+  program line with line number n is read.  After viewing the line,
+  you can tap the screen to continue loading, or hit the
+  "Applications" icon to exit HotPaw Basic.
+
+    n = fn debugline(n)	'- sets listing breakpoint, returns 0
+
+  Another way is to find linenumbers is to add some statements
+  with labels, then print the following function value for the
+  desired labels:
+
+    n = fn linenum(label)	'- returns line number for any label
+
+
+Error Message Details:
+
+  "Out of Memory "
+  	Too long a program.
+  	Too large an array.
+  	Too many variables.
+  "Out of string memory "
+  	Too many string variables.
+  	Too large a string array.
+  "Line number too big "
+  	Line number greater than 30000
+  "Line number duplicated "
+  	Duplicate line number.
+  	Too many lines between numbered lines.
+  	Too many lines before the first line number.
+  	Unwanted line break in a program line (creating an
+  	  extra line number.)
+  "Unsupported subroutine call "
+  	Subroutine call inside an expression or assigned to array.
+  "Undefined line or subroutine "
+  	Subroutine target not found
+  "Out of Data "
+  	Read statement without enough data statements
+  "IF without ENDIF or THEN "
+  "Missing THEN error "
+  "Missing ENDIF "
+  	Missing statements.
+  "Missing GOSUB "
+  	RETURN found outside of a called subroutine
+  "Unsupported index var "
+  	Label, string variable or constant as FOR index.
+  "Missing FOR "
+  	NEXT found without a matching FOR statement.
+  "FOR w/o NEXT "
+  "WHILE without WEND "
+  "WEND without WHILE "
+  	Missing loop control statements.
+  "Syntax error "
+  	Miscellaneous errors in statement syntax.
+  "Type mismatch error "
+  	string/numeric parameter mismatch
+  "Subscript err "
+  	Missing subscript.  Subscripting a non-array variable.
+  "Nesting error "
+  	Expression too complex.  Too many parenthesis.
+  "Program line too long  "
+  	Program line longer than 80 characters.
+  "Include file not found "
+  	#include <> pragma with incorrect memo title or spelling.
+  "ScratchPad programs require line numbers and a 'run' command. "
+  	LOOP or GOSUB was found in direct execution mode.
+  "Missing return, next or wend "
+  	Program ended inside a loop or subroutine.
+  "Form item error "
+  	Too many buttons, fields or checkboxes.
+  	Attepting to recreate a previously created button.
+  	Running a From statement from the ScratchPad Edit view.
+  "Only #5 available for serial "
+  "Only #5 available for printer "
+  	OPEN #5 ... statement used with a number other than #5.
+  "Out-of-range error "
+  "Database not open "
+  	Database not opened for write.
+  	Database closed by prior database or memo creation
+  	statement. 
+  "Feature Expired"
+  	Feature only available in the registered version.
+
+
+Some Cautions:
+
+  Don't forget that the s$() array can be modified by many db and
+  form commands.
+  
+  Opening serial port I/O will drain the battery much faster than
+  during normal usage.
+
+  Divide by 0 errors are not trapped, they return "NaN" (IEEE
+  floating point code for "not a number".)
+
+  Peek, Poke and Call are dangerous statements.
+  You can lock up your Pilot and corrupt ALL your data when using
+  the poke and call statements.  Use at your own risk.  HotSync
+  and backup often if you want try these functions.  Memory above
+  the dynamic heap is protected and cannot be poked without an OS
+  write enable call.
+
+Bugs:
+
+  Many... think Costa Rican rain forest.  HotPaw Basic is too
+  complex and too new to have been well tested.
+  
+  This documentation is preliminary and subject to change or
+  correction without notice.
+  
+  Some syntax errors are reported without line numbers.
+
+  Please send bug reports to rhn@hotpaw.com
+  
+  * Bug reports without the HotPaw Basic version number and 
+  * PalmOS version will be ignored.
+
+
+***
+FAQ:
+
+  Q: How do I share my Basic programs?
+  
+  A: Because HotPaw Basic programs are contained in MemoPad
+     memo's as plain text, one can HotSync them to the desktop
+     and email (or post on the web) the contents of these memo's
+     as text files.
+     
+     Users of the registered version can also create applets
+     which will appear in the Palm launcher, and also have the
+     text of the Basic program self-contained in the applet.
+  
+  Q: Can HotPaw Basic compile stand-alone prc applications?
+  
+  A: No.  A compiler is a completely different, much bigger,
+     and far more complex application. 
+     
+     There are already a several compilers for Palm handhelds,
+     among them Quartus Forth for on-board compilation, and
+     Metrowerks Codewarrior for Palm for a complete Mac/Win
+     hosted IDE.
+     
+     HotPaw Basic is designed for people who want to be able
+     to see and modify programs and scripts directly on their
+     Palm handheld.
+     
+  Q: What's the difference between HotPaw Basic and cbasPad?
+  
+  A: cbasPad classic was written as a spare evening hobby in 1996
+     for Palm Pilot 1000's and 5000's running PalmOS 1.0 with only
+     128k/512k of memory.  Some of the arithmetic and math routines
+     built into PalmOS 1.0, which cbasPad classic depends upon, are
+     not reliable or accurate.  Also, because of its design for
+     the single segment restriction of PalmOS 1.0, cbasPad classic
+     is no longer expandable.  In spite of its limitations,
+     cbasPad classic will remain free for non-commercial and
+     non-mission-critical use on old PalmOS 1.0 and 2.0 devices.
+     
+     HotPaw Basic was written to take advantage of Palm 3.x and
+     has double the feature set and a much more accurate math
+     calculation capability.
+
+  Q: Where are the other FAQs?
+  
+  A:  There are several PalmPilot related FAQ's on the Web. 
+      Try these URL's:
+	<http://www.nicholson.com/rhn/palmfaq.txt>
+  	<http://www.palmpilotfaq.com/>
+
+
+
+***********************************************************************
+Latest Revision notes : see the README file
+***********************************************************************
+
+**********************************************************************
+LICENSE
+**********************************************************************
+
+  LICENSE
+
+  TITLE
+
+  HotPaw Basic ("the Software") is
+  Copyright 1999-2004 by Ronald H Nicholson, Jr. & HotPaw Productions
+  All Rights Reserved.
+  
+  Title, ownership rights, and intellectual property rights in the
+  Software shall remain with Ronald H Nicholson, Jr.  The Software
+  is protected by the copyright laws and treaties of the United
+  States of America.
+
+  TERMS
+
+  Ronald H. Nicholson, Jr. grants you the right to use this copy
+  of the Software if you agree to the following license terms:
+  
+  You may use the Software without a license key and in Trial or
+  Demo mode for educational or non-commercial purposes.
+  
+  You may transfer or copy a license key or license key database
+  for the Software only if required in the normal use of one PalmOS
+  handheld unit.  You may also make one copy of the Software license
+  key if required for backup purposes.  You are required to keep
+  all HotPaw license keys confidential.  You may not loan, rent,
+  transfer or assign the license key to another user except with
+  (a) the permission of HotPaw and (b) as a permanent transfer of
+  the Software and the license key.
+  
+  You may not reverse engineer, decompile, or disassemble the
+  Software.  
+  
+  Commercial distribution of the Software is not allowed without
+  the express permission of the copyright holder.  Contact HotPaw
+  for details about obtaining a license.
+  
+  Usage of the Software is also subject to the following limitations
+  and disclaimers.
+
+  WARRANTY AND DISCLAIMER
+
+  The Software is distributed in the hope that it might be useful,
+  but WITHOUT ANY WARRANTY OF ANY KIND; not even the implied
+  warranties of MERCHANTABILITY, fitness for ANY particular purpose,
+  or for non-infringement of any intellectual property rights.
+  
+  LIMITATION OF LIABILITY
+
+  UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, TORT, CONTRACT,
+  OR OTHERWISE, SHALL HOTPAW, RONALD NICHOLSON, OR ITS SUPPLIERS OR
+  RESELLERS BE LIABLE TO YOU OR ANY OTHER PERSON FOR ANY INDIRECT,
+  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER
+  INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, WORK
+  STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER
+  COMMERCIAL DAMAGES OR LOSSES. IN NO EVENT WILL HOTPAW BE LIABLE
+  FOR ANY DAMAGES IN EXCESS OF THE AMOUNT HOTPAW RECEIVED FROM YOU
+  FOR A LICENSE TO THIS SOFTWARE, EVEN IF HOTPAW OR RONALD NICHOLSON
+  SHALL HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES, OR
+  FOR ANY CLAIM BY ANY OTHER PARTY. THIS LIMITATION OF LIABILITY
+  SHALL NOT APPLY TO LIABILITY FOR DEATH OR PERSONAL INJURY TO THE
+  EXTENT APPLICABLE LAW PROHIBITS SUCH LIMITATION. FURTHERMORE,
+  SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF
+  INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THIS LIMITATION AND
+  EXCLUSION MAY NOT APPLY TO YOU.
+  
+  IN THE EVENT THIS SOFTWARE INFRINGES UPON ANY OTHER PARTY'S
+  INTELLECTUAL PROPERTY RIGHTS, THE LICENSOR'S ENTIRE LIABILITY
+  AND YOUR EXCLUSIVE REMEDY SHALL BE, AT THE LICENSOR'S CHOICE,
+  EITHER (A) RETURN OF THE PRICE PAID TO THE LICENSOR AND ITS
+  AUTHORISED DISTRIBUTORS OR (B) REPLACEMENT OF THE SOFTWARE WITH
+  NON-INFRINGING SOFTWARE.
+
+  LIMITATION OF HIGH RISK ACTIVITIES
+
+  The Software is not fault-tolerant and is not designed,
+  manufactured or intended for use or resale as on-line control
+  equipment in hazardous environments requiring fail-safe
+  performance, such as in the operation of nuclear facilities,
+  aircraft navigation or communication systems, air traffic control,
+  direct life support machines, or weapons systems, in which the
+  failure of the Software could lead directly to death, personal
+  injury, or severe physical or environmental damage ("High Risk
+  Activities").  Ronald Nicholson, HotPaw, and its suppliers
+  SPECIFICALLY disclaim ANY express or implied warranty of fitness
+  for High Risk Activities.
+  
+  This license is governed by the laws of the United States and
+  the State of California.  If, for any reason, a court of
+  competent jurisdiction finds any provision, or portion thereof,
+  of this license to be unenforceable, the remainder of this
+  license shall continue in full force and effect.
+  
+  AGREEMENT
+
+  If you do not agree to the terms of this LICENSE, you are not
+  authorized to use the Software.
+  
+   
+***
+This documentation is preliminary and subject to change at any
+time without notice.
+--
+Palm, PalmOS and HotSync are trademarks of Palm Computing.
+HotPaw and cbasPad are trademarks of the HotPaw company.
+
+Copyright 1999-2004 Ronald H. Nicholson, Jr. & HotPaw Productions
+***
+
+
+
+
+

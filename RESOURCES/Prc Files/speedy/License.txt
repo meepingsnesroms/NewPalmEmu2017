@@ -1,0 +1,63 @@
+Speedy License v1.3
+===================
+
+  Copyright (C) 2001-2008 Laurent Duveau
+       Web Site = http://www.aldweb.com
+       e-Mail   = info@aldweb.com
+
+
+Speedy is a benchmark utility for PalmOS based devices.
+
+
+
+
+Art 1. Copyright
+----------------
+
+Speedy is protected by the French copyright law and international copyright treaties.
+
+The source and binary code of Speedy as well as all related documentation are copyright (c) 2001-2007 Laurent Duveau aka "aldweb". You are allowed to use and distribute the binary code and all related documentation under the terms of the license set forth below. By reading, using, distributing the binary code and/or any related documentation of Speedy, you agree to be bound by the terms and conditions set forth below.
+
+The terms set forth in present license only apply to the version of Speedy they are bundled with. Future versions may be subject to modified terms and conditions and you will have to accept those terms and conditions to use, distribute or modify such particular version of Speedy.
+
+
+Art 2. Use of Speedy
+--------------------
+
+The copyright holders grant to the possessor of this original copy (the Licensee) a royalty-free, nonexclusive license to use Speedy, the binary code, and any related documentation.
+
+Any non commercial products can bind to or link to Speedy under the terms and conditions of present license.
+
+Commercial products that bind or link to Speedy and/or its documentation or take benefit from it in any other way have to be entitled to do so by a special license agreed to by the copyright holders. Such license may be subject to a royalty fee.
+
+
+Art 3. Distribution of Speedy
+-----------------------------
+
+The binary code of Speedy and all related documentation may be freely distributed on a non-commercial basis. However such distribution is restricted as follows:
+- upon distribution, the full code and documentation has to be included.
+- upon distribution, the full code and documentation has to remain unchanged.
+- upon distribution, all copyrights and references to present license have to stay intact.
+- upon distribution, present license has to be included.
+
+The binary code of Speedy and all related documentation may be distributed on any media. A fee may be charged to cover solely and only the costs of the distribution.
+
+
+Art 4. Modification of Speedy
+-----------------------------
+
+The source code of Speedy is not made public. It is protected by the French copyright law and international copyright treaties.
+
+The source code and documentation of Speedy may be acquired, modified and distributed for commercial or non commercial purposes under the terms and conditions of a special license agreed to by the copyright holders. Such license may be subject to a royalty fee.
+
+
+Art 5. Disclaimer of Warranty
+-----------------------------
+
+The copyright holders do not provide any warranty whatsoever regarding the source or binary code of Speedy and all related documentation. Furthermore the copyright holders do not provide any warranty whatsoever regarding modified versions of Speedy or patches relating to Speedy provided by third parties.
+
+
+Art 6. Limitation of Liability
+------------------------------
+
+The copyright holders can not be held liable for any damage occurred by the use, modification or distribution of the source or binary code of Speedy and all related documentation or any modified version.

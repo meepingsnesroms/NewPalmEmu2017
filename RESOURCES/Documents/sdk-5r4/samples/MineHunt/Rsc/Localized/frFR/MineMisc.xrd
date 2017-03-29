@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1002" LOCALE="frFR" COMMENT="Game Won Alert">
+		<ALERT_TYPE> INFORMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Mines" </TITLE>
+		<MESSAGE> "FELICITATIONS - VOUS AVEZ GAGNE!" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1003" LOCALE="frFR" COMMENT="New Game Alert">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Mines" </TITLE>
+		<MESSAGE> "Nouveau jeu?" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "Oui" </TEXT>
+			<TEXT> "Non" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1004" LOCALE="frFR" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Incompatible avec le système" </TITLE>
+		<MESSAGE>
+			"La version 2.0 ou plus du système est exigée pour exécuter cette "
+			"application."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1000">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1000-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1001">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1001-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1002">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1002-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1003">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1003-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1004">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1004-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1005">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 15 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./MineMisc/Bitmap_1005-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="frFR" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Jeu" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 95 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 24 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Règles du jeu" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Préférences" </TITLE>
+						<COMMAND> "P" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "A propos: Mines" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="frFR" COMMENT="Game Tips String">
+		<TEXT>
+			"Règle du jeu Mines\n"
+			"\n"
+			"Plusieurs mines sont cachées dans le champ de jeu. Leur nombre "
+			"apparaît en haut de l'écran. Le but du jeu est de parvenir à localiser "
+			"les mines.\n"
+			"\n"
+			"Pour découvrir une case, appuyez dans cette case. Le nombre des mines "
+			"présentes dans les parages (le cas échéant) s'affiche. Si vous mettez "
+			"une mine à découvert, elle explose et la partie est terminée.\n"
+			"\n"
+			"Pour signaler la présence d'une mine, appuyez une fois dans cette case "
+			"tout en maintenant enfoncé le bouton pg.préc ou pg.suiv. Le compteur "
+			"de mines en haut de l'écran indique le nombre des mines restant à "
+			"détecter.\n"
+			"\n"
+			"Pour marquer une case comme étant inconnue, appuyez deux fois dans "
+			"cette case en maintenant enfoncé le bouton pg.préc ou pg.suiv.\n"
+			"\n"
+			"Pour changer une case marquée minée en inconnue, appuyez une fois dans "
+			"cette case en maintenant enfoncé le bouton pg.préc ou pg.suiv.\n"
+			"\n"
+			"Pour vider une case marquée comme étant minée, appuyez deux fois dans "
+			"cette case en maintenant enfoncé le bouton pg.préc ou pg.suiv.\n"
+			"\n"
+			"\n"
+			"Vous pouvez sélectionner le niveau de difficulté dans Préférences du "
+			"menu Jeu."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

@@ -1,0 +1,10 @@
+uncfl changelog
+--
+$Id: CHANGES,v 1.1 2001/11/20 12:29:36 jetro Exp $
+$Revision: 1.1 $
+------------------------------------------------------------------------
+
+1.0.0:
+Initial revision.
+Unpacks all files from the cfl file and overwrites existing files.
+

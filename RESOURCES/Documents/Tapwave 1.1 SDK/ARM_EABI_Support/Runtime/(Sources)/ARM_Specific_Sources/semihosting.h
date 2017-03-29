@@ -1,0 +1,1 @@
+extern void sys_exit();

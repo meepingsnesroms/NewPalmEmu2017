@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2001" LOCALE="itIT" COMMENT="Delete Note">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Elimina nota" </TITLE>
+		<MESSAGE> "Eliminare la nota?" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "Sì" </TEXT>
+			<TEXT> "No" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2002" LOCALE="itIT" COMMENT="Select item">
+		<ALERT_TYPE> INFORMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Seleziona voce" </TITLE>
+		<MESSAGE>
+			"Per eseguire questo comando, è necessario selezionare una voce. Per "
+			"selezionare una voce, toccarne la descrizione."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_DEFAULT_CATEGORY_RESOURCE RESOURCE_ID="1000" LOCALE="itIT" COMMENT="DO NOT LOCALIZE THIS RESOURCE">
+		<TEXT> "Main" </TEXT>
+	</APP_DEFAULT_CATEGORY_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1000" COMMENT="Large icons (1-2 and 8 bits)">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 21 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 21 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 21 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1001" COMMENT="Small icons (1-2 and 8 bits)">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 10 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 10 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 10 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="itIT">
+		<TEXT> "Impegni" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_INFO_STRINGS_RESOURCE RESOURCE_ID="1000" LOCALE="itIT" COMMENT="Category Labels">
+		<STRINGS>
+			<TEXT> "Non archiviati" </TEXT>
+			<TEXT> "Lavoro" </TEXT>
+			<TEXT> "Personale" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+		</STRINGS>
+	</APP_INFO_STRINGS_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.5" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="itIT" COMMENT="List View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="Item">
+				<TITLE> "Impegno" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 140 </WIDTH>
+					<HEIGHT> 93 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 49 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Elimina impegno…" </TITLE>
+						<COMMAND> "E" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Allega nota" </TITLE>
+						<COMMAND> "O" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "Elimina nota…" </TITLE>
+						<COMMAND> "L" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Elimina…" </TITLE>
+						<COMMAND> "M" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 105 </ID>
+						<TITLE> "Trasm. impegno via IR" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 106 </ID>
+						<TITLE> "Invia impegno" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 107 </ID>
+						<TITLE> "Trasmetti categoria via IR" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 108 </ID>
+						<TITLE> "Invia categoria" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU>
+				<TITLE> "Modifica" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 33 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 125 </WIDTH>
+					<HEIGHT> 82 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 53 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 51 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 10000 </ID>
+						<TITLE> "Annulla" </TITLE>
+						<COMMAND> "Z" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10001 </ID>
+						<TITLE> "Taglia" </TITLE>
+						<COMMAND> "X" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10002 </ID>
+						<TITLE> "Copia" </TITLE>
+						<COMMAND> "C" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10003 </ID>
+						<TITLE> "Incolla" </TITLE>
+						<COMMAND> "V" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10004 </ID>
+						<TITLE> "Seleziona tutto" </TITLE>
+						<COMMAND> "A" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10005 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10006 </ID>
+						<TITLE> "Tastiera" </TITLE>
+						<COMMAND> "T" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10007 </ID>
+						<TITLE> "Guida di Graffiti 2" </TITLE>
+						<COMMAND> "G" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Options">
+				<TITLE> "Opzioni" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 40 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 118 </WIDTH>
+					<HEIGHT> 44 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 104 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 44 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 300 </ID>
+						<TITLE> "Carattere…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 301 </ID>
+						<TITLE> "Ricerca telefono" </TITLE>
+						<COMMAND> "R" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 302 </ID>
+						<TITLE> "Protezione…" </TITLE>
+						<COMMAND> "H" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 303 </ID>
+						<TITLE> "Info su Elenco impegni" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="100" LOCALE="itIT" COMMENT="Find Header Title">
+		<TEXT> "Voci dell'Elenco impegni" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="101" LOCALE="itIT" COMMENT="Due Date Title">
+		<TEXT> "Data di scadenza" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="itIT" COMMENT="Beam Description String">
+		<TEXT> "un impegno" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="itIT" COMMENT="Beam Filename String">
+		<TEXT> "Evento.vcs" </TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

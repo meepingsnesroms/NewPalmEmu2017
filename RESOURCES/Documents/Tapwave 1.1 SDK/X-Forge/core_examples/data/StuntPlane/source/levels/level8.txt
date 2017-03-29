@@ -1,0 +1,63 @@
+# ZigZag
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 3225, 0, 0, ZIG ZAG
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 128
+
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 6
+
+
+# Hoop info:
+# sprite image,   x,   	y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop2.pcx,  20,  0,  100,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,	 -20,  0,  200,   0,   0,  20.0,  \
+HOOP=hoop2.pcx,  30,  0,  325,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  -30,  0,  450,   0,   0,  20.0,   \
+HOOP=hoop2.pcx,  50,  0,  600,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  -50,  0,  750,   0,   0,  20.0,   \
+HOOP=hoop2.pcx,  70,  0,  925,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  -70,  0,  1100,   0,   0,  20.0,    \
+HOOP=hoop2.pcx,  120,  0,  1300,   0,   0,  20.0,  /
+HOOP=hoop4.pcx,  -120,  0,  1500,   0,   0,  20.0,   \
+HOOP=hoop2.pcx,	 140,  0,  1750,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,	 -140,  0,  2000,   0,   0,  20.0,   \
+
+HOOP=hoop2.pcx,  50,  0,  2800,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  0,  0,  2900,   0,   0,  20.0,   \
+HOOP=hoop2.pcx,  50,  0,  3000,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  0,  0,  3100,   0,   0,  20.0,   \
+HOOP=hoop2.pcx,  50,  0,  3200,   0,   0,  20.0,    /
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,  0,  0,   980,   10
+BONUS=bonusballoon.pcx,  0,  0,   1180,   10
+BONUS=bonusballoon.pcx,  0,  0,   1380,   10
+BONUS=bonusballoon.pcx,  0,  0,   1600,   10
+BONUS=bonusballoon.pcx,  0,  0,   1850,   10
+BONUS=bonusballoon.pcx,  -60,  20,  2075,   5
+BONUS=bonusballoon.pcx,  -10,  40,  2200,   5
+BONUS=bonusballoon.pcx,  20,  -10,  2330,   5
+BONUS=bonusballoon.pcx,  40, 20,  2510,   5
+BONUS=bonusballoon.pcx,  -10,   40, 2660,   5
+BONUS=bonusballoon.pcx,  20,  10, 2720,   5
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  30,  90,  0 

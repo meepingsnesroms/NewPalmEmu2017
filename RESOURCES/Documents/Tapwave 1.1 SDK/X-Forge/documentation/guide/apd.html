@@ -1,0 +1,412 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Appendix D. Fathammer Code Conventions &amp; Guidelines</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt08.html" title="Part VIII. Appendices"><link rel="previous" href="apc.html" title="Appendix C. ARM Assembler Tutorial"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix D. Fathammer Code Conventions &amp; Guidelines</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apc.html">Prev</a> </td><th width="60%" align="center">Part VIII. Appendices</th><td width="20%" align="right"> </td></tr></table></div><div class="appendix"><div class="titlepage"><div><h2 class="title"><a name="id437875"></a>Appendix D. Fathammer Code Conventions &amp; Guidelines</h2></div></div><p>
+The following appendix presents Fathammer's coding conventions and guidelines. Most of them are recommended for all X-Forge developers and some are stylistic issues.
+</p><pre class="programlisting">
+
+Fathammer Code Conventions &amp; Guidelines
+=======================================
+
+
+Table of Contents
+
+
+1 Naming and Types
+1.1 Types
+1.2 Cases
+1.3 Prefixes
+1.4 File Names and Directories
+2 Code Guidelines
+2.1 Using Constants and Consts
+2.2 Code Formatting
+2.3 Pitfalls To Avoid
+2.4 Other Advices
+
+
+------------------------------------------------------------------------------
+
+
+1 Naming and Types
+
+
+1.1 Types
+
+
+Primitive types have alias names:
+        INT8, INT16, INT32, INT64, 
+        UINT8, UINT16, UINT32, UINT64, 
+        FLOAT32, FLOAT64, FIXED, REAL,
+        INT, UINT, CHAR, CHAR8, CHAR16
+Mapping to actual types varies with platform but here is an example:
+        typedef signed char INT8;
+        typedef signed short INT16;
+        typedef signed long INT32;
+        typedef signed long long INT64;
+        typedef unsigned char UINT8;
+        typedef unsigned short UINT16;
+        typedef unsigned long UINT32;
+        typedef unsigned long long UINT64;
+        typedef float FLOAT32;
+        typedef double FLOAT64;
+        typedef Fixed FIXED;
+        typedef FIXED REAL;
+        typedef INT32 INT;
+        typedef UINT32 UINT;
+        typedef char CHAR8;
+        typedef short CHAR16;
+        typedef CHAR8 CHAR;
+                or
+        typedef CHAR16 CHAR; (depending on platform)
+
+Plain INT is considered to be the fast integer on all platforms. INT is
+guaranteed to be at least 16 bits (like standard 'int' in C).
+
+For boolean values use type of INT with values 0 and 1 when the size is
+not an issue (e.g. a return value of method). If size is an issue and speed
+is not that relevant, use UINT8 or bitfields like UINT8 b:1; in a struct
+if you have other smaller members to fill the space too.
+
+
+1.2 Cases
+
+
+Classes and structs are written in lower case except first letter of each
+word is written in upper case.
+        Example: ClassesLikeThis
+Variables and methods are named like classes but first letter is always
+in lower case.
+        Example: variablesLikeThis
+        Example: INT methodsLikeThis(UINT32 aFlags)
+Constants and typedefs are written in full uppercase separating words
+with underscores.
+        Example: CONSTANTS_LIKE_THIS
+
+
+1.3 Prefixes
+
+
+Prefix of core, engine and util classes are &quot;XFc&quot;, &quot;XFe&quot; and &quot;XFu&quot;
+respectively.
+        Examples: class XFcFile, XFeNode, XFuXMPlayer
+Member variables are prefixed with small m.
+        Example: INT mActive;
+Method/function arguments are prefixed with small a.
+        Example: void method(UINT32 aFlags)
+Prefix for global symbols (includes functions and data) is &quot;xfc&quot;,
+&quot;xfe&quot; or &quot;xfu&quot; like with class prefixes.
+        Examples:
+        extern CHAR *xfcProgName;  (platform specific)
+        extern &quot;C&quot; void xfcClearFramebuf(...args...);
+
+
+1.4 File Names and Directories
+
+
+File name for each class is the same as class name with extensions
+'.cpp' and '.h'.
+Example: file names for class XFcFile are &quot;XFcFile.cpp&quot; and &quot;XFcFile.h&quot;.
+
+Some classes have both common and platform specific code, in that case
+filenames are like &quot;XFcFile.cpp&quot;, &quot;XFcFile.h&quot; and &quot;platform_XFcFile.cpp&quot;.
+The &quot;platform_XFcFile.cpp&quot; is located naturally in the corresponding
+directory under platform/.
+
+Platform specific parts of software are separated to their own directories
+(epoc, wince, linux, ...). These directories should lie under the specific
+project's &quot;platform&quot;-directory. Build environment for each platform by the
+platform name should be in &quot;build&quot; directory which is in same level with the
+&quot;source&quot; directory. For library projects, headers should be separated to
+&quot;include&quot; directory which is in the same level with &quot;source&quot;. If part of
+files are public (seen by other than in-house people, e.g. most of xfcore
+headers), then the internal part of files are separated to an &quot;internal&quot;
+subdirectory.
+Example of part of directory structure:
+        (REP means the path to local copy of code repository)
+        REP/project/include
+        REP/project/source
+        REP/project/source/platform/linux
+        REP/project/build
+        REP/project/build/linux
+        REP/project/documentation
+In the example case REP/project/include is added to the project build
+environment as include path.
+
+In case of the actual X-Forge product the directory structure has also
+subprojects showing as xfcore, xfengine and xfutil directories under the
+main level source, include, build and documentation -directories.
+
+Source includes must be written like
+        #include &lt;xfcore/internal/XFcFoo.h&gt;
+instead of just #include &lt;XFcFoo.h&gt; - that is, include path should
+include only the root of the include directory.
+
+Remember that all file names are case sensitive and separator is
+always forward slash ('/').
+        Examples:
+        #include &lt;internal/xfcfoo.h&gt;            BAD
+        #include &lt;xfccore.h&gt;                    BAD
+        #include &lt;util\xfuxmplayer.h&gt;           BAD
+        #include &lt;xfcore/XFcCore.h&gt;             GOOD
+        #include &lt;xfcore/internal/XFcFoo.h&gt;     GOOD
+
+
+2 Code Guidelines
+
+
+2.1 Using Constants and Consts
+
+
+Enumerations are preferred over static constants which are preferred
+over defines. Do not pollute namespace with too general names for
+the enumeration itself.
+
+Constant flag names must be prefixed according to context. For example
+with function enumerateDisplayFormats, some of the flags could be
+EDF_PORTRAIT and EDF_LANDSCAPE. In core platform classes also the
+general prefix should be used. Example:
+        enum XFCGLVERTEXFLAGS
+        {
+            XFCGLVF_XYZ = 1,
+            XFCGLVF_RHW = 2,
+            // ...
+        };
+
+Use consts where it is clearly advantageous or necessary for correct
+semantics for calling code (e.g. passing const variables as arguments).
+
+
+2.2 Code Formatting
+
+
+Indentation unit size is 4 spaces. Do not use tab characters. Source files
+should look the same with any tab size since tabs are not used. It is
+recommended that you also configure your editor to use tab size of 8 spaces
+instead of 4 to avoid some indentation mistakes.
+Configuring Emacs (add to your .emacs):
+        (setq indent-tabs-mode nil)
+        (defun fixed-c-mode-common-hook ()
+          &quot;&quot;
+          (c-set-style &quot;stroustrup&quot;)
+          (setq indent-tabs-mode nil)
+          (c-set-offset 'case-label '+)
+          (setq c-basic-offset 4))
+        (add-hook 'c-mode-common-hook (function fixed-c-mode-common-hook))
+        (global-set-key &quot;\C-m&quot; 'newline-and-indent)
+Configuring Microsoft Visual C++ / eMbedded Visual C++:
+        Tools-&gt;Options-&gt;Tabs:
+        File type = C/C++
+        Tab size = 8
+        Indent size = 4
+        (*) Insert spaces
+        Auto indent = Smart
+Configuring Metrowerks CodeWarrior:
+        Edit-&gt;Preferences-&gt;Editor-&gt;Font &amp; Tabs
+        Tab Size: 4
+        (*) Tab Inserts Spaces        
+Keep the length of source lines under 120 characters.
+
+Note that preprocessor lines (start with '#') in our public header files in
+&quot;need&quot; of splitting with '\' are an exception to this. When the headers are
+checked out from CVS on Windows for the distribution package and these
+headers are used on Linux, gcc refuses to compile the splitted lines because
+there's extra garbage on the line after '\' character since Windows enter
+is CRLF and on Unix it is just LF. So splitting lines with '\' is *forbidden*
+on distributed headers and source, so those lines are allowed to be longer
+if it is necessary. For other code (internal headers and source)
+'\'-splitting is ok since CVS handles the CRLF/LF conversion issues
+transparently while developing.
+
+Insert two empty lines before starting a function. Add empty lines in code
+blocks to express logical units of operations.
+
+All operators are surrounded by spaces.
+Examples: x += 3; y = 0; z ^= 0xf;
+
+All following rules concerning pointers and asterisks are applied to
+references with ampersands aswell.
+
+With pointers align the asterisk with variable name.
+Example: char *x, y; instead of char* x, y;
+Example: void XFuClass::test(UINT8 *aSomething, UINT32 &amp;anotherThing)
+
+If a method returns a pointer asterisk should be surrounded by spaces.
+Example: INT * XFuTest::doSomething() { ... }
+
+Asterisk should have a space infront when using pointer typecasts.
+Example: test = (UINT8 *)malloc(1024);
+
+Add a space after commas.
+Example: INT a, b;
+
+One space is added after if/for/switch/etc before opening parenthesis.
+Example: while (1)
+
+Braces are placed in a separate row. In case of very simple if-statement
+the code can be placed just after the condition.
+Examples:
+        if (height &lt; 0) return;
+        if (x &lt; 0 &amp;&amp; y &lt; 0 &amp;&amp;
+            (flags &amp; EDF_LANDSCAPE))
+        {
+        }
+        else if (flags &amp; EDF_PORTRAIT)
+        {
+        }
+
+In nested for-loops each loop must define a new block.
+Example:
+        for (;;)
+        {
+            for (;;)
+            {
+            }
+        }  
+
+Do not use variable declaration inside for-statements. If you declare a
+variable inside a for and use the same variable again later it generates
+an error with gcc.
+Examples:
+        for (INT i = 0; ...)            BAD
+        INT i;                          GOOD
+        for (i = 0; ...)
+
+Code for cases in a switch statement is indented. When doing a switch
+for enumeration be sure to include a case for every member of the
+enumeration or the default case. Supplying a default case (even an empty
+one) is always recommended.
+Example:
+        switch (state)
+        {
+            case RUNNING:
+                ++frame;
+                break;
+            case IDLE:
+                // fall through
+            default:
+                break;
+        }
+
+If you choose to initialize class members using an initializer list in a
+constructor, define the initializer list in same order than the class members
+are introduced in the class definition. Declaring fields in wrong order
+generates warning messages with gcc.
+
+
+2.3 Pitfalls To Avoid
+
+
+- Don't construct objects in-place as arguments to a method call, since gcc
+  refuses to compile those.
+  Example:
+        setUpVector(XFcVector3(0, 1, 0));       BAD
+        XFcVector3 up(0, 1, 0);                 GOOD
+	setUpVector(up);
+- Do not rely on sizeof() for structures to be the exact same amount compared
+  to manually calculated count of bytes. Also member alignment of structures
+  may vary. (Relates to the next one)
+- Don't save/load contents of structures directly to/from a file, 
+  instead handle each member separately. This is especially true for
+  classes.
+- Align structure members by the size of the field. For example, on some
+  platforms uneven memory accesses of 2 bytes are silently rounded to even
+  addresses!
+- Try to keep stack usage as low as possible. Some supported platforms 
+  have very limited stack size compared to other platforms.
+- Class constructors are not allowed to fail. If construction an object 
+  can fail e.g. due to unsuccessful memory allocation, instance creation
+  must be done by creating a static create()-method in the class returning
+  a pointer to constructed object and the actual constructor must be
+  declared non-public. 
+  Example:
+          class XFuExample
+          {
+          private:
+              void *mPrivateData;
+              XFuExample();
+          public:
+              static XFuExample * create();
+          };
+          
+          XFuExample::XFuExample()
+          {
+              mPrivateData = NULL;
+          }
+          
+          XFuExample * XFuExample::create()
+          {
+              XFuExample *data = new XFuExample;
+              if (data != NULL)
+              {
+                  data-&gt;mPrivateData = (void *)new INT8[0x242];
+                  if (data-&gt;mPrivateData == NULL)
+                  {
+                      delete data;
+                      return NULL;
+                  }
+              }
+              return data;
+          }
+
+
+2.4 Other Advices
+
+
+Multi-line /* */-style comments are recommended to be written by aligning
+a column of asterisks on each line.
+Example: /* this is
+          * a multi-line comment
+          */
+
+Final code should not have commented out code rows. In some specific cases
+commented out code can be left with text describing the reason for comment.
+Examples:
+        //r = (UINT8)((x * 0.9f) / 255.0f);                     BAD
+        
+        // slower but more accurate way                         GOOD
+        // r = (UINT8)((x * 0.9f) / 255.0f);
+
+Do not use multiple inheritance. Plain interface use is ok (Java-way).
+Exceptions are possible with common agreement.
+
+Commit only compilable code to the repository. List of files to compile
+are usually built just by adding &quot;all files in the dir&quot; (either manually
+or automatically) and it's not nice if one has to hand-pick several source
+files off from the list which aren't yet in compilable state. If you need
+version controlling for sources in pre-compilable/working phase please
+create and use a personal subdirectory for your stuff in the
+users-subdirectory in repository.
+Exception: Changes to API depending on platform specific implementation may
+break compilation on some platforms. If you can't fix all platforms, please
+note developers maintaining other platforms about what should be changed and
+how.
+
+Code should compile without warnings on all supported platforms and
+compilers. Below is a list of some mistakes which cause warnings on some
+platforms and/or compilers:
+- Do not leave unused variables to the code base.
+- Do not delete[] void pointers. Include a typecast in those cases.
+  Example: delete[] (UINT32 *)data;
+- When explicitly using an assignment instead of equivalency comparison
+  in if-statements, add extra parentheses.
+  Example: if ((a = value &amp; 0xf))
+- For debug code with stdlib printf statements: add extra typecasts if
+  the argument types are not the exact C standard primitive types.
+  Examples: int a; fprintf(stderr, &quot;%d\n&quot;, a);
+            INT32 b; fprintf(stderr, &quot;%d\n&quot;, (long)b);
+
+Following recommendation is to ease creation of project build environments:
+If some application project has a small side utility (e.g. creation of a
+data file), do not put the utility source to the same directory with the
+actual application but instead create a subdirectory for the utility.
+
+Enclose all header files in #ifndef/#define/#endif block. 
+Example: for file xfcore/XFcFoo.h the content should be as follows:
+        (after the header doxygen comment block)
+        #ifndef XFCFOO_H_INCLUDED
+        #define XFCFOO_H_INCLUDED
+        /* ... */
+        #endif // !XFCFOO_H_INCLUDED
+
+</pre></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apc.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt08.html">Up</a></td><td width="40%" align="right"> </td></tr><tr><td width="40%" align="left" valign="top">Appendix C. ARM Assembler Tutorial </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> </td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

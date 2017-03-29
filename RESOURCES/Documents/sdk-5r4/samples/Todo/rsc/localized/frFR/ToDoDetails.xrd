@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1200" LOCALE="frFR">
+		<FORM_ID> 1200 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 57 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 101 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 1222 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE>
+				<TEXT> "Tâche détaillée" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Priority">
+				<ID> 1202 </ID>
+				<LOCATION>
+					<X> 13 </X>
+					<Y> 18 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Priorité:" </TEXT>
+			</FORM_LABEL>
+			<FORM_PUSH_BUTTON COMMENT="Priority: 1">
+				<ID> 1203 </ID>
+				<BOUNDS>
+					<LEFT> 61 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 11 </WIDTH>
+					<HEIGHT> 11 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "1" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Priority: 2">
+				<ID> 1204 </ID>
+				<BOUNDS>
+					<LEFT> 73 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 11 </WIDTH>
+					<HEIGHT> 11 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "2" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Priority: 3">
+				<ID> 1205 </ID>
+				<BOUNDS>
+					<LEFT> 85 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 11 </WIDTH>
+					<HEIGHT> 11 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "3" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Priority: 4">
+				<ID> 1206 </ID>
+				<BOUNDS>
+					<LEFT> 97 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 11 </WIDTH>
+					<HEIGHT> 11 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "4" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_PUSH_BUTTON COMMENT="Priority: 5">
+				<ID> 1207 </ID>
+				<BOUNDS>
+					<LEFT> 109 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 11 </WIDTH>
+					<HEIGHT> 11 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "5" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 1 </GROUP_ID>
+			</FORM_PUSH_BUTTON>
+			<FORM_LABEL COMMENT="Category">
+				<ID> 1208 </ID>
+				<LOCATION>
+					<X> 4 </X>
+					<Y> 33 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Catégorie:" </TEXT>
+			</FORM_LABEL>
+			<FORM_POPUP_TRIGGER COMMENT="Category">
+				<ID> 1210 </ID>
+				<BOUNDS>
+					<LEFT> 59 </LEFT>
+					<TOP> 32 </TOP>
+					<WIDTH> 49 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<TEXT> "................" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_POPUP>
+				<CONTROL_ID> 1210 </CONTROL_ID>
+				<LIST_ID> 1211 </LIST_ID>
+			</FORM_POPUP>
+			<FORM_LIST COMMENT="Categories List">
+				<ID> 1211 </ID>
+				<BOUNDS>
+					<LEFT> 59 </LEFT>
+					<TOP> 32 </TOP>
+					<WIDTH> 72 </WIDTH>
+					<HEIGHT> 0 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 0 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LABEL COMMENT="Due Date">
+				<ID> 1212 </ID>
+				<LOCATION>
+					<X> 9 </X>
+					<Y> 48 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Echéance:" </TEXT>
+			</FORM_LABEL>
+			<FORM_POPUP_TRIGGER COMMENT="Due Date">
+				<ID> 1214 </ID>
+				<BOUNDS>
+					<LEFT> 59 </LEFT>
+					<TOP> 47 </TOP>
+					<WIDTH> 68 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<TEXT> "19 car.:..........." </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_POPUP COMMENT="Categories">
+				<CONTROL_ID> 1214 </CONTROL_ID>
+				<LIST_ID> 1215 </LIST_ID>
+			</FORM_POPUP>
+			<FORM_LIST COMMENT="Due Date List">
+				<ID> 1215 </ID>
+				<BOUNDS>
+					<LEFT> 59 </LEFT>
+					<TOP> 47 </TOP>
+					<WIDTH> 80 </WIDTH>
+					<HEIGHT> 55 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 5 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> "Aujourd'hui" </TEXT>
+					<TEXT> "Demain" </TEXT>
+					<TEXT> "Dans une semaine" </TEXT>
+					<TEXT> "Sans date" </TEXT>
+					<TEXT> "Choisir date..." </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LABEL COMMENT="Private">
+				<ID> 1216 </ID>
+				<LOCATION>
+					<X> 4 </X>
+					<Y> 62 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Personnel:" </TEXT>
+			</FORM_LABEL>
+			<FORM_CHECKBOX COMMENT="Secret">
+				<ID> 1217 </ID>
+				<BOUNDS>
+					<LEFT> 60 </LEFT>
+					<TOP> 61 </TOP>
+					<WIDTH> 19 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_BUTTON COMMENT="OK">
+				<ID> 1218 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 84 </TOP>
+					<WIDTH> 21 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1219 </ID>
+				<BOUNDS>
+					<LEFT> 29 </LEFT>
+					<TOP> 84 </TOP>
+					<WIDTH> 35 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Annuler" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Delete">
+				<ID> 1220 </ID>
+				<BOUNDS>
+					<LEFT> 68 </LEFT>
+					<TOP> 84 </TOP>
+					<WIDTH> 54 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Supprimer..." </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Note">
+				<ID> 1221 </ID>
+				<BOUNDS>
+					<LEFT> 126 </LEFT>
+					<TOP> 84 </TOP>
+					<WIDTH> 26 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Note" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1222" LOCALE="frFR" COMMENT="To Do Details: Help">
+		<TEXT>
+			"• Au lieu d'utiliser le bouton Détails, vous pouvez modifier "
+			"directement une priorité, une échéance ou une catégorie en appuyant "
+			"dessus.\n"
+			"\n"
+			"• Les nouvelles tâches sont automatiquement classées sous la catégorie "
+			"affichée.\n"
+			"\n"
+			"• Après avoir défini une échéance, appuyez sur le bouton Afficher pour "
+			"accéder à l'option Afficher échéances."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

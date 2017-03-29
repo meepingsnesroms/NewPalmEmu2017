@@ -1,0 +1,15 @@
+/***************************************************************************\
+*
+* File: Application.rcp
+*
+****************************************************************************/
+
+/*
+ * Tapwave Native Application resource for Palm OS Simulator.
+ */
+HEX  "SIMC" ID 1	"Zing" 0x00 "__ARMlet_Startup__" 0x00
+
+/*
+ * Application category, default is Games.
+ */
+HEX  "taic" ID 1000     "Games" 0x00

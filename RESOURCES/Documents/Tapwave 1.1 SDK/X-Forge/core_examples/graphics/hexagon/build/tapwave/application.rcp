@@ -1,0 +1,22 @@
+/* Set the application category to "games" */
+HEX  "taic" ID 1000 "XFExamples" 0x00
+
+/* Set the palmsim dll name for this application. */ 
+HEX  "SIMC" ID 1	"hexagon" 0x00 "__ARMlet_Startup__" 0x00
+
+/* small icons - used in file listing etc. */
+SMALLICONFAMILYEX
+BEGIN
+BITMAP "xforge_15x9x1b.bmp" BPP 1 DENSITY 1
+BITMAP "xforge_15x9x8b.bmp" BPP 8 DENSITY 1 TRANSPARENCY 0 255 0
+BITMAP "xforge_30x18x1b.bmp" BPP 1 DENSITY 2
+BITMAP "xforge_30x18x16b.bmp" BPP 16 DENSITY 2 TRANSPARENCY 0 255 0
+END
+
+/* normal icons. */
+ICONFAMILYEX
+BEGIN
+BITMAP "xforge_22x1b.bmp" BPP 1 DENSITY 1
+BITMAP "xforge_22x8b.bmp" BPP 8 DENSITY 1 TRANSPARENCY 0 255 0
+BITMAP "xforge_44x16b.bmp" BPP 16 DENSITY 2 TRANSPARENCY 0 255 0
+END

@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 7. File I/O</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="ch06.html" title="Chapter 6. Application Framework"><link rel="next" href="ch08.html" title="Chapter 8. 2D Graphics"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 7. File I/O</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch06.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="ch08.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id417246"></a>Chapter 7. File I/O</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch07.html#id417256">Overview</a></dt><dt><a href="ch07.html#id419046">Standard File Access Calls</a></dt><dd><dl><dt><a href="ch07.html#id417131">Opening Files</a></dt><dt><a href="ch07.html#id419218">Closing Files</a></dt><dt><a href="ch07.html#id419269">Seeking Inside a File</a></dt><dt><a href="ch07.html#id419357">Reading Data</a></dt><dt><a href="ch07.html#id419495">Writing Data</a></dt><dt><a href="ch07.html#id419582">Renaming Files</a></dt><dt><a href="ch07.html#id419650">Deleting Files</a></dt></dl></dd><dt><a href="ch07.html#id419741">File Information</a></dt><dd><dl><dt><a href="ch07.html#id419751">Checking If File Exists</a></dt><dt><a href="ch07.html#id419805">Finding Files</a></dt><dt><a href="ch07.html#id419921">Getting File Size</a></dt><dt><a href="ch07.html#id419972">Getting Opened File Name</a></dt></dl></dd><dt><a href="ch07.html#id420029">Data Serialization Extensions</a></dt><dt><a href="ch07.html#id420201">Compressed File Library (CFL) Files</a></dt><dd><dl><dt><a href="ch07.html#id420212">Understanding CFL</a></dt><dt><a href="ch07.html#id420359">Getting a File at Once</a></dt><dt><a href="ch07.html#id420451">Accessing Data Directly Inside a CFL File</a></dt><dt><a href="ch07.html#id420574">Creating CFL Files at Runtime</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id417256"></a>Overview</h2></div></div><p>
+The file I/O library in X-Forge is called <tt>XFcFile</tt>. It has been modeled after the standard C library <tt>fopen()</tt>/<tt>fclose()</tt> style file handling. No C++ file stream extensions are included.
+</p><p>
+In addition to file I/O, the library makes sure all the data is always found in the same directory as where the binary executable lies on all of the platforms, and also transparently wraps compressed file library I/O as well. The library also handles any file system inconsistencies (such as slash vs backslash for directory separation). 
+</p><p>
+For portability, applications should always use slash separator for directories and keep all filenames case sensitive. All of the supported platforms can handle long filenames, but in order to keep possible porting problems minimal, it is recommended that filenames are kept under 32 characters long, and they should only include alphabets (a-z only), numbers and underscores, followed by a point and a three letter extension. 
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id419046"></a>Standard File Access Calls</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id417131"></a>Opening Files</h3></div></div><p>
+The files are opened, and <tt>XFcFile</tt> object is created, using the XFcFile class static member <tt>open()</tt>. The syntax is as follows:
+</p><pre class="programlisting">
+XFcFile *f = XFcFile::open(XFCSTR(&quot;filename.dat&quot;),XFCSTR(&quot;rb&quot;));
+</pre><p>
+Since the two parameters are of CHAR type, the static data strings (&quot;filename.dat&quot; and &quot;rb&quot;) are enclosed in <tt>XFCSTR()</tt> macro, which will take care of ASCII-unicode conversion should one be needed. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Currently all of the platforms supported by X-Forge are internally ASCII. The decision whether we should change all of the platforms to unicode to ease any possible localization effort is still pending. For the time being it is safe to remove the <tt>XFCSTR()</tt> macros, but if the change to unicode is made, all of this code will break. The compiler will alert if this happens, though.
+</p></div><p>
+The filename can include directories, but the 'root' directory is still the directory where the executable is. Internally, the core adds the current directory to the filename before passing it to the operating system. Thus, <tt>filename.dat</tt> turns into <tt>/my documents/filename.dat</tt>. Obviously, if you try to open <tt>../filename.dat</tt> it will turn into <tt>/my documents/../filename.dat</tt>, which most probably won't work. If you absolutely need to access files outside the application's directory, you can bypass the filename mangling completely by starting the filename with two slashes (for example, <tt>//c:\config.sys</tt>). This code will not be portable across platforms, however.
+</p><p>
+The files can exist in either on the disk as separate files (in the same directory as the executable, or its subdirectories), or inside compressed file library (CFL) files. The system first checks files on disk, and then inside CFLs, in order to make development easier. In order for the system to access CFL files they must first be mounted using <tt>XFcCore::openCFL()</tt> call.
+</p><p>
+If you want to force the system to open from disk or from a CFL, you can use <tt>XFcFile::openDiskFile()</tt> or <tt>XFcFile::openCFLFile()</tt> calls instead of the normal <tt>open()</tt>.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Currently, when you open a file that is inside a CFL, the whole file will be uncompressed at that time into memory. This is necessary in order to support random access with the way that CFL is currently implemented. Keeping many files open and/or using large files can eat a lot of runtime memory. If you need to stream a lot of data, it is best not to use CFL for that.
+</p></div><p>
+File access modes work as follows:
+</p><pre class="programlisting">
+&quot;r&quot;  - Open for reading. If file does not exist, opening fails.
+&quot;w&quot;  - Open for writing. If file existed, its contents are destroyed.
+&quot;a&quot;  - Open for appending. Opens file and sets the write head at the end
+       of the file. If the file does not exist, it is created.
+&quot;r+&quot; - Opens file for reading and writing. File must exist before the call.
+&quot;w+&quot; - Same as r+, except that if file existed its contents are destroyed.
+&quot;a+&quot; - Same as r+, except that it creates the file if it doesn't exist, and
+       write head is positioned at the end of the file.
+&quot;b&quot;  - Consider the data to be binary, and don't do any character conversion.
+</pre><p>
+Files that are inside a CFL file are read-only, so if the file access flag contains w, a or +, only files on disk are accessed. 
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Due to the inconsistency of ASCII-mode file I/O, it is highly recommended that all files are always opened using binary mode.
+</p><p>
+Files inside CFLs never do any ASCII-mode conversions.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419218"></a>Closing Files</h3></div></div><p>
+Files can be closed, and <tt>XFcFile</tt> object freed, by using the <tt>XFcFile</tt> class function <tt>close()</tt>.
+</p><pre class="programlisting">
+f-&gt;close();
+</pre><p>
+Any memory allocated by opening the file is also freed.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419269"></a>Seeking Inside a File</h3></div></div><p>
+File seeking is done via the <tt>XFcFile</tt> class function <tt>seek()</tt>.
+</p><pre class="programlisting">
+f-&gt;seek(offset, seek type);
+</pre><p>
+The offset is the amount of bytes to move in either direction.
+</p><p>
+The following seek types are supported:
+</p><pre class="programlisting">
+SEEK_CUR - Current position in file
+SEEK_END - End of file
+SEEK_SET - Start of file
+</pre><p>
+In order to find out where the file pointer is at the moment, you can use the <tt>tell()</tt> call.
+</p><pre class="programlisting">
+INT32 position = f-&gt;tell();
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419357"></a>Reading Data</h3></div></div><p>
+Data can be read either byte by byte using <tt>getChar()</tt> call, or in a chunk using <tt>read()</tt> call. The <tt>getChar()</tt> function represents the <tt>fgetc()</tt> call on stdlib, but due to the fact that <tt>getc()</tt> is implemented as a macro on some platforms we cannot use the same name.
+</p><p>
+Syntax for <tt>getChar()</tt> is as follows:
+</p><pre class="programlisting">
+INT32 data = f-&gt;getChar();
+</pre><p>
+Please note that <tt>getChar()</tt> does not return <tt>CHAR</tt> type data (which could be 8 or 16 bit depending on whether the platform is unicode), but 8-bit integers. Another return value can be EOF, which is outside the 8-bit range (it is defined by <tt>stdio.h</tt> as (-1)).
+</p><p>
+Syntax for <tt>read()</tt> is as follows:
+</p><pre class="programlisting">
+INT32 count = f-&gt;read(targetBuffer, blockSize, blockCount);
+</pre><p>
+The returned value is the number of blocks read. Usually programs ignore this information, using file size information instead of the return value to figure out how much data is available. The number of bytes read is blockSize * blockCount.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419495"></a>Writing Data</h3></div></div><p>
+Data can be written using the <tt>putChar()</tt> or <tt>write()</tt> functions. The syntax for <tt>putChar()</tt> is as follows:
+</p><pre class="programlisting">
+INT32 result = f-&gt;putChar(value);
+</pre><p>
+The return value will be EOF if there was an error, or the same value as written if not.
+</p><p>
+The syntax for <tt>write()</tt> is as follows:
+</p><pre class="programlisting">
+INT32 count = f-&gt;write(buffer, blockSize, blockCount);   
+</pre><p>
+The returned value is the number of blocks written. If blockCount is not equal to count, the system ran out of disk space.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419582"></a>Renaming Files</h3></div></div><p>
+Files can be renamed using the <tt>XFcFile</tt> class static function <tt>rename()</tt>.
+</p><pre class="programlisting">
+INT result = XFcFile::rename(XFCSTR(&quot;old.dat&quot;), XFCSTR(&quot;new.dat&quot;));
+</pre><p>
+The result value is 0 if successful, non-zero otherwise.
+</p><p>
+Trying to rename files that are inside a CFL will fail.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Removing or renaming a CFL file that has been mounted may cause undefined behavior.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419650"></a>Deleting Files</h3></div></div><p>
+Files can be deleted using the <tt>XFcFile</tt> class static function <tt>remove()</tt>.
+</p><pre class="programlisting">
+INT result = XFcFile::remove(XFCSTR(&quot;unneeded.dat&quot;));
+</pre><p>
+The result value is 0 if successful, non-zero otherwise.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+While <tt>remove()</tt> can be used to destroy directories in some platforms, this functionality may not work on others.
+</p></div><p>
+Trying to delete files that are inside a CFL will fail.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Removing or renaming a CFL file that has been mounted may cause undefined behavior.
+</p></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id419741"></a>File Information</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419751"></a>Checking If File Exists</h3></div></div><p>
+You can check whether a file exists using the <tt>XFcFile</tt> static function <tt>fileExists()</tt>.
+</p><pre class="programlisting">
+INT result = XFcFile::fileExists(XFCSTR(&quot;myfile.dat&quot;));
+</pre><p>
+The result is 0 if file does not exist, 1 if it can be found inside a CFL, and 2 if the file can be found on disk. If file can be found in both places, the function will return 2, since files are first accessed from disk.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419805"></a>Finding Files</h3></div></div><p>
+File finding can be done using the <tt>XFcFileFind</tt> class. The class can be used to enumerate through CFL and disk file directories.
+</p><p>
+The syntax is as follows:
+</p><pre class="programlisting">
+XFcFileFind *ff = XFcFileFind::create(filemask, flags);
+CHAR *filename = ff-&gt;next();
+while (filename != NULL) 
+{
+    // do something with filename
+    filename = ff-&gt;next();
+} 
+delete ff;
+</pre><p>
+File mask supports DOS-style file masking, ie. you can use * and ? wildcards. The ? wildcard matches one character while the * wildcard matches any number of characters. &quot;fo?.dat&quot; matches &quot;foo.dat&quot; but not &quot;fooo.dat&quot;; &quot;fo*.dat&quot; matches both &quot;fo.dat&quot; and &quot;fooooooooo.dat&quot;. Unlike DOS, you can use several * wildcard characters, so &quot;f*o*o*.dat&quot; matches correctly to &quot;foobar.dat&quot; and ignores &quot;figaro.dat&quot; correctly.
+</p><p>
+Different flags can be used to alter the <tt>XFcFileFind</tt>'s behavior.
+</p><pre class="programlisting">
+XFCFF_DISK - find files on disk directory
+XFCFF_CFL - find files inside CFL directory
+XFCFF_REMOVEDUPLICATES - remove duplicates (if the same file exists on both disk and CFL)
+XFCFF_IGNORECASE - perform case-insensitive file name matching
+</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+Some platforms iterate through disk directories and others don't.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419921"></a>Getting File Size</h3></div></div><p>
+You can get the size of a file using the <tt>XFcFile</tt> class static function <tt>getFileSize()</tt>.
+</p><pre class="programlisting">
+INT32 size = XFcFile::getFileSize(XFCSTR(&quot;myfile.dat&quot;));
+</pre><p>
+The size is 0 for files that don't exist. If file of the same name exists both inside CFL and on disk, the size of the disk file is returned.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id419972"></a>Getting Opened File Name</h3></div></div><p>
+The <tt>XFcFile</tt> object also stores the opened file name. This can be accessed through the <tt>XFcFile</tt> object's <tt>getFilename()</tt> method.
+</p><pre class="programlisting">
+const CHAR *name = f-&gt;getFilename();
+</pre><p>
+Please note that the pointer will become invalid once the file object is closed (and thus destroyed).    
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id420029"></a>Data Serialization Extensions</h2></div></div><p>
+The <tt>XFcFile</tt> class includes a bunch of data serialization extensions which are meant to be used in any data file use. Any platform-specific data conversion is handled by these functions as well.
+</p><p>
+Please note that the <tt>REAL</tt> data type is never read or written directly, as its internal specification may change. Such data should always be stored as <tt>FLOAT32</tt>.
+</p><pre class="programlisting">
+INT32 writeFLOAT32(FLOAT32 aValue);
+INT32 writeFLOAT64(FLOAT64 aValue);
+INT32 writeINT32(INT32 aValue);
+INT32 writeINT16(INT16 aValue);
+INT32 writeINT8(INT8 aValue);
+INT32 writeUINT32(UINT32 aValue);
+INT32 writeUINT16(UINT16 aValue);
+INT32 writeUINT8(UINT8 aValue);
+</pre><p>
+Same can be said about reading functions. The <tt>REAL</tt> type always handles conversion itself, so you can use <tt>readFLOAT32()</tt> and <tt>writeFLOAT32()</tt> directly with them.
+</p><pre class="programlisting">
+FLOAT32 readFLOAT32();
+FLOAT64 readFLOAT64();
+INT32 readINT32();
+INT16 readINT16();
+INT8 readINT8();
+UINT32 readUINT32();
+UINT16 readUINT16();
+UINT8 readUINT8();
+</pre><p>
+The read functions also come in read-to-reference flavor which can be used to mirror the write functions directly. The returned value is the bytes read.
+</p><pre class="programlisting">
+INT32 readFLOAT32(FLOAT32 &amp;aValue);
+INT32 readFLOAT64(FLOAT64 &amp;aValue);
+INT32 readINT32(INT32 &amp;aValue);
+INT32 readINT16(INT16 &amp;aValue);
+INT32 readINT8(INT8 &amp;aValue);
+INT32 readUINT32(UINT32 &amp;aValue);
+INT32 readUINT16(UINT16 &amp;aValue);
+INT32 readUINT8(UINT8 &amp;aValue);    
+</pre><p>
+For string reading and writing, the following functions handle reading and writing of zero-terminated strings. The zero is also written so that the string can be read as well. <tt>CHAR</tt>-strings are always stored as <tt>CHAR16</tt> and the read/write functions handle the conversion to whatever format is used internally. To store the string as 8-bit characters, use <tt>CHAR8</tt> functions instead.
+</p><pre class="programlisting">
+void writeCHARString(CHAR *aValue);
+void writeCHAR8String(CHAR8 *aValue);
+void writeCHAR16String(CHAR16 *aValue);
+CHAR * readCHARString();
+CHAR8 * readCHAR8String();
+CHAR16 * readCHAR16String();
+</pre></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id420201"></a>Compressed File Library (CFL) Files</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420212"></a>Understanding CFL</h3></div></div><p>
+Compressed file libraries are meant as frozen, compressed storage for game resources. Once created, they are frozen and cannot be updated.
+</p><p>
+CFLs do not support streaming, and thus the only way to get data from a CFL is to read a whole file at once. <tt>XFcFile</tt> wraps around this functionality by storing the file inside a RAM buffer and taking care about file pointers in this ram buffer.
+</p><p>
+CFL can be extended by writing new filters. By default, the only filters supported are 'No compression' and 'ZLib compression'. In addition to compression, CFL supports preprocess and encryption filters. Preprocess filters can be used to transform data into more compressable form, and encryption filters can be used to make data files more secure. 
+</p><p>
+Please note that no amount of encryption will make the data files un-rippable if your program uses the files. You can, however, make the data files uneditable by using some public key encryption algorithm. If you plan to do so, make sure you open the files from CFL and not from disk.
+</p><p>
+CFL applies the filters also to the directory data, reducing size and optionally enhancing security.
+</p><p>
+You can also store data files inside a CFL file in uncompressed form, and request <tt>XFcFile</tt> pointer to it, or you can ask for the offset inside the .CFL file and do the seeking yourself.
+</p><p>
+The core includes, internally, one instance of <tt>XFcCFL</tt> object, which is linked to the <tt>XFcFile</tt> system. You can open CFL files to this object by using the <tt>XFcCore::openCFL()</tt> calls. If you want to, you can create new instances of <tt>XFcCFL</tt> objects, but accessing these files is not as handy as via the <tt>XFcFile</tt> system.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Some plans on changing the way CFLs work exist, but their implementation is still open.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420359"></a>Getting a File at Once</h3></div></div><p>
+You can load a file at once using the XFcFile class static function <tt>getFile()</tt>.
+</p><pre class="programlisting">
+INT8 *data = XFcFile::getFile(XFCSTR(&quot;myfile.dat&quot;));
+</pre><p>
+This will work on both files inside a CFL and also for files on disk. This function is typically used with XFcFile class function <tt>getFileSize()</tt>.
+</p><p>
+If you use your own CFL object, you can get the file using the CFL object's <tt>getFile()</tt> function:
+</p><pre class="programlisting">
+INT8 *data = myCFLObject-&gt;getFile(XFCSTR(&quot;myfile.dat&quot;));
+</pre><p>
+Using the CFL object you can also load the file into a pre-allocated buffer.
+</p><pre class="programlisting">
+INT32 writtenBytes = getFile(XFCSTR(&quot;myfile.dat&quot;), buffer, maxSize);
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420451"></a>Accessing Data Directly Inside a CFL File</h3></div></div><p>
+If you wish to include some data with your application that is infeasible to compress with CFL (due to the memory buffer problem or otherwise), but still want to keep distribution file count to a minimum, you can store the file inside CFL in uncompressed form and then access it directly by opening the .CFL file and seeking to the file.
+</p><p>
+<tt>XFcCFL</tt> object supports this with <tt>getFileOfs()</tt> function.
+</p><pre class="programlisting">
+INT32 offset = myCFLObject-&gt;getFileOfs(XFCSTR(&quot;myfile.dat&quot;));
+XFcFile *f = XFcFile::open(XFCSTR(&quot;mycfl.cfl&quot;), XFCSTR(&quot;rb&quot;));
+f-&gt;seek(offset, SEEK_SET)
+..
+</pre><p>
+The above clip can be simplified by using the <tt>getFilePtr()</tt> call:
+</p><pre class="programlisting">
+XFcFile *f = myCFLObject-&gt;getFilePtr(XFCSTR(&quot;myfile.dat&quot;));
+</pre><p>
+If you get a file pointer using <tt>getFilePtr()</tt> you must close it using the <tt>dropFilePtr()</tt> call:
+</p><pre class="programlisting">
+myCFLObject-&gt;dropFilePtr(f);    
+</pre><p>
+Closing the file pointer directly may result in unpredictable behavior.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id420574"></a>Creating CFL Files at Runtime</h3></div></div><p>
+You can also create CFL files at runtime. This can be useful when making saved games. If your game objects require several kilobytes of data, it's best to have them compressed.
+</p><p>
+CFLs are created using the <tt>XFcCFLMaker</tt> class. The creation process follows the following pattern:
+</p><pre class="programlisting">
+XFcCFLMaker *maker;
+maker = CFLMaker::create(XFCSTR(&quot;mysavefile.cfl&quot;));
+maker-&gt;store(XFCSTR(&quot;thisdata&quot;), thisdata, thisdatasize, compressFlags);
+maker-&gt;store(XFCSTR(&quot;thatdata&quot;), thatdata, thatdatasize, compressFlags);
+maker-&gt;store(XFCSTR(&quot;somedata&quot;), somedata, somedatasize, compressFlags);
+maker-&gt;finish(compressFlags);
+</pre><p>
+The create call creates the file and initializes the header; store calls compress and store the data and build the directory in memory. Finally, the finish call serializes the directory, compresses it, stores it, updates header, closes the file and destroys the <tt>XFcCFLMaker</tt> object.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 6. Application Framework </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 8. 2D Graphics</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

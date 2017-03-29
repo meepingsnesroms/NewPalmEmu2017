@@ -1,0 +1,263 @@
+SrcEdit and Keyboard Support (External and Internal) 
+---------------------------------------------------
+version: 0.85
+---------------------------------------------------
+Task: #846728 (S016), by John Wilund 25 April 2004
+---------------------------------------------------
+Additions made: 20 August 2004, 3 September 2004
+---------------------------------------------------
+
+With the release of version 2.4 SrcEdit, keyboard users can benefit from the
+same 'cursor key' functions available in many Windows editors.
+
+Sincere thanks goes to: Dale Hurtt and Fabio Di Giorgio for helping me with
+collecting the data, writing this document and checking the SrcEdit functionallity
+against it. Thanks guys!
+
+The SrcEdit keyboard support is largely about cursor key navigation.
+The ability to use Shift to select, Ctrl to move word by word, Cmd to larger amounts,
+Del to delete the character to the right, Tab to indent selected lines, Shift-Tab to
+unindent selected lines, etc.
+
+PLEASE OBSERVE! YOU HAVE TO CHOOSE YOUR KEYBOARD (Menu/Options/Keyboard Support)
+BEFORE ANY CURSOR KEY NAVIGATION IS SUPPORTED!
+
+Below is a chart of what functionality is implemented, what keys combinations
+you have to press, and what behaviour you should expect from SrcEdit. The goal
+has been to mimic (as much as possible) the behaviour of mainstream Windows
+editors, such as Notepad, TextPad, SourceEdit, etc.
+
+
+Currently Supported Keyboards
+-----------------------------
+Supported External Keybords:
+    : Palm Portable Keyboard (data provided by Dale Hurtt)
+    : Palm Wireless Keyboard (data provided by Dale Hurtt)
+    : Palm Ultra-Thin Keyboard (data provided by Fabio Di Giorgio)
+    : Belkin Wireless Keyboard (data provided by Ken Mankoff)
+
+Not supported External Keyboards:
+    : Palm Mini Keyboard (data will be provided by Dale Hurtt)
+    : Stowaway Keyboard (data will be provided by David Beers)
+      http://www.thinkoutside.com/products.asp
+    : Pocket Keyboard
+      http://www.cirque.com/
+    : Type'N'Go Keyboard
+      http://www.fellowes.com/
+    : GoType! Keyboard
+      http://www.landware.com/gotype/index.html
+    : Logitech® TypeAway™ Portable Keyboard
+      http://www.logitech.com/
+    : Logitech® KeyCase™ Cloth Keyboard (Data will be provided by Peter Moñko)
+      http://www.logitech.com/
+    : TT Tech T111P - Snap'N'Type
+      http://www.dabs.com
+    : Wamio Wireless Universal Bluetooth Keyboard
+      http://www.pocketbtkeyboard.com/index.php
+    : Flexis FX100 Elastic Keyboard
+      http://www.flexis.co.kr/flexis/main.htm
+    : Flexis fxCUBE - Bluetooth Keyboard
+
+Supported Internal Keyboards:
+    : Tungsten C Internal Keyboard (data provided by Laurent Deveau)
+    : Sony NX-series Internal Keyboard (data provided by Dale Hurtt, NX50 and Gary Browning, NX60)
+    : Sony UX-series Internal Keyboard (data provided by Marcelo Alves, UX50)
+    : Clié PEG-NR70 Internal Keyboard (data provided by Nuno Pedrosa)
+    : Treo90 Internal Keyboard (data provided by Dale Hurtt)
+    : Treo600 Internal Keyboard (data provided by Dale Hurtt)
+    : AlphaSmart Dana Internal Keyboard (data provided by Dale Hurtt)
+    : Tapave Zodiac (data provided by Craig Tomayer)
+
+Not supported Internal Keyboards:
+    : Sony NZ-series Internal Keyboard
+    : Sony TG-series Internal Keyboard
+
+
+Explanation of Abbreviations and Symbols used in this Document
+--------------------------------------------------------------
+PPK - Palm Portable Keyboard
+PWK - Palm Wireless Keyboard
+UTK - Palm Ultra-Thin Keyboard
+BWK - Belkin Wireless Keyboard
+
+PMK - Palm Mini Keyboard (Not yet supported)
+StK - Stowaway Keyboard  (Not yet supported)
+CPK - Pocket Keyboard (Not yet supported)
+TnG - Type'N'Go Keyboard (Not yet supported)
+GTK - Go Type! Keyboard (Not yet supported)
+LTA - Logitech® TypeAway™ Portable Keyboard (Not yet supported)
+LKC - Logitech® KeyCase™ Cloth Keyboard  (Not yet supported)
+SnT - Snap'N'Type T111P TT Tech (Not yet supported)
+WBK - Wamio Wireless Universal Bluetooth Keyboard (Not yet supported)
+Fx1 - Flexis FX100 Elastic Keyboard (Not yet supported)
+FxC - Flexis fxCUBE Bluetooth Keyboard (Not yet supported)
+
+TsC - Tungsten C Internal Keyboard
+SNX - Sony NX Internal Keyboard
+SUX - Sony UX Internal Keyboard
+C70 - Clié PEG-NR70 Internal Keyboard
+T90 - Treo90 Internal Keyboard
+TR6 - Treo600 Internal Keyboard
+ADK - Alphasmart Dana Keyboard
+TwZ - Tapwave Zodiac
+
+SNZ - Sony NZ Internal Keyboard (Not yet supported)
+STG - Sony TG Internal Keyboard (Not yet supported)
+
+
+Key(s)        Notes   SrcEdit.prc action
+------------------------------------------
+[Up]            1     Moves the cursor to the previous line at the same
+                      character position in the line (if possible). The view
+                      adjusts if the cursor moves off-screen.
+[Down]          1     Moves the cursor to the next line at the same character
+                      position in the line (if possible). The view adjusts if
+                      the cursor moves off-screen.
+[Left]          2     Moves the cursor one character to the left. If the cursor
+                      is at the beginning of the line, the cursor moves to the
+                      end of the previous line. The view adjusts if the cursor
+                      moves off-screen.
+[Right]         2     Moves the cursor one character to the right. If the cursor
+                      is at the end of the line, the cursor moves to the
+                      beginning of the next line. The view adjusts if the cursor
+                      moves off-screen.
+
+[Shift][Up]     3     Adds the preceding line to the selection if moving away
+                      from the cursor or removes the bottom line of the
+                      selection if moving towards the cursor.
+[Shift][Down]   3     Adds the suceeding line to the selection if moving away
+                      from the cursor or removes the top line of the
+                      selection if moving towards the cursor.
+[Shift][Left]   4     Adds the preceding character to the selection if moving
+                      away from the cursor or removes the last character of the
+                      selection if moving towards the cursor.
+[Shift][Right]  4     Adds the suceeding character to the selection if moving
+                      away from the cursor or removes the first character of the
+                      selection if moving towards the cursor.
+
+[Ctrl][Up]      5     Scrolls the view up one line (unless the top of the
+                      document is already visible). The cursor will not move
+                      unless it scrolls from view, at which time it will move to
+                      the bottommost visible line at the same character position
+                      in the line (if possible).
+[Ctrl][Down]    5     Scrolls the view up down line (unless the bottom of the
+                      document is already visible). The cursor will not move
+                      unless it scrolls from view, at which time it will move to
+                      the topmost visible line at the same character position
+                      in the line (if possible).
+[Ctrl][Left]    6     Moves the cursor to the beginning of the previous word. If
+                      the cursor is at the first word in the line, the cursor
+                      moves to the last word of the previous line. The view
+                      adjusts if the cursor moves off-screen.
+[Ctrl][Right]   6     Moves the cursor to the beginning of the next word. If the
+                      cursor is at the last word in the line, the cursor moves
+                      to the first word of the next line. The view adjusts if
+                      the cursor moves off-screen.
+
+[Cmd][Up]       7     Moves the cursor to before the first character of the
+                      document. The view adjusts if the cursor moves off-screen.
+[Cmd][Down]     7     Moves the cursor to after the last character of the
+                      document. The view adjusts if the cursor moves off-screen.
+[Cmd][Left]     8     Moves the cursor to the beginning of the current line. The
+                      view adjusts if the cursor moves off-screen. This is the
+                      [Home] key.
+[Cmd][Right]    8     Moves the cursor to the end of the current line. The view
+                      adjusts if the cursor moves off-screen. This is the [End]
+                      key.
+
+[PageUp]        9     Moves the cursor up one Page. The view adjusts so that the
+                      topmost visible line moves just off-screen to the bottom
+                      (i.e. if line 20 was the topmost visible line, after a
+                      [PageUp] line 19 would be the bottommost visible line).
+[PageDown]      9     Moves the cursor down one Page. The view adjusts so that
+                      the bottommost visible line moves just off-screen to the
+                      top (i.e. if line 20 was the bottommost visible line,
+                      after a [PageDown] line 21 would be the topmost visible
+                      line).
+
+[PageLeft]      10    Scrolls the Screen to the left. Does NOT move the cursor.
+
+[PageRight]     10    Scrolls the Screen to the right. Does NOT move the cursor.
+
+[Del]           11    Deletes the character to the right of the cursor. If the
+                      cursor is at the end of a line, this moves the contents of
+                      the following line into the current line.
+
+[Tab]           12    If there is a selection then [Tab] indents (add one tab to
+                      the beginning of each selected line), otherwise it will just
+                      insert a tab in the text.
+
+[Shift][Tab]    13    If there is a selection [Shift][Tab] will removes one tab if
+                      it is possible from the beginning of each selected line,
+                      otherwise it will move the cursor in a tab sized step towards
+                      the beginning of the line.
+
+
+
+Notes
+-----
+1.  Works with all supported Keyboards.
+    PPK: additional [Alt][Up/Down/Left/Right] will also work.
+    T90: use the Scroll Up/Down
+    TsC, TR6: use the 5way-nav.
+    TwZ: use the Action 4way-nav
+
+2.  See notes above!
+    T90: not supported.
+
+3.  PWK/UTK: use [blue Fn] as [Shift].
+    TsC: Requires both keys ([Shift]+direction key) to be down together.
+    T90: use [Shift]Up/Down
+    TwZ: use [Select] as [Shift]
+    BWK/C70: not supported.
+
+4.  PWK/UTK: use [blue Fn] as [Shift].
+    TsC: Requires both keys ([Shift]+direction key) to be down together.
+    TwZ: use [Select] as [Shift]
+    BWK/C70/T90/TwZ: not Supported
+
+5.  BWK/TsC/C70/T90/TR6/TwZ: not supported.
+
+6.  TR6: use [Silver][Left] for [Ctrl][Left] and [Silver][Right] for [Ctrl][Right]
+    BWK/TsC/C70/T90/TwZ: not supported.
+
+7.  SNX/SUX: use [Alt] as [Cmd]
+    TsC: use [Blue] as [Cmd] (Requires both keys to be down together.)
+    C70: use [Fn] as [Cmd]
+    BWK/T90/TR6/TwZ: not supported.
+
+8.  PWK: additional [green Fn][Left][Right] can also be used for [Cmd][Left]('Home') and [Cmd][Right]('End').
+    UTK: use the [green Fn][Left] for [Cmd][Left}('Home') and [green Fn][Right] for [Cmd][Right]('End').
+    TsC: use [Blue] as [Cmd] (Requires both keys to be down together.)
+    SNX/SUX: use [Alt] as [Cmd] (additional: [Fn][Left] will act as [Cmd][Left] and [Fn][Right] will act as [Cmd][Right])
+    BWK/C70/T90/TR6/TwZ: not supported.
+
+9.  PPK/BWK/SNX/SUX/ADK: use the [Fn][Up] for PageUp and [Fn][Down] for PageDown.
+    PWK/UTK: use [green Fn][Up] for PageUp and [green Fn][Down] for PageDown.
+    TsC: not Supported
+    C70: use [Ctrl][Up]for PageUp and [Ctrl][Down] for PageDown.
+    T90: use [bLUE][Up] for PageUp and [bLUE][Down] for PageDown.
+    TR6: use [Silver][Up] for PageUp and [Silver][Down] for PageDown.
+    TwZ: use Analog Controller [Up] for PageUp and Analog Controller [Down] for PageDown.
+
+10. UTK: use the [Cmd][Left] for PageLeft and [Cmd][Right] for PageRight.
+    ADK: use the [Fn][Left] for PageLeft and [Fn][Right] for PageRight.
+    TwZ: use Analog Controller [Left] for PageLeft and Analog Controller [Right] for PageRight.
+    PPK/BWK/PWK/TsC/SNX/SUX/C70/T90/TR6: not supported.
+
+11. T90: use [Shift][Backspace] or [Blue][Backspace] for [Del]
+    TR6: use [Shift][Backspace] or [Silver][Backspace] for [Del]
+    TsC/TwZ: not Supported
+
+12. TR6: use [Center] for Tab
+    SNX/SUX/T90/TwZ: not supoorted.
+
+13. C70: use [Ctrl][Tab] for ShiftTab
+    TR6: use [Shift][Center] for ShiftTab
+    BWK/TsC/SNX/SUX/T90/TwZ: not supoorted.
+
+
+
+
+
+

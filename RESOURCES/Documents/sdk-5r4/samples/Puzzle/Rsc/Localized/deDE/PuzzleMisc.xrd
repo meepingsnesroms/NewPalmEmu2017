@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1001" LOCALE="deDE" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Mit System nicht kompatibel" </TITLE>
+		<MESSAGE>
+			"Zur Ausführung dieser Anwendung benötigen Sie System Version 2.0 oder "
+			"köher."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Spiel" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 101 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 31 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Puzzle lösen" </TITLE>
+						<COMMAND> "S" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Spielanleitung" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Puzzle-Info" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="Please wait">
+		<TEXT> "Bitte warten..." </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="deDE" COMMENT="Instructions String">
+		<TEXT>
+			" Puzzle-Spielanleitung\n"
+			"\n"
+			"Ziel des Spiels ist, die Steine in numerischer Reihenfolge anzuordnen, "
+			"so daß der freie Stein unten rechts in der Ecke verbleibt.\n"
+			"\n"
+			"• Zum Spielstart auf die Schaltfläche 'New Puzzle' tippen, woraufhin "
+			"die Steine wahllos verteilt werden.\n"
+			"\n"
+			"• Tippen Sie auf einen Stein in derselben Reihe oder Spalte wie der "
+			"freie Stein. Dadurch wird dieser Stein in Richtung freiem Stein "
+			"verschoben und verschiebt gleichzeitig alle Steine zwischen sich und "
+			"dem freien Stein.\n"
+			"\n"
+			"• Zur Lösung des Puzzles wählen Sie 'Puzzle lösen vom Menü “Spiel”.\n"
+			"\n"
+			"\n"
+			"Viel Glück!\n"
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

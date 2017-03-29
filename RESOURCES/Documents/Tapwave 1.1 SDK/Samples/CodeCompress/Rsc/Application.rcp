@@ -1,0 +1,46 @@
+/***************************************************************************\
+*
+* File: Application.rcp
+*
+****************************************************************************/
+
+GENERATEHEADER "CodeCompressRsc.h"
+
+/*
+ * Application icon -- both small and large.
+ */
+ICONFAMILYEX
+BEGIN
+    BITMAP "icon-lg-1.bmp" BPP 1 
+    BITMAP "icon-lg-2.bmp" BPP 2 
+    BITMAP "icon-lg-8.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS
+    BITMAP "icon-lg-1-d144.bmp" BPP 1 DENSITY 2
+    BITMAP "icon-lg-2-d144.bmp" BPP 2 DENSITY 2
+    BITMAP "icon-lg-8-d144.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS DENSITY 2
+END
+
+SMALLICONFAMILYEX
+BEGIN
+    BITMAP "icon-sm-1.bmp"  BPP 1
+    BITMAP "icon-sm-2.bmp"  BPP 2
+    BITMAP "icon-sm-8.bmp"  BPP 8 TRANSPARENTINDEX 210 COMPRESS
+    BITMAP "icon-sm-1-d144.bmp" BPP 1 DENSITY 2
+    BITMAP "icon-sm-2-d144.bmp" BPP 2 DENSITY 2
+    BITMAP "icon-sm-8-d144.bmp" BPP 8 TRANSPARENTINDEX 210 COMPRESS DENSITY 2 
+END
+
+/*
+ * Application category, default is Games.
+ */
+LAUNCHERCATEGORY "Games"
+
+/*
+ * ROM Incompatible alert.
+ */
+ALERT ID RomIncompatibleAlert 
+ERROR
+BEGIN
+	TITLE "System Incompatible"
+	MESSAGE "A Tapwave device with system version 5.0 or greater is required to run this application."
+	BUTTONS "OK"  
+END

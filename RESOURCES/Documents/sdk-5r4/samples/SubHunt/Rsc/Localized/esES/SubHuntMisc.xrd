@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1001" LOCALE="esES" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Incompatible con el sistema" </TITLE>
+		<MESSAGE>
+			"Para ejecutar esta aplicación se requiere la versión 2.0 o posterior "
+			"del sistema."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "Aceptar" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1000" LOCALE="esES">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 32 </WIDTH>
+				<HEIGHT> 32 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/AppIcon_Large-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 32 </WIDTH>
+				<HEIGHT> 32 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/AppIcon_Large-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1001" LOCALE="esES">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/AppIcon_Small-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/AppIcon_Small-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="App Icon Name">
+		<TEXT> "SubHunt" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.5" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1000" COMMENT="Overlay">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 160 </WIDTH>
+				<HEIGHT> 145 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1000-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1001" COMMENT="Ship">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 36 </WIDTH>
+				<HEIGHT> 10 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1001-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1002" COMMENT="Ship Damaged">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 36 </WIDTH>
+				<HEIGHT> 10 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1002-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1003" COMMENT="Ship about to sink">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 36 </WIDTH>
+				<HEIGHT> 10 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1003-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1004" COMMENT="Sub Heading Right">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1004-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1005" COMMENT="Sub Heading Left">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1005-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1006" COMMENT="Verne Sub Heading Right">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 41 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1006-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1007" COMMENT="Verne Sub Heading Right">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 41 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1007-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1008" COMMENT="Squid Heading Right">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 11 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1008-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1009" COMMENT="Squid Heading Left">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 11 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1009-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1010" COMMENT="Whale Heading Right">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1010-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1011" COMMENT="Whale Heading Left">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 33 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1011-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1012" COMMENT="Depth Charge">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 2 </WIDTH>
+				<HEIGHT> 2 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1012-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1013" COMMENT="Mine">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 3 </WIDTH>
+				<HEIGHT> 3 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1013-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1014" COMMENT="Fast Mine">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 3 </WIDTH>
+				<HEIGHT> 3 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1014-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1015" COMMENT="Magnetic Mine">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 4 </WIDTH>
+				<HEIGHT> 4 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1015-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1016" COMMENT="Splash">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 5 </WIDTH>
+				<HEIGHT> 10 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1016-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1017" COMMENT="Explosion">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 12 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1017-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1018" COMMENT="Explosion Mask">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 12 </WIDTH>
+				<HEIGHT> 12 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1018-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<BITMAP_RESOURCE RESOURCE_ID="1019" COMMENT="Water Line">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 160 </WIDTH>
+				<HEIGHT> 3 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> SCANLINE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./SubHuntMisc/Bitmap_1019-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</BITMAP_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Board View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Juego" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 100 </WIDTH>
+					<HEIGHT> 60 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Nuevo" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Instrucciones" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "Puntuaciones máx." </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Preferencias" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 105 </ID>
+						<TITLE> "Acerca de SubHunt" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Instructions String">
+		<TEXT>
+			"Instrucciones para SubHunt \n"
+			"\n"
+			"El objetivo es hundir los submarinos utilizando cargas de profundidad "
+			"contra ellos.\n"
+			"\n"
+			"• Los botones de los extremos izquierdo y derecho mueven el barco "
+			"hacia la izquierda y hacia la derecha.\n"
+			"\n"
+			"• Los botones interiores izquierdo y \n"
+			"derecho arrojan las cargas antisubmarinos \n"
+			"por el costado del buque. Las cargas colocadas en el lanzador "
+			"izquierdo y derecho aparecen en la parte superior de la pantalla. Se "
+			"necesita algún tiempo para situar la siguiente carga de profundidad en "
+			"el lanzador.\n"
+			"\n"
+			"A medida que se arrojan las cargas, \n"
+			"ascenderán otras desde las bodegas\n"
+			"y se colocarán en el \n"
+			"lanzador.\n"
+			"\n"
+			"• El botón de bajada inicia una nueva partida.\n"
+			"\n"
+			"Cuanto más profunda y rápidamente navegue el submarino, más puntos "
+			"valdrá. Los submarinos pueden colocar minas que flotan a la "
+			"superficie. Si explota una mina bajo el barco, lo dañará. El barco "
+			"tocado tres veces se hunde.\n"
+			"\n"
+			"\n"
+			"Puntuaciones máximas\n"
+			"\n"
+			"• Cuando su puntuación alcance un nivel máximo, oirá un sonido "
+			"característico. \n"
+			"\n"
+			"• Este sonido se repetirá una vez más si alcanza todas las "
+			"puntuaciones máximas.\n"
+			"\n"
+			"\n"
+			"¡Buena suerte!\n"
+		</TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="esES" COMMENT="Subs Cleared String">
+		<TEXT> "Eliminados los subs:" </TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

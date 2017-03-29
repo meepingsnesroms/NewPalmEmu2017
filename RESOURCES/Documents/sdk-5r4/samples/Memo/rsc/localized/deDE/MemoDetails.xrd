@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1200" LOCALE="deDE">
+		<FORM_ID> 1200 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 86 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 72 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 1211 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="Memo Details">
+				<TEXT> "Memo-Details" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Category">
+				<ID> 1202 </ID>
+				<LOCATION>
+					<X> 4 </X>
+					<Y> 18 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Kategorie:" </TEXT>
+			</FORM_LABEL>
+			<FORM_POPUP COMMENT="Categories">
+				<CONTROL_ID> 1204 </CONTROL_ID>
+				<LIST_ID> 1205 </LIST_ID>
+			</FORM_POPUP>
+			<FORM_POPUP_TRIGGER COMMENT="Category">
+				<ID> 1204 </ID>
+				<BOUNDS>
+					<LEFT> 57 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 49 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<TEXT> "................" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_LIST COMMENT="Categories List">
+				<ID> 1205 </ID>
+				<BOUNDS>
+					<LEFT> 57 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 72 </WIDTH>
+					<HEIGHT> 0 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 0 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LABEL COMMENT="Private">
+				<ID> 1206 </ID>
+				<LOCATION>
+					<X> 5 </X>
+					<Y> 33 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Privat:" </TEXT>
+			</FORM_LABEL>
+			<FORM_CHECKBOX COMMENT="Secret">
+				<ID> 1207 </ID>
+				<BOUNDS>
+					<LEFT> 43 </LEFT>
+					<TOP> 30 </TOP>
+					<WIDTH> 19 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_BUTTON COMMENT="OK">
+				<ID> 1208 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 55 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1209 </ID>
+				<BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 55 </TOP>
+					<WIDTH> 48 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Abbrechen" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Delete">
+				<ID> 1210 </ID>
+				<BOUNDS>
+					<LEFT> 102 </LEFT>
+					<TOP> 55 </TOP>
+					<WIDTH> 44 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Löschen..." </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1211" LOCALE="deDE" COMMENT="Details: Help">
+		<TEXT>
+			"• Die auf der Ansicht der Memo-Liste angezeigte Kategorie wird  neuen "
+			"Memos automatisch zugeordnet.\n"
+			"\n"
+			"• Sie können die Memo-Kategorie auf zwei Arten ändern:\n"
+			"\n"
+			"1. Wählen Sie im  Dialogfeld \"Memo-Details\" eine   Kategorie.\n"
+			"\n"
+			"2. Während Sie das Memo bearbeiten, wählen Sie aus dem Dropdown-Menü "
+			"Kategorie eine neue Kategorie."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

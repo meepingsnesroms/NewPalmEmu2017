@@ -1,0 +1,64 @@
+# Necklace of balloons
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 3200, 0, 0, BALLOON PARTY
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 128
+
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 6
+
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop1.pcx,   0,   0,  200,   0,   0,  20.0,   -
+HOOP=hoop6.pcx,	  -60,   -60,  400,   0,   0,  20.0,   x
+HOOP=hoop3.pcx,   -120,   -120, 600,   0,   0,  20.0,   |
+HOOP=hoop6.pcx,   -60,   -60,   800,   0,   0,  20.0,   x
+HOOP=hoop1.pcx,   0,   0,   1000,   0,   0,  20.0,   -
+
+HOOP=hoop3.pcx,   0,   0,   1700,   0,   0,  20.0,   |
+HOOP=hoop1.pcx,   0,   0,   1800,   0,   0,  20.0,   -
+HOOP=hoop3.pcx,   0,   0,   1900,   0,   0,  20.0,   |
+HOOP=hoop1.pcx,   0,   0,   2000,   0,   0,  20.0,   -
+
+HOOP=hoop5.pcx,   60,   60,  3150,   0,   0,  20.0,    +
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,  0,   0,   1100,   10
+BONUS=bonusballoon.pcx,  60,   60,  1200,   10
+BONUS=bonusballoon.pcx,  120,   120, 1300,   10
+BONUS=bonusballoon.pcx,  60,   60,  1400,   10
+BONUS=bonusballoon.pcx,  0,   0,  1500,   10
+
+BONUS=bonusballoon.pcx,  -60,   -60,  2200,   5
+BONUS=bonusballoon.pcx,  -110,   -110, 2375,   5
+BONUS=bonusballoon.pcx,  -70,   -70,   2525,   5
+BONUS=bonusballoon.pcx,  -40,   -40,   2650,   5
+BONUS=bonusballoon.pcx,  -20,   -20,  2750,   5
+BONUS=bonusballoon.pcx,  -10,   -10, 2825,   5
+BONUS=bonusballoon.pcx,  0,   0,  2875,   5
+BONUS=bonusballoon.pcx,  10,   10,   2925,   5
+BONUS=bonusballoon.pcx,  20,   20,  2975,   5
+BONUS=bonusballoon.pcx,  30,   30, 3025,   5
+BONUS=bonusballoon.pcx,  40,   40,  3075,   5
+BONUS=bonusballoon.pcx,  50,   50,  3125,   5
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  30,  110,  10 

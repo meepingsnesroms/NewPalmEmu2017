@@ -1,0 +1,2587 @@
+<html>
+<title>
+The Palm Programmer's Cookbook.
+</title>
+
+<body>
+<h1>
+The Palm Programmer's Cookbook. v0.7.2
+</h1>
+<hr>
+
+<b><u>Copyright</u></b> 2002, Wade Guthrie. Permission is granted to copy and 
+redistribute this document so long as it is unmodified (including the section
+that describes where to get this document for free) and the copyright 
+remains in-tact.  Permission explicitly granted (in fact you're encouraged)
+to copy any and all code samples from this document into your own code -- and
+you can do whatever you'd like with the resultant code (sell it, give it away,
+whatever).<p>
+
+This should really be copyrighted by the OnBoard C group
+since much of this has been gleaned from that discussion group but I don't
+know if that would be a legally binding copyright.  The purpose of the 
+copyright, anyway, 
+is just to make sure that noone charges for the information, such as it is,
+that we're giving away for free.<p>
+
+<b><u>Disclaimer</u></b>. The information in this FAQ is a compilation from 
+members of the OnBoard C group and various other sources 
+including the internet. The author/maintainer does not guarantee any of the 
+information found in this FAQ. Use this FAQ AT YOUR OWN RISK and with your
+own judgement (in fact, this is pretty good advice for all the information 
+found on the internet). <p>
+
+<b><u>Location</u></b>.  The latest version of this document can be obtained 
+(for free) from <a href=http://onboardc.sourceforge.net/cookbook.html>
+http://onboardc.sourceforge.net/cookbook.html</a>.  If you have any questions, 
+comments, corrections or suggestions, 
+please don't hesitate to send them to <a href="mailto:wade@adventure101.com">
+wade@adventure101.com</a>.<p>
+
+<b><u>Thanks</u></b>.  A special thanks goes to the following people (listed, here, in
+alphabetical order) who contributed large sections
+of this document.  If I've left anyone out, please contact me at the above
+address.  The major contributors include: 
+"Ian Bailey" &lt;baileyi AT-SIGN bigpond PERIOD com&gt;,
+"Andrew Empson" &lt;andrew PERIOD empson AT-SIGN xtra PERIOD co PERIOD nz&gt;, 
+and Roger Lawrence.<p>
+
+<b><u>Changes</u></b>.  The following changes have been made to get to the versions
+that are described.<p>
+
+v0.7.0, 0.7.1, 0.7.2
+<ul>
+	<li> Added checkboxes and 'thanks' for checkbox submission.
+	<li> Changed types in support of the appropriate API (like 
+	     'Handle' to 'MemHandle' and 'Word' to 'Int')
+</ul>
+
+
+v0.6.8
+<ul>
+	<li> Moved the home of the cookbook to SourceForge.
+</ul>
+
+v0.6.7
+<ul>
+	<li> Added some error checking in database example.
+	<li> Fixed some minor issues and clarified a couple of things.
+</ul>
+
+v0.6.6
+<ul>
+	<li> Added some error checking in database example.
+	<li> Added libraries.
+	<li> Added preferences.
+	<li> Updated the skeleton to verify it builds with PRC tools.
+	<li> Made all pForm, pEvent, etc. variable names agree.
+	<li> Using special character strings in cookbook HTML instead 
+	     of &gt;, etc.
+</ul>
+
+v0.6.5
+<ul>
+	<li> Added icons.
+	<li> Fixed a stupid error in alerts.
+</ul>
+
+v0.6
+<ul>
+	<li> Changed some data types to be compilable with the PRC tools.
+	<li> Added menus.
+	<li> Added alerts since the menus section makes use of it.
+</ul>
+
+
+v0.5
+<ul>
+	<li> Fixed some embarrasing spelling errors.
+	<li> Reformatted a bit.
+</ul>
+
+v0.41
+<ul>
+	<li> Fixed an HTML bug.
+</ul>
+
+v0.4
+<ul>
+	<li> Added Database writing.
+	<li> List stuff now uses a function to generate list items.
+	<li> Added Popup Lists.
+</ul>
+
+v0.3
+<ul>
+	<li> Added a table of contents.
+	<li> Database beginnings.
+	<li> Forms.
+	<li> Push Buttons.
+</ul>
+
+v0.2
+<ul>
+	<li> Reformatted some stuff.
+	<li> Memory management.
+	<li> Text Fields.
+	<li> Lists.
+</ul>
+
+<br><br><hr>
+
+<h1>
+Contents
+</h1>
+
+This document has a weird arrangement.  You can read it in order to learn no
+more than you need to learn to get the job done.  To do that, I had to
+interleave some concept sections with those for the various user-interface
+objects (buttons, lists, etc.).  Because of that, I think it'd be a little
+tough to scroll through this document to search for subjects you want.  To
+make that easier, I broke the table of contents into those two sections.<p>
+
+<table>
+<tr>
+<td>
+<a href="#intro">Introduction</a><br>
+<a href="#differ"> How Palm Code Differs From "Normal" Software.  </a><br>
+<a href="#event"> Event-Driven Code </a><br>
+<a href="#resource"> Resource Files.  </a><br>
+<a href="#skeleton"> The Skeleton Program </a><br>
+<a href="#uiobj"> User-Interface objects </a><br>
+<a href="#memory"> Memory Handling </a><br>
+<a href="#database"> Beginning Database </a>
+</td>
+
+<td>
+<a href="#button"> Buttons </a><br>
+<a href="#rptbutton"> Repeat Buttons </a><br>
+<a href="#menu"> Menus </a><br>
+<a href="#lists"> Lists </a><br>
+<a href="#popuplists"> Lists with Popup Trigger</a><br>
+<a href="#pushbtn"> Push Buttons </a><br>
+<a href="#chkbox"> Check Boxes </a><br>
+<a href="#slider"> Sliders </a><br>
+<a href="#feedslider"> Feedback Sliders </a><br>
+<a href="#field"> Text Fields </a><br>
+<a href="#scroll"> Scroll Bars </a><br>
+<a href="#tables"> Tables </a><br>
+<a href="#alert"> Alerts </a><br>
+<a href="#icons"> Icons </a><br>
+<a href="#forms"> Forms </a>
+</td>
+</tr>
+</table>
+
+
+<br><br><hr>
+
+<h1>
+<a name="intro" id="intro">
+0. Introduction
+</a>
+</h1>
+
+The intent of this paper is to provide a C programmer with all the information
+necessary to jump quickly into writing Palm code.  It's aimed at a programmer 
+who's new to the Palm platform and, in fact, GUI programming in general.  
+Though this document covers the material from the perspective of the OnBoard C 
+and RsrcEdit toolset, almost all of it is applicable to other tools.  <p>
+
+This document is organized as a description of some of the differences
+between ordinary code and GUI code followed by a cut-and-paste treatment
+of various items (buttons and lists, for example) that you may want to use
+to build your own Palm code.  <p>
+
+This paper gives you the basics -- the intimate details are completely 
+explained by the Palm Developer's documents that you'll find 
+<a href=http://www.palmos.com/dev/support/docs/palmos/>here</a>.  <p>
+
+<br><br><hr>
+
+<h1>
+<a name="differ" id="differ">
+1. How Palm Code Differs From "Normal" Software.
+</a>
+</h1>
+
+If you're used to writing standard, inline, code, you'll find that writing 
+Palm code is a little different.  For one thing, there's no way to stop the
+program from inside the code -- your program stops when someone starts
+another program.  Here's some other differences you'll notice:<p>
+
+<ul>
+	<li> It's event-driven.  The user drives the the action through
+	  events that are handled by the code.
+	<li> There's no standard I/O.  You use the GUI library routines 
+	  associated with the Palm.
+	<li> Resource files accompany source code and header files as 
+	  part of your project.
+	<li> Memory allocation is different.  The Palm uses a technique
+	  that allows allocated memory to be moved around while you're
+	  using it.
+	<li> There are no files.  Databases are used instead -- and you 
+	  use the data in-place rather than reading it into local 
+	  variables.
+</ul>
+
+This stuff is all described in more detail, below.<p>
+
+In addition, there are some more advanced things you'll notice about Palm
+code.<p>
+
+<ul>
+	<li> There's more than one way to call your program.  There's the
+	  normal way and there's 'find'.  You have to handle them
+	  differently.
+</ul>
+
+(Some of this may be addressed in future versions of this document)<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="event" id="event">
+Event-Driven Code
+</a>
+</h2>
+
+This section is an introduction to event-driven code.  If you're already
+familiar with these techniques, please feel free to skip to the next
+section.<p>
+
+In ordinary code, the software drives the action.  The code goes through a
+sequence of operations, pretty-much in a software-controlled order until the 
+program is done.  Sometimes, the code waits for user input but then, it goes 
+back to stepping through its pre-defined list of tasks.<p>
+
+Graphical user interface (GUI) code, however, is a little less ego-centric -- 
+the user drives the action and the software sits around and waits for him.
+To be more specific, the software sits around and waits for _events_ that are 
+generated by the operating system in response to the user's actions.  <p>
+
+This is interesting and all, but how does it affect *your* code?  Glad you
+asked.  Your software takes on a different structure than it did before it was
+a GUI application.  Its parts are different, too.  It is made up of <p>
+
+<ul>
+	<li>  a bunch of event handlers (there's got to be code for every 
+	   GUI thing on every screen), 
+	<li>  some setup code, 
+	<li>  some shutdown code, and 
+	<li>  an event loop.  
+</ul>
+	
+The event loop is the place where your code spends most of its waking hours.  
+It's the thing that waits for events from the operating system, acquires those 
+events, and hands them to the specific event handlers you've written.  <p>
+
+So, you've written and compiled your code.  It worked the first time because 
+you are, in fact, a brilliant programmer.  Some guy decided to run your 
+program on his Palm and he taps a button on the screen with his stylus.  <p>
+
+At this point, the operating system generates a button tap event and passes 
+it to your code.  Your event loop function is running -- it has called a 
+function that is waiting for the next event and the OS passes it a structure 
+that describes the button tap event.  That function returns to your event 
+loop with that structure.  Your event loop code then sees that this is a 
+button push event for, say, button number three and calls the event handling
+code for that button.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+A Couple Things About GUIs.
+</h2>
+
+<h3><i>
+UI Objects
+</i></h3>
+The average Palm program has a screen that is littered with buttons, lists, 
+check boxes, and other similar stuff.  Here, I'll call these "User-Interface 
+Objects", or UI objects.  There's no <stdio.h> in Palm programming, no
+'printf' or 'getc' -- instead you use Palm's GUI library to create and handle 
+UI objects.  <p>
+
+
+<h3><i>
+Forms
+</i></h3>
+Now, if UI objects are the paint in your picture, then a 'form' is the 
+canvas.  An application can have several forms but it has to have at least 
+one.  We'll call that the main form.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="resource" id="resource">
+Resource Files.
+</a>
+</h2>
+
+Most non-GUI programs are made up of source files, header files, and maybe a
+library or two.  Most GUI code, however, also has a resource file.  <p>
+
+There're two parts to a UI object -- the picture on the screen and the code 
+to handle user interaction with that picture.  Strictly speaking, you can 
+generate the picture with your code but most programmers choose to use a 
+resource compiler to draw those pictures.  The resource compiler generates 
+a file called a resource file and that file is compiled into your code.<p>
+
+The resource editor / compiler that is usually used with OnBoard C is 
+RsrcEdit.  It is tied pretty-well to the OnBoard C compiler.  You can launch 
+one from the other, OnBoard C generates a default resource file, RsrcEdit can 
+edit that file easily, and those resource files are part of your OnBoard C
+project by default.<p>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr>
+
+<h1>
+<a name="skeleton" id="skeleton">
+2. Code: Looking at Basic Palm Code
+</a>
+</h1>
+
+There're lots of examples of simple Palm programs.  Sometimes it's a good
+idea to look at several in case one strikes your understanding better than
+another or if the combination, together, helps you see what's happening.
+There are some excellent examples of basic Palm programs
+<a href=http://groups.yahoo.com/group/OnBoardC/files/Source%20Code/HelloWorld02_OBC.zip>here</a>,
+<a href=http://groups.yahoo.com/group/OnBoardC/files/Source%20Code/HelloWorld_OBC-n-CW.zip>here</a>,
+and
+<a href=http://groups.yahoo.com/group/OnBoardC/files/Source%20Code/HelloWorld_OBC.zip>here</a>.<p>
+
+<h2>
+The Skeleton Program
+</h2>
+
+This section goes over yet another basic Palm skeleton.  It's not absolutely 
+necessary 
+that you write your code exactly like this but this is a good starting point.
+This code is really pretty simple, though the mass of comments make it look 
+huge.  It's made up of only six functions (two of which are empty -- they're
+only placeholders for more complicated code.  Those functions are:<p>
+
+<ul>
+	<li> <u>PilotMain</u>.  All Palm programs start here.
+	<li> <u>mainFormInit</u>.  This sets-up the main form.
+	<li> <u>appHandleEvent</u>.  This handles top-level GUI events.
+	<li> <u>mainFormEventHandler</u>.  This handles GUI events for the 
+	     main form.
+	<li> <u>doMainMenu</u>. This handles what happens when a menu item is tapped.
+	<li> <u>startApp</u>.  Empty.  It's a placeholder for future code.
+	<li> <u>stopApp</u>.  Empty.  It's a placeholder for future code.
+</ul>
+
+Our skeleton code looks like this:<p>
+
+<pre>
+	/*
+	 * This code is just in there in case you're trying to run this 
+	 * with the PRC tools.
+	 */
+
+	#ifdef __GNUC__
+	#	include &lt;PalmOS.h&gt;
+	#endif
+
+	/*
+	 * 'MainForm' is the ID number of the form.  It is the ID for the 
+	 * form in the resource file.  Here is where you add the IDs of 
+	 * other objects you will use in your code.  Also, here, are three
+	 * prototypes.
+	 */
+
+	#define MainForm		1000
+	<a name="uidef" id="uidef">
+	// *** PUT UI-DEFINITIONS HERE *** //
+	</a>
+	// Prototypes
+
+	static Boolean	appHandleEvent (EventPtr pEvent);
+	static void	mainFormInit (FormPtr pForm);
+	static Boolean	mainFormEventHandler (EventPtr pEvent);
+	static Boolean	doMainMenu (FormPtr pForm, UInt16 command);
+
+	/*
+	 * startApp and stopApp are here for future reference.  They clearly 
+	 * don't do anything for this program, but it's a good idea to do
+	 * program clean-up and shutdown in these files.  One thing that 
+	 * typically goes here is database opening and closing.
+	 */
+
+	static void	startApp()	{return;}
+	static void	stopApp()	{return;}
+
+	/*
+	 * A Palm program starts at the PilotMain function -- you can use
+	 * this example verbatim for most (maybe all) your Palm applications.  
+	 * Some other examples might separate the event loop into a separate
+	 * function but we've combined the two, here.  This function does 
+	 * the following.
+	 *
+	 *	o  calls startApp, 
+	 *	o  initiates the first form, 
+	 *	o  handles the event loop,
+	 *	o  cleans-up (when it gets the 'leaving now' event), and 
+	 *	o  leaves.
+	 */
+
+
+		UInt32
+	PilotMain	(UInt16	cmd,
+			 void	*cmdPBP,
+			 UInt16	launchFlags)
+	{
+		EventType	event;
+		UInt16		error;
+		if (cmd == sysAppLaunchCmdNormalLaunch) 
+		{
+			startApp();
+
+			/*
+			 * FrmGotForm generates a frmLoadEvent that'll get
+			 * handled as soon as we have an event handler that 
+			 * knows what to do with it.
+			 */
+
+			FrmGotoForm(MainForm);
+
+			/*
+			 * This loop gets events, handles the events, and 
+			 * checks to see if we've got a 'done' event.
+			 */
+
+			do
+			{
+				/*
+				 * Wait for an event (we already generated the 
+				 * first one).
+				 */
+
+				EvtGetEvent(&amp;event, evtWaitForever);
+
+				/*
+				 * Then, ask the system, the menu system, 
+				 * and our *OWN* event handlers (one for the
+				 * application as a whole and one for the 
+				 * current form) to deal with the event.
+				 */
+
+				if (!SysHandleEvent (&amp;event))
+				if (!MenuHandleEvent (0, &amp;event, &amp;error))
+				if (!appHandleEvent (&amp;event))
+					FrmDispatchEvent (&amp;event);
+
+			} while (event.eType != appStopEvent);
+
+			/*
+			 * When we're done, shut down
+			 */
+
+			stopApp();
+			FrmCloseAllForms();
+		}
+		return 0;
+	}
+
+	/*
+	 * This is the top-level event handler for the entire application.
+	 * Here, we handle form load events and our menu events.
+	 */
+
+
+		static Boolean
+	appHandleEvent (EventPtr pEvent) 
+	{
+		FormPtr	pForm;
+		Int16	formId;
+		Boolean	handled = false;
+
+		if (pEvent-&gt;eType == frmLoadEvent)
+		{
+			/*
+			* Load the resource for the form
+			*/
+
+			formId	= pEvent-&gt;data.frmLoad.formID;
+			pForm	= FrmInitForm(formId);
+
+			FrmSetActiveForm(pForm);
+
+			/*
+			* install a form-specific event handler
+			*/
+
+			if (formId == MainForm)
+				FrmSetEventHandler (pForm, mainFormEventHandler);
+
+			<a name="form" id="form">
+			// *** ADD NEW FORM HANDLING HERE *** //
+			</a>
+
+
+			handled = true;
+		}
+
+		/*
+		 * If it is a menu item, follow a sub-control path, in this case 
+		 * doMainMenu although remember that you need a seperate menu handler 
+		 * function for each menu bar, and then must include the line to call 
+		 * it in the form handler (i.e. this) for each form that has that menu 
+		 * bar.
+		 */
+
+		else if (pEvent-&gt;eType == menuEvent)
+		{
+			handled = doMainMenu(pForm, pEvent-&gt;data.menu.itemID);
+		}
+		return handled;
+	}
+
+
+	/*
+	 * This is the event handler for the main form.  It handles all of
+	 * the user interactions with the user interface objects (e.g.,
+	 * buttons, lists, text fields, and such) on the main form.
+	 */
+
+
+		static Boolean
+	mainFormEventHandler(EventPtr pEvent)
+	{
+		Boolean	handled	= false;
+		FormPtr	pForm	= FrmGetActiveForm();
+		switch (pEvent-&gt;eType)
+		{
+
+		/*
+		 * the first event received by a form's event handler is
+		 * the frmOpenEvent.
+		 */
+
+		case frmOpenEvent:
+			FrmDrawForm(pForm);
+			mainFormInit(pForm);
+			handled = true;
+			break;
+
+		<a name="eventh" id="eventh">
+		// *** ADD EVENT HANDLING HERE *** //
+		</a>
+
+		default:
+			break;
+		}
+		return handled;
+	}
+
+	/*
+	 * This is the menu handler for the main form.  It handles
+	 doing the users selections. It takes a FormPtr for fast
+	 access to the form it's 'installed' for, and so that if something
+	 changes the active form between now and the end of the
+	 function it still works on the form it's designed for, altough
+	 that is rare.*/
+
+		static Boolean
+	doMainMenu (FormPtr pForm, UInt16 command)
+	{
+		Boolean	handled	= false;
+		switch(command)
+		{
+		<a name="menuhand" id="menuhand">
+		// *** ADD MENU HANDLING HERE *** //
+		</a>
+		}
+		return handled;
+	}
+
+	/*
+	 * This is the startup code for the form.  Here, we write our message
+	 * to the screen.
+	 */
+
+		static void
+	mainFormInit (FormPtr pForm)
+	{
+		static Char	foo[10]	= "Hello GUI";
+		
+		WinDrawChars (foo,StrLen(foo),20,18);
+
+		<a name="finit" id="finit">
+		// *** ADD FORM INITIALIZATION HERE *** //
+		</a>
+	}
+
+</pre>
+
+<h2>
+Other Useful Bits
+</h2>
+
+Here are some other bits of code that you'll want to include in your Palm
+code.  
+
+<h3><i>
+getObjectPtr
+</i></h3>
+
+The Palm API has lots of ways to keep track of UI Objects.  There's indecis,
+pointers, and resource numbers.  The programmer typically knows his objects
+by resource number but most of the Palm APIs want a pointer.  Unfortunately,
+there's no function that'll get you directly from one to the other.  The 
+getObjectPtr function uses a series of two instructions to do this job.
+
+<pre>
+
+		void	*
+	getObjectPtr (FormPtr pForm, Int16 resourceNo)
+	{
+		UInt16 objIndex=FrmGetObjectIndex(pForm,resourceNo);
+		return FrmGetObjectPtr(pForm,objIndex);
+	}
+
+</pre>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr>
+
+<h1>
+<a name="uiobj" id="uiobj">
+3. User-Interface objects
+</a>
+</h1>
+
+This section provides a cookbook for many of the user interface objects
+you'll be interested in adding to your forms.  Each section will describe
+a single UI object, how to generate the UI object with the resource compiler,
+and what code you'll need to handle the main events for your object.  For 
+each case, you'll be able to take your UI object-handling code to the next 
+level by reading the Palm documentation.<p>
+
+In each section, below, you'll be asked to open the form on which you'll be 
+adding your object.  There are several ways to go about this but here is one 
+way to do it.<p>
+<a name="open" id="open">
+
+Starting in OnBoard C, do the following:<p>
+
+<ul>
+	<li>  tap on the .rsrc file 
+	<li>  tap the 'RsrcEdit' button; this will bring-up RsrcEdit.
+</ul>
+
+In RsrcEdit, do the following:<p>
+
+<ul>
+	<li>  tap the form name (it'll look like 'tFRM 1000')
+	<li>  tap the 'open' button;  this will open the form -- you gotta
+	   add your object to a specific form.
+</ul>
+
+Now, you can go about adding your object's resource to the form.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="button" id="button">
+UI Objects: Buttons
+</a>
+</h2>
+
+<h3><i>
+What They Are
+</i></h3>
+
+Well, they're buttons!<p>
+
+
+<h3><i>
+How To Make One -- In The Resource Editor
+</i></h3>
+
+You need to add the button to the main form in your program and we'll do 
+that in RsrcEdit.  You tie the button in your resource file to your program by
+remembering the ID of the button and referring to that number in your code.
+We'll start by adding the button to your form.<p>
+
+<ul>
+	<li>  <a href="#open">open the form</a>, as described above,
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'control';  this will open the control form,
+	<li>  name the button by writing 'Foo' under 'Title',
+	<li>  under 'ID', write '1001' -- REMEMBER THIS NUMBER,
+	<li>  under 'Style', choose 'Button' (it's probably already selected),
+	<li>  under 'Frame', choose 'Standard',
+	<li>  position the button on the screen by doing the following:<br>
+	<ul>
+	      <li> under 'top', write '30',
+	      <li> under 'left', write '20',
+	</ul>
+	<li>  tap the 'Calc Width' button,
+	<li>  under 'height' write '10',
+	<li>  check the 'Enabled' box,
+	<li>  check the 'Usable' box,
+	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+	<li>  tap the 'OK' button; this will close RsrcEdit's form for the
+	      main form in your program, and
+	<li>  tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	      to OnBoard C (note
+	      that this button will only be available if you invoked RsrcEdit
+	      from OnBoard C -- if you got here via the Palm application
+	      launcher, you'll have to get back to OnBoard C via the
+	      application launcher).
+</ul>
+
+<h3><i>
+How To Set One Up -- In The Code
+</i></h3>
+
+There's nothing that you need to do in the code before the button can be
+drawn on the screen.  Some things (like lists) require that you fill them
+before you can draw them but buttons are simple.
+
+<h3><i>
+How To Handle One -- In The Code
+</i></h3>
+
+In your code, you'll want to handle the event caused by someone pressing
+that button.  <p>
+
+At the top of your file, you should add a #define to help your code be
+a bit more readable.  You should add this at the place marked
+'<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+<pre>
+#define MainButton	1001	// that's the button's number you remembered
+</pre>
+
+  Now, in your form's event handler (that was mainFormEventHandler in the above
+  example, at the place marked 
+  '<a href="#eventh">ADD EVENT HANDLING HERE</a>'),
+  add the following:<p>
+
+<pre>
+	case ctlSelectEvent:
+		switch (pEvent-&gt;data.ctlSelect.controlID)
+		{
+		case MainButton:
+		{
+			static Char	bar[7]="button";		// 1
+			WinDrawChars(bar, StrLen(bar), 60, 30);		// 2
+			handled	= true;
+			break;
+		}
+		// other buttons...
+		}
+		break;
+</pre>
+
+You can, of course, replace the lines marked '1' and '2' with your own code --
+this was just for illustration.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="rptbutton" id="rptbutton">
+UI Objects: Repeat Buttons
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="menu" id="menu">
+UI Objects: Menus
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+ A menu is a list of choices that pops down from the top of the Palm's screen.
+ You've all used them throughout this tutorial so this should've been obvious :-).
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+We'll add a menu to the main form in RsrcEdit.  <p>
+
+ <!--Note (Nick Guenther, Feb 16, 2003 16:15 GMT ): I have removed the leading space in front of the first <li>'s (after the <ul>) here because
+  in Konqueror it moves the text forward and doesn't do the same to the rest. I haven't edited other sections
+  since I can see that that might cause a lot of problems if this is a Konqueror specific error.-->
+
+ <ul>
+  	<li>go to the main form of the resource (the first thing you see when you open a Rsrc file),
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'menu bar';  this will open the menu bar form,
+	<li>  add menu headings by doing the following:<br>
+	<ul>
+	      <li>tap the 'menu' silkscreen button,
+	      <li> select 'new',
+	      <li> where is says 'New Menu' on a line highlight it,
+	      <li> write 'Menu 1',
+	</ul>
+	<li> now, add menu items like this:<br>
+	<ul>
+		<li>in the list of menu headings, select the menu heading you want to edit,
+		<li> tap the 'open' button,
+		<li>  tap the 'menu' silkscreen button,
+		<li> select 'new',
+		<li> where is says 'New Item' on a line highlight it,
+		<li> write in 'Item 1',
+		<li> in the 'ID' field, write '1000' -- REMEMBER THIS NUMBER
+		<li> in the 'Key' field write 'A' (this can be any symbol, number, or <u><b>CAPTIAL</b></u> letter),
+		<li> tap the 'Calc. Size' button to have the menu sized appropriately for what menu items it has,<br>
+		<br>
+		(It is worth noting here that if you ever move the top level menu heading (ie change it's dimensions)
+		you must match up the 'left' value of the menu heading, and the 'left' value plus 2 (that is, add 2 to the
+		'left' value of the menu heading) in the menu edit form.)<br>
+	</ul>
+	<li> tap the 'OK' button; this will close RsrcEdit's menu item form,
+	<li> tap the 'OK' button; this will close RsrcEdit's menu bar form,
+	<li> making sure that the new menu bar is selected, change it's ID 
+	     number to something logical,<br>
+	     '1004', and tap 'apply' -- REMEMBER THIS NUMBER
+	<li> find your  the form you want to give your new menu bar to, and open it,
+	<li> where it says 'MBar ID' write in '1004' -- HERE'S THE NUMBER 
+	     YOU REMEMBERED
+	<li> tap the 'OK' button; this will close RsrcEdit's form for the
+	     main form in your program, and
+	<li> tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	     to OnBoard C.
+</ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  	This part is not so hard, however, it can be tedious if you have large menu bars. Lucky we only made one
+	 heading and one item :D.
+<p>
+  At the top of your file, you'll want to add a #define to help your code be
+  a bit more readable.  You should add this at the place marked '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':
+<pre>
+	#define Menu1MenuItem1 1000; 	// HERE'S THE NUMBER YOU REMEMBERED
+	//(And yes, you probably want to have better names for your defines in real-life applications)
+</pre>
+	<br>When you add menu items I find it is good if you either switch back and forth between RsrcEdit and SrcEdit and
+		 are writing #defines as you go along or decide on a naming convention (e.g. first menu heading is 1000, second is 1010, third is 1020...).
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  Again, not difficult (especially if you make use of copy-paste) but possibly tedious.
+
+Where it says  '<a href="#menuhand">ADD MENU HANDLING HERE</a>' put in this code (note
+ that this requires you to have followed the instructions in the 'Alerts' section):
+<pre>
+	case Menu1Item1:
+		FrmAlert(Alert1);
+		break;
+</pre>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="lists" id="lists">
+UI Objects: Lists
+</a>
+</h2>
+
+<!-- TODO: WITH SELECTOR TRIGGER -->
+
+  <h3><i>
+  What They Are
+  </i></h3>
+  A list is a group of choices, one per line, setup to allow the user
+  to pick one by tapping on it.
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  We'll add a list to the main form in RsrcEdit.  <p>
+
+  <ul>
+	<li>  <a href="#open">open the form</a>, as described above,
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'list';  this will open the list form,
+	<li>  position the button on the screen by doing the following:<br>
+	<ul>
+	      <li> under 'top', write '55',
+	      <li> under 'width', write '120',
+	      <li> under 'left', write '20',
+	      <li> under 'height', write '35',
+	</ul>
+	<li>  under 'ID', write '1005' -- REMEMBER THIS NUMBER,
+	<li>  check the 'Usable' box,
+	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+	<li>  tap the 'OK' button; this will close RsrcEdit's form for the
+	      main form in your program, and
+	<li>  tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	      to OnBoard C
+</ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  You'll want to fill the list with choices (note that when you get a
+  'select' event, it'll include the numerical index of the choice the user
+  selected).  There're different ways to fill the list with choices but we'll
+  only go into one, the LstSetDrawFunction function, here.  With this method,
+  the Palm OS calls a function we designate each time it wants to draw a
+  list item on the screen.  This works great for dynamically changing lists
+  (where, for example, the user can add or remove things from the list) but
+  it's also good because we don't have to allocate space for the list items
+  and we don't have to deal with deallocating that space.  <p>
+
+  At the top of your file, you'll want to add a #define to help your code be
+  a bit more readable.  You should add this at the place marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+<pre>
+	#define	MainList	1005	// HERE'S THE NUMBER YOU REMEMBERED
+</pre>
+
+  OnBoard C uses a header
+  file that includes several, BUT NOT ALL, of the Palm APIs.  It turns out 
+  that the LstDrawList, LstSetDrawFunction, and WinDrawTruncChars APIs 
+  aren't in OnBoard C's header file.  We must add
+  the link between our call and the APIs ourselves.  We do this by placing the
+  following lines in the section marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+  <pre>
+	void LstDrawList (ListType *pList) SYS_TRAP(sysTrapLstDrawList);
+	void LstSetDrawFunction (ListType *pList, ListDrawDataFuncPtr func) 
+		SYS_TRAP(sysTrapLstSetDrawFunction);
+	void WinDrawTruncChars (Char *c, int i, int x, int y, int w)
+		SYS_TRAP(sysTrapWinDrawTruncChars);
+  </pre>
+
+  Next, you'll want to add the functions for setting-up the list.  This
+  being 'C', you can either add the functions at the top of the file or you
+  can add prototypes to the top and the functions at the bottom (or in another
+  file).  This is all your choice and we're not going to cover it here.  <p>
+
+  First, we need our function that'll draw the list items.  For this function,
+  I'm going to call WinDrawTruncChars, a function that not only writes a 
+  string to the screen but also chops it off if the string is too long.
+
+  <pre>
+
+	#define	listCount	5
+
+	static Char	*listString[listCount]	
+				= {"one", "two", "three", "four", "five"};
+
+
+	void	drawList	(Int16	i,
+				RectangleType	*bounds,
+				Char		**items)
+	{
+		WinDrawTruncChars (listString[i], StrLen(listString[i]),
+			bounds-&gt;topLeft.x,
+			bounds-&gt;topLeft.y,
+			bounds-&gt;extent.x);
+	}
+
+  </pre>
+
+  Next, we'll write the list setup function, setupList, that installs
+  our drawList function.
+  Here's the function definition (below, I'll tell you where to call it).
+
+  <pre>
+	void	setupList(int lIndex)
+	{
+		FormPtr pForm	= FrmGetActiveForm();
+		void	*pList	= getObjectPtr(pForm, lIndex);
+		LstSetListChoices (pList, 0, listCount);
+		LstSetDrawFunction (pList, (ListDrawDataFuncPtr) drawList);
+
+		// Since the list is already showing, we have to redraw it
+		LstDrawList (pList);
+	}
+
+  </pre>
+
+  Now you have to place the call to this function
+  in your code to setup the list when you draw a form.  Do that by adding 
+  the following
+  function call in your 'mainFormInit' function where it says
+  '<a href="#finit">ADD FORM INITIALIZATION HERE</a>':<p>
+
+<pre>
+	setupList (MainList);
+</pre>
+
+  And, voila -- you've built your list.
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  The user is probably going to tap on one of your list's choices and you
+  should have some code to deal with that.  That code goes in your form's 
+  event handler (that was mainFormEventHandler in the above
+  example) at the place marked 
+  '<a href="#eventh">ADD EVENT HANDLING HERE</a>').
+  Add the following code at that spot:<p>
+
+  <pre>
+  	case lstSelectEvent:
+	{
+		// let's save the list selection -- this is the index of the 
+		// thing the user tapped in the array we passed to the list
+
+		int	i	= pEvent-&gt;data.lstSelect.selection;
+
+		// this is a check for *WHICH* list -- we'll leave it here
+		// even though we only have one list
+
+		switch (pEvent-&gt;data.lstSelect.listID)
+		{
+		case MainList:
+			// We'll draw the selected string on the screen, but
+			// normally, you'd do something with the index, here
+
+			WinDrawChars	(listString[i],			// 1
+					StrLen(listString[i]), 		// 2
+					120, 				// 3
+					30);				// 4
+			break;
+		}
+	}
+  </pre>
+
+  The lines marked 1 through 4 comprise the statement that reacts to a user
+  selecting an item in your list.  In real code, you'll want to replace these 
+  lines with something more sophisticated.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="popuplists" id="popuplists">
+UI Objects: Lists (with Popup Trigger)
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+  This is a variation on a <a href="#lists">list</a> where the list doesn't
+  appear until the user taps a button-like trigger.
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  Make a list just like before, only don't make it usable. The idea is that
+  the list doesn't appear (i.e., it's not usable) until the user taps the
+  popup trigger.<p>
+
+  <ul>
+	<li>  <a href="#open">open the form</a>, as described above,
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'list';  this will open the list form,
+	<li>  position the list on the screen by doing the following:<br>
+	<ul>
+	      <li> under 'top', write '55',
+	      <li> under 'width', write '120',
+	      <li> under 'left', write '20',
+	      <li> under 'height', write '35',
+	</ul>
+	<li>  under 'ID', write '2005' -- REMEMBER THIS NUMBER,
+	<li>  <b>UNCHECK</b> the 'Usable' box,
+	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+  </ul>
+
+  Then, make a popup trigger.  Overlay it on the top of the list.<p>
+
+  <ul>
+	<li>  (the form should already be open)
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'control';  this will open the control form,
+	<li>  name the popup trigger by writing 'Trigger' under 'Title',
+	<li>  under 'ID', write '2006' -- REMEMBER THIS NUMBER,
+	<li>  under 'Style', choose 'Popup Trigger',
+	<li>  under 'Frame', choose 'No Frame',
+	<li>  position the trigger on the screen by doing the following:<br>
+	<ul>
+		<li> under 'top', write '55',
+		<li> under 'left', write '20',
+		<li> under 'width', write '120',
+		<li> under 'height' write '10',
+	</ul>
+	<li>  check the 'Enabled' box,
+	<li>  check the 'Usable' box,
+	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+  </ul>
+
+  Make the popup -- this associates the list with the popup trigger.<p>
+
+  <ul>
+	<li>  (the form should already be open)
+	<li>  tap the 'menu' silkscreen button,
+	<li>  tap 'new'-&gt;'popup';  this will open the popup form,
+	<li>  under 'Control ID', write '2006'
+	<li>  under 'List ID', write '2005'
+	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+  </ul>
+
+Now, close the form.
+
+  <ul>
+	<li>  tap the 'OK' button; this will close RsrcEdit's form for the
+	      main form in your program, and
+	<li>  tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	      to OnBoard C
+  </ul>
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  You'll install the list draw function almost exactly the same way as 
+  before.<p>
+
+  At the top of your file, you'll want to add a couple #define statements
+  to help your code be
+  a bit more readable.  You should add this at the place marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+<pre>
+	#define	MyPopup	2006	// HERE'S ONE NUMBER YOU REMEMBERED
+	#define	MyList	2005	// HERE'S THE OTHER NUMBER YOU REMEMBERED
+</pre>
+
+  OnBoard C uses a header
+  file that includes several, BUT NOT ALL, of the Palm APIs.  It turns out 
+  that the LstDrawList, LstSetDrawFunction, and WinDrawTruncChars APIs 
+  aren't in OnBoard C's header file.  We must add
+  the link between our call and the APIs ourselves.  We do this by placing the
+  following lines in the section marked 
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+  <pre>
+	void LstDrawList (ListType *pList) SYS_TRAP(sysTrapLstDrawList);
+	void LstSetDrawFunction (ListType *pList, ListDrawDataFuncPtr func) 
+		SYS_TRAP(sysTrapLstSetDrawFunction);
+	void WinDrawTruncChars (Char *c, int i, int x, int y, int w)
+		SYS_TRAP(sysTrapWinDrawTruncChars);
+  </pre>
+
+  Next, you'll want to add the functions for setting-up the list.  This
+  being 'C', you can either add the functions at the top of the file or you
+  can add prototypes to the top and the functions at the bottom (or in another
+  file).  This is all your choice and we're not going to cover it here.  <p>
+
+  First, we need our function that'll draw the list items.  For this function,
+  I'm going to call WinDrawTruncChars, a function that not only writes a 
+  string to the screen but also chops it off if the string is too long.
+
+  <pre>
+
+	#define	listCount	5
+
+	static Char	*listString[listCount]	
+				= {"one", "two", "three", "four", "five"};
+
+
+	void	drawList	(Int16	i,
+				RectangleType	*bounds,
+				Char		**items)
+	{
+		WinDrawTruncChars (listString[i], StrLen(listString[i]),
+			bounds-&gt;topLeft.x,
+			bounds-&gt;topLeft.y,
+			bounds-&gt;extent.x);
+	}
+
+  </pre>
+
+  Next, we'll write the list setup function, setupList, that installs
+  our drawList function.
+  This is just like before, except that you won't draw the list in the form's 
+  startup function (the
+  list is hidden -- you wouldn't want to draw a hidden list).
+  Here's the function definition (below, I'll tell you where to call it).
+
+  <pre>
+	void	setupList(int lIndex)
+	{
+		FormPtr pForm	= FrmGetActiveForm();
+		void	*pList	= getObjectPtr(pForm, lIndex);
+		LstSetListChoices (pList, 0, listCount);
+		LstSetDrawFunction (pList, (ListDrawDataFuncPtr) drawList);
+
+		// Don't redraw the list
+	}
+
+  </pre>
+
+  Now you have to place the call to this function
+  in your code to setup the list when
+  you draw a form.  Do that by adding the following
+  function call in your 'mainFormInit' function where it says
+  '<a href="#finit">ADD FORM INITIALIZATION HERE</a>':<p>
+
+<pre>
+	setupList (MyList);
+</pre>
+
+  And, voila -- you've built your list.
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  The user will select an item off your list in two steps.  First, he'll tap
+  on the popup trigger -- the Palm OS will handle this by showing your list.
+  Next, he'll probably to tap on one of your list's choices and you
+  should have some code to deal with that.  It's almost exactly like
+  the plain list-handling code except that the user selecting a list item
+  gives you get a popSelectEvent rather than a lstSelectEvent.
+  That code goes in your form's 
+  event handler (that was mainFormEventHandler in the above
+  example) at the place marked 
+  '<a href="#eventh">ADD EVENT HANDLING HERE</a>').  Add the following code
+  at that spot:<p>
+
+  <pre>
+  	case popSelectEvent:
+	{
+		// let's save the list selection -- this is the index of the 
+		// thing the user tapped in the array we passed to the list
+
+		int	i	= pEvent-&gt;data.popSelect.selection;
+
+		// this is a check for *WHICH* list -- we'll leave it here
+		// even though we only have one list
+
+		switch (pEvent-&gt;data.popSelect.controlID)
+		{
+		case MyPopup:
+			// We'll draw the selected string on the screen, but
+			// normally, you'd do something with the index, here
+
+			WinDrawChars	(listString[i],			// 1
+					StrLen(listString[i]), 		// 2
+					100, 				// 3
+					0);				// 4
+			handled = true;
+			break;
+		}
+	}
+  </pre>
+
+  Make sure that you include the 'handled=true;' line whether or not you 
+  want to do anything when the user selects the line.  Otherwise, the 
+  OS tries to change the title of the popup to the selection it has stored
+  (but it doesn't have anything stored -- we're writing the list elements
+  dynamically -- so you get garbage).<p>
+
+  The lines marked 1 through 4 comprise the statement that reacts to a user
+  selecting an item in your list.  In real code, you'll want to replace these 
+  lines with something more sophisticated.<p>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="pushbtn" id="pushbtn">
+UI Objects: Push Buttons (AKA Radio Buttons)
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  Push Buttons are a group of buttons that work in concert.  Only one can be
+  pushed at a time.
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  Well, you can't make just one -- it's a group of buttons so you have to make
+  at least two.  The user-interface standards are to make them immediately
+  next to each other or immediately over the top of each other.  We'll make
+  ours next to each other.<p>
+
+  You need to add the buttons to the main form in your program and, as usual,
+  we'll do that in RsrcEdit.  This is a bunch like a couple of regular
+  buttons.  The differences lie in that the buttons are carefully aligned (as
+  described earlier) and the buttons are all part of the same group.
+  We'll start by adding the button to your form.<p>
+
+  <ul>
+	<li>  <a href="#open">open the form</a>, as described above,
+  </ul>
+
+  Now create the first button: <p>
+
+  <ul>
+  	<li>  tap the 'menu' silkscreen button,
+  	<li>  tap 'new'-&gt;'control';  this will open the control form,
+  	<li>  name the button by writing 'Up' under 'Title',
+  	<li>  under 'ID', write '1020' -- REMEMBER THIS NUMBER,
+  	<li>  under 'Style', choose 'PushButton',
+  	<li>  under 'Frame', choose 'Rectangle',
+  	<li>  position the button on the screen by doing the following:<br>
+  	<ul>
+  	      <li> under 'top', write '100',
+  	      <li> under 'left', write '20',
+  	      <li> under 'width', write '30',
+  	      <li> under 'height', write '10',
+  	</ul>
+  	<li>  under 'group' write '1',
+  	<li>  check the 'Enabled' box,
+  	<li>  check the 'Usable' box,
+  	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+  </ul>
+
+  Now, make the second button:<p>
+
+  <ul>
+  	<li>  tap the 'menu' silkscreen button,
+  	<li>  tap 'new'-&gt;'control';  this will open the control form,
+  	<li>  name the button by writing 'Down' under 'Title',
+  	<li>  under 'ID', write '1021' -- REMEMBER THIS NUMBER,
+  	<li>  under 'Style', choose 'PushButton',
+  	<li>  under 'Frame', choose 'Rectangle',
+  	<li>  position the button on the screen by doing the following:<br>
+  	<ul>
+  	      <li> under 'top', write '100',
+  	      <li> under 'left', write '50',
+  	      <li> under 'width', write '30',
+  	      <li> under 'height', write '10',
+  	</ul>
+  	<li>  under 'group' write '1',
+  	<li>  check the 'Enabled' box,
+  	<li>  check the 'Usable' box,
+  	<li>  tap the 'OK' button; this will close RsrcEdit's control form,
+  </ul>
+
+  And then, finish it off:<p>
+
+  <ul>
+  	<li>  tap the 'OK' button; this will close RsrcEdit's form for the
+  	      main form in your program, and
+  	<li>  tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	      to OnBoard C
+  </ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  There's nothing that you need to do in the code before the buttons can be
+  drawn on the screen.  
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  In your code, you'll want to handle the event caused by someone pressing
+  one of the buttons button.  <p>
+
+  At the top of your file, you should add a #define to help your code be
+  a bit more readable.  You should add this at the place marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+  <pre>
+  #define UpButton	1020
+  #define DownButton	1021
+  </pre>
+
+    Now, in your form's event handler (that was mainFormEventHandler in the 
+    above example, at the place marked 
+    '<a href="#eventh">ADD EVENT HANDLING HERE</a>'),
+    add the following:<p>
+
+  <pre>
+  	case ctlSelectEvent:
+  		switch (pEvent-&gt;data.ctlSelect.controlID)
+  		{
+  		case UpButton:
+  			WinDrawChars("Up", 2, 60, 30);
+  			handled	= true;
+  			break;
+  		case DownButton:
+  			WinDrawChars("Down", 4, 60, 30);
+  			handled	= true;
+  			break;
+  		// other buttons...
+  		}
+  		break;
+  </pre>
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="chkbox" id="chkbox">
+UI Objects: Check Boxes
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+	Most programmers familiar with GUI programming will know the
+	check box. It is that little box that can have a tick in it. If
+	you have been following this example you have been using them for
+	'Usable' and 'Enabled' in the Resource Editor.
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <ul>
+	<li> Open the form, as described above
+	<li> Tap the 'menu' silkscreen button
+	<li> Tap 'new'-&gt;'control'; this will open the control form
+	<li> Name the checkbox by writing 'Check it' under 'Title',
+	<li> Under 'ID', write '1005' - REMEMBER THIS NUMBER
+	<li> Under 'Style' choose 'CheckBox'
+	<li> Position the check box on the screen by doing the following:
+	<ul>
+		<li> Under 'top' write '100'
+		<li> Under 'left' write '90'
+		<li> Under 'width' write '50' ('Calc Width' does not work properly for checkboxes)
+		<li> Under 'height' write '12'
+	</ul>
+	<li> Check the 'enabled' and 'usable' checkboxes
+	<li> Tap the 'OK' button; this will close RsrcEdit's control form
+	<li> Tap the 'OK' button; this will close RsrcEdit's form for the main form in your program, and
+	<li> Tap the 'OnBoardC' button; this will take you to OnBoardC
+  </ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+	There's nothing that you need to do in the code before the check
+	box can be drawn on the screen.
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+	In your code there are three things you might be interested in doing. At
+	any stage in your program you might want to know whether the check box
+	is ticked or not, you might want to set the checkbox to ticked or not,
+	or you might want to take some action when the user ticks or un-ticks
+	the check box.<p>
+
+	Before we forget lets put in the define for the resource ID number. At
+	the top of your code, marked 'PUT UI-DEFINITIONS HERE':<p>
+
+  <pre>
+	#define CHECKBOX 	1005
+  </pre>
+
+	With the other controls we have looked at we have referred to the
+	control in the code by it's resource ID (as in the ctlSelectEvent)
+	or with a pointer that we obtained with the getObjectPtr function
+	outline earlier. There is a third way of accessing a control -
+	by its index. For some reason this is the way the PalmOS writers
+	though would be the best way to deal with checkboxes. It is not
+	a problem, we just have to call a function to get the index from
+	a resource id.<p>
+
+	You might call a function like this to see if a checkbox was
+	ticked.<p>
+
+  <pre>
+	static void doCheckBox(void)
+	{
+	  FormPtr form;
+	  UInt16 ctlIndex;
+	  Int16 checked;
+
+	  form = FrmGetActiveForm();
+	  ctlIndex = FrmGetObjectIndex(form, CHECKBOX);
+	  checked = FrmGetControlValue(form, cltIndex);
+
+	  if(checked)
+	    WinDrawChars("Checked", 7, 5, 120);
+	  else
+	    WinDrawChars("Not Checked", 11, 5, 120);
+	}
+  </pre>
+
+
+	Setting the state of a check box is just as simple:
+
+  <pre>
+	static void setCheckBox(Int16 checked)
+	{
+	  FormPtr form;
+	  UInt16 ctlIndex;
+
+	  form = FrmGetActiveForm();
+	  ctlIndex = FrmGetObjectIndex(form, CHECKBOX);
+	  FrmSetControlValue(form, ctlIndex, checked);
+	}
+  </pre>
+
+	Reacting to the user tapping on the checkbox is exactly the same
+	as if it was a button. In your form's event handler (that was
+	mainFormEventHandler in the above example, at the place marked
+	'ADD EVENT HANDLING HERE') add the following
+
+  <pre>
+
+	case ctlSelectEvent:
+		switch (pEvent-&gt;data.ctlSelect.controlID)
+		{
+			case CHECKBOX:
+			{
+				WinDrawChars("Tap", 3, 5, 120);
+				handled = true;
+				break;
+			}
+			//other buttons
+		}
+		break;
+  </pre>
+
+
+
+
+
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="slider" id="slider">
+UI Objects: Sliders
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="feedslider" id="feedslider">
+UI Objects: Feedback Sliders
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="memory" id="memory">
+Memory Handling
+</a>
+</h2>
+
+Memory is handled a bit differently on the Palm than in most programming
+environments.  The Palm has a <b>stack</b> like most machines.  The stack
+is the place where each function's local variables are stored but a variable's
+space is given away to other variables when the function returns.  The
+<b>heap</b>, on the other hand, is treated differently on the Palm.  You can
+allocate memory normally (using <i>MemPtrNew</i> and <i>MemPtrFree</i> rather
+than <i>malloc</i> and <i>free</i>) or you can declare something <i>static</i>
+or <i>global</i> but you really don't want to do that.  The
+problem with that is that there's not a lot of memory and it can easily get
+fragmented.  What you really want is to make your allocations
+<b>relocatable</b> with <i>MemHandleNew</i> and <i>MemHandleFree</i>.  
+The Palm OS can move this memory around (thus, unfragmenting it and making
+more of it available) when you're not using it.  When you
+want to use it, get a pointer with <i>MemHandleLock</i> but don't forget to
+unlock the memory chunk with <i>MemHandleUnlock</i>.  An example of using
+this technique is as follows.<p>
+<pre>
+	MemHandle	h = MemHandleNew(100);	// 100 bytes
+
+	CharPtr	p = MemHandleLock(h);	// turn a handle into a pointer
+	// use 'p' as you would any pointer
+	MemHandleUnlock(h);
+
+	// go off and do other stuff -- the stuff above and below this line
+	// can be in the same function or in different functions, if you wish.
+
+	p = MemHandleLock(h);	// turn a handle back into a pointer
+	// use 'p' as you would any pointer
+	MemHandleUnlock(h);
+
+	// and when you're done
+	MemHandleFree(h);
+</pre>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="field" id="field">
+UI Objects: Text Fields
+</a>
+</h2>
+
+  
+<h3><i> What They Are </i></h3>
+A text field is a line or block of text which can show and edit a text
+string.  This string can live either directly in a database, or be from a 
+string in memory. Editing is 
+handled by the system, so if you're happy with the way you edit text on a Palm, 
+you only need to worry about the setup of the field, and not the event loop. 
+
+<h3><i>
+How To Make One -- In The Resource Editor
+</i></h3>
+
+You need to add the field to the main form in your program and once again, 
+we'll do that in RsrcEdit. You tie the field in your resource file to your
+program by remembering the ID of the field and referring to that number in 
+your code. We'll start by adding the field to your form. 
+
+<p>
+<ul>
+  <li> <a href="#open">open the form</a>, as described above,
+  <li> tap the 'menu' silkscreen button,
+  <li> tap 'new'-&gt;'field'; this will open the field form,
+  <li> under 'ID', write '1010' -- REMEMBER THIS NUMBER,
+  <li> position the button on the screen by doing the following:<br>
+    <ul>
+      <li> under 'top', write '42',
+      <li> under 'left', write '20',
+      <li> under 'width', write '120',
+      <li> under 'height', write '12',
+    </ul>
+  <li> check the 'Editable' box,
+  <li> check the 'Usable' box,
+  <li>check the 'Underline' box,
+  <li>check the 'Single Line' box
+  <li>under 'Max Chars', write '32',
+  <li> tap the 'OK' button; this will close RsrcEdit's control form,
+  <li> tap the 'OK' button; this will close RsrcEdit's form for the main form
+    in your program
+  <li>tap the 'OnBoardC' (or 'QuartusC') button; this will take you to 
+        OnBoard C.
+</ul>
+
+
+<h3><i>How To Set One Up -- In The Code </i></h3>
+  There are several things you have to do to set up a field in the code, and
+  there are more things you have to do when you have finished with it. To start
+  with, we need to link the text field to a region of memory that holds the
+  text, then we need to tell the system to draw it.  <p>
+
+  At the top of your file, you'll want to add a #define to help your code be
+  a bit more readable.  You should add this at the place marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+<pre>
+	#define MainField	1010	// HERE'S THE NUMBER YOU REMEMBERED
+</pre>
+
+  Next, you'll want to add some functions for dealing with the field.  This
+  being 'C', you can either add the functions at the top of the file or you
+  can add prototypes to the top and the functions at the bottom (or in another
+  file).  This is all your choice and we're not going to cover it here.  <p>
+
+  The field setup function, setFieldText, sets the text of the field.  Now, 
+  the user can add or remove text to his or her little heart's desire so you'll
+  want to be able to get the text from the field.  You do that with the 
+  'getFieldText' function.  <p>
+
+  Here's the function definition (below, I'll tell you where to call them).
+
+<pre>
+	// Use a function like this to set a field to a string
+
+		static void 
+	setFieldText	(UInt32	fIndex, 
+			 Char	*StrToShow)
+	{
+		FormPtr		pForm	= FrmGetActiveForm();
+		void		*pField = getObjectPtr (pForm, fIndex);
+
+		// get the field's old text handle
+		MemHandle	oldH	= FldGetTextHandle(pField);
+		
+		//Copy our string into a memhandle
+
+		int		len	= StrLen(StrToShow);
+		MemHandle	mH	= MemHandleNew(len+1);
+		Char		*pMem	= MemHandleLock(mH);
+
+		StrCopy(pMem, StrToShow);
+		
+		//The memhandle needs to be unlocked to work...
+		MemHandleUnlock(mH);
+
+		//To establish the field's link to the handle
+		FldSetTextHandle(pField,mH);
+
+		//To draw the field
+		FldDrawField(pField);
+
+		// get rid of old handle
+		if (oldH != NULL)
+			MemHandleFree (oldH);
+	}
+
+</pre>
+
+  Now you have to place the calls to this function
+  in your code to set the text of the field when
+  you draw a form for the first time.  Do that by adding the following
+  function call in your 'mainFormInit' function where it says
+  '<a href="#finit">ADD FORM INITIALIZATION HERE</a>':<p>
+
+<pre>
+	setFieldText (MainField,"Hello Field");
+</pre>
+
+
+
+<h3><i>How To Handle One -- In The Code </i></h3>
+<p>There's nothing much to handle here, unless you want advanced editing 
+capabilities, which I've never needed. Anybody else?</p>
+
+I'm not sure whether this counts as in the code or as shut down but you'll
+want to be able to extract the text from a field (by the way, make sure you 
+set the field before you try to get it.)
+You do that with the
+following function (again, I'll explain where to call it, below).
+
+<pre>
+	// Use a function like this to find out what the field's contents
+	// are and to put them into a string:
+
+		static void 
+	getFieldText (UInt32 fIndex, Char *StrToGet)
+	{
+		FormPtr		pForm = FrmGetActiveForm();
+		void		*pField = getObjectPtr (pForm, fIndex);
+
+		MemHandle	mH = FldGetTextHandle(pField);
+		Char *pMem=MemHandleLock(mH);
+		StrCopy(StrToGet, pMem);
+		
+		MemHandleUnlock(mH);
+	}
+</pre>
+
+  To use this, you can
+  replace the button handling code (that goes at the spot marked 
+  '<a href="#eventh">ADD EVENT HANDLING HERE</a>'),
+  described elsewhere in this document, with the following bit of code:<p>
+
+<pre>
+	case MainButton:
+		static Char	bar[80];
+		getFieldText (MainField, bar);
+		WinDrawChars (bar, StrLen(bar), 60, 30);
+		handled = true;
+		break;
+</pre>
+
+<h3><i>How To Shut One Down -- In The Code </i></h3>
+
+There's one more function that will interest you if the text in your field
+is actually living in a database.  Since a field deallocates its text when 
+your program shuts down, you'll want to remove any text that is still living
+(i.e., in a database) before you shut down.  You do this with the 'nullField'
+function. <p>
+
+<pre>
+	// To unlink a field from a text handle, use a function like this:
+
+		static void
+	nullField (UInt32 fIndex)
+	{
+		//We need a pointer to the field
+		FormPtr	pForm = FrmGetActiveForm();
+		void	*pField = getObjectPtr (pForm, fIndex);
+
+		//Unlink the field by setting the handle to 'NULL'.
+		FldSetTextHandle(pField,NULL);
+	}
+</pre>
+
+Finally, <b>remember</b> that if you forget to unlink a field that is 
+connected to a database before you close the form, or exit the application, 
+you will get a fatal error!  Fix that by adding the following to the
+application close function (stopApp, in our code) or, if your code has
+multiple forms, in the close form function:<p>
+
+<pre>
+	nullField (MainField);
+</pre>
+<p> 
+  <!-- ------------------------------------------------- -->
+</p>
+<br><br><hr align=left width=66%>
+<h2>
+<a name="scroll" id="scroll">
+UI Objects: Scroll Bars
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="tables" id="tables">
+UI Objects: Tables
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="alert" id="alert">
+UI Objects: Alerts
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+An alert is a little pop up with some text and a/some button(s). Also, it is possible to use a nifty little trick that puts
+text on an alert recource during execution (without using dynamic resource creation).
+<!-- Note (Nick Guenther Feb 16, 2003 13:16 GMT): Ok, so I lied. Like in the menu section, I have removed the leading spaces here-->
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+This is where you will do most of the work to get an alert. One small explanation first. There is a function (described
+ in the 'How to Handle...' section that will replace text in an alert, specifically the text ^1, ^2, and ^3 with text you
+ provide it. If you want to use this feature put ^1 and/or ^2 and/or ^3 in the message that your alert displays. Many
+  people have special 'Debug' alerts made up of only the text "^1^2^3"  that they can then use to get info out of their
+  programs.
+
+<p>
+<ul>
+  <li>go to the main form of the resource (the first thing you see when you open a Rsrc file),
+  <li> tap the 'menu' silkscreen button,
+  <li> tap 'new'-&gt;'alert'; this will open the alert form,
+  <li> under 'Title', write 'Alert'
+  <li> where it says 'Alert Type' select 'information' (you may choose the other styles but stick with this for now)
+  <li> in the 'Message' field put: "This is some text ^1^2^3",
+  <li> add buttons by doing the following:<br>
+    <ul>
+	<li>tap the 'menu' silkscreen button,
+	<li> tap 'new',
+	<li> highlight where it says 'Button'; this is the text of the button. Change it to 'OK'.
+	<li> tap 'Apply',<br>
+	<br>
+	Note: you can add up to four buttons but that pushes that last off the screen. Three buttons is also not
+	an ideal choice unless you really need it. Two is generally used for confirmation alerts (one of the
+	other 'Alert Types'). For almost all alerts (the kind that you just want to stop the program and give some
+	information) use one button.
+	<br><br>
+    </ul>
+  <li> Add a second button, 'Cancel', for tutorial purposes.
+  <li> tap the 'Preview' button to see what your alert looks like.
+  <li>tap the 'OK' button; this will close RsrcEdit's alert form,
+  <li>Change the 'ID' number of the alert to '1200' -- REMEMBER THIS NUMBER,
+  <li>tap the 'OnBoardC' (or 'QuartusC') button; this will take you to 
+        OnBoard C.
+</ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+   At the top of your file, you'll want to add a #define to help your code be
+  a bit more readable.  You should add this at the place marked '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':
+
+<pre>
+
+
+	#define Alert1 1200; 	// HERE'S THE NUMBER YOU REMEMBERED
+
+</pre>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+There are two ways to do this. Both of them consist of calling functions.
+
+<font color=red><h3>WARNING</h3></font>
+Be <b>very careful</b> here! You can lock your palm into an infinite loop if you put this somewhere that
+ it will be called on every iteration of the event loop. The event loop of the active program handles <b>all</b>
+ UI interaction, that is, it recieves every event. Now, a button tap is an event, a hard key (including the power button)
+  press is an event, <u>everything</u>. This means that when someone taps a button on an alert an event occurs. If
+  there is an alert happening every time round each alert spawns another alert!
+<p>
+<b>1)</b> UInt16 FrmAlert(UInt16 alertID); will pop up an alert with the given ID number. Wherever you want this to happen put:
+<br>
+<pre>
+
+	FrmAlert(Alert1);
+
+</pre>
+Ok, so that's great for displaying something, but wouldn't it be great if you could get information from this?
+Well, FrmAlert returns a value, the ID of the button tapped. Now, this isn't something you've set, it's just that the
+first button is #0, the second is #1, the third is #2, and the fourth that you should never use  is #3.
+<br>
+<pre>
+
+	UInt16 alertSelection = FrmAlert(Alert1);
+
+</pre>
+Cool, huh?
+<p>
+<b>2)</b> UInt16 FrmCustomAlert(UInt16 alertID, CharPtr string1, CharPtr string2, CharPtr string3);
+ is the other function. It is the way for displaying custom text. string1, string2, and string3 and what replace
+ ^1, ^2, and ^3, respectively. You may want to use it in conjunction with StrPrintF to display any kind of data.
+ One word of warning though: this function should not take null strings (i.e. ""). This is because until Palm OS 3.0 this
+ caused problems, crashes I believe. If you want backward compatibility but don't want to use more than 1 or 2 strings
+ make sure to use empty strings (i.e. " ") in the remaining arguments.
+<br>
+<pre>
+
+	FrmCustomAlert(Alert1, "\nMore text","\nThe second text","Hello, World!");
+
+</pre>
+Good, good. Now there is an alert saying:<br>
+<pre>
+
+	This is some text
+	More text
+	The second text
+	Hello, World!
+
+</pre>
+
+But now what? Well, as you've probably guessed, this also returns the pressed button. Here, I have used StrPrintF to
+display the choice in a second alert.
+
+UInt16 alertSelection = FrmCustomAlert(Alert1, "\nMore text","\nThe second text","Hello, World!");
+MemHandle h= MemHandleNew(100);
+CharPtr s = MemHandleLock(h);
+StrPrintF(s, "\nThe button tapped was: %d", alertSelection);
+FrmCustomAlert(alert1, s, " ", " ");
+MemHandleUnlock(h);
+MemHandleFree(h);
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="icons" id="icons">
+UI Objects: Icons
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+
+Icons are the pretty pictures that show up in the app launcher. There are two kinds, the large icons, and the
+ list-view icons. Large icons
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+This is the only place you need to do any work with icons.
+
+<p>
+<ul>
+  <li>go to the main form of the resource (the first thing you see when you open a Rsrc file),
+  <li> tap the 'menu' silkscreen button,
+  <li> tap 'new'-&gt;'icon'; this will open the icon form,
+  <li> using the menu, select  'Properties',
+  <li> change the dimensions to:
+  <ul>
+	<li>If making a large icon: 32 width, 22 height,
+	<br> or, <br>
+	<li>if making a list-view: 15 width, 9 height,
+  </ul>
+  <li>start drawing; you may wish to switch into whatever the highest color you can get is using the menu
+   (where it says 1 bit, 2 bit...),
+   <li>use the 'zoom' button to view you icon as it would be in the apps launcher
+  <li>tap the 'OK' button; this will close RsrcEdit's image editor form,
+  <li>Change the 'ID' number of the icon to:
+    <ul>
+	<li>If making a large icon: '1000',
+	<br> or, <br>
+	<li>if making a list-view: '1001',
+  </ul>
+  <li>tap the 'OnBoardC' (or 'QuartusC') button; this will take you to 
+        OnBoard C.
+</ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+
+  There is nothing to do in the code.
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  Ditto, nothing to do.
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="forms" id="forms">
+UI Objects: Forms
+</a>
+</h2>
+
+  <h3><i>
+  What They Are
+  </i></h3>
+  As described earlier, a Form is a canvas on which you can put other UI
+  objects.  Every application has at least one but many have more than 
+  one.  Every alert box is a form (though the guts of handling it is in
+  the Palm OS rather than in your code).
+
+  <h3><i>
+  How To Make One -- In The Resource Editor
+  </i></h3>
+
+  Starting in OnBoard C, do the following:<p>
+
+  <ul>
+	<li>  tap on the .rsrc file 
+	<li>  tap the 'RsrcEdit' button; this will bring-up RsrcEdit.  
+  </ul>
+
+  In RsrcEdit, do the following:<p>
+
+  <ul>
+    <li> tap the 'menu' silkscreen button, 
+    <li> tap 'new'-&gt;'form'; 
+    <li> We'll use the whole screen by doing the following:<br>
+    <ul>
+      <li> under 'top', write '0', 
+      <li> under 'left', write '0', 
+      <li> under 'width', write '160', 
+      <li> under 'height', write '160', 
+    </ul>
+    <li> check the 'Usable' box, 
+  </ul>
+
+  Now, we have to add a title to make it a proper form:<p>
+  <ul>
+    <li> tap 'new'-&gt;'title'; 
+    <li> Write 'Second Form'
+    <li> tap 'OK'
+  </ul>
+
+  Finally, we finish up:<p>
+  
+  <ul>
+    <li> tap the 'OK' button; this will close RsrcEdit's form for our new form
+    <li> Now, TAKE NOTE OF THE 'ID' or the number next to the 'tFRM' label
+         in the list.  It's probably '1100' but look anyway.
+    <li>tap the 'OnBoardC' (or 'QuartusC') button; this will take you to 
+          OnBoard C. 
+  </ul>
+
+  <h3><i>
+  How To Set One Up -- In The Code
+  </i></h3>
+  We need a few things, now.  We could use a way to get to the form, a startup
+  function for the form, and an event handler for the form.  
+  We'll use the button that we generated earlier to go to our new form but how
+  you get there depends on why you want the form in your code.  <p>
+ 
+  At the top of your file, you'll want to add a #define to help your code be
+  a bit more readable.  You should add this at the place marked
+  '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>':<p>
+
+<pre>
+	#define NewForm		1100	// HERE'S THE NUMBER YOU REMEMBERED
+</pre>
+
+  I'm going to repeat: we're using a button to switch to the second form.
+  Make a button just like before, but in your form's event handler (that 
+  was mainFormEventHandler in the skeleton code, at the place marked 
+  '<a href="#eventh">ADD EVENT HANDLING HERE</a>'), add the following:<p>
+
+  <pre>
+	case ctlSelectEvent:
+		switch (pEvent-&gt;data.ctlSelect.controlID)
+		{
+		case MainButton:
+			FrmGotoForm (NewForm);
+			handled=true;
+			break;
+		// other buttons...
+		}
+		break;
+  </pre>
+
+  Now, this means that pushing the button will call FrmGotoForm which, in
+  turn, sends the following
+  <ul>
+  	<li> a frmCloseEvent to the current form, 
+	<li> a frmLoadEvent to the application, and 
+	<li> a frmOpenEvent to the new form 
+  </ul>
+  (actually, these all get sent to the application -- I was just
+  explaining where we'll handle them).  <p>
+
+  We won't worry about handling the frmCloseEvent because we don't have
+  anything we need to do.<p>
+
+  We'll handle the frmLoadEvent in the 'appHandleEvent' function.  Here, we
+  initialize the form, set it as the active form, and install a new event
+  handler.  At the place marked 
+  '<a href="#form">ADD NEW FORM HANDLING HERE</a>',
+  add the following code:<p>
+
+  <pre>
+	else if (formId == NewForm)
+		FrmSetEventHandler (frm, newFormEventHandler);
+  </pre>
+
+  This means that we need a 'newFormEventHandler'.  We are going to steal
+  mainFormEvent handler <i>verbatim</i> except for one line.  Add the 
+  following function to your code:<p>
+
+  <pre>
+		static Boolean
+	newFormEventHandler (EventPtr pEvent)
+	{
+		Boolean	handled	= false;
+		FormPtr	pForm	= FrmGetActiveForm();
+		switch (pEvent-&gt;eType) 
+		{
+
+		/*
+		 * the first event received by a form's event handler is
+		 * the frmOpenEvent.  
+		 */
+
+		case frmOpenEvent:
+			FrmDrawForm(pForm);
+			newFormInit(pForm);	// THIS IS THE DIFFERENT LINE
+			handled = true;
+			break;  
+
+		// Add other event handling here
+
+		default:
+			break;
+		}
+		return handled;
+	}
+  </pre>
+
+  And <i>this</i> implies that we need a newFormInit function which we'll
+  steal from mainFormInit.
+ 
+   <pre>
+		static void 
+	mainFormInit (FormPtr pForm)
+	{
+		static Char	foo[30]	= "Hello Form 2";
+		WinDrawChars (foo,StrLen(foo),20,18);
+	}
+  </pre>
+
+  <h3><i>
+  How To Handle One -- In The Code
+  </i></h3>
+
+  Nothing to do but sit back and enjoy your new form.  Typically, you'd have a
+  way to get back to your main form but that depends on the application.
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="database" id="database">
+Beginning Database
+</a>
+</h2>
+
+There're two different ways to have permanent storage on a Palm.  While
+there's off-line memory cards on some Palms, even the oldest Palm devices
+have non-volatile storage in which you can store databases.  We'll look at
+databases, here.<p>
+
+In the first article, here, we'll discuss reading from an existing database --
+the memo database.  <p>
+
+<h3><i>
+Open the Database.
+</i></h3>
+
+First, we open the database. <p>
+
+<pre>
+
+	LocalID		dbld;
+	DmOpenRef	dbRef;
+	MemHandle	record;
+	CharPtr		pChar;
+
+	//...
+
+	dbld = DmFindDatabase (0, "MemoDB");
+	if (dbld != 0)
+		dbRef = DmOpenDatabase (0, dbld, dmModeReadWrite);
+</pre>
+
+<h3><i>
+Read the Database.
+</i></h3>
+
+Now, we can navigate through the database.  When you get a record from a
+database, you get a handle.  Remember that you have to lock a handle to make a
+pointer that you can use.<p>
+
+In this example, I'm going to do more than I <i>absolutely</i> need to in
+order to read from a database.  I'm going to read from every record in the
+database and print out a few characters from each record.
+
+<pre>
+	int i, count;
+
+	if (dbRef != 0)
+	{
+		// get th number of records in the database
+		count = DmNumRecords (dbRef);
+
+		// for each record in the database
+		for (i=0; i&lt;count; i++)
+		{
+			// Get the record, make sure it hasn't been deleted,
+			//  and lock the handle
+
+			record = DmGetRecord (dbRef, i);
+			if (record == 0)
+				continue;
+			pChar = MemHandleLock (record);
+
+			// Now, read from 'pChar' like the pointer it is
+
+			WinDrawChars (pChar, 20, 2, (10*i)+20);
+
+			// Now, unlock the handle and release the record
+
+			MemHandleUnlock (record);
+			DmReleaseRecord (dbRef, i, 0);
+		}
+	}
+</pre>
+
+<h3><i>
+Write the Database.
+</i></h3>
+
+Writing to a database is just the tiniest bit more complicated than 
+reading.  The thing is, the Palm folks didn't want anyone with a stray pointer
+to be able to trash a database.  For that reason, they protected database
+memory and made you use a function to write it.<p>
+
+Here, I'll create a new record in which to write.  If you pick a record less
+than the number of records in the database, the database manager will move the 
+others down.  If you pick one that's greater, you'll get additional records
+(that'll be deleted, I believe, next time you hotsync).  If you choose the
+exact number (remember that the record count, like arrays in C, is
+zero-based), then you'll just add one more record to the end of the database.
+That's what we'll do, here.
+
+<pre>
+	#define	SIZE	100
+	{
+		int		count	= 0;
+		MemHandle	record	= 0;
+		Char		*pChar	= 0;
+		Char		*string	= "Just some text";
+		int		length	= StrLen (string);
+
+		// create a new record at the end of a database (that gives
+		// us a handle) and turn it into a pointer.
+
+		count	= DmNumRecords (dbRef);
+		record	= DmNewRecord (dbRef, &amp;count, SIZE);
+		pChar	= MemHandleLock (record);
+
+		// Write to the database with DmWrite (since writing through
+		// the pointer won't work).
+
+		DmWrite (pChar, 0, string, length+1);
+
+		// Then, unlock the handle and release the record.
+
+		MemHandleUnlock (record);
+		DmReleaseRecord (dbRef, count, 0);
+	}
+</pre>
+
+<h3><i>
+Close the Database.
+</i></h3>
+
+And, finally, you have to close the database when you're done.
+
+<pre>
+	if (dbRef != 0)
+		DmCloseDatabase (dbRef);
+</pre>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="libraries" id="libraries">
+Using Shared Libraries
+</a>
+</h2>
+
+There are libraries that can augment your Palm code.  The most common library
+of this sort is the math library.  In order to use a library, do the following.
+
+<h3><i>
+Open the Library.
+</i></h3>
+
+First, we open the library.  First, you have to find the library (with
+SysLibFind).  Next, you load the library (with SysLibLoad).  Finally, you need
+to open the library using the 'open' function defined in the library header
+file.<p>
+
+Start by including the header file and defining a global variable that
+signifies whether the library is open.
+
+<pre>
+	#include &lt;mathlib.h&gt;
+	int MathLibRef = -1;
+</pre>
+
+Then, probably in the startApp function at the beginning of execution, do 
+the following:<p>
+
+<pre>
+	Err err;
+
+	// ...
+
+	err = SysLibFind("MathLib", &amp;MathLibRef);
+	if (err != 0) 
+	{ // library not loaded already
+		err = SysLibLoad('libr', 'MthL', &amp;MathLibRef);
+		if (err == 0)
+			err = MathLibOpen (MathLibRef, 1);
+	}
+</pre>
+
+<h3><i>
+Use the Library.
+</i></h3>
+
+Call the functions that are defined in the library header -- I'm not going too
+far into this since this isn't really about the use of any particular library.
+
+<pre>
+	FlpCompDouble x;
+	x.d = sqrt(867.5309) * tan(42);
+	FlpFToA(x.fd, buffer);
+</pre>
+
+
+<h3><i>
+Close the Libary.
+</i></h3>
+
+And, finally, you have to close the library when you're done.  A good place to
+do this is in the stopApp function at the end of the execution.
+
+<pre>
+	if (MathLibRef != -1) 
+	{
+		Err err;
+		UInt16 usecount;
+		err = MathLibClose (MathLibRef, &amp;usecount);
+		if (usecount == 0)
+			SysLibRemove (MathLibRef);
+	}
+</pre>
+
+
+<!-- ------------------------------------------------- -->
+<br><br><hr align=left width=66%>
+<h2>
+<a name="preferences" id="preferences">
+Preferences
+</a>
+</h2>
+
+An application can have a database that it accesses every time it is run (in
+addition to the separate databases it can access).  This is often used to
+house the applications options or preferences.  This information is often
+stored in a struct.<p>
+
+The first thing you need to decide is how you're going to use the your 
+preferences during the course of your code.  If you need to access them in 
+several forms, you might want to declare the preferences as global.  We'll do
+that in the cookbook.  You'd place this global definition at the location 
+marked '<a href="#uidef">PUT UI-DEFINITIONS HERE</a>' in the skeleton 
+application:<p>
+
+<pre>
+	typedef struct 
+	{
+	    int skeletonData;
+	} Prefs;
+
+	Prefs prefs;
+</pre>
+
+
+<h3><i>
+Open Preferences.
+</i></h3>
+
+A good place to open the preference database is the startApp function.  One
+thing you may want to do is to provide for your application changing its
+preferences over different versions.  A simplistic guard for that is to check
+the size of the preference database with the size you think it should be.
+Another is to check the value returned by PrefGetAppPreferences.  We
+use the size in the following code.<p>
+
+<pre>
+	void startApp() 
+	{
+		Int16 prefSize = sizeof(Prefs);
+		if ((PrefGetAppPreferences	(AppCreator, 
+						 1000, // pref database id
+						 &amp;prefs, 
+						 &amp;prefSize, 
+						 true) // saved during Hotsync
+				== noPreferenceFound) 
+		    || (prefSize != sizeof(Prefs))) 
+		{
+			// default initialization, since discovered 
+			// Prefs was missing or old.
+			prefs.skeletonData=1;
+		}
+	}
+</pre>
+
+<h3><i>
+Use the Preferences.
+</i></h3>
+
+Now, you can use the preferences any way you want.  It's a global variable, so
+set the values, read the values, whatever.
+
+<h3><i>
+Write Preferences.
+</i></h3>
+
+And, finally, you have to write the preferences back to the preference
+database.  A great place to do that is the stopApp function.
+
+<pre>
+	void stopApp() 
+	{
+		PrefSetAppPreferences	(AppCreator, 
+					 1000,	// pref database id
+					 1, 	// version of pref database
+					 &amp;prefs, 
+					 sizeof(Prefs), 
+					 true);	// saved during hotsync
+	}
+</pre>
+
+</body>
+</html>

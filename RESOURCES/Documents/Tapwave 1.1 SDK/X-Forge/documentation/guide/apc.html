@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Appendix C. ARM Assembler Tutorial</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt08.html" title="Part VIII. Appendices"><link rel="previous" href="apb.html" title="Appendix B. XFF File Format"><link rel="next" href="apd.html" title="Appendix D. Fathammer Code Conventions &amp; Guidelines"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix C. ARM Assembler Tutorial</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apb.html">Prev</a> </td><th width="60%" align="center">Part VIII. Appendices</th><td width="20%" align="right"> <a accesskey="n" href="apd.html">Next</a></td></tr></table></div><div class="appendix"><div class="titlepage"><div><h2 class="title"><a name="id436688"></a>Appendix C. ARM Assembler Tutorial</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="apc.html#id436777">Register Overview</a></dt><dd><dl><dt><a href="apc.html#id436821">Register Explanations</a></dt><dt><a href="apc.html#id436372">Link Register</a></dt></dl></dd><dt><a href="apc.html#id437697">Subroutine Calls</a></dt><dt><a href="apc.html#id436676">Syntax</a></dt><dt><a href="apc.html#id436748">In Practice</a></dt><dd><dl><dt><a href="apc.html#id436769">Immediate Values</a></dt><dt><a href="apc.html#id438141">Instruction Timings</a></dt><dt><a href="apc.html#id438226">Compares with Branches</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id436777"></a>Register Overview</h2></div></div><p>
+The ARM processor has 31 general-purpose registers including a program counter and 6 status registers. All registers are 32 bits wide but only 12 are implemented in status registers. From these, 15 general-purpose registers (R0 to R14), one or two status registers and the program counter are visible at any time.
+</p><p>
+The general-purpose registers can be divided into two categories, unbanked (R0 to R7) and banked (R8 to R14). The unbanked registers refer to the same physical registers in all processor modes whereas the physical register of a banked register depends on the specific processor mode.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436821"></a>Register Explanations</h3></div></div><p>
+Although general-purpose, some of the registers have special use in applications, for example the program counter is a generel-purpose register whereas any other and can be refered to as R15.
+</p><p>
+As is specified in the ARM calling standard, the first four registers R0-R3 are temporary registers which are used for passing parameters to subroutines. If a subroutine uses more than four parameters the rest are stored in the stack. So between subroutine calls, these registers can not be expected to save their state.
+</p><p>
+The rest of the unbanked registers R4-R7 should always be stored in a subroutine before using them. The same goes for the banked registers R8-R12. Their state is expected to be saved between subroutine calls, with the exception of R12 when using GCC. For reasons unknown, R12 is used as a temporary register in GCC and its state is not saved between subroutine calls.
+</p><p>
+Some of the banked registers have special use, namely R13, R14 and R15. R13 is used as stack pointer, R14 as link register and R15 as program counter. From these, only the program counter has restrictions about its use, the stack pointer and link register can be used as general-purpose registers at any time but their state should be saved prior to use.
+</p><p>
+R13, R14 and R15 also have predefined alternative names which can be used. The stack pointer can be refered to as SP, the link register as LR and the program counter as PC.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436372"></a>Link Register</h3></div></div><p>
+The link register has a special use in ARM architecture. In each processor mode the mode's own version of LR holds the return address of a subroutine or if an exception occurs, the appropriate exception mode's version of LR is set to the exception return address. When a subroutine call is performed by a BL or BLX instruction, LR is set to the subroutine return address. The subroutine is ended by copying LR to the program counter. This is normally done in one of the two following ways:
+
+</p><div class="itemizedlist"><ul type="disc"><li>
+By executing either of these instructions:
+<pre class="programlisting">
+MOV PC, LR
+BX LR
+</pre></li><li>
+On subroutine entry, storing LR to the stack with other registers:
+<pre class="programlisting">
+STMFD SP!, {&lt;registers&gt;, LR}
+</pre>
+and loading it straight to the program counter:
+<pre class="programlisting">
+LDMFD SP!, {&lt;registers&gt;, PC}
+</pre></li></ul></div><p>
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id437697"></a>Subroutine Calls</h2></div></div><p>
+According to the ARM calling standard, when a subroutine is executed, parameters passed to it have been stored into registers R0-R3 and in stack. If one is going to use registers other than R0-R3 in the subroutine, their state should be saved prior to use. Multiple registers can be saved with a single instructions and should be used if the number of registers to be stored is more than two.
+</p><p>
+Example 1, subroutine uses registers R0-R6 so registers R4-R6 should be stored on entry:
+
+</p><pre class="programlisting">
+STMFD SP!, {R4-R6}	; Stores registers R4-R6 into stack
+</pre><p>
+and restored in exit:
+
+</p><pre class="programlisting">
+LDMFD SP!, {R4-R6}	; Loads values from stack into registers R4-R6
+MOV PC, LR		; Returns from subroutine
+</pre><p>
+</p><p>
+Example 2, subroutine uses registers R0-R6 and the link register so the registers R4-R6 and the link register should be stored on entry:
+
+</p><pre class="programlisting">
+STMFD SP!, {R4-R6, LR}	; Stores registers R4-R6 and LR into stack
+</pre><p>
+
+and restored in exit:
+
+</p><pre class="programlisting">
+LDMFD SP!, {R4-R6, PC}	; Loads values from stack into registers R4-R6 and program counter
+</pre><p>
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id436676"></a>Syntax</h2></div></div><p>
+In ARM architecture, all instructions can be executed conditionally and can be chosen to update or not to update status registers. Also many different addressing modes are available. ARM assembler instructions are mostly in these forms:
+
+</p><pre class="programlisting">
+&lt;opcode&gt;{&lt;cond&gt;}{S} &lt;Rd&gt;, &lt;Rn&gt;, &lt;addressing_mode&gt;
+&lt;opcode&gt;{&lt;cond&gt;}{S} &lt;Rd&gt;, &lt;addressing_mode&gt;
+</pre><p>
+
+where <span class="emphasis"><em>Rd</em></span> is destination register, <span class="emphasis"><em>Rn</em></span> is source register and <span class="emphasis"><em>S</em></span> is status register update flag.
+</p><p>
+Examples:
+</p><div class="itemizedlist"><ul type="disc"><li>
+Increment R0 by one:
+<pre class="programlisting">
+ADD R0, R0, #1
+</pre></li><li>
+Increment R1 by one and put the result in R0:
+<pre class="programlisting">
+ADD R0, R1, #1
+</pre></li><li>
+Multiply R1 by ((2^8)+1), put the result in R2, update status register and load R0 with zero if the operation overflows:
+<pre class="programlisting">
+ADDS R2, R1, R1, LSL #8
+MOVVS R0, #0
+</pre></li><li>
+Load 32-bit value from memory pointed by R3 into R0, add R1 shifted left by the value in R2 into R0, load 16-bit value from memory pointed by R4 into R5 and add R4 by the value in R6:
+<pre class="programlisting">
+LDR R0, [R3]		; Address in R3 has to be longword aligned
+ADD R0, R0, R1, LSL R2
+LDRH R5, [R4], R6	; Address in R4 has to be word aligned
+</pre></li></ul></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id436748"></a>In Practice</h2></div></div><p>
+Some considerations are important when using ARM assembler. The architecture has some oddities as well as normal instruction timings which have to be considered.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436769"></a>Immediate Values</h3></div></div><p>
+The ARM architecture has a unique way of implementing immediate values in operations. Immediate values are stored in the instructions themselves as an 8-bit constant value and a 4-bit right rotate to be applied to that constant. The rotation has to be an even number of bits (0,2,4,8,..,26,28,30). So all immediate values are not acceptable in instructions, instead one can load the value into a register from the literal pool and use the register in place of the immediate value:
+
+</p><div class="itemizedlist"><ul type="disc"><li>
+Load R0 with hex 1000:
+<pre class="programlisting">
+MOV R0, #0x1000
+</pre></li><li>
+Load R0 with hex FFFFFFFF:
+<pre class="programlisting">
+MOV R0, #0xFFFFFFFF
+</pre></li><li>
+Load R0 with hex 1004:
+<pre class="programlisting">
+LDR R0, =0x1004		; MOV R0, #0x1004 is illegal
+</pre></li></ul></div><p>
+
+Loading from literal pool can cause a cache miss and should be avoided if possible by using multiple instructions to load a register with some immediate value:
+
+</p><div class="itemizedlist"><ul type="disc"><li>
+LOAD R0 with hex 1004:
+<pre class="programlisting">
+MOV R0, #0x1000
+ORR R0, R0, #4
+</pre></li></ul></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id438141"></a>Instruction Timings</h3></div></div><p>
+Almost all instructions in ARM architecture take a single clockcycle but some instructions have a result delay so that the processor will stall if the next instruction tries to use the result from the current instruction.
+</p><p>
+Loading values from memory has a result delay of one cycle so the following instruction after a memory load instruction should not use the result from the memory read:
+
+</p><pre class="programlisting">
+LDR R0, [R1]
+ADD R0, R0, #1		; 1 cycle stall
+SUB R2, R2, R3		; Instructions take 4 cycles in total
+</pre><p>  
+
+one should use this instead:
+
+</p><pre class="programlisting">
+LDR R0, [R1]
+SUB R2, R2, R3
+ADD R0, R0, #1		; Instructions take 3 cycles in total
+</pre><p>
+</p><p>
+The multiplication and multiplication/add instructions suffer from the same kind of result delays, only bigger. The result delay of a multiplication is between 1 and 3 clockcycles depending on the bit format of the multiplier operand. This should be taken into account when using multiplication instructions like in the case of loading a value from memory.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id438226"></a>Compares with Branches</h3></div></div><p>
+Contrary to the usual architectures, ARM can execute every instruction conditionally instead of needing to compare and branch accordingly to certain rule. One should try to take advantage of the fact:
+
+</p><pre class="programlisting">
+MOV R0, R1		; Copy R1 into R0
+CMP R0, #4		; Compare R0 against the value 4
+BEQ label		; If R0 is 4 jump to label
+MOV R2, #0		; Otherwise load R2 with zero label
+MOV R2, #1		; Load R2 with one
+</pre><p>
+
+can be written more efficiently discarding an unnecessary branch:
+
+</p><pre class="programlisting">
+MOV R0, R1		; Copy R1 into R0
+CMP R0, #4		; Compare R0 against the value 4
+MOVNE R2, #0		; If R0 is not 4, load R2 with zero
+MOVEQ R2, #1		; If R0 is 4, load R2 with one
+</pre><p>
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apb.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt08.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="apd.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix B. XFF File Format </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Appendix D. Fathammer Code Conventions &amp; Guidelines</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

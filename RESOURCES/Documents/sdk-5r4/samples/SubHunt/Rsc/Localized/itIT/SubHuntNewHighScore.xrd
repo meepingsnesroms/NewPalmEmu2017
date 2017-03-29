@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1200" LOCALE="itIT" COMMENT="New High Scores Dialog">
+		<FORM_ID> 1200 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 53 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 105 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 0 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 1204 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="New High Scores Title">
+				<TEXT> "New High Score" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Congratulations Text">
+				<ID> 1202 </ID>
+				<LOCATION>
+					<X> 10 </X>
+					<Y> 20 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT>
+					"Congratulations!  You have \n"
+					"made a new high score!\n"
+					"  \n"
+					"Enter your name below."
+				</TEXT>
+			</FORM_LABEL>
+			<FORM_FIELD COMMENT="Player's Name">
+				<ID> 1203 </ID>
+				<BOUNDS>
+					<LEFT> 10 </LEFT>
+					<TOP> 70 </TOP>
+					<WIDTH> 80 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<EDITABLE> TRUE </EDITABLE>
+				<SINGLE_LINE> TRUE </SINGLE_LINE>
+				<DYNAMIC_SIZE> FALSE </DYNAMIC_SIZE>
+				<UNDERLINE> GRAY_UNDERLINE </UNDERLINE>
+				<JUSTIFICATION> LEFT_ALIGN </JUSTIFICATION>
+				<AUTO_SHIFT> FALSE </AUTO_SHIFT>
+				<HAS_SCROLLBAR> FALSE </HAS_SCROLLBAR>
+				<NUMERIC> FALSE </NUMERIC>
+				<MAX_CHARS> 15 </MAX_CHARS>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<MAX_VISIBLE_LINES> 0 </MAX_VISIBLE_LINES>
+			</FORM_FIELD>
+			<FORM_BUTTON COMMENT="OK">
+				<ID> 1204 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 88 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1205 </ID>
+				<BOUNDS>
+					<LEFT> 47 </LEFT>
+					<TOP> 88 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Cancel" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_GRAFFITI_STATE COMMENT="Graffiti Shift Indicator">
+				<LOCATION>
+					<X> 133 </X>
+					<Y> 93 </Y>
+				</LOCATION>
+			</FORM_GRAFFITI_STATE>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

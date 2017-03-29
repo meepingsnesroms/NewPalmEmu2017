@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1400" LOCALE="zhCN" COMMENT="Preferences">
+		<FORM_ID> 1400 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 70 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 88 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 0 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="Preferences">
+				<TEXT> "猎潜首选设置" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Starting Level">
+				<ID> 1402 </ID>
+				<LOCATION>
+					<X> 41 </X>
+					<Y> 17 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "开始级别：" </TEXT>
+			</FORM_LABEL>
+			<FORM_LIST COMMENT="Levels List">
+				<ID> 1403 </ID>
+				<BOUNDS>
+					<LEFT> 60 </LEFT>
+					<TOP> 32 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 33 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 3 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> "容易" </TEXT>
+					<TEXT> "中等" </TEXT>
+					<TEXT> "困难" </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_BUTTON COMMENT="OK">
+				<ID> 1404 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 71 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "确定" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1405 </ID>
+				<BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 71 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "取消" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

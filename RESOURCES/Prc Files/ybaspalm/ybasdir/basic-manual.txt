@@ -1,0 +1,700 @@
+    BASIC(1)		HotPaw Basic            	 	BASIC(1)
+
+	This document contains informantion about the BASIC
+	programming language.
+
+	Please refer to the README (readme.txt) file for an
+	introduction, and the QuickReference (quickref.txt) for all
+	PalmOS specific installation and usage information.
+
+
+    SYNOPSIS	( PalmOS )
+
+	Basic programs in the Palm MemoPad must begin with the
+	"#" comment character, and the first line must end with
+	the the four character string ".bas" .
+	
+    DESCRIPTION
+
+	HotPaw Basic is an interpreter for the BASIC language. 
+
+	See below for the commands and statements that the interpreter
+	recognizes.  See the README file for tutorial and PalmOS
+	specific commands and functions.
+	
+    FLAGS
+
+	none
+
+    COMMANDS
+        
+	Standard mumbleSoft-like Basic Commands:
+
+	new
+
+		Erase the program in memory.  All files are closed and
+		all variables are cleared.
+
+	run
+		Runs the current loaded program starting at the first
+		line or, if all lines are numbered, the lowest numbered
+		line.
+
+    STATEMENTS
+
+	Programs statements must be no longer than 64 characters in length.
+	
+	{ let } VAR = EXPR
+
+		Assign a value to a variable.  Variable names can be up
+		to 31 significant characters, consisting of letters,
+		digits, underscores, and an ending dollar sign.
+		Variable names are case insensitive.  Variables can
+		hold real numbers (IEEE double) or strings of up to 254
+		characters.  If the variable name ends with a "$" it
+		holds strings, otherwise it holds numbers.  If a
+		statement starts with a variable name then an implied
+		LET is assumed.
+
+
+	print  VAL | STRINGVAL { [ , | ; ] VAL ... } { ; }
+	?      VAL | STRINGVAL { [ , | ; ] VAL ... } { ; }
+	print # FNUM, VAL ...
+
+		This command will display its parameters tab delimited.
+		If a semi-colon is used between parameters then no tab
+		is inserted between the parameters.  The print
+		output is terminated with a carriage return unless the
+		parameter list ends with a semi-colon.  If a file
+		descriptor is given then output is redirected to the
+		given memo. 
+
+
+	input  STRINGVAR | VAR
+	input  "prompt"; { STRINGVAR | VAR }
+	input  { # FNUM , } { STRINGVAR | VAR { , VAR } }
+
+		Input from the console or from the memo specified by
+		FNUM. If the input is from the console then a prompt
+		string can optionally be displayed.
+		
+		*** NOTE ***
+		All input is "line input"; the whole input line will be
+		read into one string or numeric variable.  This INPUT
+		usage is different from other versions Basic.
+
+
+	end
+
+		The END statement terminates program execution and
+		returns to the main menu.
+		
+
+	if EXPR then STATEMENT { : STATEMENT } { : else STATEMENT }
+	if EXPR then LINENUM
+	if EXPR
+
+		The IF statement.  If the condition is true then the
+		STATEMENTS after the THEN are executed and the
+		statements after the ELSE are skipped.  If the
+		condition is false then the statements after the "else"
+		are executed instead.  If the item after "then" is a
+		line number then a goto is executed.
+		
+		If the condition is true and there is no THEN keyword
+		or other statment(s) on the same line, statements on
+		following lines will be executed until a line with an
+		ENDIF keyword is found.  (block IF() ... ENDIF)
+
+	for VAR = EXPR to EXPR { step EXPR }
+
+		Beginning of a FOR-NEXT loop.  It takes a starting
+		value, a limit and an optional step argument.  If the
+		step value is negative, the variable counts down.
+
+		Example:
+			for i=1 to 10 : print i, : next i
+			rem prints the numbers from 1 through 10
+
+	next { VAR }
+
+		End of a FOR-NEXT loop.  If the termination conditions
+		are met then execution falls through to the following
+		statement, otherwise execution returns to the statement
+		following the FOR statement with the corresponding
+		index variable. If there no index variable parameter,
+		the innermost FOR loop is used.
+
+	while { EXPR }
+
+		Start of a WHILE loop. The loop is repeated until EXPR
+		is false. If EXPR is false at loop entry, then the loop
+		is not executed . A WHILE loop must be terminated by a
+		balancing WEND statement.
+
+	wend { EXPR }
+
+		Terminating statement of a WHILE loop.  If EXPR is true
+		then exit the loop.  Only one WEND is allowed for each
+		WHILE.  A WHILE-WEND loop without a condition will loop
+		forever.
+
+	exit while 
+
+		Exits the innermost WHILE-WEND loop.
+		
+	gosub [ LINENUM , LABEL ]
+
+		Transfer command to a line number. Save return address
+		so that the program can resume execution at the
+		statement after the "gosub" command.  The recursion
+		depth is limited only by available memory.
+
+	return
+
+		Returns from the most recently activated subroutine
+		call (which must have been called by GOSUB or CALL).
+
+	goto [ LINENUM , LABEL ]
+
+		This statement will transfer control to the line number
+		specified.  If the program is not running, then this
+		command will begin execution at the specified line
+		without clearing the variables.  An "Undefined line"
+		error will occur if LINENUM doesn't exist in the
+		program.
+
+	LABEL : STATEMENT [ : STATEMENT ... ]
+	
+		A unique identifier may be used as a statement label
+		instead of a line number.  This identifier should only
+		be used once as a label, and never in assignments or
+		arithmetic expressions.
+	
+	on EXPR   goto  LINENUM { , LINENUM ... }
+	on EXPR   gosub LINENUM { , LINENUM ... }
+		This command will execute either a goto or a gosub to
+		the specified line number indexed by the value of EXPR.
+		If EXPR is larger than the number of LINENUMs, then
+		control passes to the next statement.
+		
+	sub NAME ( VAR { , VAR ... } }
+
+		Subroutine entry.  May be called by a GOSUB or CALL
+		statement.  A SUB subroutine must be exited by a RETURN
+		or END SUB statement.  There must be only one RETURN or
+		END SUB statement per SUB definition.  The variables in
+		the VAR list become static local variables.  String and
+		numeric arguments are passed by value.
+		
+		Example:
+			110  call foo (7, 3)  : rem Pass 7 and j by value.
+			...
+			2000 sub foo (x,y,z)   : rem z is a local variable
+			2010   print x + y     : rem prints 10
+			...
+			2090 end sub
+		
+		Subroutine definitions may not be nested and cannot be
+		used recursively.
+
+
+	dim VAR( d { , d { , d } } ) { , VAR( d { , d { , d } } ) }
+
+		Dimension an array or list of arrays (string or numeric). 
+		A maximum of 4 dimensions can be used. The maximum
+		dimension size is limited by available memory. Legal
+		array subscripts are from 0 up and including the
+		dimension specified; d+1 elements are allocated.  All
+		arrays must be dimensioned before use.
+		
+		Example:
+			10 dim a(10)
+			20 for i=0 to 10
+			30   a(i) = i^2
+			40 next i
+			50 print a(5) : rem should print 25
+
+	option degrees
+
+		Changes trig function operation to interpret their
+		parameters and produce results in degrees instead
+		of radians.
+		
+	data ITEM { , ITEM }
+
+		DATA statements contain the data used in the READ
+		statements. Items must be separated by commas.  The
+		items may be either numeric or string expressions,
+		corresponding to the type of variable being read.
+		Reading the wrong kind of object produces a "Type
+		mismatch" error.  Strings must be encapsulated with
+		quote marks.
+
+	read VAR { , VAR }
+
+		Read data from the DATA statements contained in the
+		program. List items can be either string or numeric
+		variables. Reading past the end the last DATA statement
+		generates an error.
+
+	restore { LINENUM }
+
+		The RESTORE statement causes the next READ to use the
+		first DATA statement in the program.  If a LINENUM is
+		given then the DATA statement on or after that
+		particular line is used next.
+
+	rem or "`"
+
+		A remark or comment statement.  Ignored by the program
+		during execution, however a REM statement can be the
+		target of a GOTO or GOSUB.
+
+	open STRINGEXPR for { input|output|append } as # FNUM
+
+		Open a file. The { input|output|append } parameter
+		specifies whether the file is to be read, written or
+		appended.  If STRINGEXPR is "stdin" for input or
+		"stdout" for output then the console will be used
+		instead of a file.  A "file not found" error will
+		occur if a non-existant file is specified in an OPEN
+		for input statement.  FNUM must be an integer value
+		between 0 and 8.
+		
+		* not yet implemented.
+
+	open ... else goto LINENUM
+
+		See OPEN command.
+		LINENUM is the line to which control is transferred if
+		an error in opening a file occurs.  The variable ERL is
+		set to the line number on which the file open error
+		occured.
+		* not yet implemented
+
+	close # FNUM
+
+		Close a file. Releases the file descriptor and flushes
+		out all stored data.
+
+	poke ADDR_EXPR, DATA_EXPR { , BYTES }
+
+		Poke a value into a dynamic memory location.
+		Unreasonable addresses can cause bus errors.
+		BYTES can be 1, 2 or 4 for byte, int16 and int32;
+		default is one byte.
+
+	exec(STRINGEXPR)
+
+		Executes STRINGEXPR as a statement or command. 
+		e.g. exec("x = " + "5 * 5") will execute x = 5*5
+
+
+    NUMERIC FUNCTIONS
+
+	sgn(VAL)
+
+		Returns the sign of the parameter value.  Returns 1 if
+		the value is greater than zero , zero if equal to zero.
+		-1 if negative.
+
+	abs(x)
+
+		Returns the absolute value of x.
+
+	int(x)
+
+		Returns the integer value of x.  Truncates toward 
+		minus infinity.
+		The absolute value of x must be less than 2^31-1.
+
+	sqr(x)
+
+		Returns the square root of x.
+
+	log(x)
+
+		Returns the natural logarithm of x.
+
+	log10(x)
+
+		Returns the logarithm base 10 of x.
+
+	exp(x)
+
+		Returns e^x. e=2.7182818...
+
+	sin(x)
+	cos(x)
+	atn(x)
+
+		Trigonometric functions: sin, cosine and arctangent. 
+
+	rnd ( EXPR )
+
+		Returns an integer pseudo-random number between 0 and
+		int(EXPR)-1 inclusive. If EXPR is 1, then returns a
+		rational number between 0 (inclusive) and 1.  If EXPR
+		is negative then EXPR seeds the random number generator.
+
+	len( STRINGEXPR )
+
+		Returns the length of the string STRINGEXPR.
+
+	val( STRINGEXPR | EXPR )
+
+		Return the numeric value of the expression contained
+		in a STRINGEXPR or EXPR.  STRINGEXPR may be a string
+		literal or string variable.
+		
+		For example, VAL("12" + "34") yields 1234.
+
+	asc( STRINGEXPR )
+
+		Returns the ascii code for the first character of
+		STRINGEXPR.  A null string returns zero.
+
+	peek( ADDR { , SIZE_VAL } )
+
+		Returns the value of the byte in memory at address ADDR.
+		If SIZE_VAL is 2 or 4, returns the value of the 16-bit
+		or 32-bit word respectively (if correctly aligned).
+		If SIZE_VAL is 8, returns the value of the numeric
+		variable located at ADDR.  (peek(varptr(x),8) == x)
+
+	varptr( VAR | STRINGVAR )
+	
+		Returns the memory address of a variable.
+	
+	timer
+
+		Returns a numeric value of elapsed of seconds from the
+		computers internal clock.
+
+    
+    STRING FUNCTIONS
+    
+	x$ + y$
+
+		String concatenation.
+	
+	chr$(VAL)
+
+		Returns the ascii character corresponding to the value
+		of VAL.
+
+	str$( VAL { , EXPR } )
+
+		Returns a string representation corresponding to VAL.
+		If EXPR is present then the string is padded to that
+		length.
+
+	inkey$
+
+		Return one character from the keyboard if input is
+		available. Returns a zero length string { "" } if no
+		keyboard input is available.  Non-blocking.  Can be
+		used for keyboard polling.
+
+	input$( EXPR { , FILENUM } )
+
+		Returns EXPR characters from file FILENUM. If f is not
+		present then get input from the console keyboard.
+
+	mid$( a$, i { , j } )
+
+		Returns a substring of a$ starting at the i'th
+		positions and j characters in length. If the second
+		parameter is not specified then the substring is
+		taken from the start position to the end of a$.
+
+	right$( a$, EXPR )
+
+		Returns the right EXPR characters of a$.
+
+	left$( a$, EXPR )
+
+		Returns the left EXPR characters of a$.
+
+	field$( STRINGVAL, VAL { , STRINGVAL } )
+
+		Returns the N-th field of the first string.  If the
+		optional string is present then use the first character
+		of that string as the field separator.  The default
+		separator is a space.  Similar to UNIX 'awk' fields.
+		
+		e.g.  field$("1 22 333 4", 3)  returns  "333"
+		
+		If VAL is -1 then returns a string with a length
+		equal to the number of seperators in the first string.
+
+	instr( a$, b$ )
+
+		Returns the position of the substring b$ in the
+		string a$ or returns a zero if b$ is not a substring.
+
+	hex$( VAL { , EXPR } )
+
+		Returns the hexadecimal representation
+		corresponding to VAL.  If EXPR is present then the
+		string is padded with zeros to make it that length.
+
+	ucase$( STRINGVAL )
+
+		Returns STRINGVAL in all upper case characters.
+
+	lcase$( STRINGVAL )
+
+		Returns STRINGVAL in all lower case characters.
+
+    OPERATORS
+
+	The following math operators  are available:
+
+		^	exponentiation
+		*	multiplication
+		/	division
+		mod	remainder
+		+	addition
+		-	subtraction
+
+	logical operators: (any non-zero value is true)
+
+	        not	logical not
+
+	bitwise operators:
+
+	        and	bitwise and
+	        or	bitwise or
+	        xor	bitwise exclusive-or
+
+	comparison operators:
+
+	        <=	less than or equal
+	        <>	not equal to
+	        >=	greater than or equal
+	        =	equal
+	        >	greater than
+	        <	less than
+
+	x$=y$, x$<>y$
+
+		String comparisons; result is 1 if true, 0 if false.
+		
+	Operator precedence (highest to lowest):
+
+		( )
+		-{unary_minus}  functions
+		^
+		* / mod
+		+ -
+		= < > <= >= <>
+		not
+		and
+		or xor
+
+    
+    Macintosh commands:
+
+	*** NOTE ***
+	
+		Many PalmOS specific functions and commands are only
+		documented in the cbasPad Pro quick reference file.
+
+	moveto VAL, VAL
+
+		Sets the (x,y) location of the graphics pen.
+
+	lineto VAL, VAL
+
+		Draws a line from the current pen location to location
+		(x,y) in the graphics window.
+
+	sound VAL, VAL, VAL 
+
+		The parameters are:
+		frequency{in Hz}, milliseconds_duration, volume{0..63}
+	
+    PalmOS functions:
+	
+	fre
+		Returns the current amount (in bytes) of unused
+		dynamic memory heap remaining.
+	
+	date$
+		Returns a string corresponding to the current date.
+
+	time$
+		Returns a string corresponding to the current time.
+
+	
+    PalmOS menu items in cbasPad Pro:
+    
+      (in the Main Program List View)
+
+	show Programs
+	
+	view ScratchPad
+	
+	Get Info
+	
+      (in the Edit ScratchPad view)
+	
+	Go to top of page
+	
+	Go to bottom
+	
+	Execute Selection
+	
+	Copy
+		Allows copying selected text to the clipboard.
+	
+	Paste
+		Allows copying of text from the clipboard.
+	
+	Delete Page
+		Allows deleting the current ScratchPad Page.
+	
+
+    PalmOS buttons in cbasPad Pro:
+    
+      (in the Main Program List View)
+
+	New
+		In ScratchPad mode, starts a new scratchpad
+		in the edit mode.
+	
+	Edit
+		Allows editing the current program.
+		Uses the MemoPad for editing programs that
+		are contained in the MemoPad.
+		
+	Run
+		Runs the selected program.
+	
+      (in the Edit ScratchPad view)
+	
+	Done
+		When editing, exits to the Main List View.
+		When executing a program, halts execution.
+	
+	SelectAll
+		Selects all test in the current ScrathPad page.
+	
+	Exec
+		Starts executing the current selected text a
+		a sequence of Basic statements.    
+
+
+    RESERVED WORDS AND SYMBOLS
+
+	+ - * / ^ mod  and or xor not  > < >= <= <> = ()
+	sqr log exp sin cos tan atn
+	abs sgn int rnd peek val asc len
+	mid$ right$ left$ str$ chr$  lcase$ ucase$
+	goto  if then else endif  gosub return
+	for to step next  while wend  select case
+	rem  let  dim erase  data read restore   field$
+	input print open for output append as close# load save
+	random lof loc get put   
+	inkey$  input$ eof  files  fgetbyte# fseek# fputbyte
+	run stop end exit quit cont  renum  new clear
+	date$ time$ timer  sound morse say  doevents
+	home cls gotoxy htab vtab pos 
+	graphics sprite pset moveto lineto window scrn mouse
+	varptr peek poke fre push pop  isarray
+	sub call usr  def fn
+	type class extends  string integer single double
+	asin acos sinh cosh tanh log10 floor true false ubound
+	
+	eqv imp  static  option degrees radians redim
+	do loop until break
+	method private public local   menu dialog memstat()
+	draw play  bload bsave  min max mat
+	each  resume  function
+	key is each set width swap
+	db$ morse dialog msgbox
+	
+
+    CONVENTIONS
+
+	EXPR		an expression that evaluates to a numeric value.
+	STRINGEXPR	a string expression.
+	VAR		a numeric variable.
+	STRINGVAR	a string variable. Name must end with a "$".
+	INTEGERVAR	a 32-bit integer var. Name must end with a "%".
+	
+	Subroutine names starting with "fn" are reserved for the
+	built-in fn and def fn functions.
+	
+	Hexadecimal numbers can be entered by preceding them with
+	a "0x" as in 0x02ae, or by "&h" as in &h0172.
+	
+	Multiple statements may be given on one line, separated by
+	colons:
+
+		10 INPUT X : PRINT X : STOP
+
+
+    DIAGNOSTICS
+
+	Many errors are unreported.
+
+
+    CHANGES
+    
+ 	v1.3.2 - changed int() to truncate to -infinity.
+ 	v1.0.9 - added the field$() function
+ 	
+ 	Many others ...
+
+    BUGS
+
+	Many.  Perhaps competitive with Central American rain forests.
+	
+	Many string functions (except +, MID$, LEN and INSTR) silently
+	truncate their results to 63 characters (e.g. without
+	warning).
+	
+	Comments starting with ' sometimes can't be used after
+	statements that can end with a string parameter. ( : '
+	should always work.)
+	
+	There are many undocumented graphics and database commands
+	and keywords in the PalmOS runtime engine.  See the accompanying
+	README and cbasPad Pro quick-reference file.
+	
+
+    DISCLAIMER
+
+	There is no warranty that this document is accurate (it isn't).
+	
+	There is no warranty that HotPaw Basic is suitable or fit for
+	any particular purpose.
+
+    AUTHORS
+	
+	Ron Nicholson (rhn@nicholson.com) (1990-2002Jan)
+
+    Portions of this document are Copyright (C) 1989 Dave Gillespie.
+    Copyright (C)1994,2002 Ronald H. Nicholson, Jr. (rhn@nicholson.com)
+    All rights reserved.
+    "Applesoft" is a trademark of Apple Computer, Inc., etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

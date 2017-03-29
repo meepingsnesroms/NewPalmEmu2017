@@ -1,0 +1,887 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 3. Platform Independent</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt02.html" title="Part II. Getting Started"><link rel="previous" href="ch02.html" title="Chapter 2. Platforms"><link rel="next" href="ch04.html" title="Chapter 4. Artists"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 3. Platform Independent</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><th width="60%" align="center">Part II. Getting Started</th><td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id409446"></a>Chapter 3. Platform Independent</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch03.html#id409455">Introduction</a></dt><dt><a href="ch03.html#id413054">The First Program</a></dt><dt><a href="ch03.html#id413112">On Coding Conventions</a></dt><dt><a href="ch03.html#id413182">Controls</a></dt><dt><a href="ch03.html#id413782">More on XFcCore</a></dt><dt><a href="ch03.html#id413940">2D Graphics</a></dt><dt><a href="ch03.html#id414221">Audio</a></dt><dt><a href="ch03.html#id414376">Compressed File Libraries</a></dt><dt><a href="ch03.html#id414701">Variable Types</a></dt><dt><a href="ch03.html#id414996">Printing</a></dt><dt><a href="ch03.html#id415355">Profiling</a></dt><dt><a href="ch03.html#id415652">More on File I/O</a></dt><dt><a href="ch03.html#id415860">Alternate Ways of Using CFLs</a></dt><dt><a href="ch03.html#id415985">String Functions</a></dt></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id409455"></a>Introduction</h2></div></div><p>
+This 'Getting Started' guide walks through some steps to get you get to know the philosophy behind X-Forge Core. It continues from the platform-specific 'Getting Started' chapter.
+</p><p>
+If you wish to save yourself a lot of grief when porting your software between X-Forge Core platforms, you should follow these rules:
+</p><div class="orderedlist"><ol type="1"><li><p>
+<span class="emphasis"><em>No static data is allowed.</em></span>
+</p><p>
+This rule is due to the Symbian platform, where all programs must be easily ROMable. Static data includes static variables inside functions and any global variables (except for 'static const' ones). Generally speaking, if you have any pre-set data that can be altered on the fly, you have static data.
+</p></li><li><p>
+<span class="emphasis"><em>Dword reads and writes should be dword aligned</em></span>
+</p><p>
+Most RISC CPUs (such as ARM) cannot cope with non-aligned dword operations.
+</p></li><li><p>
+<span class="emphasis"><em>Use slash (/) instead of backslash (\) in paths, and keep filenames   
+case sensitive.</em></span>
+</p><p>
+Linux and CFL are case sensitive, so it is best to keep all platforms that way. The Desktop Windows version will alert you if it detects an error in case sensitivity. Note that these rules also affect the #include statements you write.
+</p></li><li><p>
+<span class="emphasis"><em>In data files, use FLOAT32 or XFcFixed type instead of REAL.</em></span>
+</p><p>
+REAL can be either FLOAT32 or XFcFixed; thus, make sure you store either one in your data files or in the future when REAL turns into FLOAT32 your data loading will fail.      
+</p></li></ol></div><p>
+Things that are specifically omitted from this tutorial include 3D graphics, textures, blending, networking and threads. 
+</p><p>
+All the example sources can be found under <tt>xforge/core_examples/tutorial/</tt> in the X-Forge distribution.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The core examples, including the examples in this tutorial, have been designed to demonstrate specific features, and things like cleaning up have been omitted for clarity. 
+</p><p>
+While the core does its best to clean up everything after the application is quiting, there may be some resources which cannot be tracked, like open files or network connections. Properly written programs would delete all surfaces, close all files, etc. before terminating.
+</p><p>
+The only objects which should not be deleted are documented as such, ie. the application object, and plug-ins to the core (imageloader etc).
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413054"></a>The First Program</h2></div></div><p>
+In the platform-specific tutorial you compiled a program and got it to work. Let's start from the minimal application and see what it does:
+</p><pre class="programlisting"> 
+
+#include &lt;xforge.h&gt;
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470001;
+}
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  return 0;
+}
+
+</pre><p>
+The two functions are the two mandatory entry points to the application.
+</p><pre class="programlisting">
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+</pre><p>
+This function is used to tell the core things that it must know before initialization, including memory limits. You must not do anything else but alter the <tt>aAppPrefs</tt> structure in this function, as memory allocation has not been initialized yet.
+</p><p>
+The mUID member contains the Symbian application unique identifier. If you're developing for some Symbian platform, your application must have its own unique id. You can request a block of ids from Symbian; this is fairly automated process.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The UIDs used in this tutorial are all in the block that has been reserved for development. Applications with such UIDs should never be released in the wild. Other examples in the X-Forge package contain unique ids that have been allocated for those specific applications; you should not use those UIDs in your own applications either.
+</p></div><p>
+The minimum extra memory field informs the core how much extra memory, outside the memory pool, should be available. This is neccessary, since, for example, in the Symbian environment, if the operating system (or some other application) runs out of memory while our application is running, random applications start to crash. It is recommended that this is set to 128k.
+</p><p>
+The second function is the real entry point:
+</p><pre class="programlisting">
+INT32 xfcAppInit() 
+</pre><p>
+This function is called after core has been initialized, and it  should contain all application-specific initialization. As we have no application class yet, we can't do much here. Trying to draw into the screen here has no effect, as the secondary frame buffer is only presented into the primary one in the rendering loop, which starts after this function. If the initialization fails this function should return a non-zero value.
+</p><pre class="programlisting">
+xfcUseDefaults();
+</pre><p>
+This function call tells the X-Forge Core to initialize a default set of plugins. If these plugins are not initialized, they are never referenced, and thus will be discarded at link time, resulting in smaller binaries. The full list of xfcUse functions can be found in <tt>XFcUse.h</tt> header file.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413112"></a>On Coding Conventions</h2></div></div><p>
+X-Forge uses certain prefixes throughout the whole source base. All of the prefixes describe the scope and type of the symbol, instead of, for instance, variable types.
+</p><p>
+The prefixes are as follows:
+</p><pre class="programlisting">
+mVariable	- Member variable
+aVariable	- Function argument variable
+XFcClass	- X-Forge Core class
+XFuClass	- X-Forge Util class
+XFeClass	- X-Forge Engine class
+xfcFunction	- X-Forge Core static global function
+XFC_FLAG	- X-Forge Core define or enumeration
+</pre><p>
+For portability, X-Forge defines its own variable types. These are quite straightforward, <tt>INT32</tt> for signed 32bit integer, <tt>UINT32</tt> for unsigned, and so on. You can find discussion about these in this 'Getting Started' chapter later in the 'Variable Types' subchapter.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413182"></a>Controls</h2></div></div><p>
+Not being able to quit the application is quite awkward, so we must present three new interface classes: <tt>XFcApp</tt>, <tt>XFcInput</tt> and <tt>XFcRenderer</tt>.
+</p><p>
+Let's alter the code a bit.
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+
+class MyApp : public XFcApp, public XFcInput, public XFcRenderer
+{
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void render();
+};
+
+void MyApp::onPointerUp(INT32 /*aX*/, INT32 /*aY*/)
+{
+  XFcCore::quit();
+}
+
+void MyApp::render()
+{
+}
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470002;
+}
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+
+</pre><p>
+First of all, we created a new class called <tt>MyApp</tt>, which extends the three interface classes <tt>XFcApp</tt>, <tt>XFcInput</tt> and <tt>XFcRenderer</tt>. This class extends the <tt>XFcInput</tt> virtual function <tt>onPointerUp()</tt> and the <tt>XFcRenderer</tt> function <tt>render()</tt>. 
+</p><p>
+When someone taps the screen, <tt>onPointerUp()</tt> is called and it calls <tt>XFcCore</tt> class static method <tt>quit()</tt> to exit the application. The render function is currently empty, but it is called once on every rendering loop. All the graphics rendering code should be in this function.
+</p><p>
+Finally, in the <tt>xfcAppInit()</tt> function we create a new instance of the <tt>MyApp</tt> class, and then we call two <tt>XFcCore</tt> class functions to tell the core that right now this object should receive the 
+callbacks for rendering and controls.
+</p><p>
+If you try to run the program you will see that the application still doesn't show any sensible graphics, but if you tap on the 
+screen the application will at least quit. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+This, of course, assuming that you're developing on a platform with a touchscreen. To alter the example to quit when a key is pressed, change the <tt>onPointerUp(INT32 aX, INT32 aY)</tt> call to <tt>onKeyUp(INT32 aCode)</tt>.
+</p></div><p>
+The XFcInput class contains the following callbacks:
+</p><pre class="programlisting">
+  virtual void onPointerDown(INT32 aX, INT32 aY); 
+  virtual void onPointerMove(INT32 aX, INT32 aY); 
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void onKeyDown(INT32 aCode);    
+  virtual void onKeyUp(INT32 aCode);      
+  virtual void onControlDown(INT32 aCode);
+  virtual void onControlUp(INT32 aCode);  
+  virtual void onCharEntered(CHAR aChar);
+  virtual void onJoystickMoved(INT32 aX, INT32 aY);
+</pre><p>
+The first three are for pointer (stylus, mouse) controls (<tt>onPointerMove()</tt> calls are only made when the pointer is down), <tt>onKeyDown()</tt> and <tt>onKeyUp()</tt> calls tell the actual code given by hardware, and <tt>onControlDown()</tt>/<tt>onControlUp()</tt> calls return <tt>XFCCL_KEYCODE</tt> enums (<tt>XFCCL_LEFT</tt>, <tt>XFCCL_RIGHT</tt>, <tt>XFCCL_FIRE1</tt> etc).
+</p><p>
+<tt>onCharEntered()</tt> is called whenever the system receives character input. It is important to note that while <tt>onKey</tt> methods' scan codes usually map to the correct character keys, that may not hold true for all devices. If you're doing some text input widget, use <tt>onCharEntered()</tt> instead; this callback is called whenever X-Forge Core receives a character input signal from the operating system.
+</p><p>
+Finally, <tt>onJoystickMoved()</tt> is reserved for analog joystick input.
+</p><p>
+The application class and renderer both also have several callbacks that you can use.
+</p><p>
+Why go through all this trouble with several callbacks? With this system you can have separate rendering functions for different uses, for instance one for game rendering, one for menus, one for pause screen, and whatnot. And the same for controls.
+</p><p>
+More about the controls can be found in the 'Application Framework' chapter under 'Core'.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413782"></a>More on XFcCore</h2></div></div><p>
+The XFcCore class contains system-wide static functions. Apart from the callback-setting and quitting functions it contains the following functionality, and more:
+</p><p>
+Platform information:
+</p><pre class="programlisting">
+static const CHAR * getPlatformString();
+static INT32 getPlatformId();
+</pre><p>
+Getting system tick (for synchronization separate from frame rate)
+</p><pre class="programlisting">
+static INT32 getTick();
+</pre><p>
+Getting a pointer to your XFcApp-extended class object:
+</p><pre class="programlisting">
+static XFcApp * getApp();
+</pre><p>
+Device metrics:
+</p><pre class="programlisting">
+static INT32 getDeviceWidth();
+static INT32 getDeviceHeight();
+</pre><p>
+Compressed File Library management (see 'compressed file libraries' for more)
+</p><pre class="programlisting">
+static INT openCFL(const CHAR * aFileName);
+static void resetCFLDirectory();
+</pre><p>
+Power management:
+</p><pre class="programlisting">
+static REAL getBatteryState();
+</pre><p>
+We will use some of these functions in the examples below. The significance of <tt>getApp()</tt> call is that since we may not use any global data we have to have a way to store application-wide data somewhere; this place is your application object. You can call <tt>XFcCore::getApp()</tt> anywhere in your application to get a pointer to the application object. When an <tt>XFcApp</tt>-extended class is instantiated, the core stores a pointer to the class. If you try to create more than one <tt>XFcApp</tt>-extended object, the application will quit.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413940"></a>2D Graphics</h2></div></div><p>
+2D graphics in X-Forge Core is mostly based on surfaces. We will change the example to create a new surface, fill it, and then draw that on the secondary surface, doing some simple animation.
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+
+class MyApp : public XFcApp, public XFcInput, public XFcRenderer
+{
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void render();
+  virtual void onAppInit();
+  XFcGLSurface *mSurf;
+  XFcGL *mGL;
+};
+
+void MyApp::onPointerUp(INT32 /*aX*/, INT32 /*aY*/)
+{
+  XFcCore::quit();
+}
+
+void MyApp::render()
+{
+  XFcGLSurface *fb;
+  // Clear the framebuffer:
+  mGL-&gt;clear();
+  // Ask GL for the secondary buffer:
+  fb = mGL-&gt;getSecondary();
+
+  // Draw a stretched sprite:
+  INT32 tick = abs(250 - (XFcCore::getTick() % 500)) + 1;
+  INT32 xcenter = XFcCore::getDeviceWidth() / 2;
+  INT32 ycenter = XFcCore::getDeviceHeight() / 2;
+  fb-&gt;drawImage(mSurf, xcenter - tick, ycenter - tick, tick * 2, tick * 2);
+}
+
+void MyApp::onAppInit()
+{
+  mGL = XFcGL::create();
+  // Create a 32x32 surface:
+  mSurf = XFcGLSurface::create(32, 32);
+  // Lock the surface:
+  INT16 *map;
+  INT32 pitch = mSurf-&gt;lock((void **)&amp;map);  
+  // Pitch is divided by 2 because we're using a 16-bit pointer
+  // and pitch is in bytes.
+  pitch /= 2;
+
+  // Fill the surface:
+  INT32 ofs = 0;
+  for (INT32 y = 0; y &lt; mSurf-&gt;getHeight(); y++, ofs = y * pitch)
+  {
+    for (INT32 x = 0; x &lt; mSurf-&gt;getWidth(); x++, ofs++)
+    {
+      map[ofs] = (INT16)((x &lt;&lt; 11) + (y &lt;&lt; 6));
+    }
+  }
+
+  // and remember to unlock:
+  mSurf-&gt;unlock();
+}
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470003;
+}
+
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+
+</pre><p>
+Several new things happen here. First of all, there's a new callback in use, the <tt>onAppInit()</tt>. This callback is called after all other initialization is done, so it is a good place to store any initializers for the application object.
+</p><p>
+Second, our application class now has two new members, <tt>mSurf</tt> and <tt>mGL</tt>. <tt>mSurf</tt> will be our main focus here, but the <tt>mGL</tt> is the 3D graphics library which contains the rendering device as well, so we'll need it here.
+</p><p>
+These two objects are created using a static create call. This call may fail, and return NULL. You should always check for out of memory errors.
+</p><pre class="programlisting">
+mGL = XFcGL::create();
+mSurf = XFcGLSurface::create(32, 32);
+</pre><p>
+We create the renderer and a 32x32 surface. This surface is created in the default format, which is currently 16-bit on all platforms.
+</p><p>
+Still in the <tt>onAppInit()</tt> call we lock the surface, fill it and unlock it. The pitch is the distance between scanlines, in bytes. This is important as hardware may make some limitations on surface sizes. Texture surfaces, for instance, must have dimensions that are powers of two up to 256 (ie. 2, 4, 8, 16, 32, 64, 128 or 256).
+</p><p>
+Now in the <tt>render()</tt> function we finally get to create some graphics. First we clear the framebuffer, then we ask for a pointer to the secondary buffer. We could lock the secondary buffer for drawing as we did for the <tt>mSurf</tt> surface, but we see no reason to do so here. Finally we just blit the surface to the secondary buffer, using stretching.
+</p><p>
+There are two other important features for surface blits that we haven't demonstrated here: color keying and alpha blending.
+</p><p>
+With color key you can make concrete holes in the images, which is handy if you, for instance, want to write text on top of some other image. The functions to use this mechanism are called <tt>setColorKey()</tt>
+and <tt>enableColorKey()</tt>. The color key is set with a 32-bit color value regardless of the surface bit depth.
+</p><p>
+For blending you must use <tt>drawImageBlend()</tt> calls, which accept two additional parameters: blend type and blend value.
+</p><p>
+Blend types are different from the 3D pipeline, and the legal values are as follows:
+</p><pre class="programlisting">
+XFCBLEND_NONE,       // No blending (default)
+XFCBLEND_ALPHA,      // Alpha blend (crossfade)
+XFCBLEND_ALPHA_FAST, // Fast 50:50 (avg) alpha
+XFCBLEND_MUL,        // Multiplicative blending
+XFCBLEND_MUL_FAST,   // Fast 100% mul blend 
+XFCBLEND_ADD,        // Additive blend
+XFCBLEND_ADD_FAST,   // Fast 100% add blend
+XFCBLEND_INVMUL,     // Inverse multiplication
+XFCBLEND_INVMUL_FAST // Fast 100% inverse mul blend
+</pre><p>
+Since all surface to surface blits will, in the foreseeable future, be software only, other blending modes are unlikely to be included.
+</p><p>
+More on 2D graphics can be found in the '2D Graphics' chapter, under 'core'.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id414221"></a>Audio</h2></div></div><p>
+The audio library in X-Forge Core is designed like this:
+</p><pre class="programlisting">
+.------------------------------.
+|          Hardware            |
+'------------------------------'
+        [ resampling ]
+.------------------------------.
+|       Primary buffer         |
+'------------------------------'
+    [ mixing and resampling]
+.-------------.  .-------------.
+| AudioBuffer |  | AudioStream |
+'-------------'  '-------------'
+</pre><p>
+The audio system always has to be initialized before trying to play any buffers or streams. The system automatically resamples and mixes the audio into primary buffer from where the data is converted into the hardware friendly format.
+</p><p>
+On some devices you can only play sound in 48KHz 16bit format, and mixing multichannel audio in that format can be somewhat CPU intensive. Thus we have the primary buffer in the middle, so you can choose the audio quality 
+regardless of hardware limitations. The audio system works so that if you request a format, the primary buffer is set to that format regardless what the hardware can support.
+</p><p>
+Audio buffers come in two flavors: linear and cyclic. Cyclic buffers can be used for example for car engine sounds. Linear buffers play once from beginning to end and are best suited for sound effects.
+</p><p>
+Audio streams can be extended for any kind of streaming audio. The XM-player is a subclass of an audio stream for example.
+</p><p>
+The latency for sample playing under PocketPC (for example) is 0 to 64 milliseconds, partially due to hardware limitations.
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+#include &lt;xfutil/XFuXMPlayer.h&gt;
+
+class MyApp : public XFcApp, public XFcInput, public XFcRenderer
+{
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void render();
+  virtual void onAppInit();
+  virtual void onAppDeinit();
+  XFcGLSurface *mSurf;
+  XFcGL *mGL;
+  XFuXMPlayer *mPlayer;
+  UINT32 mPlayerId;
+};
+
+void MyApp::onPointerUp(INT32 /*aX*/, INT32 /*aY*/)
+{
+  XFcCore::quit();
+}
+
+void MyApp::render()
+{
+  XFcGLSurface *fb;
+  // Clear the framebuffer:
+  mGL-&gt;clear();
+  // Ask GL for the secondary buffer:
+  fb = mGL-&gt;getSecondary();
+
+  // Draw a stretched sprite:
+  INT32 tick = abs(250 - (XFcCore::getTick() % 500)) + 1;
+  INT32 xcenter = XFcCore::getDeviceWidth() / 2;
+  INT32 ycenter = XFcCore::getDeviceHeight() / 2;
+  fb-&gt;drawImage(mSurf, xcenter - tick, ycenter - tick, tick * 2, tick * 2);
+}
+
+void MyApp::onAppInit()
+{
+  mGL = XFcGL::create();
+  // Create a 32x32 surface:
+  mSurf = XFcGLSurface::create(32, 32);
+  // Lock the surface:
+  INT16 *map;
+  INT32 pitch = mSurf-&gt;lock((void **)&amp;map);  
+  // Pitch is divided by 2 because we're using a 16-bit pointer
+  // and pitch is in bytes.
+  pitch /= 2;
+
+  // Fill the surface:
+  INT32 ofs = 0;
+  for (INT32 y = 0; y &lt; mSurf-&gt;getHeight(); y++, ofs = y * pitch)
+  {
+    for (INT32 x = 0; x &lt; mSurf-&gt;getWidth(); x++, ofs++)
+    {
+      map[ofs] = (INT16)((x &lt;&lt; 11) + (y &lt;&lt; 6));
+    }
+  }
+
+  // and remember to unlock:
+  mSurf-&gt;unlock();
+
+  XFcAudio::setAudioFormat(NULL, 16, 0);
+
+  // create XM player:
+  mPlayer = XFuXMPlayer::create(&quot;jenkka17.xm&quot;, 8000, 0);
+
+  // start playing
+  mPlayerId = XFcAudio::play(mPlayer);
+}
+
+void MyApp::onAppDeinit()
+{
+  // stop playing music (one could also just call &quot;XFcAudio::stopAll()&quot;)
+  XFcAudio::stop(mPlayerId);
+}
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 1.0);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 1.0);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470004;
+}
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+
+</pre><p>
+Only changes here are the inclusion of <tt>xfutil/XFuXMPlayer.h</tt>, and creation of the XM player object. 
+</p><p>
+The XM module file must be copied to the same directory where the application is. You do not need to link any new files to the application to get it to compile; the XM player is included in the static-link library <tt>xfutil.lib</tt>. 
+</p><p>
+If the application cannot find the XM file, it will try to play a NULL pointer and this will cause an access violation. If this happens, make sure you have copied the <tt>jenkka17.xm</tt> file to the same directory as where the executable is.
+</p><p>
+All aspects of audio control happen through the class <tt>XFcAudio</tt>. One can control all necessary aspects of audio buffers and audio stream through it.
+</p><p>
+More on audio can be found in the 'Audio' chapter, under 'Core'.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id414376"></a>Compressed File Libraries</h2></div></div><p>
+Having several uncompressed data files lying around on a mobile device is generally a bad idea. X-Forge Core supports a form of file libraries called CFL:s (compressed file libraries). The file IO support is transparent to the application; as long as the application uses <tt>XFcFile</tt> class for file IO, it doesn't need to know if a data file is stored in a compressed file or not. Currently CFL first decompresses the file into memory on file open call, so it is not suitable for very large decompressed files, but it is very good for minimizing your application's &quot;disk space&quot; usage.
+</p><p>
+Let's create a CFL. 
+</p><p>
+Create a new directory, and copy the following files 
+into it:
+</p><pre class="programlisting">
+core_examples/data/jenkka17.xm
+core_examples/data/texture.pcx
+tools/cflutils/bin/makecfl.exe
+</pre><p>  
+Now start a command prompt (or dos shell, if in win9x), and change to the directory you created earlier.
+</p><p>
+Type &quot;makecfl makeini tutorial.ini&quot;. This will create the file <tt>tutorial.ini</tt>. In its generated form the file contains comments and some configuration data. When all of the comments, optional parameters and unneccessary configuration data is removed, the following lines remain:
+</p><pre class="programlisting">
+LIBRARY_COMPRESS=0x0000FFFF
+CFLNAME=tutorial.cfl
+DATA=jenkka17.xm
+DATA=texture.pcx
+</pre><p>
+Please note that makeini command also lists the .ini file in one DATA line; this line can be removed. Also, since you copied the <tt>makecfl.exe</tt> to the same directory, it will also be listed here, and can be removed.
+</p><p>
+Calling <tt>makecfl cfl tutorial.ini</tt> then creates the CFL file, called <tt>tutorial.cfl</tt>. In my case the output is as follows:
+</p><pre class="programlisting">
+makecfl
+CFL creation util
+Copyright (c) 2001-2002 Jari Komppa and Fathammer Ltd
+
+Opening 'tutorial.cfl' for writing..ok
+
+Storing 'jenkka17.xm' as 'jenkka17.xm' with
+'best' - 'Finds the best compressor by testing them all'
+126320 bytes -&gt; 42558 bytes (33.691%)
+
+Storing 'texture.pcx' as 'texture.pcx' with
+'best' - 'Finds the best compressor by testing them all'
+57198 bytes -&gt; 40924 bytes (71.548%)
+
+cfl file created.
+</pre><p>
+In order to use the resulting file you must first copy it to the target directory, remembering to delete the xm file from that directory as well, or it will be used instead of the compressed one, and then making the following change to the <tt>xfcAppInit()</tt> function:
+</p><pre class="programlisting">
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  XFcCore::openCFL(XFCSTR(&quot;tutorial.cfl&quot;));
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+</pre><p>
+Since the XM player uses the <tt>XFcFile</tt> class for file handling, nothing else is needed. The <tt>XFCSTR()</tt> macro makes sure that when X-Forge Core supports unicode you won't need to rewrite all your string constants.
+</p><p>
+You can open several .CFL files, and if a file of the same name exists in several, only the last one will be found. Thus, you can create localized resources in separate CFL files and open the one you need
+last.
+</p><p>
+More on CFLs can be found in the 'File I/O' chapter, under 'Core'.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id414701"></a>Variable Types</h2></div></div><p>
+As mentioned in 'on coding conventions', in order to ensure portability, the X-Forge Core defines a set of variable types, which are preferred over the standard types, as they act the same way on all of the platforms.
+</p><p>
+The variable types are defined in the header file <tt>XFcConfig.h</tt>.
+</p><pre class="programlisting">
+INT8     8 bit signed integer
+INT16    16 bit signed integer
+INT32    32 bit signed integer
+INT64    64 bit signed integer
+UINT8    8 bit unsigned integer
+UINT16   16 bit unsigned integer
+UINT32   32 bit unsigned integer
+INT      Fast integer (at least 16 bit)
+UINT     Fast unsigned integer (at least 16 bit)
+
+FLOAT32  32 bit floating point
+FLOAT64  64 bit floating point
+XFcFixed 32 bit fixed point
+REAL     Fixed or floating point, depending on platform
+
+CHAR8    8 bit character (for text)
+CHAR16   16 bit character (for text)
+CHAR     8 or 16 bit character, depending on platform
+</pre><p>
+All of the above variable types are also renamed during compile time using preprocessor macros to start with XFC in order to avoid collisions with platform-specific variable types of the same name (eg. <tt>INT32</tt>
+becomes <tt>XFCINT32</tt>). In most cases this process will be totally transparent to you.
+</p><p>
+By using <tt>CHAR</tt> and <tt>REAL</tt> instead of <tt>CHAR8</tt> and <tt>XFcFixed</tt> you will enable your code to be smoothly ported into platforms that have different
+character width or a fast floating point unit.
+</p><p>
+For portability reasons you should never write <tt>REAL</tt> or <tt>CHAR</tt> variables into files. <tt>XFcFixed</tt> variable type may also change. Use <tt>CHAR8</tt>, <tt>CHAR16</tt> and <tt>FLOAT32</tt> types on disk instead.
+</p><p>
+All of the current X-Forge platforms are little endian (x86, ARM, MIPS, SH3).
+</p><p>
+Constant character strings of <tt>CHAR</tt> type should be enclosed inside the <tt>XFCSTR()</tt> macro. 
+</p><pre class="programlisting">	
+    XFcFile *f = XFcFile::create(XFCSTR(&quot;myfile.dat&quot;), XFCSTR(&quot;rb&quot;));
+</pre><p>
+This macro will take care of character width conversions.
+</p><p>
+The X-Forge API uses '<tt>INT</tt>' as a boolean variable. If a function returns <tt>INT</tt>, it most likely only returns 0 or 1.
+</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p>
+<tt>INT64</tt> works slightly differently on different platforms. 
+</p><p>
+Under Linux, you can only cast to <tt>INT64</tt> by using the (INT64)(foo)
+notation; INT64(foo) will not work.
+</p><p>
+Under Symbian, the <tt>INT64</tt> is a Symbian-defined class, and requires extra effort whenever it is being casted. In order to cast to an <tt>INT64</tt> you must first cast your variable to <tt>TInt</tt> ((INT64)((TInt)foo)). In order to cast back to a 32-bit value, you must call the variable's <tt>GetTInt()</tt> method ((INT32)foo64.GetTInt()).
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id414996"></a>Printing</h2></div></div><p>
+Another utility included in the static link library <tt>xfutil.lib</tt> is the <tt>XFuPrinter</tt> class. The <tt>XFuPrinter</tt> class is a primitive bitmap font printer, and it uses the 2D pipeline internally. In order to initialize you need to provide it with a specifically created 256-color PCX file that contains characters in ASCII order, starting from character 33 (the 
+exclamation point). Each character must be as high as the image is wide (For example, a PCX with dimensions of 8x1016 contains 127 characters).
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+#include &lt;xfutil/XFuPrinter.h&gt;
+
+class MyApp : public XFcApp, public XFcInput, public XFcRenderer
+{
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void render();
+  virtual void onAppInit();
+  XFcGL *mGL;
+  XFuPrinter *mPrinter;
+};
+
+
+void MyApp::onPointerUp(INT32 /*aX*/, INT32 /*aY*/)
+{
+  XFcCore::quit();
+}
+
+
+void MyApp::render()
+{
+  XFcGLSurface *fb;
+  
+  // Clear the framebuffer:
+  mGL-&gt;clear();
+  
+  // Ask GL for the secondary buffer:
+  fb = mGL-&gt;getSecondary();
+  
+  // Print the classic phrase:
+  mPrinter-&gt;print(fb, 0, 0, XFCSTR(&quot;Hello World&quot;));
+}
+
+
+void MyApp::onAppInit()
+{
+  mGL = XFcGL::create();
+  mPrinter = XFuPrinter::create(XFCSTR(&quot;font16.pcx&quot;), 0);
+}
+
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470006;
+}
+
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+
+</pre><p>
+In the <tt>onAppInit()</tt> function, we create the printer:
+</p><pre class="programlisting">
+mPrinter = XFuPrinter::create(XFCSTR(&quot;font16.pcx&quot;), 0);
+</pre><p>
+The first parameter is the filename, and the second is the transparency color mask. In here, black color will be transparent.
+</p><p>
+Internally, the printer creates a <tt>XFcGLSurface</tt> for each character in the font.
+</p><p>
+Printing is done in <tt>render()</tt> function:
+</p><pre class="programlisting">
+mPrinter-&gt;print(fb, 0, 0, XFCSTR(&quot;Hello World&quot;));
+</pre><p>
+X-Forge Core has its own implementation of <tt>sprintf()</tt>, and this can be found in the static class <tt>XFcStringToolkit</tt>. The function is called <tt>format()</tt>. It is mostly equal in its output with the stdlib <tt>sprintf()</tt> except for floating point values, with which it has some precision limitations. Using <tt>XFcStringToolkit::format()</tt>
+over <tt>sprintf()</tt> is recommeded due to portability issues.
+</p><pre class="programlisting">
+XFcStringToolkit::format(targetString, &quot;format string %d&quot;, mValue);
+</pre><p>   
+If you try to use the printer and nothing gets drawn, it is most likely because the printer doesn't find the required .pcx file. Make sure you copy the <tt>font16.pcx</tt> into the same directory where the executable is.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id415355"></a>Profiling</h2></div></div><p>
+X-Forge Core provides two different profiling methods.
+</p><p>
+First one is a simple set of timing functions. Good side is that those routines are portable, so the same profiling code works on all platforms. Bad side is that the timings are taken from the system clock, and the resolution of the system ticks on different platforms varies from one to 15 milliseconds. 
+</p><p>
+The second is a simple sampling profiler that requires some preparation and only works under Wince ARM currently, but the code changes that are needed are quite trivial.
+</p><p>
+All of the profiler functionality is implemented in the static class <tt>XFcProfiler</tt>. The profiler's internal data is hidden inside the core.
+</p><p>
+In order to use the timing profiler, you must first initialize the event log by calling <tt>XFcProfiler::initEventLog()</tt> in some initialization function (<tt>xfcAppInit()</tt> is a good place).
+</p><p>
+Then, mark the beginnings of any events you want to time with <tt>XFcProfiler::addEvent()</tt> calls. 
+</p><p>
+The only tricky bit is around when you want to print the log out. Before calling the actual printing, you should
+call <tt>XFcProfiler::frameEvent()</tt> in order to store frame rate counter in the end of the log. Then, print out the pointer returned from <tt>XFcProfiler::getEventLog()</tt>.
+</p><p>
+After printing out, you must call <tt>XFcProfiler::resetEvent()</tt>. If you do not do this, the
+log will eventually get filled and will overflow, crashing the system. The log is relatively small, only several kilobytes long.
+</p><p>
+The <tt>addEvent()</tt> function takes one character string parameter, which is the name of the event that is about to begin. The <tt>resetEvent()</tt> function takes two parameters: first is the event that just passed (most probably printing) and the event that is just beginning.
+</p><p>
+Be sure to add an <tt>addEvent()</tt> call before you leave the <tt>render()</tt> function, or otherwise you will be adding the whole core timings into your last event.
+</p><pre class="programlisting">
+
+#include &lt;xforge.h&gt;
+#include &lt;xfutil/XFuPrinter.h&gt;
+
+class MyApp : public XFcApp, public XFcInput, public XFcRenderer
+{
+  virtual void onPointerUp(INT32 aX, INT32 aY); 
+  virtual void render();
+  virtual void onAppInit();
+  XFcGL *mGL;
+  XFuPrinter *mPrinter;
+};
+
+
+void MyApp::onPointerUp(INT32 /*aX*/, INT32 /*aY*/)
+{
+  XFcCore::quit();
+}
+
+
+void MyApp::render()
+{
+  XFcGLSurface *fb;
+
+  // Mark the beginning of 'clear' event 
+  XFcProfiler::addEvent(&quot;clear&quot;);
+  
+  // Clear the framebuffer:
+  mGL-&gt;clear();
+  
+  // Mark the beginning of 'waste' event (we'll waste some time here)
+  XFcProfiler::addEvent(&quot;waste&quot;);
+  INT k;
+  for (INT i = 0; i &lt; 256; i++)
+    for (INT j = 0; j &lt; 256; j++)
+      k = i * i / (j + 1);
+  
+  // Ask GL for the secondary buffer:
+  fb = mGL-&gt;getSecondary();
+  
+  // Make the frame event
+  XFcProfiler::frameEvent();  
+  
+  // Print the debug info:
+  mPrinter-&gt;print(fb, 0, 0, XFcProfiler::getEventLog());
+  
+  // Reset event log; last event was called 'print', next one is 'core '
+  XFcProfiler::resetEvent(&quot;print&quot;, &quot;core &quot;);
+}
+
+
+void MyApp::onAppInit()
+{
+  mGL = XFcGL::create();
+  mPrinter = XFuPrinter::create(XFCSTR(&quot;font16.pcx&quot;), 0);
+}
+
+
+void xfcAppPref(XFcAppPrefs &amp;aAppPrefs)
+{
+  aAppPrefs.mTotalMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mResourceMemoryLimit = (INT32)(1024 * 1024 * 0.5);
+  aAppPrefs.mMinimumExtraMemory = (INT32)(1024 * 128);
+  aAppPrefs.mUID = 0x0F470007;
+}
+
+
+INT32 xfcAppInit() 
+{
+  xfcUseDefaults();
+  XFcProfiler::initEventLog();
+  MyApp *a = new MyApp();
+  XFcCore::setRenderer(a);
+  XFcCore::setController(a);
+  return 0;
+}
+
+</pre><p>
+The output from the above program looks something like this:
+</p><pre class="programlisting">
+print 1
+core  15
+clear 6
+waste 20
+FPS   23
+(the timings here are not relative to any real device)
+</pre><p>
+All the other values except for the FPS are in milliseconds.
+</p><p>
+To use the sampling profiler (which currently only works under PocketPC and only on real hardware), you must first link your application with the sampling-enabled static library <tt>xfcorep.lib</tt> and <tt>toolhelp.lib</tt>. Next, set the compiler to output a .map file (project / settings / link, 'generate mapfile'). 
+</p><p>
+Next, add the following somewhere in the start of your application:
+</p><pre class="programlisting">
+XFcProfiler::startSampler();
+</pre><p>    
+and the following somewhere in the deinitialization:
+</p><pre class="programlisting">
+XFcProfiler::endSampler();
+</pre><p>
+After these steps build your application, and run it on some ARM based PocketPC device. If the application does not run, the device does not contain <tt>toolhelp.dll</tt>. You can find this by searching for it in the 'Windows CE Tools' tree on your hard drive.
+</p><p>
+Let the application run for 15 minutes or longer, and then quit it. You should then have the sampling data on
+the device. Copy this into a directory along with the .map file that the compiler generated, and run profileanalyzer (included in the 'tools' directory) to generate profiling report.
+</p><p>
+The report is generated by running a thread at maximum priority and sampling the current instruction pointer addresses of all the threads in the program. As such the sampling is not even, plus if you have a thread that loops a single function this will be shown as a huge time eater. The sampling profiler does, however, give some kind of overview on where all the time is spent.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Using the sampling profiler slows applications down a lot. Thus, if you're running the whole game graph, with physics loop being run more often when the framerate is slow, you will find that the sampled data will show that the physics seem to take majority of CPU time, even if that is not the case when the application is running without the profiler. It is also highly probable that the profiled application will grind to a halt with the physics enabled, as each consequent frame requires more and more physics calculations.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id415652"></a>More on File I/O</h2></div></div><p>
+From the interface, <tt>XFcFile</tt> class looks like a thin wrapper on top of <tt>fopen()</tt>-style functions with some small add-ons.
+</p><p>
+Instead of <tt>create()</tt>, XFcFile object is created using <tt>open()</tt> call. This is to follow the stdlib <tt>fopen()</tt> file function style. In addition to the plain <tt>open()</tt>, we have <tt>openFromDisk()</tt> and <tt>openFromCFL()</tt> functions. <tt>open()</tt> itself will try to open from disk and then from the CFL, if file was not found on disk. When writing or appending, the file will always be opened from disk directly.
+</p><pre class="programlisting">
+static XFcFile * open(const CHAR *aFilename, const CHAR *aMode);
+static XFcFile * openFromDisk(const CHAR *aFilename, const CHAR *aMode);
+static XFcFile * openFromCFL(const CHAR *aFilename, const CHAR *aMode);
+</pre><p>
+The other standard functions look and work as you'd expect them to, after using the stdlib functions:
+</p><pre class="programlisting">
+INT32 seek(INT32 aDisplacement, INT32 aMode);
+INT32 tell();
+INT32 getChar();
+INT32 putChar(INT32 aChar);
+INT32 read(void * aBuf, INT32 aSize, INT32 aCount);
+INT32 write(const void * aBuf, INT32 aSize, INT32 aCount);
+INT32 close();  
+</pre><p>
+The <tt>close()</tt> method also deletes the object.
+</p><p>
+The following convenience functions are provided to make it easier to make portable files (unsafe variable types omitted, variable type conversion applied):
+</p><pre class="programlisting">
+INT32 writeFLOAT32(FLOAT32 aValue);
+FLOAT32 readFLOAT32();
+INT32 writeINT32(INT32 aValue);
+INT32 readINT32();
+INT32 writeINT16(INT16 aValue);
+INT16 readINT16();
+INT32 writeINT8(INT8 aValue);
+INT8 readINT8();
+void writeCHARString(CHAR * aValue);
+CHAR * readCHARString();
+</pre><p>
+Finally, the following functions are thin wrappers on top of the CFL system, built so that they work on disk
+files as well:
+</p><pre class="programlisting">
+static INT8 * getFile(const CHAR *aFilename);
+static INT32 getFileSize(const CHAR *aFilename);
+static INT fileExists(const CHAR *aFilename);
+</pre><p>
+Using <tt>getFile()</tt> is more efficient than reading the whole file into memory manually using <tt>read()</tt> function, because internally the CFL system currently loads the whole file 
+into memory. This is good to keep in mind when figuring out runtime memory requirements.
+</p><p>
+More about file handling can be found in the 'File I/O' chapter, under 'Core'.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id415860"></a>Alternate Ways of Using CFLs</h2></div></div><p>
+You can bypass the whole <tt>XFcFile</tt> mechanism by creating a <tt>XFcCFL</tt>
+object. XFcCFL only supports loading whole files at once, which is not as handy as the XFcFile method, but having this mechanism available may prove to be useful.
+</p><p>
+You may want to make level files or localization files into separate CFL files, and mount these as needed. 
+</p><p>
+You can also create CFLs at runtime. This is handy for compressed savegames for instance. CFLs are created using the XFcCFLMaker class.
+</p><pre class="programlisting">
+XFcCFLMaker *rm = XFcCFLMaker::create(XFCSTR(&quot;mydatafile.cfl&quot;));
+rm-&gt;store(XFCSTR(&quot;mydata1.dat&quot;), mMydata1, mMydata1Size, XFCCFLCOMPRESS_ZLIB);
+rm-&gt;store(XFCSTR(&quot;mydata2.dat&quot;), mMydata2, mMydata2Size, XFCCFLCOMPRESS_ZLIB);
+rm-&gt;store(XFCSTR(&quot;mydata3.dat&quot;), mMydata3, mMydata3Size, XFCCFLCOMPRESS_ZLIB);
+rm-&gt;store(XFCSTR(&quot;mydata4.dat&quot;), mMydata4, mMydata4Size, XFCCFLCOMPRESS_ZLIB);    
+rm-&gt;finish(RFCOMPRESS_ZLIB); 
+</pre><p>
+The above code snippet would create a file called <tt>mydatafile.cfl</tt> that would contain resources <tt>mydata1.dat</tt> - <tt>mydata4.dat</tt>. All of the resources and
+the library information would be compressed with zlib using default options.
+</p><p>
+The <tt>finish()</tt> call also deletes the object, so no 'delete rm;' is needed.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id415985"></a>String Functions</h2></div></div><p>
+<tt>XFcStringToolkit</tt> class is a collection of static string methods using <tt>CHAR*</tt> data type. This is not a string class, however. The methods' functionality is close to their stdlib counterparts'.
+</p><p>
+There are several overloaded versions of string duplicating function. Their purpose is to make conversions from unicode or ascii to the currently used character format as painless as possible. As usual, the functions return NULL if there was insufficient memory to allocate the new string.
+</p><pre class="programlisting">
+static CHAR * copy(const CHAR * aString);
+static CHAR * copy(const CHAR8 * aString);
+static CHAR * copy(const CHAR16 * aString);
+</pre><p>
+Another two duplication functions convert from the internal format to either 8 bit or 16 bit character format. You might use these to write platform-independent files, for instance.
+</p><pre class="programlisting">
+static CHAR8 * copyToCHAR8(const CHAR * aString);
+static CHAR16 * copyToCHAR16(const CHAR * aString);
+</pre><p>    
+String comparison functions - case sensitive and case insensitive. They work like their stdlib counterparts, eg. 0 means equal.
+</p><pre class="programlisting">
+static int compare(const CHAR * aString1, const CHAR * aString2);
+static int compareIgnoreCase(const CHAR * aString1, const CHAR * aString2);
+</pre><p>
+Currently, the following searching functions exist; string in string, and reverse character search.
+</p><pre class="programlisting">
+static const CHAR * find(const CHAR * aStringSrc, const CHAR * aStringToFind);
+static CHAR * findLast(const CHAR * aString, const CHAR aChar);
+</pre><p>
+The following functions return the size of the string in characters and in bytes:
+</p><pre class="programlisting">
+static INT32 getLength(const CHAR * aString);
+static INT32 getLengthInBytes(const CHAR * aString);
+</pre><p>
+And finally, the next function joins two strings together to form a longer string. Optionally you can set a delimiter character. If zero, no delimiter is inserted between the two strings.
+</p><pre class="programlisting">
+static CHAR * concat(const CHAR *aString1, const CHAR *aString2, CHAR aDelimiter=0);
+</pre><p>
+The <tt>XFuTokenizer</tt> utility can be used to tokenize strings. This class works slightly differently from other classes in the core in that it does not follow the new/create pattern. Instead, you can use it as a local variable, and reuse it without deletion.
+</p><p>
+Example of use:
+</p><pre class="programlisting">
+const CHAR blah = XFCSTR(&quot;some; string with ; different tokens&quot;);
+
+XFuTokenizer myTokens;
+myTokens.tokenize(blah, XFCSTR(&quot;;&quot;));
+for (int i = 0; i &lt; myTokens.getTokenCount(); i++)
+  if (tokenEqualsNocase(XFCSTR(&quot;String wIth&quot;))
+      printf(&quot;token number %d is our token&quot;,i);
+</pre><p>
+The tokenizer object has the following methods:
+</p><pre class="programlisting">  
+void tokenize(const CHAR *aBuffer, const CHAR *aSeparators);  
+void tokenize(const CHAR *aBuffer);
+INT tokenEquals(INT32 aIdx, const CHAR *aCompareString);
+INT tokenEqualsNocase(INT32 aIdx, const CHAR *aCompareString);
+INT32 getTokenCount();
+const CHAR * getToken(INT32 aIdx);
+CHAR * duplicateToken(INT32 aIdx);
+</pre><p>  
+The <tt>getToken()</tt> returns a pointer to the tokenizer's internal data. Thus, if you call <tt>tokenize()</tt> again, or if the object leaves scope, the pointer will be invalid. In this case you should call <tt>duplicateToken()</tt> instead.
+</p><p>
+A simple parser can be made with the tokenizer by first reading a whole text file into a buffer, tokenizing that by the newline characters, and then looping through the lines, tokenizing each line separately.
+</p></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt02.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 2. Platforms </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 4. Artists</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

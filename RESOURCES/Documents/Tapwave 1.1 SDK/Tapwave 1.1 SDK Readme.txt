@@ -1,0 +1,451 @@
+*********************************************************************
+*                    Tapwave SDK - Readme File                      *
+*                                                                   *
+* IMPORTANT: Read before using the Tapwave Software Developer's Kit *
+*********************************************************************
+
+This SDK is designed for PalmOS 68k and Tapwave Native Application
+(TNA) development using Metrowerks CodeWarrior 8.x, 9.x and Microsoft
+Visual C++.
+
+68k/PACE Development:
+
+This SDK can be used with many different development environments
+for 68k/PACE development This SDK must be used along with Palm OS 
+SDK 5.0 R2 headers and libraries (It has not been tested with earlier
+versions of the Palm OS SDK).  You can obtain the Palm OS SDK from
+Palm Source (http://www.palmsource.com).
+
+Tapwave Native Application for device:
+
+This SDK should be used with Metrowerks CodeWarrior 9.3 for Tapwave
+Native Application development.  It may be possible to use this SDK with 
+other toolkits (such as CodeWarrior 8.x, 9.0 or gcc), but many runtime 
+features will be missing.
+
+Tapwave Native Application for Palm OS Simulator:
+
+This SDK should be used with Microsoft Visual C++ 6.0 with SP5 for
+Palm OS Simulator development.  It should also work with any compiler 
+that is capable of compiling standard Win32 DLLs.
+
+=====================================================================
+ WHAT'S INCLUDED IN THE SDK                             
+=====================================================================
+
+* Documentation
+  Tapwave developer documentation
+
+* Incs
+  PalmOS header files modified to support multiple compilers;
+  including Metrowerks 68K and ARM, GCC 68K and ARM, Visual C++
+
+* Incs/TapWave
+  Tapwave header files, which support various compilers
+
+* PalmSim
+  Debug Palm OS Simulator for the Tapwave platform
+
+* ROMs
+  ROM images for the Palm OS Simulator.  Also includes the Revert.prc
+  to revert your device back to a 1.0 ROM.
+
+* Samples
+  Sample projects
+
+* X-Forge
+  X-Forge development kit, which has its own documentation
+
+* Tools
+  Various development tools
+
+* ARM_EABI_Support
+  CodeWarrior runtime library for developing Tapwave Native Applications.
+  This library should be used along with CodeWarrior 9.3
+
+=====================================================================
+ WHAT'S NEW  / ENHANCEMENTS AND FIXES    --   1.1 (04/02/04)                        
+=====================================================================
+
+* Bug Fixes
+  Many OS bugs have been fixed.
+
+* TwMidi
+  New Midi API to enable fully asynchronous playback.
+
+* TwGfx
+  TwGfxTypeTag and TwGfxSurfaceTypeTag have been removed from the
+  header file.
+
+
+See below for a change history of the software developer's kit.
+
+=====================================================================
+ KNOWN ISSUES                                                      
+=====================================================================
+
+* SYSTEM_CALLBACK
+  SYSTEM_CALLBACK is __declspec(pce_native_callback) does not work in thumb 
+  mode and does not work for C++ class functions.
+
+* Palm OS Simulator
+  Support for 8-bit color is currently broken.  Palm Simulator may also crash
+  upon reset due to a problem reloading globals.
+
+
+=====================================================================
+ INSTALLATION INSTRUCTIONS - CODEWARRIOR 9.3 UPDATE
+=====================================================================
+
+1.  Perform a clean install of CodeWarrior v9.
+
+2.  Install the CodeWarrior v9.3 upgrade patch.
+
+=====================================================================
+ INSTALLATION INSTRUCTIONS - TAPWAVE SDK                                       
+=====================================================================
+
+1.  Locate the "(Other SDKs)" folder which is in the "CW for Palm OS Support"
+    folder within your Codewarrior installation.
+
+2.  Move all of the items in the Tapwave SDK folder into the "(Other SDKs)"
+    folder.
+
+
+Tapwave, Inc.
+1901 Landings Drive
+Mountain View, California 94043
+(650) 960-1817
+http://www.tapwave.com/developer
+
+
+
+=====================================================================
+Change History:
+
+R14 (02/18/04)
+* Bluetooth Multiplayer
+  Multiplayer API refined and implemented.
+* Documentation
+  New documentation has been added for the new APIs.
+* Samples
+  Many changes/fixes have been made to the SimpleInstaller sample.  There
+  are also a number of new samples.
+* Bug Fixes
+  Many OS bugs have been fixed.
+
+R13 (12/24/03)
+* Updating the Device ROM
+  You MUST hard-reset your device after running Update.prc.  This is a
+  bug that will be fixed in a future version of Update.prc.  Also ensure
+  that your device is plugged-in before updating.
+* Tools Requirements
+  This SDK requires the Codewarrior 9.3 patch which is available from
+  the Metrowerks Beta seeding program. 
+  http://www.metrowerks.com/MW/Services/Beta/default.htm
+* PalmSim DAA
+  DevAccess_PalmSim.prc was moved into it's own folder at /Tools/DAA.
+* Installation Changes
+  The SDK installation instructions have changed.  The ARM_EABI_Support
+  folder should no longer be placed in the Metrowerks folder.
+* Multiplayer Game API
+  This new API will allow the host of a bluetooth game to send invitations 
+  to other players who are not running the game, but have the game on their 
+  Zodiac.  They can then accept or reject the game invitation.  If the 
+  invitation is accepted the game is launched.  See the TwMp.doc document
+  for more information.
+* Sound/Graphics Changes
+  Changes have been made to TwGfx.h, TwJpg.h, TwSnd.h, and TwMidi.h.  See
+  the TwGfx.doc, TwSnd.doc, and TwJpg.doc documents for more information.
+* New TNA APIs
+  Many new TNA APIs have been added.  See TwGlue.h for more information.
+* Startup.cpp
+  Many file io fixes have been added to Startup.cpp.
+* Bug Fixes
+  Many OS bugs have been fixed.
+
+R12 (10/23/03)   
+* Navigation Application
+  A signed version of the Navigation sample is included in the Tools
+  directory.
+* PINS Changes
+  Many PINS changes to fix various PINS bugs.
+* Tapwave Desktop and Installer
+  Tapwave desktop files are included in the Desktop directory and a
+  new sample called SimpleInstaller is included in the Samples
+  directory.
+* New Samples
+  New samples can be found in the Samples directory.
+* PINS1.1 Constant
+  The PINS1.1 version constant was changed to 0x01103000 to match 
+  PalmSource's 5.0 SDK R2
+* New TNA Functions
+  Added TwSecGetFunctions(), FrmGetActiveForm(), FrmGetWindowHandle(), 
+  and SysCurAppDatabase() to the TNA framework.
+
+R11 (9/28/03)
+*  New DRM Sample
+   A new DRM sample called HardenedSecurity is available in /Samples.
+*  TwBatteryState
+   Added the TwBatteryState API.
+*  Compatible Key Changes
+   Removed the "Tungsten" flavor of compatible keys.  Now Tapwave keys 
+   are first enqueued and then old-style keys are enqueued regardless 
+   of whether the Tapwave key is handled.
+*  Tapwave Native Application
+   Startup.cpp replaces ARMlet.cpp to avoid copyright issues.  Code will
+   need to be recompiled using this new file.
+*  ARMLET_CALLBACK
+   ARMLET_CALLBACK renamed to SYSTEM_CALLBACK to avoid copyright issues.
+*  DRM
+   The DRM mechanism is enabled starting with the R11 ROMs.  Applications
+   that use TwGfx or TwInput APIs will require a signature.  
+
+   A new DevAccess PRC is available in the /Tools/DRM directory to disable
+   DRM checking on the Simulator.  A DevAccess PRC for the device will be 
+   available via the Tapwave website soon.  These PRCs are only for use
+   during application development.
+*  Bug Fixes
+   Many many OS bugs have been fixed.
+
+R10 (9/12/03)
+*  PenInputMgr.h
+   Cleaned up so that it works with the latest Palm OS SDK.
+*  TwGfxAllocSurface 
+   TwGfxAllocSurface now takes a new value for "location".  You can now
+   specify twGfxLocationAcceleratorMemory or 
+   twGfxLocationAcceleratorMemoryNoBackingStore
+
+   This change is to work around a sleep bug with the ATI chip -- the chip
+   doesn't keep it's memory contents refreshed during sleep. Using 
+   twGfxLocationAcceleratorMemory means that your surface will be
+   cached into RAM when the device is put to sleep and loaded back into the
+   graphics chip when the device wakes.
+
+   If your application uses a very large surface, then you might want to use
+   twGfxLocationAcceleratorMemoryNoBackingStore instead and refresh it
+   yourself when the device wakes.
+*  TwGfxGetPalmDisplaySurface 
+   We highly recommend developers use the TwGfxGetPalmDisplaySurface rather than
+   TwGfxGetDisplaySurface.  TwGfxGetPalmDisplaySurface will handle PINS changes
+   and clipping better than TwGfxGetDisplaySurface.
+*  Navigation Sample
+   Modified to use the correct PenInputMgr.h file and also to use the correct
+   constant for PINSetInputAreaState.
+
+R9 (9/05/03)
+*  Bug Fixes
+   This ROM includes many bug fixes.
+*  Sound API
+   TwSndPlaySystemSound takes a volume argument, SndSetDefaultVolumes ignores 
+   app/master volume, SndGetDefaultVolume always returns 100% for preferred 
+   app volume, Sound panel and power control slip play volume beep at app volume 
+   instead of system volume.
+*  New Sample
+   CodeCompress has been added to the SDK Samples folder.
+
+R8 (8/28/03)
+*  Framebuffer Access
+   We now provide direct access to the 16-bit framebuffer.
+*  winEnterEvent/winExitEvent
+   Tapwave Native Applications must return false for winEnterEvent or winExitEvent
+   in orderto be compliant with the PINS specification.
+*  TwGfx API
+   TwGfx now uses a unique display and palm surface for each library
+   instance.
+*  HotSync
+   To force a USB HotSync, hold down the left trigger button when starting the 
+   sync.  To force a serial HotSync, hold down the right trigger button.
+*  Navigation Application
+   A navigation test application is now included in the Samples folder.
+*  Palm OS Simulator
+   The Palm OS Simulator now correctly supports zoom.
+*  TwGetSlotNumberForVolume Constants
+   The following constants were added for use with the TwGetSlotNumberForVolume
+   API:  
+
+        #define twSlotUnknown          -1
+        #define twSlotInternal          0
+        #define twSlotLeft              1
+        #define twSlotRight             2
+
+*  TwGetGraphicForButton
+   Added new button artwork for the TwGetGraphicForButton API.  Standard button
+   size is now 11x11.  Added real button images for nav, function, and trigger.
+   Note that Bluetooth, Home, and Power currently do not have graphics and return
+   NULL.
+*  Key Mapping
+   If an app calls FtrGet(navFtrCreator, navFtrVersion) to test for Tungsten-style
+   5-way navigation, then we change the compatibility key bit mappings.  Otherwise, 
+   we keep old-style key code mappings.
+	
+	Old Style:
+	   Action A -> keyBitPageUp
+	   Action B -> keyBitHard4
+	   Action C -> keyBitPageDown
+	   Action D -> keyBitHard3
+	   Nav Up   -> keyBitPageUp
+	   Nav Down -> keyBitPageDown
+	   Nav Left -> keyBitHard1
+	   Nav Right -> keyBitHard2
+	
+	Tungsten-compatible (if app calls FtrGet):
+	   Action A -> keyBitHard2
+	   Action B -> keyBitHard4
+	   Action C -> keyBitHard3
+	   Action D -> keyBitHard1
+	   Nav Up   -> keyBitPageUp
+	   Nav Down -> keyBitPageDown
+
+*  TwCofirmQuit
+   Added TwConfirmQuit to aid in displaying a quit confirmation dialog in games.
+*  WinExitEvent
+   We are more careful about the fake winExitEvent we send now.  If we send one 
+   directly to the form, we prevent the OS from sending another one.
+*  Malloc Functions
+   Implement ANSI/POSIX compliant malloc functions, because they are much more
+   convenient than <MemoryMgr.h> functions.  
+
+R7 (8/12/03)
+*  Palm OS Debugger
+   This version of SDK includes support for Palm OS Debugger over
+   serial connection. The application built on top of Tapwave
+   sample automatically contains debugger support.  You can download
+   the debugger from PalmSource once it is available.  It will also
+   be included in this SDK when available from PalmSource.
+*  Tapwave Native Application Runtime
+   This runtime provides basic support for module loading/unloading,
+   debugging support, and module info query.
+
+R6 (7/29/03)
+
+*  Add PhotoListSetThumbStatus, PhotoListUpdateThumbData, PhotoListGetThumbData
+*  Add TwGetSlotRefNumForSlot - given a physical slot number (1 or 2), this
+   function returns the ExpansionMgr slotRefNum for the slot.
+*  Many bug fixes to MemFS.
+*  Added TwGetDBDataDirectory and TwGetPRCDataDirectory.  Both fill in the 
+   pre-allocated pathNameP with the full path (terminated with '/') of the 
+   data directory.  You should be able to pass this to VFSFileOpen and then 
+   (if the directory exists), use VFSDirEntryEnumerate to get all the files.  
+   You pass the max buffer length.  54 should be enough space for normal 
+   directory names, but with resource overrides this could get longer.
+	
+   The DB version takes a (closed) DB reference, or pass NULL to use the current 
+   UI app's DB.  The DB version will also fill in the volRefNum for the volume 
+   which contains the original app -- useful for apps that are launched from cards.  
+   It'll be the internal MemFS volume for internal apps (or unusual launch codes), 
+   and may be vfsInvalidVolRef if there is some kind of weird situation (like MemFS 
+   is not running/mounted.)
+   
+   The PRC version does not give you the volume data, because we assume you know 
+   which volume holds the file.
+*  Add BSD socket for Tapwave Native Applications.
+*  Add network initialization functions, NetInit and NetFini.
+*  Add TwAppRun for event loop, which supercedes TwNextEvent.
+*  Add simple semaphore interface, TwSemaphoreCreate, TwSemaphoreDelete,
+   TwSemaphoreAcquire, TwSemaphoreRelease. They are needed for
+   synchronizing sound callback functions.
+*  Add new native functions, TwGetDBDataDirectory, TwGetPRCDataDirectory,
+   TwGetSlotNumberForVolume, TwHighScoreGetTournament,
+   SysBatteryInfo, SysGetROMToken;
+*  Added a"theme" color picker.
+*  Added TwGetMicroSeconds.
+
+R5 (7/18/03)
+*  The DRM signing tool is now included.
+*  More graphics acceleration.
+*  Three new Native APIs: TwGetMicroSeconds, TimSecondsToDateTime,
+   TimDateTimeToSeconds
+*  Addition of TwBlendMask.
+*  DRM enhancements.
+*  Dates in the High Score API are now stored as UTC.
+*  Many MemFS fixes.
+*  Changed prototype of JPGLibGetPhotoInfo.
+
+R4 (7/11/03)
+*  The Beta X-Forge Tapwave libraries are now included.  These require
+   Codewarrior 9.2.
+*  Updates to the high score database.  Added TwHighScoreGetTournament
+   function.
+*  Added TwGetGraphicForButton.
+*  Added TwGfxDrawPalmBitmap to Tapwave Native Application interface.
+*  Changes to TwInput functions.  Added missing cases for twInputNavUp..
+   twInputNavLeft.  Changed navigation threshold to 75%.
+*  Added startup behavior:
+	- Action C bypasses animation
+	- Action C skips welcome application.
+	- Holding Function while pressing Action C throws out all
+	  calibrationn data.
+*  Added DRM functions and updated documentation.
+
+R3 (7/01/03)
+*  A keyUpEvent event is now generated for for all hard buttons. For each
+   first pressed button, there is a matching keyUpEvent generated
+   after ALL keys are released. Please note keyDownEvent that
+   carries autoRepeatKeyMask will not have matching keyUpEvent.
+   Applications can also look at willSendUpKeyMask to see if it should
+   expect a keyUpEvent.
+*  Added TwSnd.doc to the documentation directory.  Fixed various sound bugs.
+*  Removed the last argument from TwGfxDrawBitmap.  Use TwGfxTransparentBlt
+   if you need the aTransparentBG functionality.
+*  Added a new error code for the high score manager if a score type is not 
+   registered.
+*  TwGfxDrawPalmBitmap API added.
+*  Added X-Forge documentation and Windows libraries.
+
+R2 (6/24/03)
+*  Fixed problem with rumbler stopping when switching from one play mode 
+   to another (or to itself).
+*  Simplify game button and navigation translation by putting the
+   translation in FrmHandleEvent.  Developers who want to custompize handling
+   of 5-way navigation, trigger, action, and function buttons need to be
+   careful not to call FrmHandleEvent after interpreting the keyDownEvent.
+*  The Palm OS bluetooth APIs are now included.  These API's will allow you to 
+   write multiplayer games and other interactive applications.  Two versions of 
+   the API's are supported -- the full set of API's (as documented in the "PalmOS 
+   Programmer's API Reference, PalmOS 5 SDK", Part IV, "Bluetooth Library", 
+   accessible from your 68K application.  And a subset of these API's accessible 
+   as ARM API's from your ARM-code application.  See the "Tapwave Programmers 
+   Reference Guide" for a list of Bluetooth APIs supported for ARM applications.
+*  Many changes have been made to the TwGfx API.  The following API's have been
+   added:
+   	TwGfxAsyncBlt
+   	TwGfxTransparentBlt
+   	TwGfxMaskBlt
+   	TwGfxBlendBlt
+   	TwGfxMaskBlendBlt
+   	TwGfxGetPalmDisplaySurface
+   	TwGfxWriteSurfaceRegion
+   	TwGfxReadSurfaceRegion
+   The following APIs have been modified:
+   	TwGfxWriteSurface now honors the async flag (need updated hardware for 
+   	this to display properly).
+   	TwGfxReadSurface now honors the async flag
+   	TwGfxDrawBitmap now "supports" palette bitmaps; however, the API is included
+   	but the implementation is forthcoming.
+
+R1 (6/12/03)
+*  All Tapwave traps have been renumbered.  You will need to recompile
+   your application with this SDK in order for it to run on the ROM included
+   in this and future SDKs.
+   The trap numbers should now be stable for future development.
+*  Various Rumbler Fixes/API Change.
+*  Added MenuHandleEvent to ARMlet interface.
+*  TwGfxMaskBlendBlt and TwGfxMaskBlt are now implemented.
+*  Parameter change to TwStart.
+*  Added sound volume control to ARMlet interface.
+*  Renamed TwGetEvent to TwNextEvent.
+
+6/6/03
+*  SysTaskDelay added to TwGlue.h.
+*  The Tapwave creator ID was changed to 'Tpwv' in TwDefs.h.
+*  Many changes to TwGfx.h.
+*  Earlier versions of this SDK supported Palm OS 5.x native 32-bit
+   development for both ARM and the Palm OS Simulator, however this
+   is no longer supported due to compatibility problems.
+
+5/22/03
+*  Added PhotoListGetImageStatus() and PhotoListSetImageStatus() API.  The next SDK
+   will include additional header files for this API.
+*  The screen orientation functions are moving to a new header file.  The next SDK
+   will include the correct header files for those APIs.

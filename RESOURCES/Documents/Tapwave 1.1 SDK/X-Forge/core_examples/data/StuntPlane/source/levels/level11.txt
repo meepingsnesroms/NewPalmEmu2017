@@ -1,0 +1,64 @@
+# Highway
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 2920, 0, 70, HIGHWAY 
+
+# Forward speed of the plane: Default is 128.
+
+PLANESPEED = 300
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 1
+
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+
+HOOP=hoop0.pcx,  -10,  60,  100,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -20,  70,  200,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -30,   80,  300,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -40,   70,  400,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -50,   60,  500,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -40,   50,  600,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -30,   40,  700,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -20,   30,  800,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -10,   20,  900,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  0,   10,  1000,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  10,   20,  1100,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  20,   30,  1200,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,   20,  1300,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  40,   10,  1400,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,   0,  1500,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  20,   -10,  1600,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  10,   -20,  1700,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  0,   -30,  1800,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  10,   -40,  1900,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  20,   -30,  2000,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,   -20,  2100,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  40,   -10,  2200,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,   -20,  2300,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  20,   -30,  2400,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  10,   -40,  2500,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  0,   -50,  2600,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -10,   -40,  2700,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -20,   -30,  2800,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -10,   -20,  2900,   0,   0,  20.0,    o
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+# NOT FOR THIS ONE, BABY!
+
+#BONUS=bonusballoon.pcx,     0,  10,   680,   50
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  0,  160,  0 
+

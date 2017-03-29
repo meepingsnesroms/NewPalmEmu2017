@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 17. GL Profile Analyzer</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt06.html" title="Part VI. Tools"><link rel="previous" href="ch16.html" title="Chapter 16. Profile Analyzer"><link rel="next" href="ch18.html" title="Chapter 18. XFF Dependency Tool"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 17. GL Profile Analyzer</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16.html">Prev</a> </td><th width="60%" align="center">Part VI. Tools</th><td width="20%" align="right"> <a accesskey="n" href="ch18.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id433499"></a>Chapter 17. GL Profile Analyzer</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch17.html#id433508">Overview</a></dt><dd><dl><dt><a href="ch17.html#id433326">Binary log format</a></dt><dt><a href="ch17.html#id433385">GLProfileAnalyzer output</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id433508"></a>Overview</h2></div></div><p>
+The GL Profile Analyzer can be used to analyse the run-time performance of an X-Forge application.
+</p><p>
+The analysis consists of two phases. First, samples are recoded by using the profiling GL device (by calling the <tt>xfcUseGLDefaultProfiler()</tt> function in <tt>xfcAppInit()</tt>). Each time the device is initialized it creates a file by the name of <tt>xflog000.dat</tt> in the application directory, and starts storing event information into that file.
+</p><p>
+Events stored by default include frame events and polygon draw events. User can add more events by calling the <tt>xfcGLProfilerLog(UINT32 aEvent, UINT32 aValue)</tt> function (defined in the <tt>XFcGLProfiler.h</tt> header file).
+</p><p>
+The second part of the analysis is done by feeding the binary log file to GLProfileAnalyzer tool (located at <tt>/tools/GLProfileAnalyzer</tt> in the x-forge distribution). This tool parses the binary information and outputs several tabbed text files, which can be imported to Microsoft Excel or some other spreadsheet program for further study.
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+If you're only interested in the frame events (or if you want to use the fillers' id values for some other reason), call xfcGLUseDefaults() after you initialize the gl device. This will override the profiler fillers can will call the fillers directly.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433326"></a>Binary log format</h3></div></div><p>
+Each sample in the binary log consists of a single 16-bit value, split between 6-bit event id (0..63) and 10-bit event value (0..1023). 
+</p><p>
+Event id 0 is the frame event; the value is the frame time, in milliseconds.
+</p><p>
+Event ids 1 through 41 are fillers; complete list of the events can be found in the <tt>XFcGLProfiler.h</tt> header file. The value for the fillers is in approximate pixels drawn (any triangles with more than 1023 pixels are recorded as taking 1023 pixels, so this value is not useful for calculating overdraw complexity).
+</p><p>
+Event ids 42 through 63 are currently unused.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433385"></a>GLProfileAnalyzer output</h3></div></div><p>
+The GLProfileAnalyzer tool outputs four tabbed files: <tt>framestats.txt</tt>, <tt>framestats_detailed.txt</tt>, <tt>PolySizeTotal.txt</tt> and <tt>PolySizeDetailed.txt</tt>.
+</p><div class="mediaobject"><img src="images/framestats.gif"></div><p>
+The <tt>framestats.txt</tt> file contains three pieces of information per frame: the FPS, polycount and pixel count. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Since the samples are recorded at polygon filler level, the polycounts listed here are <span class="emphasis"><em>rasterized</em></span> polygons, not the ones the application wants to render. Culling, clipping, etc. drops polycount as much as 50% in a typical case.
+</p></div><div class="mediaobject"><img src="images/framepolys.gif"></div><p>
+For more detailed view, the <tt>framestats_detailed.txt</tt> file contains the frame time in milliseconds, and polygon and pixel counts per filler.
+</p><div class="mediaobject"><img src="images/polysizes.gif"></div><p>
+The <tt>PolySizeTotal.txt</tt> file contains counts of the polygon sizes. This can be used to see whether there is an abnormal amount of large polygons, for example.
+</p><div class="mediaobject"><img src="images/textureaddpolycount.gif"></div><p>
+Finally, the <tt>PolySizeDetailed.txt</tt> contains the polygon counts per size for every filler.
+</p><p>
+All of the charts above were generated with Microsoft Excel.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch18.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 16. Profile Analyzer </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 18. XFF Dependency Tool</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

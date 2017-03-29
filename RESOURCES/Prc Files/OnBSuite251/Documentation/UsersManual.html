@@ -1,0 +1,1690 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<title>The OnBoard Suite User's Guide</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<pre><span style="font-size:20pt; font-weight:bold">
+The OnBoard Suite User's Guide<br /></span>
+<span style="font-size:14pt">v1.3</span>
+</pre>
+
+<p>
+<b><u>Copyright</u></b> 2002-2004, Wade Guthrie. Permission is granted to 
+copy and 
+redistribute this document so long as it is unmodified (including the section
+that describes where to get this document for free) and the copyright 
+remains intact.  This should really be copyrighted by the OnBoard C group
+(both Yahoo! and SourceForge) since much of this has been gleaned from 
+that discussion group but I don't
+know if that would be legally binding.  The purpose of the copyright, anyway, 
+is just to make sure that no one charges for the information, such as it is, 
+that we're giving away for free.</p>
+
+<p>
+<b><u>Location</u></b>.  The latest version of this document can be obtained 
+(for free) from
+<!-- 
+<a href="http://sourceforge.net/projects/onboardc/">http://sourceforge.net/projects/onboardc/</a>
+in any of the releases under the <u>Latest File Releases</u>. -->
+<a href="http://onboardc.sourceforge.net/UsersManual.html">
+http://onboardc.sourceforge.net/UsersManual.html</a>.
+If you have any questions, comments, corrections or suggestions, 
+please don't hesitate to send them to <a href="mailto:wade@adventure101.com">
+wade@adventure101.com</a>.</p>
+
+<p>
+<b><u>Thanks</u></b>.  A special thanks goes to the incredible legion of
+talented individuals who have contributed to this document.  The list 
+(in alphabetical order) can be found at the end of this document. If I've 
+left anyone out, please contact me at the above address. </p>
+
+<p>
+<pre>
+<a name="toc" id="toc"><h2>
+<hr width="70%" align="left" />
+Table Of Contents</h2></a></pre>
+
+<a href="#intro"> 1. Introduction</a><br />
+<a href="#quickstart"> 1.1 Quickstart</a><br />
+<a href="#license"> 1.2 Licensing</a><br />
+<a href="#why_use"> 1.3 Why Use The OnBoard Suite?</a><br />
+<a href="#history"> 1.4 A Little History</a><br />
+<a href="#rqmts"> 1.5 Requirements</a><br />
+<a href="#help"> 1.6 Where To Go For Help</a></p>
+
+<p>
+<a href="#installation"> 2. Installation</a><br />
+<a href="#dist"> 2.1 The OnBoard C Distribution</a><br />
+<a href="#needed"> 2.2 Other Stuff You Might Need</a><br />
+<a href="#install"> 2.3 Install The OnBoard Suite</a><br />
+<a href="#upgrade"> 2.4 A Word or Two About Upgrading </a> (including
+rebuilding the headers)</p>
+
+<p>
+<a href="#tutorial"> 3. User's Tutorial</a><br />
+<a href="#not_programmer"> 3.1 If You're Not Already A Palm Programmer (in C). . .</a><br />
+<a href="#start-coding"> 3.2 If You're An Old Hand At Writing Palm Code. . .</a></p>
+
+<p>
+<a href="#about"> 4. About The Language</a><br />
+<a href="#not-ansi">4.1 How is OnBoard C different from ANSI standard C?</a><br />
+<a href="#stdio">4.2 stdio vs. Palm api</a><br />
+<a href="#limits">4.3 Limits</a></p>
+
+<p>
+<a href="#beyond-basics"> 5. Beyond the Basics</a><br />
+<a href="#editor"> 5.1 Support For Other Editors</a><br />
+<a href="#internal">5.2 Some Dirty Internal Details</a><br />
+<a href="#api">5.3 Adding New APIs</a><br />
+<a href="#hack">5.4 Building A Hack</a><br />
+<a href="#segments">5.5 Multi-Segmented Code</a><br />
+<a href="#autoversion">5.6 Using OnBoard C's Auto-Versioning</a></p>
+
+<p>
+<a href="#reference"> 6. Reference Guide</a><br />
+<a href="#menus"> 6.1 Menus Buttons And Check Boxes</a></p>
+
+<p>
+<a href="#answers"> 7. Answers To A Few Questions</a><br />
+<a href="#q-platform">7.1 Can I write code for some Palm platforms and have it work on others?</a><br />
+<a href="#q-stack">7.2 Is it possible to compile with a larger stack with OnBoardC?</a><br />
+<a href="#q-header">7.3 How do you generate a header file from RsrcEdit?</a><br />
+<a href="#q-prc">7.4 How do you share my OnBoard C projects with CodeWarrior or the PRC-Tools?</a></p>
+
+<p>
+<a href="#problems"> 8. Common Problems</a><br />
+<a href="#p-nodes">8.1 Out Of Node Space</a><br />
+<a href="#p-unknown">8.2 Unknown Identifier &lt;Palm API&gt;</a></p>
+
+<p>
+<a href="#thanks"> 9. Thanks!</a></p>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<pre>
+<a name="intro" id="intro"><h2>
+<hr width="70%" align="left" />
+1. Introduction</h2></a></pre>
+
+This document is a user's guide for the OnBoard Suite (which is comprised 
+of the OnBoard C compiler, the OnBoard assembler, and the SrcEdit programmer's 
+editor).  OnBoard C is a wonderful C compiler written by Roger Lawrence of 
+Individeo.  It runs on, as well as 
+builds code for, the <a href="http://www.palmsource.com">Palm</a> handheld 
+platform (with the help of the OnBoard assembler).  
+
+You can always get the latest version of the tools 
+<!-- (including this document) -->
+from the following address:</p>
+
+<p>
+<pre>
+	<a href="http://sourceforge.net/projects/onboardc/">http://sourceforge.net/projects/onboardc/</a>
+</pre>
+
+The OnBoard C compiler creates a Palm executable or (at the programmer's 
+option) a Hackmaster hack.  You can beam your new program or hotsync it to 
+another Palm if you like.  It requires nothing but a Palm (w/ the Palm OS 
+in ROM so your code can take advantage of the library that's there).  It 
+does not need a separate run-time library.</p>
+
+<p>
+<a name="quickstart" id="quickstart" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.1 Quickstart</span></pre></h3>
+
+If you are fully familiar with Palm programming, you might want a quick way to
+get started with the OnBoard Suite.  That's described here.  If you're not an
+expert at this stuff, however, you might want to check out some of the other
+sections of this document.</p>
+
+<p>
+In order to get that quick start we talked about, do the following:
+
+<ul>
+        <li> <a href="#intro">Download the tools.</a></li>
+        <li> <a href="#install">Install the tools.</a></li>
+        <li> <a href="#project">Create a project.</a></li>
+        <li> <a href="#compile">Compile and run your program.</a></li>
+</ul>
+</p>
+
+<p>
+<a name="license" id="license" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.2 Licensing</span></pre></h3>
+
+The OnBoard C compiler, the OnBoard Assembler, and SrcEdit are provided under
+the GNU General Public License (GPL).  There should be a file in your OnBoard
+Suite distribution entitled 'COPYING.txt' -- this file provides the entire
+license.  If you can't find this file (or if you just want to), feel free to 
+check out the 
+<a href="http://www.fsf.org/licenses/gpl.html">Free Software Foundation website</a>.
+</p>
+
+<p>
+A quick note about this license.  This license does NOT constrain code that
+you write and compile with any portion of the OnBoard Suite.  You can write a
+program with SrcEdit, compile it with OnBoard C/OnBoard Asm, and sell the
+executable all day long.  You do not have to give away the source to your code
+just because you used OnBoard C.  In fact, the SourceForge OnBoard Suite
+people (i.e., the people who hold the copyright over this stuff) have agreed 
+not to apply the GPL to the skeleton application that is generated by the
+OnBoard Suite -- you can start commercial applications with the skeleton.
+</p>
+
+<p>
+<a name="why_use" id="why_use" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.3 Why Use The OnBoard Suite?</span></pre></h3>
+
+OnBoard C is a C compiler for the Palm.  There are other compilers for the
+Palm (e.g., CodeWarrior, GCC, PocketC) so why use OnBoard Suite?  Here are
+some of the reasons.
+
+<ul>
+	<li> OnBoard C uses native PalmOS APIs, so most of what you learn 
+	  can be applied to "professional" tools like CodeWarrior and GCC.</li>
+	<li> Further, since OnBoard C uses native APIs, most of the source 
+	  code you will find in books written about coding Palms will work 
+	  with OnBoard C, as well as the majority of free samples available 
+	  online via Palm's website and other websites and Palm 
+	  programming forums.</li>
+	<li> OnBoard C compiles to native assembly, so your code will run FAST.</li>
+	<li> OnBoard C programs need no runtime and are thus easier to 
+	  distribute.</li>
+	<li> OnBoard C allows access to native GUI resources.</li>
+	<li> OnBoard C runs on your Palm.  Although some find this a bit 
+	  restrictive, others enjoy being able to code during their daily 
+	  commute on the train, on lunch breaks, etc. Some people just 
+	  enjoy being able to get away from the traditional workstation 
+	  they use every day.</li>
+	<li> You can compile and test your code immediately.</li>
+	<li> Many Shareware and Freeware apps built with OnBoard C have 
+	  been released to the public. With a little elbow-grease and time, 
+	  you can produce "professional-level" applications with OnBoard C.</li>
+</ul>
+</p>
+
+<p>
+<a name="history" id="history" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.4 A Little History</span></pre></h3>
+
+The OnBoard Suite was originally produced as a commercial product line (along 
+with the RsrcEdit resource compiler) by Individeo At some point in the Fall of 
+2000 the developers at IndiVideo went their separate ways and Roger Lawrence, 
+the one who developed OnBoard C, took the source code with him. Later, Roger 
+generously released the binaries for the compiler and assembler to be 
+distributed for free by the members of the OnBoard C community. RsrcEdit went 
+to <a href="http://www.quartus.net/">Quartus.net</a>, developers of an onboard 
+Forth compiler for the Palm, where it continues to be available as commercial 
+software. It remains a key component of the OnBoard C IDE, but if you need 
+support for that you'll have to visit Quartus.</p>
+
+<p>
+OnBoard C started on it's path to becoming free open source software in 
+March 2002, when Roger released the source to an editor he had built and 
+used personally, but never released. Originally called LED--now renamed 
+SrcEdit to avoid confusion with an existing product--this editor included 
+many features specifically for use with OnBoard C and has been actively 
+developed by the OnBoard C community. </p>
+
+<p>
+In May, contact was reestablished with Roger, and he was shown the work that
+had been done 
+on SrcEdit and asked if he might do one last build of OnBoard C for us that 
+would fix a couple of nagging issues we were having. Attached to his email 
+reply was the source code to the compiler and assembler.</p>
+
+<p>
+That effort resulted in the source to the OnBoard Suite 
+being placed under the GNU Public License (GPL) and put on the SourceForge
+site as an open source project.  Note: a resource compiler (like RsrcEdit) is 
+required to use the OnBoard Suite -- there are currently no GPLed resource
+editors that work with the OnBoard Suite.</p>
+
+
+<p>
+<a name="rqmts" id="rqmts" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.5 Requirements</span></pre></h3>
+
+The OnBoard Suite runs on handheld computers running Palm OS 3.x.  It
+may run under other versions of the operating system but it has been tested on
+these.</p>
+
+<p>
+When OnBoard C begins the initial compile it builds a 'pre-compiled' version
+of the header file OnBoardHeader.h - this occupies about 80k, but of course
+more memory is consumed during a compilation, in both the static and dynamic
+heaps. After installation, your Palm will still need about 200kb free in
+order to build the header file, though once it is built the compiler can
+get by with a lot less (about 40k + size of source file).
+</p>
+
+<p>
+<a name="help" id="help" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.6 Where To Go For Help</span></pre></h3>
+
+There are two main places to go for help with the OnBoard Suite.  Users can
+access the 
+<a href="http://groups.yahoo.com/group/OnBoardC">Yahoo OnBoard C discussion group</a>.
+It was created to support OnBoard Suite users.  There's a files section that
+contains documentation and other support material.  Developers (and users,
+alike) can access the
+<a href="http://sourceforge.net/projects/onboardc/">SourceForge site</a>.  The
+latest version of the OnBoard Suite can always be found there.  There is a
+discussion group (available through the 'Lists' link) available to both users
+and developers.  You can also visit the OnBoard Suite 
+<a href="http://onboardc.sourceforge.net/tasks.htm">task list</a>.</p>
+
+<p>
+You can always 
+<a href="http://sourceforge.net/tracker/?atid=478286&amp;group_id=55794">
+report bugs</a> and
+<a href="http://sourceforge.net/tracker/?atid=478289&amp;group_id=55794">
+request features</a> on the SourceForge site.  When you report a bug, please 
+do the following:
+<ul>
+	<li> go to the 
+<a href="http://sourceforge.net/tracker/?atid=478286&amp;group_id=55794">
+bug reporting site</a> and search (there's a search box on the left)
+	     to see if someone else has submitted the bug,</li>
+	<li> include a detailed description including the version
+	     number of the compiler, </li>
+	<li> explain the problem you see -- does the compiler crash,
+	     does the compiler generate an error message, does your
+	     code crash?</li>
+	<li> include a piece of code that will allow us to reproduce
+	     the problem.</li>
+</ul>
+</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<p>
+<a name="installation" id="installation">
+<pre><h2>
+<hr width="70%" align="left" />
+2. Installation</h2></pre></a>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="dist" id="dist" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.1 The OnBoard C Distribution</span></pre></h3>
+
+For any particular OnBoard Suite release, you can download one of 
+four different files from the SourceForge
+site.  You can download the source or just the executables and, for each of
+those, you can download a .zip archive or a .tar.gz archive.  If you download
+just a source archive, you'll have to build it (with the PRC tools or one of
+the other supported environments) to get the PRCs.  </p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="needed" id="needed" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.2 Other Stuff You Might Need</span></pre></h3>
+
+There will be some things other than the OnBoard Suite download that you'll
+need to be able to create code.
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>RsrcEdit </i> </span></pre></h4>
+	RsrcEdit (RsrcEdit.prc).  RsrcEdit builds the forms for the user 
+	interface.  Quartus, by the way, is grandfathering-in previously
+	registered owners of RsrcEdit.  You can get it from
+	<a href="http://www.quartus.net/products/rsrcedit/">here</a>.
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Documentation </i> </span></pre></h4>
+
+<ul>
+	<li> This User's Guide.</li>
+	<li> Some C language reference.</li>
+	<li> <a href="http://www.palmos.com/dev/support/docs/palmos">
+	Palm's docs.</a></li>
+	<li> <a href="http://www.daggerware.com/hackmstr.htm">
+	Hackmaster docs</a> (only if you're going to build a hack).</li>
+</ul>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Helpful Source Code </i> </span></pre></h4>
+
+Sometimes nothing helps like looking at someone else's code.  Here are some
+resources for Palm source code.
+
+<ul>
+	<li> <a href="http://www.palmos.com/dev/support/docs/recipes/">
+	Palm's docs.</a></li>
+	<li> <a href="http://www.palmopensource.com/">Palm Open Source.</a></li>
+	<li> <a href="http://sourceforge.net/">SourceForge.</a></li>
+	<li> <a href="http://www.codebeach.com/">Code Beach.</a></li>
+</ul>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Other Support Software</i> </span></pre></h4>
+
+None of this is absolutely necessary but the following code (all of it is
+free software, by the way) may make your OnBoard programming experience a 
+little better.
+
+<ul>
+	<li> <a href="http://www.79bmedia.com/crash/">Crash Hack</a>
+	     automatically resets your palm when it crashes (rather than
+	     having to find a paperclip to punch the reset button).  Crash
+	     Hack is Palm OS5 friendly.</li>
+	<li> <a href="http://www.palmgear.com/index.cfm?fuseaction=software.showsoftware&amp;prodid=9992">Filez</a> is a file manager that allows you to view and change </li>
+	     attributes of files on your Palm or expansion card.
+	<li> <a href="http://www.plkr.org/">Plucker</a> allows Palm users to
+	     view web pages on their handheld.  This is especially useful to
+	     OnBC programmers since Palm's API manual and programmer's 
+	     reference guide are both in Plucker format on the
+	     <a href="http://groups.yahoo.com/group/OnBoardC/files/Documents/Plucker/">
+	     Yahoo! Discussion Group</a>.  It is a bit of work to install the
+	     first time but it's worth it. </li>
+</ul>
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="install" id="install" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.3 Install The OnBoard Suite</span></pre></h3>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Install the OnBoard Suite</i> </span></pre></h4>
+
+In order to install the OnBoard Suite, unpack your distribution (e.g.,
+onboard_2_0_1b.zip).  On a MS-Windows platform, you can do this with WinZip,
+StuffIt, or even (with WinME, at least) with MS-Windows, itself.  On a Linux
+(or other Unix) platform, use 'tar' and 'gzip'.  Once you get things unpacked,
+install the following:
+
+<ul>
+	<li> <u>OnBoardC.prc</u>.  This is the C compiler.  OnBoardC manages the project files 
+	and compiles the C code into 68k Assembly language.  </li>
+
+	<li> <u>OnBoard.prc</u>.  The OnBoard Assembler links the 
+	resources during the compilation process (so in its most common 
+	use it is a utility used by OnBoardC, rather than a program that 
+	needs to be executed by the user.)  </li>
+
+	<li> <u>SrcEdit.prc</u>.  SrcEdit is a programmer's editor that 
+	allows you to edit DOC files for use as source files for your 
+	OnBoard C projects.</li>
+
+	<li> Pick one <u>OnBoardHeader_h.pdb</u>.  
+	There are several versions of the OnBoardHeader.h file.  OnBoard C 
+	uses one of these files to prototype the Palm OS Functions.  In 
+	general, you'll want to choose the most recent version number unless 
+	you're upgrading and trying to stay compatible with old code (more 
+	about that, below).  The OnBoardHeader files come in the OnBoard C 
+	distribution file and you'll have to remember to install <b>one</b> 
+	of them with the executables.  Install OnBoardHeader_h.pdb to support 
+	PalmOS v3.3, OnBoardHeaderV35_h.pdb to support PalmOS v3.5, or the
+	appropriate header for more recent versions.  Note that regardless of
+	the name on the host (OnBoardHeaderV35.h or whatever), it'll be called
+	OnBoardHeader.h when it gets to the Palm.</li>
+</ul>
+
+On MS-Windows, you can do this by double clicking on each of the files
+(assuming that you've installed the Palm Desktop).  There are 
+operating-system-specific ways to install Palm applications for many other
+host systems -- use whatever is appropriate.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Install the Other Stuff You Need (see above)  </i> </span></pre></h4>
+
+Unfortunately, the OnBoard Suite requires a component that's not free (it's 
+shareware).  In
+order to use the OnBoard Suite, you need to create resource files.  The
+software that does that is
+<a href="http://www.quartus.net/products/rsrcedit">RsrcEdit.prc</a>.  Get a copy
+of this software and install it like the other prc files.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Bring It Up</i> </span></pre></h4>
+
+Now that you've installed everything, go to your Palm and tap the OnBoard C
+icon.  When you do this for the first time, OnBoard C automatically goes to 
+New Project dialog.  When this happens, do the following.
+<ul>
+	<li>Give your project a name.</li>
+	<li>Check the 'generate skeleton' checkbox.</li>
+	<li>Tap the 'Doc' button on the right (to select the type of file for
+	    the skeleton).</li>
+	<li>Tap 'ok'.</li>
+</ul>
+
+Then, in the OnBoard C mainform, do the following.
+<ul>
+	<li>Check the 'execute' checkbox.</li>
+	<li>Tap 'build'.</li>
+</ul>
+
+And you're off and running!
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="upgrade" id="upgrade" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.4 A Word or Two About Upgrading
+</span></pre></h3>
+
+It's okay to upgrade a distribution just like you'd install a new
+distribution.  Unless the release notes say so, you don't have to remove the
+old version first.  There are, however, a couple of points to keep in mind.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>OnBoardCompatibility.h</i> </span></pre></h4>
+
+First, the Palm OS syntax changed slightly with version 2.2 of OnBoard C
+(that corresponds to OnBoardHeader40_h).  If you've got OnBoard C source code 
+from before this time, you'll want to either stick with a pre-OnBoardHeader40_h
+or add the OnBoardCompatibility.h file (which is part of post v2.2 OnBoard C 
+distributions) and include it in your source code.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Rebuilding OnBoardHeader.h</i> </span></pre></h4>
+
+After you sync a new header onto your handheld, don't forget to rebuild the
+header.  To do this, select <i>Options</i> off the OnBoard C menubar and then
+select <i>Delete Header</i>.  The next time you build some code, OnBoard C
+will rebuild the header.</p>
+
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="tutorial" id="tutorial"><h2>
+<hr width="70%" align="left" />
+3. User's Tutorial</h2></a> </pre>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="not_programmer" id="not_programmer" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+3.1 If You're Not Already A Palm Programmer (in C). . .</span></pre></h3>
+
+ Depending on your current programming knowledge, you may want to
+ attack the learning process differently.  Feel free to choose your own route
+ -- the OnBoard community will be happy to help you no matter what your
+ level of experience is.  The suggestions, here, are intended only to make 
+ your path to programming in OnBoard C as painless as possible.  </p>
+<p>
+ <i><b>Shameless Plug Alert</b></i>:  If you're just starting out with the 
+ Palm API, you might want to check out the
+ <a href="http://onboardc.sourceforge.net/cookbook.html">
+ Palm Programming Cookbook</a>.  It goes through learning about event driven
+ programming, discusses a skeleton Palm program, provides step-by-step 
+ procedures for building and handling many of the GUI items (buttons and 
+ menus, for example), and (best of all) does it from the point-of-view of 
+ an OnBoard suite programmer.</p>
+
+<p> 
+ Below, you'll find a guess at the level of difficulty you may encounter 
+ using OnBoardC based on various levels of programmer experience.
+
+<ol>
+	<li>If you've never programmed anything before, well, there are 
+	easier languages to start with than C and, frankly, easier platforms
+	to program than the Palm.  Even though the tenacious programmer 
+	*could* start with C, he'd probably do better to tackle this a bit
+	at a time.  If you're intent on Palm programming, A great place to 
+	start is with Basic
+	(<a href="http://www.hotpaw.com/rhn/hotpaw/">HotPaw Basic</a>
+	or <a href="http://smallbasic.sourceforge.net/">SmallBasic</a>
+	are good Palm Basic interpreters).</li>
+
+	<li>If you have programming experience, but have no C experience,
+	you might consider concentrating on vanilla C before you get into
+	targeting the Palm platform.  The complexities of event driven code
+	and the troubles of the Palm API will probably only complicate
+	matters.  Some have suggested working with 
+	<a href="http://www.orbworks.com/pcpalm/index.html">PocketC</a> (even 
+	though it is not 100% C) before starting with OnBoard C.</li>
+
+	<li>If you have experience in C but have never programmed for PalmOS 
+	and do not know anything about event-driven programming, you'll 
+	need to read the PalmOS Companion guide (not a bad idea, anyway) in 
+	<a href="http://www.palmos.com/dev/support/docs/">Palm's
+	documentation</a>.  You'll also want to learn how event-driven 
+	applications work by writing some test/experimentation apps to first 
+	familiarize yourself with this way of writing code.</li>
+
+	<li>If you have experience in C but have never programmed for PalmOS 
+	but have good knowledge about event-driven programming, you will 
+	only need to read the PalmOS Companion guide to familiarize your 
+	self with the Palm environment.  You will probably need to write 
+	some test apps first, to get the feel of the PalmOS architecture.</li>
+
+	<li>If you're already programming for PalmOS using the standard 
+	desktop tools, you won't have trouble at all using OnBoardC. Skip to 
+	<a href="#start-coding">the next section</a>.</li>
+</ol>
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+<a name="start-coding" id="start-coding" />
+3.2 If You're An Old Hand At Writing Palm Code. . .</span></pre></h3>
+
+ After you install the tools, you need to create source files as part of a 
+ project and get the project compiling.
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>So What's an OnBoard C Project?  </i> </span></pre></h4>
+
+ A project is a collection of source code (.c filename 
+ extension), header code (.h extension), and resource code (.rsrc 
+ extension)--that are the ingredients to any Palm OS application 
+ written in C. Headers list the declarations of all the native Palm 
+ OS functions that your source code may make calls to. The resource 
+ files (created in RsrcEdit) are the most convenient way to build the 
+ user interface for your program. Thus, the OnBoardC project defines 
+ which source, header, and resource files will be compiled and linked 
+ together to create a Palm executable. For those familiar with the 
+ CodeWarrior development environment, OnBoardC's use of the 
+ word "project" is essentially the same. 
+
+
+<a name="project" id="project" >
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Creating a Project</i> </span></pre></h4></a>
+
+ In OnBoard C:
+ <ul>
+	<li> From the OnBoard C menu bar, project-&gt;new project.</li>
+	<ul>
+		<li> Give your project a name.</li>
+		<li> Check 'generate skeleton'.</li>
+		<li> Pick an editor (DOC if you don't have a preference).</li>
+	</ul>
+	<li> Check 'execute'.</li>
+	<li> Tap 'build'.</li>
+</ul>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Creating and Editing Source Files</i> </span></pre></h4>
+
+ You'll eventually want to have more than one source file in a project.  To
+ create another file, bring-up SrcEdit (or another of the supported editors)
+ and create a new file.  Doc files have their own filenames but for other 
+ editors, you should name the file by making the first line a comment
+ containing only the file name:
+
+<pre>
+	/* foo.c */
+</pre>
+
+ Then, in the main form of OnBoard C, tap the 'Add' button.  Select the file
+ type (DOC Source for SrcEdit files), tap the file name, tap the 'Add' button,
+ and (when you've added all the files you wanted to), tap 'Done'.</p>
+
+<p>
+ Note: you don't have to add header (.h) files to your project.  They'll get
+ included through the #include directive in your source (.c) files.
+
+
+<a name="compile" id="compile">
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Building and Running Your Code</i> </span></pre></h4></a>
+
+ You can either build and run in the same step...</p>
+<p>
+ From the OnBoard C main form:
+ <ul>
+	<li> Tap the 'execute' checkbox.</li>
+	<li> Tap the 'build' button.</li>
+ </ul>
+
+ ...or you can do it in two steps.  First, you build it:<p>
+ <ul>
+	<li> Uncheck the 'execute' checkbox.</li>
+	<li> Tap 'build' and wait for the compiler to finished building.</li>
+</ul>
+
+Then, you run it (this is how you'll run your program when you're not in the
+process of working on it):
+
+<ul>
+	<li> Find your new application in your Palm launcher.  Tap 
+	 the 'home' icon in the silkscreen area and look in the 'Unfiled'
+	 folder (if you've used your application launcher to put a 
+	 previous version of your program in a different folder, the 
+	 new one will probably be in the same folder).  Note that
+	 the name of your application is the one you gave it on the 
+	 OnBoard C main form under 'PRC name'.</li>
+	<li> Launch your application (this is a launcher-specific thing but
+	 usually this is accomplished by tapping on the launcher icon).</li>
+</ul>
+
+
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Working with Your OnBoard C Program</i></span></pre></h4>
+
+ Now that you've built and run your skeleton code, you'll want to modify your
+ program.  You can edit your file by tapping on its name in the OnBoard C
+ mainform and tapping the 'Edit' button.  An editor appropriate to the file's
+ type (you selected this when the skeleton was created) will be launched with
+ your file.</p>
+<p>
+ Once you're done editing your file, you'll want to get back to OnBoard C.
+ SrcEdit has an icon to do this and pEdit also has a button for this purpose.
+ With any other editor, you can go through your application browser or use one
+ of the many hacks (e.g., 
+ <a href="http://www.MikeMcCollister.com/palm">McPhling</a>) that bounces you
+ back and forth between applications.</p>
+<p>
+ At this point, tap 'build' again.</p>
+<p>
+ If there are compile errors, a dialog box will appear explaining the error.
+ If you tap the 'goto' button on the dialog box, OnBoard C will launch your
+ editor with the offending file at the offending line.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Debugging  </i> </span></pre></h4>
+
+ There are several tools you can use to help with OnBoard C debugging.</p>
+<p> 
+ First, there's a debugger called OBDebug and you can get it (and some
+ documentation describing how to use it
+ <a href="http://groups.yahoo.com/group/OnBoardC/files/Tools/obdebug.zip">
+ here</a>.  NOTE: This software is only a Beta release -- it was never
+ completed and has been known to crash your Palm.  You can include
+ symbols in your OnBoard C program by checking the 'Debug' box on the OnBoard
+ C's main form.</p>
+<p>
+ Next, you can get disassembly of any Palm program using RsrcEdit.  Just
+ open RsrcEdit, select your application and tap 'open', select a 'code' 
+ resource and tap 'open', tap the 'Disasm' box and you've got disassembly.
+ Remember that this is a Dragonball processor -- you can get documentation
+ for it
+ <a href="http://e-www.motorola.com/webapp/sps/site/prod_summary.jsp?code=MC68EZ328&amp;nodeId=01M934310090795#documentation">here</a>.
+
+ Finally, you can always use dialog boxes &amp; printing to the screen.
+</p>
+<p> <a href="#toc">Back to TOC</a></p>
+
+
+<!-- ========================================================= -->
+<pre>
+<a name="about" id="about"><h2>
+<hr width="70%" align="left" />
+4. About The Language</h2></a></pre>
+
+OnBoard C is pretty much vanilla C with a few caveats (most of which have been
+described elsewhere in this document).  You're writing GUI code, so you're
+writing event-driven code with a mainloop.  OnBoard C uses the Palm APIs
+rather than the stdio.h.  And, of course, OnBoard C isn't precisely ANSI.
+
+<a name="not-ansi" id="not-ansi" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.1 How is OnBoard C different from ANSI standard C?
+</span></pre></h3>
+
+ OnBoard C differs from the ANSI standard in a few ways:
+
+<ul>
+	<li> Preprocessor.  Only the following things <b>are</b> supported:
+	<ul>
+		<li> #define </li>
+		<li> #include </li>
+		<li> #ifdef ... #endif </li>
+		<li> #ifndef ... #endif </li>
+		<li> #if ... #endif </li>
+	</ul>
+	</li>
+
+	<li> Language.  The following things aren't supported.
+	<ul>
+		<li> Floating point support.  Actually, there seems to be
+		     some floating-point support if you pound on your code
+		     hard enough (trying different approaches to things).
+		     More work was done on 'double' than 'float'.
+		     When it doesn't work, it often crashes the Palm.  You
+		     should probably steer clear of this.</li>
+		<li> 'const' and 'volatile'.</li>
+		<li> 'static' may not be fully supported (though it may be --
+		     sometimes the information available to me is pretty
+		     sketchy).</li>
+	</ul>
+	</li>
+
+	<li> Subtle Issues.  These subtle differences are probably just
+	     little bugs or corners of the language no one ever got around to
+	     testing.
+	<ul>
+		<li> Some complex expressions don't work.  Examples include
+		     a = b = c and if ((a=foo()) == 0).  You'll 
+		     have to break them into two, separate, assignments.</li>
+		<li> statics aren't limited to the scope in which they are
+		     defined.  Declare two static ints (with the same name)
+		     in different functions -- you'll find that there's a 
+		     name conflict that shouldn't be there.</li>
+		<li> Curly braces, for that matter, don't limit scope.  The 
+		     compiler complains,
+		     for instance, about 'foo' being declared twice in the
+		     following construct:
+
+		     <pre>
+		     	{
+				int foo;
+				{
+					int foo;
+					//...
+				}
+				// ...
+			}
+		     </pre>
+		     </li>
+	</ul>
+	</li>
+	<li> Standard Libraries.  None of the hosted ANSI libraries 
+	  (e.g. stdio.h or string.h) are supported.  Use the Palm libraries 
+	  instead.</li>
+
+	<li> Some of the deeper corners of ANSI C, for example trigraphs and
+	  multi-byte characters, aren't supported.</li>
+</ul>
+
+None of the C99 extensions to ANSI C have been included in OnBoard C (yet).</p>
+
+<p>
+<a name="stdio" id="stdio" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.2 stdio vs. Palm api</span></pre></h3>
+
+
+ Palm programming uses the Palm APIs for input and output rather than vanilla
+ C's fgets and printf.  The Palm documentation provides a complete list of what
+ can be found in ROM but check out the file 'OnBoardHeader_h.pdb' in the 
+ OnBoard.zip for a list of APIs that are readily supported by OnBoard C.  </p>
+<p> 
+ Note
+ that you can get support for the Palm APIs that aren't in this header but
+ there's a bit more work involved.  The method for using those APIs is
+ explained further, below.</p>
+
+<p>
+<a name="limits" id="limits" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.3 Limits</span></pre></h3>
+
+
+ OnBoard C has some limitations in what it can support.  Those limits are
+ described, here.</p>
+<p>
+ There is an overall memory limit of 64K for any one file. 
+ There is now a limit of 32 files that can be included.  At one time there
+ was a limit to the number of source files that could be part of a project
+ but that has been removed.</p>
+<p>
+ There is a limit of 512 ints of inline code.  When you run into this,
+ you'll see the following error "Too many inline values, line xx".  </p>
+<p>
+ There's a de facto limit brought on by the fact that you can't branch
+ over 32K.  When the linker part of the OnBoard assembler generates the
+ error message "XXX beyond 32K displacement" you'll have to start rearranging
+ your code (in order to minimize branch distance) to get it to link.  As your 
+ code gets bigger, it'll become increasingly difficult to get it to fit.</p>
+
+<p>
+ OnBoard C expects OnBoardHeader.h to be in main memory rather than on a memory 
+ stick or something like that.  It does work fine in Flash ROM, though.</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="beyond-basics" id="beyond-basics"><h2>
+<hr width="70%" align="left" />
+5. Beyond the Basics</h2></a></pre>
+
+<a name="editor" id="editor" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.1 Support For Other Editors</span></pre></h3>
+
+
+ OnBoard C recognizes three different formats for source files.  All source
+ files in a project do NOT have to be in the same format.  Those formats (and
+ the programs for editing files in them) are as follows.
+<ul>
+	<li> <u>Doc format</u>.  There are several programs for editing files 
+	  in the Palm DOC format including our own SrcEdit.  Others include
+	  <a href="http://groups.yahoo.com/group/OnBoardC/files/Tools/qed.prc">
+	  QED</a>.  This link points you to a local copy of version 2.62 because
+	  the <a href="http://www.qland.de/qed/index.htm">newest</a> version 
+	  _may_ not work correctly with OnBoard C.</li>
+	<li> <u>Memo pad</u>.  The editor for this is free and already on your 
+	  Palm.  It limits your file size to 4k, though, and you'll quickly 
+	  get tired of this limitation.</li>
+	<li> <u><a href="http://home.columbus.rr.com/nevai/palm/">pEdit32</a></u>.
+	  This is a really good programmer's editor with lots of 
+	  features to make coding easier.  pEdit32 has no 4k limit
+	  and can import from the doc file format.  pEdit04 can import from 
+	  memo pad.  pEdit is not a free editor, however.  It can be 
+	  downloaded from www.paulcomputing.com.</li>
+</ul>
+</p>
+<p>
+<a name="internal" id="internal" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.2 Some Dirty Internal Details </span></pre></h3>
+
+
+Traveling with OnBoardC is an assembler that is launched by the compiler
+to perform the final compile step and linking of the output. The assembler
+can be invoked separately to assemble from MemoPad or Doc files but is
+invoked by the compiler using an internal tokenized format. </p>
+<p>
+OnBoardC always automatically includes the contents of the supplied
+header file, OnBoardHeader.h, before any compilation. When launched, OnBoardC
+looks for a database 'CompilerData.OnBC' which contains a compressed version
+of the header. If it is found, all of the declarations in that database
+are added to the symbol table - as if OnBoardHeader.h had been included,
+only faster and using less memory. If it is not found, the compiler searches
+for OnBoardHeader.h, compiles it and builds the compressed header.
+</p>
+
+<p>
+<a name="api" id="api" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.3 Adding New (or Unsupported) APIs</span></pre></h3>
+
+
+The header file contains only a subset of the Palm's ROM API entry points,
+in order to access others you'll need to either add them to your source
+code or to the OnBoardHeader itself. If you make any changes to "OnBoardHeader.h",
+select 'Delete Header' from the Options menu, the next build will cause
+the header to get rebuilt (actually, re-compressed). Note that, even though only
+a subset of Palm APIs are defined in the OnBoardHeader header files, most of the 
+SysTrap names _are_ pre-defined (they are actually in a resource in 
+the assembler application).  You can get the declaration you need 
+from the Palm Reference Manual, then add the SYS_TRAP value - like 
+this: 
+
+<pre>
+	ReturnValue APIcall(Variables) SYS_TRAP(sysTrapAPIcall);
+</pre>
+
+For example, to add access to the ROM 
+routine 'StrCaselessCompare', you'd add the following to either your 
+source or the OnBoardHeader.h file you're using: 
+
+<pre>
+	Int16 StrCaselessCompare(const Char *s1, const Char *s2) SYS_TRAP
+	(sysTrapStrCaselessCompare);
+</pre>
+
+The only extra trick there is that you will have to add a #define
+sysTrapPalmOSCall to the number specified in the Palm documentation.</p>
+<p>
+If you want to make it available
+in all of your programs, you can add the calls to OnBoardHeader.h. (Be
+sure to follow the directions to blow off the precompiled version the
+first time after you add it, so your additions get found.) </p>
+
+<p>
+<a name="hack" id="hack" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.4 Building A Hack</span></pre></h3>
+
+
+To build a HackMaster hack extension, set the output type signature to
+'HACK'. Don't use any global data (including string literals at this point,
+sorry). Include the line '#pragma segment 1000' before the function that
+will implement the hack, and don't have a PilotMain routine. There's a
+sample hack included with the download; 'casehack' - it simply forces all
+keyEvents to lower case, not very exciting I know, but hopefully it'll
+be enough of a help to get started.</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<p>
+<a name="segments" id="segments" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.5 Multi-Segmented Code</span></pre></h3>
+
+The bad news is that there's a limit of 32K to the size of a single 
+branch in Palm code -- this can seriously limit the size of your 
+programs.  The good news is that you can get around this limit by 
+creating multiple segments in your code.  This section will describe how
+OnBoard C can be used to build a multi-segment application. </p>
+<p>
+A segment is an island of code that doesn't have any branches greater than
+32K inside of it.  Function pointers are used as bridges between segments.
+Multiple segments, connected by these bridges, allow an application to grow 
+to an arbitrarily large size.  There's also a mechanism for accessing global
+variables between segments.</p>
+
+<p>
+In order to build a multi-segment application in OnBoard C, do the following.</p>
+<p>
+<ul>
+  <li><u>One project per segment</u>.  Make a separate OnBoard C project 
+  for each segment in your application.  Each project must have the same PRC
+  name, type and creator; this will put all the generated code segments in 
+  the same PRC.  Only one project/segment has a PilotMain in it -- that's 
+  your primary segment.  Secondary segments are the ones without PilotMain.</li>
+
+  <li><u>#pragma segment n</u>.  In each of the secondary segment source 
+  files, include the directive #pragma segment 2 (or #pragma segment 3 or 
+  so on -- each segment gets a different number).  When you specify a
+  '#pragma segment' directive, OnBoard C creates a separate code
+  segment (with the number you specified) without any data segments. The 
+  code segment will cohabitate with code segements from other projects 
+  in the same PRC database.</li>
+
+  <li><u>globals.c, globals.h.</u><p>  Create a file for globals 
+  (e.g. "globals.c") and include this file in each of the projects.  This 
+  file includes the declaration of <b>ALL</b> global variables and a pointer 
+  to each function that will be called from one segment to another. 
+  You also have to define a corresponding "globals.h" file where the global
+  variables are declared as "extern" and a MemHandle for each secondary 
+  code segment.  All the "*.c" files in the project must include this 
+  header file. </p>
+  
+  <p>
+  Note: do NOT define any static variables (either global or local) in
+  your application.  Because static variables are allocated in memory 
+  alongside globals, statics in one file will throw-off the position of 
+  globals in that project resulting in Palm system crashes. </p>
+
+  <p>
+  Note also that you may also define functions in the main 'code 1'
+  segment which may be called by other segments by the same process.</p></li>
+
+  <li><u>Setup the links</u>.  The first
+  function in each secondary project must dynamically link the 
+  global function pointers to the segment's exported functions.  This 
+  function (again, one per secondary project) must be called in a portion 
+  of code executed when application starts.  This function has to be first 
+  in the segment so that the main segment can call this function
+  with a known offset (i.e., zero) into the secondary segment.</li>
+
+  <li><u>Dynamically link the secondary segments</u>.  In the main 
+  segment, define a memory handle to access each of the secondary code 
+  resources, lock it as a pointer to a void function and call it 
+  to perform dynamic link. This pointer must remain locked until 
+  the application stops.</li>
+
+</ul>
+
+In this way, you may define separately compiled units (it's faster to
+compile each unit). All the units may access the same global
+variables and all the units may call functions defined in other
+units. </p>
+
+<p>
+The projects in a multi-segment can be compiled in any order.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Example</i> </span></pre></h4>
+
+Here is an example multiple segment application.  It contains three segments,
+hence three projects.  The files in our example are shown below:</p>
+<p>
+<ul>
+  <li> project 1 : seg_globals.c and seg_main.c </li>
+  <li> project 2 : seg_globals.c and seg2_code2.c </li>
+  <li> project 3 : seg_globals.c and seg3_code3.c </li>
+</ul>
+
+These files, themselves, are shown, below.</p>
+
+<p>
+<table border="1" width="80%" align="center">
+<tr><td><center>
+	<b>seg_globals.h</b><br />This file is included by any 
+	"c" file that uses or defines a cross-segment function or global
+	variable.
+</center></td></tr>
+<tr><td><pre>
+	/* seg_globals.h */
+
+	// to be included in sources 
+	// corresponding to "globals.c" defs
+
+	extern int x;
+	extern int (*incr_x)(int);
+	extern int (*decr_x)(int);
+	extern MemHandle Code2Handle,Code3Handle;
+</pre></td></tr>
+</table></p>
+<p>
+<table border="1" width="80%" align="center">
+<tr><td><center>
+	<b>seg_globals.c</b><br />This file is part of every project.
+</center></td></tr>
+<tr><td><pre>
+	/* seg_globals.c */
+	// this file is included in all projects
+
+	// global variables shared by all units
+
+	int x;
+
+	// functions defined in various segments
+
+	int (*incr_x)(int);
+	int (*decr_x)(int);
+
+	// handle to code 2 and code 3 resources
+	MemHandle Code2Handle,Code3Handle;
+</pre></td></tr>
+</table></p>
+<p>
+<table border="1" width="80%" align="center">
+<tr><td><center>
+	<b>seg2_code2.c</b><br />This file, along with seg_globals.c, is part of project 2.
+</center></td></tr>
+<tr><td><pre>
+	/* seg2_code2.c */
+	#pragma segment 2
+	#include "seg_globals.h"
+
+	// prototype definition
+	int incr_x_local(int); 
+
+	// dynamic link function called in main.  This function MUST 
+	// be the first function defined in the first file of the project
+
+	void Code2Init() { incr_x = incr_x_local; }
+
+	// definition of function called from another segment
+
+	int incr_x_local(int a)
+	{
+		x+=a;
+		return x;
+	}
+</pre></td></tr>
+</table></p>
+
+
+<p>
+<table border="1" width="80%" align="center">
+<tr><td><center>
+	<b>seg3_code3.c</b><br />This file, along with seg_globals.c, is part of project 3.
+</center></td></tr>
+<tr><td><pre>
+	/* seg3_code3.c */
+	#pragma segment 3
+	#include "seg_globals.h"
+
+	// prototype definition
+	int decr_x_local(int); 
+
+	// dynamic link function called in main.  This function MUST 
+	// be the first function defined in the first file of the project
+
+	void Code3Init() { decr_x = decr_x_local; }
+
+
+	// definition of 'code 3' functions
+	int decr_x_local(int a)
+	{
+		return incr_x(-a); 
+	}
+</pre></td></tr>
+</table></p>
+
+<p>
+Following is the complete seg_main.c.  Much of the code isn't necessary for 
+illustration of multi-segment programming but it has the advantage of being 
+complete -- cut and paste and you have a running, multi-segment, OnBoard C
+program.  All code in this function that is required for multi-segment 
+programming is commented with the string 'MULTI-SEG' and is highlighted in 
+<font color="#ff0000">red</font>.</p>
+<p>
+<table border="1" width="80%" align="center">
+<tr><td><center>
+	<b>seg_main.c</b><br />This file is part of project 1.
+</center></td></tr>
+<tr><td><pre>
+	/* seg_main.c */
+	#include "seg_globals.h"
+
+	#define MainForm	1000
+	#define UpButton	1001
+	#define DnButton	1002
+
+	<font color="#ff0000">
+	// MULTI-SEG: need this API but it's not in OnBoardHeader.h
+	#define sysSysCurAppDatabase 0xa0ac
+	Err SysCurAppDatabase (UInt16	*card, LocalID	*id)
+		SYS_TRAP(sysSysCurAppDatabase);
+	</font>
+	void showX(void);
+		
+	static Boolean	appHandleEvent (EventPtr event);
+	static void	mainFormInit (FormPtr form);
+	static Boolean	mainFormEventHandler (EventPtr event);
+
+	/*
+	 * MULTI-SEG: This function sets up the dynamic links to the function
+	 * pointers used to communicate across segments.  It does that by 
+	 * calling the first function in every other segment (remember that
+	 * we carefully made each secondary segment's first function the 
+	 * dynamic link function).
+	 */
+
+	static void startApp()	
+	{
+		<font color="#ff0000">
+		UInt16		cardno;
+		LocalID		id;
+		DmOpenRef	db;
+		void		(*DynLink)(void);
+
+		// get handle to code 2 and 3 resources in our application's
+		//  database
+		SysCurAppDatabase(&amp;cardno,&amp;id);
+		db=DmOpenDatabase (cardno,id,dmModeReadOnly);
+		Code2Handle=DmGetResource ('code',2);
+		Code3Handle=DmGetResource ('code',3);
+		DmCloseDatabase(db);
+
+		// get ptr to 'code 2' dynamic lnk function and call it
+
+		DynLink=MemHandleLock (Code2Handle); 
+		DynLink();
+
+		// same for 'code 3'
+
+		DynLink=MemHandleLock (Code3Handle);
+		DynLink();
+
+		// set the global, x
+
+		x=16;
+		</font>
+		return;
+	}
+
+	// MULTI-SEG: gotta unlock the code handles
+
+	static void stopApp()	
+	{
+		<font color="#ff0000">
+		MemHandleUnlock(Code2Handle); 
+		MemHandleUnlock(Code3Handle);
+		</font>
+		return;
+	}
+
+	/*
+	 * Completely normal PilotMain
+	 */
+
+		UInt32
+	PilotMain	(UInt16	cmd, 
+			 void		*cmdPBP, 
+			UInt16	launchFlags)
+	{
+	  EventType	event;
+	  UInt16	error;
+	  if (cmd == sysAppLaunchCmdNormalLaunch) 
+	  {
+	    startApp();
+	    FrmGotoForm(MainForm);
+	    do 
+	    {
+		EvtGetEvent (&amp;event, evtWaitForever);
+
+		if (!SysHandleEvent (&amp;event))
+		if (!MenuHandleEvent (0, &amp;event, &amp;error))
+		if (!appHandleEvent (&amp;event))
+			FrmDispatchEvent (&amp;event);
+	    } while (event.eType != appStopEvent);
+
+	    stopApp();
+	    FrmCloseAllForms();
+	  }
+	  return 0;
+	}
+
+	/*
+	 * Completely normal appHandleEvent
+	 */
+
+	static Boolean appHandleEvent (EventPtr event) 
+	{
+	  FormPtr	frm;
+	  UInt16	formId;
+	  Boolean	handled = false;
+			
+	  if (event-&gt;eType == frmLoadEvent) 
+	  {
+	    // Load the resource for the form
+
+	    formId	= event-&gt;data.frmLoad.formID;
+	    frm		= FrmInitForm(formId);
+	    FrmSetActiveForm(frm);
+
+	    // install a form-specific event hdlr
+
+	    if (formId == MainForm)
+		FrmSetEventHandler (frm, mainFormEventHandler);
+
+	    handled = true;
+	  }       
+	  return handled;
+	}
+
+	/*
+	 * Only slightly abnormal mainFormEventHandler.  This function
+	 *
+	 */
+
+		static Boolean
+	mainFormEventHandler (EventPtr event)
+	{
+	  Boolean	handled	= false;
+	  FormPtr	frmP	= FrmGetActiveForm();
+	  switch (event-&gt;eType) 
+	  {
+	    /*
+	     * the first event received by a form's event handler is the 
+	     * frmOpenEvent.  
+	     */
+	  case frmOpenEvent:
+		FrmDrawForm(frmP);
+		mainFormInit(frmP);
+		showX();
+		handled = true;
+		break;  
+			
+	case ctlSelectEvent:
+		switch (event-&gt;data.ctlSelect.controlID)
+		{
+		case UpButton:
+			<font color="#ff0000">
+			// MULT-SEG: call function in another segment
+			x= (*incr_x)(4);	
+			</font>
+			showX();
+			handled	= true;
+			break;
+		case DnButton:
+			<font color="#ff0000">
+			// MULT-SEG: call function in another segment
+			x= (*decr_x)(2);
+			</font>
+			showX();
+			handled	= true;
+			break;
+		} // switch which button
+		break;
+
+	  } // switch event type
+	  return handled;
+	}
+
+	static void mainFormInit (FormPtr frmP) { }
+
+	// Other Useful Bits 
+
+	void showX(void)
+	{
+		Char	bar[40];
+		StrPrintF (bar, "num %03d", x);
+		WinDrawChars(bar, StrLen(bar), 60, 30);
+	}
+</pre></td></tr>
+</table>
+</p>
+
+<p>
+<a name="autoversion" id="autoversion" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+5.6 Using OnBoard C's Auto-Versioning</span></pre></h3>
+
+
+You can get OnBoard C to automatically number your versions (actually, your
+builds) for you.  With this feature enabled, OnBoard C increments a build
+number each time you compile.  Here's how you do this.</p>
+
+<p>
+First, you need to enable the feature.  On OnBoard C's main form, there's a 
+checkbox marked 'Auto Version'.  Check the checkbox.</p>
+
+<p>
+Now, you need a version for OnBoard C to update.  This is in the form of a
+tVer resource.  Starting in OnBoard C, do the following:</p>
+
+<p>
+<ul>
+	<li>  tap on the .rsrc file in your file list</li>
+	<li>  tap the 'RsrcEdit' button; this will bring-up RsrcEdit.</li>
+</ul>
+
+In RsrcEdit, do the following:</p>
+
+<p>
+<ul>
+	<li>  tap the 'menu' silkscreen button,</li>
+	<li>  tap 'new'-&gt;'Version String';  this will open the version form,</li>
+	<li>  enter a string that has digits for the last 4 characters.  I
+	      typically like something like 'v1.0 build 0000',</li>
+	<li>  under 'ID', write '1000' -- REMEMBER THIS NUMBER,</li>
+	<li>  tap the 'okay' button.</li>
+	<li>  tap the 'OnBoardC' (or 'QuartusC') button; this will take you 
+	      to OnBoard C (note
+	      that this button will only be available if you invoked RsrcEdit
+	      from OnBoard C -- if you got here via the Palm application
+	      launcher, you'll have to get back to OnBoard C via the
+	      application launcher).</li>
+</ul>
+
+Now, OnBoard C will automatically update your version number <i>but</i> I'll
+bet you want this information to appear someplace in your code.  Have no fear,
+we can do that.  In your code, do the following:</p>
+<p>
+<pre>
+	MemHandle	hVer	= DmGetResource ('tver', 
+						1000);	// that's the number
+							// you remembered
+	char		*pVer	= MemHandleLock (hVer);
+
+	// Now, you have a string that points to your version --
+	// use the string as you would like to
+
+	MemHandleUnlock (hVer);
+	DmReleaseResource (hVer);
+</pre>
+</p>
+<!--
+</td></tr>
+</table>
+-->
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="reference" id="reference"><h2>
+<hr width="70%" align="left" />
+6. Reference Guide</h2></a></pre>
+</p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+<a name="menus" id="menus" />
+6.1 Menus Buttons And Check Boxes</span></pre></h3>
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>OnBoard C -- Main Form</i> </span></pre></h4>
+
+The 'Build' button begins the compile process.</p>
+
+<p>The 'Add' button adds files into the project.</p>
+<p>The 'Remove' button allows for removing the selected file from the project.</p>
+<p>The 'Edit' button launches the appropriate editor for the selected file.</p>
+<p>The 'Type' field specifies the 4 character database type signature of
+the output. This is usually set to 'appl' for an application, or 'HACK'
+for a HackMaster hack.  </p>
+
+<p>The 'Creator' field specifies the 4 character database creator signature
+of the output, set at the user's whim to uniquely identify the output database.
+All lower case creator signatures are reserved for the Palm system files.  </p>
+
+<p>The 'PRC name' field specifies the name of the output database. This
+is not necessarily the same as the application name shown in the launcher
+(which is whatever string is stored in resource 'tAIN' #1000) </p>
+
+<p>The 'Execute' checkbox, when checked, signals OnBoardC to launch the
+application after it's been successfully built.  </p>
+
+<p> The "Always Rebuild' checkbox, when checked, causes OnBoardC to delete
+it's intermediate files after compilation. As a result, OnBoardC will always
+recompile every source file whether it's been modified since the last build
+or not - this saves space on the Palm and handles cases where an editor
+might not have updated the modification date for the source file.  </p>
+
+<p>The 'Auto version' checkbox causes OnBoard C to bump-up a version count 
+every time a project is compiled.  For details on how to use this feature, 
+check out the section on <a href="#autoversion">using OnBoard C's 
+auto-versioning</a>.</p>
+
+<p>The 'Debug' checkbox...</p>
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>OnBoard C -- 'Add To Project' Form</i> </span></pre></h4>
+
+This form includes a list of all the available files of either pEdit, Doc, 
+Memo or Resource type.
+Doc files are identified by type 'TEXt', creator 'REAd', Memo files are
+the records in the MemoPad database that begin with a line formatted as
+"/* filename.[ch] */ to designate the name of the source file (e.g. /*
+Foo.c */ or /* Foo.h */). Resource files have type
+'Rsrc' or an extension '.Rsrc' or '.rsrc', they can be generated with 
+RsrcEdit </p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>From the 'Options' menu :</i> </span></pre></h4>
+</p>
+
+<p>'Delete Header' - deletes the pre-compiled header that OnBoardC uses for
+speedy access to the Palm ROM API, this is only used when making changes
+to the header file (see 'Some dirty internal details' below). </p>
+
+<p>'Choose Editor' - provides a dialog box to specify which editor to
+launch for the Memo or Doc source files when either the 'edit' button is
+pressed or 'Goto' selected from the compile-error alert.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>From the 'Project' menu : </i> </span></pre></h4>
+</p>
+
+<p>'Delete Object Code' - deletes any intermediate files for the current project.
+This frees up the space they occupy and forces each source file to be re-built
+when 'Build' is pressed rather than depending on the source file modification
+timestamp.</p>
+
+<p>'New Project' - launches a dialog that prompts for the new project name.
+It also provides a checkbox 'Generate Skeleton' which populates the new
+project with the necessary files to build an empty application. For example
+creating a new project named 'Cardiff' will produce the project file 'Cardiff.proj',
+a source file 'Cardiff.c' and resource file 'Cardiff.Rsrc'. When built,
+the application 'Cardiff' has an empty main form with a single 'About Cardiff'
+menu item and dialog.</p>
+
+<p>'Open Project' - opens a dialog to select from the other OnBoardC projects. </p>
+
+<p>'Rename Project' - opens a dialog to change the name of the current project. </p>
+
+<p>'Delete Project' - opens a dialog to delete existing OnBoardC projects.</p>
+
+<!-- TODO: error messages -->
+<p> <a href="#toc">Back to TOC</a></p>
+
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="answers" id="answers"><h2>
+<hr width="70%" align="left" />
+7. Answers To A Few Questions</h2></a></pre>
+
+
+<a name="q-platform" id="q-platform" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+7.1 Can I write code for some Palm platforms and have it work on others?</span></pre></h3>
+
+
+ Yup, things work across platforms that run the PalmOS (e.g., Visor, 
+ Handera, Palm, Clie, etc.)  Just don't put calls that are specific to 
+ one device (e.g., Springboard calls on a Visor or enhanced resolution 
+ stuff on a Clie) and expect your program to run on a different platform.</p>
+<p>
+ Note: your code will only work on <i>Palm</i> platforms -- not PocketPC, or
+ Blackberry, or other handheld devices.  Also note that an application built
+ for one major processor type (i.e., Dragonball/68K or ARM) won't work on a 
+ Palm platform running the other major processor type.</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="q-stack" id="q-stack" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+7.2 Is it possible to compile with a larger stack with OnBoardC?</span></pre></h3>
+
+There may be a resource that is part of an app that specifies what size 
+stack you get but it is not part of OnBoard C per se.</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="q-header" id="q-header" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+7.3 How do you generate a header file from RsrcEdit?</span></pre></h3>
+
+ Get into the top-level form of resource edit (if you're editing a specific 
+ resource file, hit the 'done' button in the lower right hand corner of the 
+ screen).  In the top-level form, select the relevant '.rsrc' file.  Off the 
+ menu bar, select 'Build Resource List'.  It'll ask you if you want a DOC 
+ file or a Memo file.  You'll then have a '.h' file with marginally useful 
+ defines for all the resources in the file.  </p>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="q-prc" id="q-prc" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+7.4 How do you share my OnBoard C projects with CodeWarrior or the PRC-Tools?</span></pre></h3>
+
+ The 'Sherpa' tool, part of the OnBoard Suite, ports code from the Palm to the
+ host to be built with the PRC tools.  In future incarnations, Sherpa will 
+ also port code back from the host (PRC tools) to the Palm.  Sherpa currently
+ requires that the doc format is used for source files on the Palm.</p>
+<p>
+ There still may be some portability issues.  No two compilers are 100%
+ compatible so there may be some differences that you have to address.  The
+ most probable problem is a mismatch in data types.  Another compatibility 
+ problem is that OnBoard C doesn't have the error checking that host-
+ based compilers do.  Instead of investing effort documenting the known 
+ differences, the OnBoard Suite development team will put their effort into 
+ making the two compilers more compatible.</p>
+<p>
+ Sherpa is designed to make the OnBoard Suite compatible with the PRC tools.  
+ If you're using CodeWarrior, there's a good tutorial at 
+ <a href="http://www.xpinneret.com/OBC_and_CW.html">
+ http://www.xpinneret.com/OBC_and_CW.html</a>.</p>
+
+<p>
+ Note: OnBoard C has very little code optimization and no register
+ allocation. The same code that may have worked with GCC or
+ CodeWarrior very well could be generated too large by OnBoard C.</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="problems" id="problems"><h2>
+<hr width="70%" align="left" />
+8. Common Problems</h2></a></pre>
+
+<a href="#p-nodes">8.1 Out Of Node Space</a><br />
+</p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="p-nodes" id="p-nodes" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+8.1 Out Of Node Space</span></pre></h3>
+
+This is caused by complex 'if' statements with lots of conditions and 
+expressions.  Things should work better if you rewrite that line of code to 
+be more than one statement:</p>
+<p>
+<pre>
+
+         if (a || (b &amp;&amp; c)) foo();       // instead of this
+
+         if (a) foo(); else if (b&amp;&amp;c) foo();     // try this
+</pre>
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<p>
+<a name="p-unknown" id="p-unknown" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+8.2 Unknown Identifier &lt;Palm API&gt;</span></pre></h3>
+
+If OnBoard C tells you that you have an Unknown Identifier in your code and
+you <i>know</i> that this is a Palm API, then you've probably picked a Palm
+API that is not in OnBoardHeader.h.  Check out section 
+<a href="#api">5.3 Adding New APIs</a> to learn how to add the API that you
+need to your code.
+</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<p>
+<pre>
+<a name="thanks" id="thanks"><h2>
+<hr width="70%" align="left" />
+9. Thanks!</h2></a></pre>
+
+ I'm going to try to get everyone.  If you contributed or know someone who
+ did that's not in here, please let me know.
+
+<pre>
+	Keithen and Roger at individeo DOT net
+	"Alice Campbell" &lt;acampbell AT scsengineers DOT com&gt; 
+	"davidsvisor" &lt;david AT xpinneret DOT com&gt;
+	"Dinesh Ramalingam (IE10)" &lt;Dinesh DOT Ramalingam AT honeywell DOT com&gt;
+	"drawitpalm" &lt;andrew AT drawit DOT co DOT nz&gt; 
+	"gomezbenz" &lt;gomezbenz AT yahoo DOT com&gt; 
+	"gubihu" &lt;gubi AT icss DOT hu&gt; 
+	"Haemish Graham" &lt;haemish AT astraware DOT com&gt; 
+	"hkonstas2001" &lt;hkonstas AT total DOT net&gt; 
+	"jdhedden" &lt;jdhedden AT yahoo DOT com&gt;
+	"John P. Pywtorak" &lt;jpywtora AT calpoly DOT edu&gt;
+	"John Wilund" &lt;orlando AT runbox DOT com&gt; 
+	"Laurent THALER" &lt;lthaler AT free DOT fr&gt; 
+	"Mike LaFleur" &lt;lafleur911 AT yahoo DOT com&gt; 
+	"Philippe Guillot" &lt;ph DOT guillot AT wanadoo DOT fr&gt;
+	"William F. Hostman" &lt;aramis AT gci DOT net&gt; 
+	"yogsototh76" &lt;yogsototh76 AT yahoo DOT fr&gt;
+</pre>
+</p>
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!--</pre>-->
+</body>
+</html>
+

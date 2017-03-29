@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 10. Audio</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="ch09.html" title="Chapter 9. 3D Graphics"><link rel="next" href="pt04.html" title="Part IV. Utility Library (xfutil)"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 10. Audio</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="pt04.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id424089"></a>Chapter 10. Audio</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch10.html#id424178">Overview</a></dt><dt><a href="ch10.html#id424219">Initializing the Audio System</a></dt><dt><a href="ch10.html#id428484">Audio Buffers</a></dt><dd><dl><dt><a href="ch10.html#id428530">XFcAudioBuffer::create()</a></dt><dt><a href="ch10.html#id428631">xfuLoadWav()</a></dt><dt><a href="ch10.html#id424122">Generating Audio Data into an Audio Buffer</a></dt></dl></dd><dt><a href="ch10.html#id428688">Audio Streams</a></dt><dd><dl><dt><a href="ch10.html#id428723">XFcAudioStream</a></dt></dl></dd><dt><a href="ch10.html#id428830">Audio Library</a></dt><dd><dl><dt><a href="ch10.html#id428853">Playing Audio Buffers and Streams</a></dt><dt><a href="ch10.html#id428930">Stopping and Pausing Audio Buffers and Streams</a></dt><dt><a href="ch10.html#id429061">Changing Parameters on Audio Buffers and Streams</a></dt><dt><a href="ch10.html#id429143">Explanation of Parameters</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id424178"></a>Overview</h2></div></div><p>
+The audio system under X-Forge core is a facility which supports regular audio buffers as well as programmable audio streams.
+The system uses channels to limit the number of sounds being played. Using channels, the programmer can easily handle the
+performance issues of audio output.
+</p><p>
+An audio system such as this requires internal structures which need to be controlled and guarded by the audio system itself.
+This is to protect the audio system from breaking itself due to possible errors in the user's code. Therefore, all operations
+which handle the structures of audio buffers or streams which are required by the audio system can only be modified through the audio library.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id424219"></a>Initializing the Audio System</h2></div></div><p>
+The audio system has to be initialized before it can be used. <tt>XFcAudio</tt> a static <tt>setAudioFormat()</tt>-method
+for this use. The function returns an <tt>XFcAudioFormat</tt> object which holds information of the format the hardware was capable to initialize.
+The method tries to initialize a format in the hardware as close as possible to the given format. If NULL is given, X-Forge will automatically try the preferred audio format. The application can ask for the preferred format with the static <tt>getPreferredAudioFormat()</tt> method.
+</p><pre class="programlisting">
+XFcAudioFormat getPreferredAudioFormat();
+
+XFcAudioFormat setAudioFormat(XFcAudioFormat *aFormat,
+                              INT32 aChannelCount,
+                              UINT32 aInterpolation);
+</pre><p>
+The <tt>aInterpolation</tt> parameter takes one of these values:
+</p><pre class="programlisting">
+XFCAUDIO_INTERPOLATION_NONE		// No interpolation is used
+XFCAUDIO_INTERPOLATION_LINEAR		// Linear interpolation
+</pre><p>
+The <tt>XFcAudioFormat</tt> structure contains sample rate, audio block size and the type of data in the format. The data type is handled by the follwing flags (which can be found from <tt>XFcAudioFlags.h</tt>):
+</p><pre class="programlisting">
+XFCAUDIO_16BIT				// Audio is 16bit audio
+XFCAUDIO_STEREO				// Audio is stereo audio
+XFCAUDIO_SIGNED				// Audio is signed data
+</pre><p>
+The flags can be combined by OR-ing the different flags together:
+</p><pre class="programlisting">
+XFCAUDIO_16BIT | XFCAUDIO_STEREO	// Audio is 16bit stereo audio
+</pre><p>
+An example:
+</p><pre class="programlisting">
+// Audio system is initialized to 44100kHz/16bit/stereo/signed/4096
+// samples/8 channels/linear interpolation
+XFcAudioFormat audioformat = XFcAudioFormat(44100, XFCAUDIO_16BIT |XFCAUDIO_STEREO | XFCAUDIO_SIGNED, 4096);
+XFcAudio::setAudioFormat(&amp;audioformat, 8, XFCAUDIO_INTERPOLATION_LINEAR);
+</pre><p>
+If the audio initialization fails for the given values, the system will default to the preferred ones.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id428484"></a>Audio Buffers</h2></div></div><p>
+Audio buffers are created as objects of the <tt>XFcAudioBuffer</tt> class. One can procedurally generate a
+sound into an audio buffer but commonly audio buffers are created from audio files. An application has two basic ways to
+create <tt>XFcAudioBuffer</tt> objects, either by using one of the <tt>create()</tt>-methods
+or by using the <tt>xfuLoadWav()</tt>-function.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428530"></a>XFcAudioBuffer::create()</h3></div></div><p>
+There are multiple ways to create an <tt>XFcAudioBuffer</tt> class, the simplest one having only the
+audio format as the single parameter.
+</p><p>
+To simply create an audio buffer with a particular audio format one can use one of two methods. First one of the
+methods uses an <tt>XFcAudioFormat</tt> object as the format and the other one needs a sampling rate,
+different flags and sample count as parameters:
+</p><pre class="programlisting">
+XFcAudioBuffer * create(XFcAudioFormat aFormat);
+XFcAudioBuffer * create(FLOAT32 aSampleRate, UINT32 aFlags, INT32 aSamples);
+</pre><p>
+The flags which can be used for aFlags can be found from <tt>XFcAudioFlags.h</tt>.
+</p><p>
+All <tt>create()</tt>-mehotds will return NULL if they fail.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The sample count in the audio format is truly sample count, not byte count.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428631"></a>xfuLoadWav()</h3></div></div><p>
+Typically audio buffers are created directly from audio files and for that one can use the <tt>xfuLoadWav()</tt>-function.
+</p><p>
+An audio buffer can be created from an audio file with the following function:
+</p><pre class="programlisting">
+XFcAudioBuffer * xfuLoadWav(const CHAR *filename);
+</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+As of this writing, <tt>xfuLoadWav()</tt> only handles 8-bit mono files. Using a different format in the flags-parameter does not convert the audio buffer to that format but only sets the internal flags to a false format effectively breaking the audio buffer.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id424122"></a>Generating Audio Data into an Audio Buffer</h3></div></div><p>
+To be able to write audio data into an audio buffer, the audio buffer has to be locked for writing via the audio library, <tt>XFcAudio</tt>. The static <tt>lock()</tt>-method in <tt>XFcAudio</tt> returns a pointer to actual audio data inside the buffer.
+</p><p>
+A simple example of writing audio data into an audio buffer:
+</p><pre class="programlisting">
+// Create an audio buffer, 44100kHz/8bit/mono with 1000 samples
+XFcAudioBuffer *buf = XFcAudioBuffer::create(44100.0f, 0, 1000);
+
+// Lock the audio buffer for writing
+UINT8 *ptr = XFcAudio::lock(buf);
+for (INT i = 0; i &lt; 1000; ++i)
+{
+    // Generate white noise
+    ptr[i] = (rand() * 255 / 32768);
+}
+
+// Unlock the audio buffer
+XFcAudio::unlock(buf);
+</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+One should always remember to unlock the audio buffer after locking, otherwise the audio system can not play it.
+</p></div></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id428688"></a>Audio Streams</h2></div></div><p>
+In X-Forge, audio streams are created by inheriting the <tt>XFcAudioStream</tt> class. <tt>XFcAudioStream</tt> objects can not be instantiated, only inherited. An example of an inherited stream class is the XM-player class, <tt>XFuXMPlayer</tt>.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428723"></a>XFcAudioStream</h3></div></div><p>
+The <tt>XFcAudioStream</tt> class introduces methods which the inheriting class should override. Only the streaming function is required to be overriden, the rest can be left alone.
+</p><p>
+The inheriting classes are also required to call the initialization method, <tt>initialize()</tt>, of the base class to set their internal structures properly for the audio system to use.
+</p><p>
+An example of a simple streaming audio class:
+</p><pre class="programlisting">
+class MyStream : public XFcAudioStream
+{
+public:
+    virtual UINT32 stream(void *aBuf, INT32 aSamples);
+
+    MyStream(FLOAT32 aSamplingRate, UINT32 aFlags);
+    virtual ~MyStream();
+};
+
+UINT32 MyStream::stream(void *aBuf, INT32 aSamples)
+{
+    // fill aSamples of noise as sampledata into aBuf
+    for (INT32 i = 0; i &lt; aSamples; ++i)
+    {
+        aBuf[i] = (rand() * 255 / 32768);
+    }
+}
+
+MyStream::MyStream(FLOAT32 aSamplingRate, UINT32 aFlags)
+{
+    initialize(aSamplingRate, aFlags, REALf(1.0), REALf(0.5), 0);
+    // e.g. create wavetables
+}
+
+MyStream::~MyStream()
+{
+    // clean up
+}
+</pre><p>
+Other methods the inheriting class can override are <tt>play()</tt>, <tt>stop()</tt>, <tt>pause()</tt> and <tt>resume()</tt>. The inheriting class does not have to call the parent class methods in its overriden methods.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id428830"></a>Audio Library</h2></div></div><p>
+The audio library handles all aspects of audio output and parameters. To play an audio buffer or to change the sampling rate of an audio stream, one has to use the interface provided by the audio library.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428853"></a>Playing Audio Buffers and Streams</h3></div></div><p>
+The audio library introduces different ways to play an audio buffer or stream. One can simply ask audio library to play the sound as it is or for example ask it to play the sound with a sampling rate other than the original.
+</p><p>
+A simple example of playing an audio buffer with a specific sampling rate, volume and panning:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Play the audio buffer with a sampling rate of 22050kHz,
+// 70% volume of the original volume, centered panning
+UINT32 id = XFcAudio::play(sound, 22050.0f, REALf(0.7), REALf(0.5));
+</pre><p>
+All <tt>play()</tt>-methods return a unique ID. This ID can be used to control the sound after it has been set to play. One doesn't however need to save the ID for later use if there is no need to control the behaviour of the sound after it has been initially set to play.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id428930"></a>Stopping and Pausing Audio Buffers and Streams</h3></div></div><p>
+An audio buffer or stream which has been set to play using the play()-method of the XFcAudio-interface have to be stopped and paused using the same interface. A paused buffer or stream can also be resumed after it has been paused.
+</p><p>
+To stop a specific buffer or stream which is playing, one has to use the unique ID returned by the audio library to identify which sound it should stop:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Start playing the first sound
+UINT32 firstId = XFcAudio::play(sound);
+// Start a second instance of the same audio buffer which will play concurrently with the first
+UINT32 secondId = XFcAudio::play(sound);
+// Stop the first instance
+XFcAudio::stop(firstId);
+</pre><p>
+One can also stop all instances of a certain audio buffer or stream with a single method call by using the audio buffer or stream object as the argument in the stop()-call:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Start playing the first sound
+UINT32 firstId = XFcAudio::play(sound);
+// Start a second instance of the same audio buffer which will play concurrently with the first
+UINT32 secondId = XFcAudio::play(sound);
+// Stop all instances of &quot;sound&quot;-object
+XFcAudio::stop(sound);
+</pre><p>
+Pausing and resuming audio buffers and stream can be used with the pause() and resume() -methods respectively:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Start playing a sound
+UINT32 id = XFcAudio::play(sound);
+// Pause the sound
+XFcAudio::pause(id);
+// Resume the sound
+XFcAudio::resume(id);
+</pre><p>
+Pausing and resuming can also be used for all instances by using the audio buffer or stream object as the argument in the method-calls.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+A paused sound cannot be resumed if a higher priority sound has occupied its audio channel after the sound was paused.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id429061"></a>Changing Parameters on Audio Buffers and Streams</h3></div></div><p>
+To change parameters on audio buffers or streams, one has to use the interface provided by the audio library. For example to change the sampling rate of a particular audio buffer, one must use:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Change sampling rate on audio buffer
+XFcAudio::setSampleRate(sound, 44100.0f);
+</pre><p>
+To change parameters of a sound which has already been set to play, one has to use the unique ID returned by the audio library when the sample was set to play:
+</p><pre class="programlisting">
+// Create an audio buffer from a file
+XFcAudioBuffer *sound = xfuLoadWav(&quot;mysound.wav&quot;);
+// Play the audio buffer
+UINT32 id = XFcAudio::play(sound);
+// Change sampling rate on the sound instance which was just set to play
+XFcAudio::setSampleRate(id, 44100.0f);
+</pre><p>
+The effect of the previous example can of course be achieved with the first example as well, and is the preferred way because of the latency issues in audio output.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id429143"></a>Explanation of Parameters</h3></div></div><p>
+Various parameters can be used when playing sounds so their ranges and meanings are explained here.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id429163"></a>Sample Rate</h4></div></div><p>
+Sampling rate of an audio buffer or stream.
+</p><div class="itemizedlist"><ul type="disc"><li>range: positive floating point values.</li></ul></div><p>
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id429192"></a>Volume</h4></div></div><p>
+Multiplier of the original volume.
+</p><div class="itemizedlist"><ul type="disc"><li>range: positive floating point values.</li><li>values: 0.0 is silent, 1.0 is original volume, values above 1.0 amplify the volume.</li></ul></div><p>
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id429229"></a>Panning</h4></div></div><p>
+Panning of an audio buffer or stream, only applicable to mono audio.
+</p><div class="itemizedlist"><ul type="disc"><li>range: 0.0 - 1.0</li><li>values: 0.0 is left, 0.5 center, 1.0 right</li></ul></div><p>
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="id429266"></a>Priority</h4></div></div><p>
+Priority of a sound is used when the audio library is trying to determine which channel to use for the sound. A higher priority sound can override a lower priority sound if a free channel can not be found. The audio library first searches for a free channel, then a channel with a lower priority sound, then a channel with the same priority and overrides its sound if such was found.
+</p><div class="itemizedlist"><ul type="disc"><li>range: 0 - 65535</li><li>values: 0 is highest priority, 65535 lowest priority</li></ul></div><p>
+</p></div></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="pt04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 9. 3D Graphics </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Part IV. Utility Library (xfutil)</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

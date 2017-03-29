@@ -1,0 +1,382 @@
+
+RELEASE NOTES
+
+X-Forge 1.6.2 Tapwave BASE
+February 19th 2004
+Fathammer Ltd.
+
+
+The X-Forge distribution is structured as follows:
+
+xforge1_6_2                    - Root (this file is in this directory)
++---documentation              - Root dir for all X-Forge documentation
+|   +---guide                  - X-Forge Guide
+|   +---apiref                 - X-Forge API Reference
+|       +---xfcore             - X-Forge core API Reference
+|       +---xfutil             - X-Forge utils API Reference
++---core_examples              - Examples for the X-Forge core
+|   +---data                   - Content and data files for the core examples
+|   |   +---MultiPlayerExample - Data files for the MultiPlayerExample
+|   |   +---StuntPlane         - Data files for the Stunt plane example
+|   |   +---XFFPlayer          - Data files for the XFF player example
+|   +---graphics               - Graphics examples
+|   |   +---blending           - Example of using blending in 3D graphics
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---common             - Common components of core graphics examples
+|   |   |   +---source         - Source code
+|   |   +---cube               - Simple rotating cube
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---glow               - Example of setting render target
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---hexagon            - Example of using pre-projected vertices
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---particles          - Example of using a particle system
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---texture            - Example of using textures
+|   |   |   +---build          - Project & build files
+|   |   |   +---source         - Source code
+|   |   +---vector2d           - Example of using 2d vector graphics
+|   |       +---build          - Project & build files
+|   |       +---source         - Source code
+|   +---imageloader            - Example of extending the image loader interface
+|   |   +---include            - Include files
+|   |   +---source             - Source code
+|   +---mfcembed               - MFC embedding example
+|   |   +---build              - Project & build files
+|   |   +---include            - Include files
+|   |   +---res                - Windows resource files
+|   |   +---source             - Source code
+|   +---MultiPlayerExample     - Multiplayer example
+|   |   +---build              - Project & build files
+|   |   +---source             - Source code
+|   |   +---include            - Include files
+|   +---StuntPlane             - Stunt plane example
+|   |   +---build              - Project & build files
+|   |   +---source             - Source code
+|   |   +---include            - Include files
+|   +---XFFPlayer              - XFF player example
+|   |   +---build              - Project & build files
+|   |   +---source             - Source code
+|   |   +---include            - Include files
+|   +---tutorial               - Examples from the 'getting started' tutorial
+|       +---e1_minimal         - Minimal application 
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e2_quitable        - Quitable application
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e3_graphics        - Displaying graphics
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e4_audio           - Playing audio
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e5_cfl             - Using CFL files
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e6_helloworld      - Printing text
+|       |   +---build          - Project & build files
+|       |   +---source         - Source code
+|       +---e7_timings         - Doing some timings
+|           +---build          - Project & build files
+|           +---source         - Source code
++---marketing_material         - X-Forge and Fathammer marketing material and splash screens
++---tools                      - X-Forge tools
+|   +---cflutils               - Compressed File Library utilities
+|   +---exporter               - Experimental X-Forge Exporter for 3DS Max 5
+|   +---GLProfileAnalyzer      - GL Rasterizer usage data analyzer
+|   +---Mapsizer               - microsoft .map to object/function size calculator
+|   +---profile_analyzer       - Tool for analyzing profiler output
+|   +---thingamajig            - ThinGamaJig, particle system editor
+|   +---pxfs                   - Palm X-Forge Filesystem tool
++---tapwave_tools              - Tapwave-related extra files
+|   +---commonsrc              - Common source files for all tapwave projects
+|   +---xforgeicon             - X-Forge icon files used by examples
++---xforge                     - Root dir for X-Forge
+    +---include                - Root dir for X-Forge include files
+    |   +---external           - Include files for external components
+    |   +---xfcore             - X-Forge core includes
+    |   +---xfutil             - X-Forge utility includes
+    +---lib                    - Root dir for X-Forge link Libraries
+    |   +---tapwave            - .. for Tapwave Zodiac
+    |   +---windows            - .. for Windows Desktop
+    +---source                 - Root dir for X-Forge source code 
+        +---xfutil             - X-Forge utility source code
+
+
+-- 1.6.2 Tapwave BASE (February 19th 2004)
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac (1.0 SDK, official 9.2 and 9.3b2 versions of the compiler)
+
+Changes:
+- Built towards Tapwave R14 SDK. ARM_EABI_SUPPORT paths changed accordingly.
+- Now requires CW9.3
+
+
+-- 1.6.1 Tapwave BASE (January 15th 2004)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac (1.0 SDK, official 9.2 and 9.3b2 versions of the compiler)
+
+
+Changes:
+- Compiled towards the Tapwave 1.0 SDK
+- Libraries compiled with CW9.3b2, and CW9.2 libraries included in a 
+  subdirectory.
+ 
+- !!!IMPORTANT!!! The audio system has gone through slight changes that
+will require code changes for all projects that use audio.
+Old:
+XFcAudio::setAudioFormat(44100, XFCAUDIO_STEREO | XFCAUDIO_SIGNED, 2048,
+   16, 0); // takes known good parameters and tries to apply these "whishes"
+New:
+XFcAudio::setAudioFormat(NULL,16,0); // takes "known good" parameters
+or
+XFcAudioFormat af = XFcAudioFormat(44100,
+                                   XFCAUDIO_STEREO | XFCAUDIO_SIGNED, 2048);
+XFcAudio::setAudioFormat(&af,16,0); // system uses the given parameters
+(even if they might cause buffer underruns, huge latency, or even crashes),
+falling back to recommended format if initialization fails.
+
+Right now only the API has changed, the advanced changes do not actually use
+the valid values yet.
+
+- !!!IMPORTANT!!! New Bluetooth networking implementation with some API changes:
+useNetwork() does not take or return any arguments and should be called where
+all other use functions are called. To enable network one must call
+xfcNetworkStartup() and to disable it call xfcNetworkCleanup().
+
+- !!!IMPORTANT!!! Rename: get/setSampleRate()-methods in all audio classes
+were renamed to get/setSamplingRate() 
+
+- New networking APIs: Bluetooth power on and local name query. If the
+Bluetooth power is not on when xfcNetworkStartup() is called, OS pops up
+a dialog where user is asked whether he wants to turn Bluetooth on or not.
+Return values changed to support network general return values.
+Implementation currently in Symbian and Zodiac.
+- Added new fully fixed point math functions to XFcMath:
+tan, asin, acos, atan, log, logFast, exp, pow. atan2 was changed to faster
+implementation.
+- normalize() has been changed to use a different algorithm. Earlier, normalize()
+was just using lengthSq(), square root and division. This resulted in problems
+with overflow, also, division on ARM processor is mcostly. The new implementation
+is about 25% faster (on ARM), and it can handle any vector length without overflow.
+- A new method, normalizeFast() was added for fast but inaccurate normalization.
+This has also overflow problems with long vectors and underflow problems with short
+vectors. It is about four times faster than normalize().
+- length() has been changed to use normalize() and dot product. This ensures that
+length() doesn't suffer from overflow and underflow problems. However, it is also
+five times slower than the previous implementation. To make faster length (but with
+overflow problems), it is possible to do the following:
+	// assume vec is XFcVector3
+	REAL len = XFcMath::sqrt(vec.lengthSq());
+Even faster but inaccurate length would be:
+	REAL len = XFcMath::sqrtFast(vec.lengthSq());
+- 2D vector graphics stuff added to X-Forge. This includes:
+  - Some new classes in core (most important is XFcPrimitiveTranslator)
+  - xfcUse2DVectorGraphics() method for enabling 2d vector graphics support
+  - XFcCore::getPrimitiveTranslator() and XFcCore::getPrimitiveDraw() methods
+  - New chapter in documentation about 2d vector graphics
+  - New core example about the usage of 2d vector graphics API
+- In XFcStringToolkit: changed interfaces of toFLOAT32 and toINT32:
+  - XFCIMPORT static FLOAT32 toFLOAT32(const CHAR *aString,
+                                      INT *aSuccess = NULL);
+  - XFCIMPORT static INT32 toINT32(const CHAR *aString,
+                                   INT *aSuccess = NULL);
+  aSuccess can now be used for detecting if the parsing of the number
+  was successful.
+- CFL library open no longer considers "partial success" as "success", but
+"failure"
+- Added skin support to X-Forge Desktop platform:
+If Desktop X-Forge notices xforge_skin.pcx in the application directory, it
+will try to use it as a skin. If the skin is bigger than the required app
+screen size + 40 pixels, the window will be resized to the skin's size and
+the application screen is centered. NOTE: this also means that
+xfcUseImageFilterPCX() is called by the windows main.
+- XFuWavLoad no longer uses an intermediate buffer to load the sample
+data into, thus taking less memory than earlier.
+- Floating point number to fixed point number is now our own implementation.
+- XFuBuetoothNetwork and XFuBuetoothMultiNetwork startClientDiscovery() return
+value is fixed to return 1 if function succeeds, else 0. Same done with
+startDeviceDiscovery().
+- XFcVector.h cleaned up (removed FLOAT32 operators and some operator
+rearranging)
+- Bugfix: XFcFileMemory sets XFcFile::mFilemode now to 1 in open method.
+- Bugfix: Fixed match & matchIgnoreCase implementation and documentation in
+XFcStringToolkit class.
+- Bugfix: Fixed memory coalescing bug in memory manager, it was possible for
+the memory manager to leave blocks uncoalesced.
+- Bugfix in blitting with drawImage(img,x,y,rect) where one or both of the 
+surfaces were non-55x5 surfaces.
+- Bugfix: Bluetooth game port was always set to zero in networking
+interface. If your networking has worked before with non-zero
+port values set, you may want to test your code again.
+- Bugfix: Clipping bug crash fixed for ARM optimized drawFilledRect().
+- Bugfix: Audio clipping bug fixed on ARM platforms.
+- Bugfix: Audio system crash when deleting an XFcAudioBuffer from the
+exact same physical memory address as a previously allocated, played
+and deleted XFcAudioStream fixed.
+- Bugfix: An extra click on audio initialization fixed.
+- Bugfix: In XFuStringKey: uninitialized flags might cause problems
+with large keys
+- Bugfix: pointer outside the sample bug when setting loop start
+sample offset fixed in XFcAudio.
+- Bugfix: In XFcStringToolkit string to numeric conversion functions
+  - Now it's possible to use both '+' and '-' as the sign character,
+    earlier it was only '-'.
+  - '.' gets handled correctly, so it's not possible to parse strings
+    like ".12.3..56" anymore.
+- Bugfix: blitting different pixel formats with srcrect caused
+strange scaling behavior. Fixed.
+- Bugfix: Memory trash bug fixed in XFcStringToolkit::format calls
+The format() calls of XFcStringToolkit would insert end-of-string NULL
+character regardless of target buffer size. This especially affected
+allocatedFormat calls, which first calculate the buffer size by "formatting"
+strings to a zero-length buffer.
+- Bugfix: Fixed a typecast mistake in XFuFastRandom::next()
+
+
+
+Known issues:
+- Palmsim doesn't have bluetooth "hardware", so multiplayerexample
+will fail on it.
+
+
+-- 1.4.6 (October 28nd 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+Changes:
+- Compiled towards R12 SDK
+
+-- 1.4.5 (October 22nd 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+Changes:
+- All mounted CFL files are now kept open. On Tapwave this also means that all
+open CFL files take 2kB of memory due to the cached file IO.
+- XFC_CANT_DO_DIRECT_CAST changed to XFC_CAN_DO as that's what it did. This also fixed
+palmsim support.
+- The X-Forge video buffer is now allocated with "no backing store" to save
+memory (X-Forge applications tend to update whole screen in any case)
+- Battery low event is 'critical'. If ignored, when batteries go critical,
+application will get a kill signal.
+- New version of pxfs
+
+-- 1.4.4 (September 30th 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+The libraries have now been compiled with Tapwave R11 SDK.
+
+Changes:
+- New API: setFileOpenStrategy to change default file open strategy.
+- Bugfix: XFuStringKey possibly trashed memory with large keys.
+- Bluetooth network code is frozen for 1.4.x versions due to the changes
+  required. Working BT support will appear in next revision.
+
+
+-- 1.4.3 (September 15th 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+The libraries have now been compiled with Tapwave R10 SDK. 
+
+Changes:
+- Some new bluetooth code (still unstable).
+- Bugfix in blitting with drawImage(img,x,y,rect) where one or both of the 
+  surfaces were non-55x5 surfaces.
+- Graffiti no longer blinks at application startup
+
+
+-- 1.4.2 (September 9th 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+The libraries have now been compiled with Tapwave R9 SDK. 
+
+Changes:
+- Correct response to winEnterEvent and winExitEvent
+- Compiled with official 9.2 version of compiler.
+
+
+-- 1.4.1 (August 28th 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+The libraries have now been compiled with Tapwave R7 SDK. The compiler 
+is still in beta stage, but should work fairly well now. 
+
+Changes:
+- Core examples data directory structure changed
+- Core example project files updated
+- MultiPlayer Example project files and includes fixed
+- Bugfix: Bluetooth game port was always set to zero in networking
+interface. If your networking has worked before with non-zero
+port values set, you may want to test your code again.
+- Bugfix: Clipping bug crash fixed for ARM optimized drawFilledRect().
+- Bugfix: Audio clipping bug fixed on ARM platforms.
+- Bugfix: Audio system crash when deleting an XFcAudioBuffer from the
+exact same physical memory address as a previously allocated, played
+and deleted XFcAudioStream fixed.
+- Bugfix: An extra click on audio initialization fixed.
+
+
+-- 1.4.0 (August 6th 2003)
+Supported platforms:
+- Microsoft Windows Desktop (Visual Studio 6 & Visual Studio .NET)
+- Tapwave Zodiac
+
+The Tapwave libraries have been compiled with beta-stage 
+codewarrior 9.2 towards post-R6 Tapwave SDK. The libraries need the
+"TwThreadCurrent" call which was not included in the R6 SDK.
+
+Example project files have been created so that they expect to find
+Tapwave SDK right above the x-forge tree, eg.
+
+Tapwave SDK root
++---samples
++---documentation
++---inc
++---...
++---X-Forge root
+    +---xforge
+    +---core_examples
+    +---...
+
+Main changes from the 11th of July version:
+
+- Screen rotation through XFcGL creation flags has been implemented.
+- File IO has been revamped so that files are now found and stored in
+  their proper directories (see Tapwave 'best practises' document) 
+  instead of the root. Also, it is now possible for applications to
+  say 'write this file on the memorycard in slot 1'. See 'getting 
+  started' for details.
+- First revision of the network code is included, but it is very
+  unstable.
+- Codewarrior no longer gives a lot of warnings while compiling.
+- Palmsim support added, but has seen minimal testing.
+- Mutexes have been implemented.
+- Libraries are now built with max. speed optimization.
+- vfs filename caching now scans all directories on all volumes.
+
+Please read the "getting started" in the Guide for more information.
+
+--
+
+All trademarks in this document are acknowledged and are property of their
+owners.
+
+

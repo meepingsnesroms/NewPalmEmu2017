@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleInstaller", "SimpleInstaller.vcproj", "{7147421D-E6C4-42E6-804F-4F4D76BC6A00}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		DEBUG.ANSI.386 = DEBUG.ANSI.386
+		FINAL.ANSI.386 = FINAL.ANSI.386
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{7147421D-E6C4-42E6-804F-4F4D76BC6A00}.DEBUG.ANSI.386.ActiveCfg = DEBUG.ANSI.386|Win32
+		{7147421D-E6C4-42E6-804F-4F4D76BC6A00}.DEBUG.ANSI.386.Build.0 = DEBUG.ANSI.386|Win32
+		{7147421D-E6C4-42E6-804F-4F4D76BC6A00}.FINAL.ANSI.386.ActiveCfg = FINAL.ANSI.386|Win32
+		{7147421D-E6C4-42E6-804F-4F4D76BC6A00}.FINAL.ANSI.386.Build.0 = FINAL.ANSI.386|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

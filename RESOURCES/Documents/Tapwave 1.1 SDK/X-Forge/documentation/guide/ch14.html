@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 14. ThinGamaJig - Particle System Editor</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt06.html" title="Part VI. Tools"><link rel="previous" href="pt06.html" title="Part VI. Tools"><link rel="next" href="ch15.html" title="Chapter 15. CFL Creation Utility"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 14. ThinGamaJig - Particle System Editor</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pt06.html">Prev</a> </td><th width="60%" align="center">Part VI. Tools</th><td width="20%" align="right"> <a accesskey="n" href="ch15.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id431906"></a>Chapter 14. ThinGamaJig - Particle System Editor</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch14.html#id432231">Introduction</a></dt><dt><a href="ch14.html#id431760">ThinGamaJig Features</a></dt><dd><dl><dt><a href="ch14.html#id431795">File Menu</a></dt><dt><a href="ch14.html#id431829">Util Menu</a></dt><dt><a href="ch14.html#id431881">Running Particle System Information</a></dt><dt><a href="ch14.html#id432373">Particle System Retrig</a></dt><dt><a href="ch14.html#id432394">Scene Animation Play Controls</a></dt><dt><a href="ch14.html#id432416">Multiple Particle System Controls</a></dt><dt><a href="ch14.html#id432437">Edit Parameter Tab Area</a></dt><dt><a href="ch14.html#id432464">Status Bar</a></dt></dl></dd><dt><a href="ch14.html#id432483">Creating Particle Systems</a></dt><dd><dl><dt><a href="ch14.html#id432523">Launch</a></dt><dt><a href="ch14.html#id432584">Emitter</a></dt><dt><a href="ch14.html#id432679">Emitter 2</a></dt><dt><a href="ch14.html#id432841">Weight</a></dt><dt><a href="ch14.html#id432914">Damping</a></dt><dt><a href="ch14.html#id432939">Sprite</a></dt><dt><a href="ch14.html#id433034">Texture</a></dt><dt><a href="ch14.html#id433135">Blend</a></dt><dt><a href="ch14.html#id433192">Scaling</a></dt><dt><a href="ch14.html#id433219">Ticking</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id432231"></a>Introduction</h2></div></div><p>
+Mobile devices are a platform designed and built with such restrictions that real world gives; to become mobile, device's power supply has to be mobile, which leads to the fact that the device has to be able to consume less power in order to have more endurance. This leads device designs to lower some processing performance in certain way.
+In this situation, optimizing is more and more valuable in content creation overall, and specially in the field of special effects, such as particle systems.
+</p><p>
+ThinGamaJig is a standalone win32-application, tailor-made to be used in creating advanced particle systems for mobile 3D. ThinGamaJig is made having this need of optimizing in mind.
+</p><p>
+This document explains the features of ThinGamaJig, and points out a few features that are designed specially to allow artist to optimize particle systems.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id431760"></a>ThinGamaJig Features</h2></div></div><div class="mediaobject"><img src="images/tgmj_overview.gif"></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431795"></a>File Menu</h3></div></div><p>
+On file menu, you will find &quot;Load&quot; and &quot;Save&quot; options, which open the respective menus. Here you can save and load the actual .pr3 files, the particle system data.
+</p><p>
+Please note that texture files are not managed in this menu.
+</p><p>
+In this menu, there is also an exit option.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431829"></a>Util Menu</h3></div></div><p>
+Here you find 2 options: &quot;Remove Textures&quot; and &quot;Geometry Transform&quot;.
+</p><div class="itemizedlist"><ul type="disc"><li>
+&quot;Remove Textures&quot;-option removes all textures from current system with one click. This cannot be done in textures tab.
+</li><li>
+&quot;Geometry Transform&quot;- option opens a window with a field of checkboxes, here you can re-orient your particle system to be aligned with different axis of the world. 
+This tool comes in Very Handy when your particle system loads to an unwanted alignment or orientation to the actual scene it is used in.
+</li></ul></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431881"></a>Running Particle System Information</h3></div></div><p>
+This field is located under menu bar (see image above). This field includes following information;
+</p><div class="itemizedlist"><ul type="disc"><li>
+Active Particle Systems
+- Number of active particle systems. Multiple system editing is not yet implemented, so this figure shows 0.
+</li><li>
+Active Particles (total)
+- Number of total particles drawn. Multiple system editing is not yet implemented, so this figure shows 0.
+</li><li>
+Peak Particles (total)
+- This shows highest figure of drawn particles. Multiple system editing is not yet implemented, so this figure shows 0.
+</li><li>
+Active Particles (this)
+- Number of particles drawn of current system.
+</li><li>
+Peak Particles (this)
+- Highest figure of drawn particles.
+</li><li>
+Particles in queue (this)
+- Amount of particles waiting to be drawn
+</li><li>
+Frames Per Second
+- Frame rate of system preview 
+</li></ul></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+ OPTIMIZATION TIP: Let your system loop a few times, and this figure tells you the optimal amount of highest visible particles.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432373"></a>Particle System Retrig</h3></div></div><p>
+With this button, you can retrig your current Particle System - Preview stops, starts over and retrigs your system.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432394"></a>Scene Animation Play Controls</h3></div></div><p>
+On this field you can control the playing of the xff-animation loadable on preview screen. This feature is not yet implemented.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432416"></a>Multiple Particle System Controls</h3></div></div><p>
+On this field you can manage files of multiple particle systems to be loaded to preview. This feature is not yet implemented.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432437"></a>Edit Parameter Tab Area</h3></div></div><p>
+This Area includes all the parameter editing features needed to create the actual particle system. These editing features are divided to following tabs: Launch, Emitter, Emitter2, Weight, Damping, Sprite, Texture, Blending, Scaling and Ticking.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432464"></a>Status Bar</h3></div></div><p>
+Current status of this application.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id432483"></a>Creating Particle Systems</h2></div></div><p>
+The best way to develop quality particle systems is to have some certain image in mind what to create, some certain name for the system. Like for example, a slow snowfall, a magical fire, or a rocket exhaust flame. With this goal in mind, just explore and experiment with parameters and different kind of texture sequences, and get familiarized with ThinGamaJig this way. It is fast and easy application to get into.
+</p><p>
+Following chapters includes information on parameters that are editable, tab by tab.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432523"></a>Launch</h3></div></div><p>
+On this tab, there is three different fields, where you can set particle's velocity by three axis. You can use sliders or edit straight to fields parametrically.
+This velocity can be static as set, but it doesn't have to; there is a drop list for each axis for selection of different noise types. There are also sliders to set noise strength, and length of noise period. Noise period length is typically used to set the wavelength of sin-form noise type; this is usable to create for example blinking lights and such.
+</p><div class="mediaobject"><img src="images/tgmj_launch.gif"></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432584"></a>Emitter</h3></div></div><div class="mediaobject"><img src="images/tgmj_emitter.gif"></div><p>
+On this tab, there are 3 functions in three different fields. 
+</p><p>
+Emitter dimensions are set per axis: If all dimensions are set to 0, emitter is a single point. If any single axis has a dimension, emitter is a line. Any two dimensions form a plane emitter. Finally, 3-dimensional emitter is formed by setting a length to all 3 dimensions.
+</p><p>
+Next field includes sliders per axis to set maximum distance for particles to be able to travel. Particle's life is limited to this maximum distance, if collider is not set to the respective axis.
+</p><p>
+On the third field, there is a set of checkboxes to control collider planes on/off per axis. Collider planes are set on maximum distance, causing particles to collide from invisible plane on their maximum travel length.
+</p><p>
+There is also a checkbox to switch particle system to function in world space, but this feature is not yet implemented, i.e. you can create particle systems only in object space.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432679"></a>Emitter 2</h3></div></div><div class="mediaobject"><img src="images/tgmj_emitter2.gif"></div><p>
+Here are the sliders that have the biggest effect for both particle system's nature and it's polycount. The four sliders on this tab control the amount, density, speed, looping and duration of particle system.
+</p><p>
+The first slider (Max. particles visible) allows user to limit the amount of particles that are drawn simultaneously.
+It is very important to keep this figure as small as possible.
+</p><p>
+If the figure of &quot;peak particles&quot; in particle system information-field is smaller than this figure after particle system has completely looped it's sequence, it is possible to lower this amount to the same level with peak particles without making any visual change to particle system itself.
+Also, if the system is too heavy for it's purpose, this is one place to lower the system's polycount. Each visible particle consists of two triangles, so lowering this amount lowers the polycount.
+</p><p>
+The second slider (Max. total) sets the total amount of particles drawn. This amount has a strong effect to particle systems nature. If the amount is 0, system is emitting particles in a looping manner - usable for creating different kind of spraying systems, like rain, smoke, stationary fire. 
+If the amount is anything but 0, particles are emitted until this maximum amount is reached. This is usable for creating different kind of bursts, for example, explosions, fragments, muzzle flames, flashing effects.
+</p><p>
+The third slider (Emit rate) sets the amount of particles emitted per second. This amount has a direct effect to particle systems polycount.
+Lowering this figure, however, makes the system to look more &quot;thin&quot; - there will be visible gaps within the sequence when this amount is very low. 
+</p><p>
+The fourth slider sets the maximum age of particles - the duration of particle life. This is a figure that has a strong visible effect on particle systems speed. Short time makes the particles move faster, but shorter distance (usable for pressurized spraying effects; rocket exhaust, fountains). Longer time makes particles move slower and longer distance (good for simulating snow, slow smoke, falling leaves and such).
+There is also a droplist and sliders to define different kind of noise for particle age.
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+OPTIMIZATION TIP: If the particle system is too heavy, try to lower the emit rate and maximum visible amount of particles. After this, it is usually very effective to reduce the visual impact of this kind of optimization by adding more noise to the particle speed and travel distance - by adding noise to particle age.
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432841"></a>Weight</h3></div></div><div class="mediaobject"><img src="images/tgmj_weight.gif"></div><p>
+On this tab, there is figures to set gravity for particles per axis. Please note that this figure 
+is gravity from origin; bigger value means greater gravity to one direction of axis, in order to give same kind of force in opposite direction, value is then less than 0.
+It is also possible to add noise to these forces. This feature is usable when simulating changes of weight to particles, to make randomly some particles behave as they had a lower mass(snow, dropping leaves), or to increase/decrease the inertia of whole system (for example, increase pressure of spraying water from a garden hose, water has to fly longer distance).
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432914"></a>Damping</h3></div></div><p>
+There are values to set damping for movement per axis on this tab. The functional range of damping is 0-1. It is possible to give other values to damping, but effects outside this range are considered as artifacts.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id432939"></a>Sprite</h3></div></div><div class="mediaobject"><img src="images/tgmj_sprite.gif"></div><p>
+The individual position and size of particles are controlled on this tab.
+</p><p>
+First slider sets particle size at spawn. Second slider sets size for particles to scale to through particle age. These values are randomizable.
+</p><p>
+Next value sets Z-rotation speed for particles; spin of particles. Slider has a range of -1 to 1, but this is not the whole rotation speed range. You can insert other values straight to number field. 
+</p><p>
+There are 2 randomization fields for rotation. First effects to rotation speed, second effects the particle's rotation (their individual position) when it is emitted.
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+OPTIMIZATION TIP: When simulating organic phenomena like smoke, water or rattling fire, randomizing the starting position of particles is in many cases an effective way to avoid the &quot;thin&quot;-feeling on optimized particle systems.  
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433034"></a>Texture</h3></div></div><div class="mediaobject"><img src="images/tgmj_texture.gif"></div><p>
+This tab includes all texture controls, loading textures happens also here.
+</p><p>
+First field is a window showing current texture sequence in order to be drawn, from left to right. Under this field is buttons to control the sequence order, these controls include loading textures to sequence and removing them. Clicking &quot;sort by name&quot;- twice reverses sort order.
+</p><p>
+Under sequence control buttons is a field including randomization controls for sequence drawing order.
+</p><p>
+Note that if alpha channel is to be used, one should then use 32-bit Targa (.TGA)-format textures. 8-bit PCX is also supported format.
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+OPTIMIZATION TIP: Setting a waveform type randomization on with relatively long noise period results natural-like changes to particle behavior over time even with short texture sequence. In some cases, this is very useful feature to reduce the amount of needed files (amount of textures gets smaller). 
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433135"></a>Blend</h3></div></div><div class="mediaobject"><img src="images/tgmj_blend.gif"></div><p>
+The first two sliders on this tab are to set particles alpha (opacity, transparency) from beginning to end of particle age. 
+</p><p>
+Range is 0-255, where 0 is completely transparent and 255 is completely visible. There are also controls to add noise for these values.
+Under these controls, there is selector for blend mode for this particle system.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433192"></a>Scaling</h3></div></div><p>
+On the scaling tab, there is slider to set scale of size to whole particle system. There is a similar slider to set scale of time to the system. These features are usable when the system is incompatible in terms of size or overall speed with the scene it is used in.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id433219"></a>Ticking</h3></div></div><div class="mediaobject"><img src="images/tgmj_ticking.gif"></div><p>
+First field on this tab includes particle system physic iteration controls. This iteration tells how often the particle system's movement is calculated. There is a slider to set this value.
+There is also a checkbox to force the maximum iterations, even if the frame rate is smaller than desired iteration for physics. This causes the particle system to be intact and equal to preview per frame, but this results in more load on the processor.
+</p><p>
+Next field consists of a slider to set pre-tick for particle system. This is the time how long ago particle system age begun before it got visible. 
+</p><p>
+The check-box under pre-tick slider sets tick mode. Checked, the particle system is ticked only when seen. This is good to be on when particle system is one of a looping nature (waterfalls, bonfire and such). Unchecked, particle system is ticked all through it's age, whether it is visible or not. Good for systems of bursting nature that are suppose not to continue if they get visible again (explosions and such).
+</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+OPTIMIZATION TIP: maximum iterations should always be kept as low as possible, it is even worth of trouble to try to construct the system in a way that low amount of iterations is possible. Use force iterations only if absolutely necessary.	
+</p></div></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pt06.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt06.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch15.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Part VI. Tools </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 15. CFL Creation Utility</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

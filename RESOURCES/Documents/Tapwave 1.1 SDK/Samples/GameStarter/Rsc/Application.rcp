@@ -1,0 +1,10 @@
+/***************************************************************************\
+*
+* File: Application.rcp
+*
+****************************************************************************/
+
+/*
+ * Tapwave Native Application resource for Palm OS Simulator.
+ */
+HEX  "SIMC" ID 1		"GameStarter" 0x00 "__ARMlet_Startup__" 0x00

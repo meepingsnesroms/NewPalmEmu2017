@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1600" LOCALE="deDE">
+		<FORM_ID> 1600 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 51 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 107 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 1608 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 1607 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="To Do Delete">
+				<TEXT> "Aufgaben löschen" </TEXT>
+			</FORM_TITLE>
+			<FORM_BITMAP COMMENT="Confirmation Icon">
+				<USABLE> TRUE </USABLE>
+				<LOCATION>
+					<X> 8 </X>
+					<Y> 19 </Y>
+				</LOCATION>
+				<BITMAP_ID> 10005 </BITMAP_ID>
+			</FORM_BITMAP>
+			<FORM_LABEL COMMENT="Delete question">
+				<ID> 1603 </ID>
+				<LOCATION>
+					<X> 32 </X>
+					<Y> 19 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT>
+					"Ausgewählte Aufgaben\n"
+					"löschen?"
+				</TEXT>
+			</FORM_LABEL>
+			<FORM_CHECKBOX COMMENT="Save archive">
+				<ID> 1604 </ID>
+				<BOUNDS>
+					<LEFT> 12 </LEFT>
+					<TOP> 54 </TOP>
+					<WIDTH> 120 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Archivkopie auf dem" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> TRUE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_BUTTON COMMENT="Delete: Ok">
+				<ID> 1606 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 91 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Delete: Cancel">
+				<ID> 1607 </ID>
+				<BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 91 </TOP>
+					<WIDTH> 48 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Abbrechen" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_LABEL COMMENT="Delete question line 2">
+				<ID> 1609 </ID>
+				<LOCATION>
+					<X> 30 </X>
+					<Y> 67 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "PC speichern" </TEXT>
+			</FORM_LABEL>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1608" LOCALE="deDE" COMMENT="Delete: Help">
+		<TEXT>
+			" Mit der Option \"Archivkopie auf dem PC speichern\" werden gelöschte "
+			"Einträge beim nächsten HotSync-Vorgang in einer Archivdatei auf Ihrem "
+			"Desktop gespeichert."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

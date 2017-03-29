@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2001" LOCALE="enUS" COMMENT="Delete Note">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Delete Note" </TITLE>
+		<MESSAGE> "Are you sure you wish to delete the note?" </MESSAGE>
+		<BUTTONS>
+			<TEXT> "Yes" </TEXT>
+			<TEXT> "No" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2002" LOCALE="enUS" COMMENT="Select item">
+		<ALERT_TYPE> INFORMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Select Item" </TITLE>
+		<MESSAGE>
+			"You must have a record selected to perform this command.  To select a "
+			"record, tap on the description of the item."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "OK" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_DEFAULT_CATEGORY_RESOURCE RESOURCE_ID="1000" LOCALE="enUS" COMMENT="DO NOT LOCALIZE THIS RESOURCE">
+		<TEXT> "Main" </TEXT>
+	</APP_DEFAULT_CATEGORY_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1000" COMMENT="Large icons (1-2 and 8 bits)">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 25 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 25 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 25 </WIDTH>
+				<HEIGHT> 22 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 50 </WIDTH>
+				<HEIGHT> 44 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-X2-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 50 </WIDTH>
+				<HEIGHT> 44 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-X2-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 50 </WIDTH>
+				<HEIGHT> 44 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Large-X2-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_BITMAP_RESOURCE RESOURCE_ID="1001" COMMENT="Small icons (1-2 and 8 bits)">
+		<BITMAPS>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<WIDTH> 15 </WIDTH>
+				<HEIGHT> 9 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 30 </WIDTH>
+				<HEIGHT> 18 </HEIGHT>
+				<BIT_DEPTH> 1 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-X2-1.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 30 </WIDTH>
+				<HEIGHT> 18 </HEIGHT>
+				<BIT_DEPTH> 2 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> FALSE </HAS_TRANSPARENCY>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-X2-2.bmp" </BITMAP_FILE>
+			</BITMAP>
+			<BITMAP>
+				<BITMAP_DENSITY> 144 </BITMAP_DENSITY>
+				<WIDTH> 30 </WIDTH>
+				<HEIGHT> 18 </HEIGHT>
+				<BIT_DEPTH> 8 </BIT_DEPTH>
+				<BITMAP_COMPRESSION> NONE </BITMAP_COMPRESSION>
+				<HAS_TRANSPARENCY> TRUE </HAS_TRANSPARENCY>
+				<TRANSPARENT_COLOR>
+					<INDEX> 0xD2 </INDEX>
+				</TRANSPARENT_COLOR>
+				<HAS_COLOR_TABLE> FALSE </HAS_COLOR_TABLE>
+				<BITMAP_FILE> "./ToDoMisc/AppIcon_Small-X2-8.bmp" </BITMAP_FILE>
+			</BITMAP>
+		</BITMAPS>
+	</APP_ICON_BITMAP_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="enUS">
+		<TEXT> "To Do List" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_INFO_STRINGS_RESOURCE RESOURCE_ID="1000" LOCALE="enUS" COMMENT="Category Labels">
+		<STRINGS>
+			<TEXT> "Unfiled" </TEXT>
+			<TEXT> "Business" </TEXT>
+			<TEXT> "Personal" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+		</STRINGS>
+	</APP_INFO_STRINGS_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.5" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="enUS" COMMENT="List View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="Item">
+				<TITLE> "Record" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 101 </WIDTH>
+					<HEIGHT> 93 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 43 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Delete Item…" </TITLE>
+						<COMMAND> "D" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Attach Note" </TITLE>
+						<COMMAND> "A" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "Delete Note…" </TITLE>
+						<COMMAND> "O" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Purge…" </TITLE>
+						<COMMAND> "E" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 105 </ID>
+						<TITLE> "Beam Item" </TITLE>
+						<COMMAND> "B" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 106 </ID>
+						<TITLE> "Send Item" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 107 </ID>
+						<TITLE> "Beam Category" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 108 </ID>
+						<TITLE> "Send Category" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Edit">
+				<TITLE> "Edit" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 49 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 108 </WIDTH>
+					<HEIGHT> 82 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 47 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 27 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 10000 </ID>
+						<TITLE> "Undo" </TITLE>
+						<COMMAND> "U" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10001 </ID>
+						<TITLE> "Cut" </TITLE>
+						<COMMAND> "X" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10002 </ID>
+						<TITLE> "Copy" </TITLE>
+						<COMMAND> "C" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10003 </ID>
+						<TITLE> "Paste" </TITLE>
+						<COMMAND> "P" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10004 </ID>
+						<TITLE> "Select All" </TITLE>
+						<COMMAND> "S" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10005 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10006 </ID>
+						<TITLE> "Keyboard" </TITLE>
+						<COMMAND> "K" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10007 </ID>
+						<TITLE> "Graffiti 2 Help" </TITLE>
+						<COMMAND> "G" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Options">
+				<TITLE> "Options" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 57 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 101 </WIDTH>
+					<HEIGHT> 44 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 74 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 47 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 300 </ID>
+						<TITLE> "Font…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 301 </ID>
+						<TITLE> "Phone Lookup" </TITLE>
+						<COMMAND> "L" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 302 </ID>
+						<TITLE> "Security…" </TITLE>
+						<COMMAND> "H" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 303 </ID>
+						<TITLE> "About To Do List" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="100" LOCALE="enUS" COMMENT="Find Header Title">
+		<TEXT> "To Do Items" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="101" LOCALE="enUS" COMMENT="Due Date Title">
+		<TEXT> "Due Date" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="enUS" COMMENT="Beam Description String">
+		<TEXT> "a to do" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="enUS" COMMENT="Beam Filename String">
+		<TEXT> "ToDo.vcs" </TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

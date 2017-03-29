@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1000" LOCALE="deDE">
+		<FORM_ID> 1000 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 0 </LEFT>
+			<TOP> 0 </TOP>
+			<WIDTH> 160 </WIDTH>
+			<HEIGHT> 160 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> FALSE </MODAL>
+		<SAVE_BEHIND> FALSE </SAVE_BEHIND>
+		<HELP_ID> 0 </HELP_ID>
+		<MENU_ID> 1000 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="To Do">
+				<TEXT> "Aufgaben" </TEXT>
+			</FORM_TITLE>
+			<FORM_POPUP_TRIGGER COMMENT="Category">
+				<ID> 1003 </ID>
+				<BOUNDS>
+					<LEFT> 143 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 17 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> FALSE </LEFT_ANCHOR>
+				<TEXT> "" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_BUTTON COMMENT="New">
+				<ID> 1005 </ID>
+				<BOUNDS>
+					<LEFT> 1 </LEFT>
+					<TOP> 147 </TOP>
+					<WIDTH> 26 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Neu" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Details">
+				<ID> 1006 </ID>
+				<BOUNDS>
+					<LEFT> 33 </LEFT>
+					<TOP> 147 </TOP>
+					<WIDTH> 40 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Details..." </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Show">
+				<ID> 1007 </ID>
+				<BOUNDS>
+					<LEFT> 79 </LEFT>
+					<TOP> 147 </TOP>
+					<WIDTH> 53 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Anzeigen..." </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_REPEATING_BUTTON COMMENT="Scroll Up">
+				<ID> 1008 </ID>
+				<BOUNDS>
+					<LEFT> 147 </LEFT>
+					<TOP> 144 </TOP>
+					<WIDTH> 13 </WIDTH>
+					<HEIGHT> 8 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "\x01" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> SYMBOL_7_FONT </FONT_ID>
+				<BUTTON_FRAME> NO_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_REPEATING_BUTTON>
+			<FORM_REPEATING_BUTTON COMMENT="Scroll Down">
+				<ID> 1009 </ID>
+				<BOUNDS>
+					<LEFT> 147 </LEFT>
+					<TOP> 152 </TOP>
+					<WIDTH> 13 </WIDTH>
+					<HEIGHT> 8 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "\x02" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> SYMBOL_7_FONT </FONT_ID>
+				<BUTTON_FRAME> NO_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_REPEATING_BUTTON>
+			<FORM_TABLE COMMENT="To Do List">
+				<ID> 1010 </ID>
+				<BOUNDS>
+					<LEFT> 0 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 160 </WIDTH>
+					<HEIGHT> 121 </HEIGHT>
+				</BOUNDS>
+				<EDITABLE> TRUE </EDITABLE>
+				<TABLE_COLUMNS>
+					<COLUMN_WIDTH> 12 </COLUMN_WIDTH>
+					<COLUMN_WIDTH> 10 </COLUMN_WIDTH>
+					<COLUMN_WIDTH> 96 </COLUMN_WIDTH>
+					<COLUMN_WIDTH> 27 </COLUMN_WIDTH>
+					<COLUMN_WIDTH> 24 </COLUMN_WIDTH>
+				</TABLE_COLUMNS>
+				<TABLE_ROWS>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+					<ROW_HEIGHT> 11 </ROW_HEIGHT>
+				</TABLE_ROWS>
+			</FORM_TABLE>
+			<FORM_LIST COMMENT="Categories List">
+				<ID> 1004 </ID>
+				<BOUNDS>
+					<LEFT> 86 </LEFT>
+					<TOP> 1 </TOP>
+					<WIDTH> 72 </WIDTH>
+					<HEIGHT> 0 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 0 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LIST COMMENT="Priority List">
+				<ID> 1011 </ID>
+				<BOUNDS>
+					<LEFT> 20 </LEFT>
+					<TOP> 20 </TOP>
+					<WIDTH> 13 </WIDTH>
+					<HEIGHT> 55 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 5 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> " 1" </TEXT>
+					<TEXT> " 2" </TEXT>
+					<TEXT> " 3" </TEXT>
+					<TEXT> " 4" </TEXT>
+					<TEXT> " 5" </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LIST COMMENT="Due Date List">
+				<ID> 1012 </ID>
+				<BOUNDS>
+					<LEFT> 0 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 65 </WIDTH>
+					<HEIGHT> 55 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 5 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> "Heute" </TEXT>
+					<TEXT> "Morgen" </TEXT>
+					<TEXT> "Eine Woche später" </TEXT>
+					<TEXT> "Kein Datum" </TEXT>
+					<TEXT> "Datum wählen..." </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_LIST COMMENT="Item's Categories List">
+				<ID> 1013 </ID>
+				<BOUNDS>
+					<LEFT> 86 </LEFT>
+					<TOP> 1 </TOP>
+					<WIDTH> 72 </WIDTH>
+					<HEIGHT> 0 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 0 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_GRAFFITI_STATE COMMENT="Graffiti Shift Indicator">
+				<LOCATION>
+					<X> 135 </X>
+					<Y> 150 </Y>
+				</LOCATION>
+			</FORM_GRAFFITI_STATE>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

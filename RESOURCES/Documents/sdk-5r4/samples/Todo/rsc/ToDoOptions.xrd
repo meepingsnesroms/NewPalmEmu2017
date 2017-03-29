@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1400" LOCALE="enUS">
+		<FORM_ID> 1400 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 2 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 156 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 1415 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="To Do Preferences">
+				<TEXT> "To Do Preferences" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Sort by">
+				<ID> 1402 </ID>
+				<LOCATION>
+					<X> 7 </X>
+					<Y> 18 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Sort by:" </TEXT>
+			</FORM_LABEL>
+			<FORM_POPUP COMMENT="Sort Order">
+				<CONTROL_ID> 1404 </CONTROL_ID>
+				<LIST_ID> 1405 </LIST_ID>
+			</FORM_POPUP>
+			<FORM_POPUP_TRIGGER COMMENT="Sort Order">
+				<ID> 1404 </ID>
+				<BOUNDS>
+					<LEFT> 50 </LEFT>
+					<TOP> 17 </TOP>
+					<WIDTH> 17 </WIDTH>
+					<HEIGHT> 13 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<TEXT> "" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_LIST COMMENT="Sort Order">
+				<ID> 1405 </ID>
+				<BOUNDS>
+					<LEFT> 50 </LEFT>
+					<TOP> 17 </TOP>
+					<WIDTH> 95 </WIDTH>
+					<HEIGHT> 44 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 4 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> "Priority, Due Date" </TEXT>
+					<TEXT> "Due Date, Priority" </TEXT>
+					<TEXT> "Category, Priority" </TEXT>
+					<TEXT> "Category, Due Date" </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_CHECKBOX COMMENT="Show completed">
+				<ID> 1406 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 40 </TOP>
+					<WIDTH> 133 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Show Completed Items" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_CHECKBOX COMMENT="Show items due ">
+				<ID> 1407 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 54 </TOP>
+					<WIDTH> 123 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Show Only Due Items" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_CHECKBOX COMMENT="Record Completion Date">
+				<ID> 1408 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 68 </TOP>
+					<WIDTH> 141 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Record Completion Date" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> TRUE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_CHECKBOX COMMENT="Show due dates">
+				<ID> 1409 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 89 </TOP>
+					<WIDTH> 99 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Show Due Dates" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_CHECKBOX COMMENT="Show priorities">
+				<ID> 1411 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 103 </TOP>
+					<WIDTH> 97 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Show Priorities" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> FALSE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_CHECKBOX COMMENT="Show Category">
+				<ID> 1412 </ID>
+				<BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 117 </TOP>
+					<WIDTH> 103 </WIDTH>
+					<HEIGHT> 14 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Show Categories" </TEXT>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<GROUP_ID> 0 </GROUP_ID>
+				<SELECTED> TRUE </SELECTED>
+			</FORM_CHECKBOX>
+			<FORM_BUTTON COMMENT="Ok">
+				<ID> 1413 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 139 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1414 </ID>
+				<BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 139 </TOP>
+					<WIDTH> 37 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Cancel" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1415" LOCALE="enUS" COMMENT="Show options: Help">
+		<TEXT>
+			"• Uncheck Show Completed Items to hide To Do items without deleting "
+			"them.  To remove completed items from your handheld computer, tap Menu "
+			"and then tap Record and Purge.\n"
+			"\n"
+			"• Check Show Only Due Items to hide To Do items that are not due yet.\n"
+			"\n"
+			"• Check Record Completion Date to record the date the To Do item is "
+			"checked off as the due date.  The completion date will be displayed if "
+			"both Show Completed Items and Show Due Dates are checked."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

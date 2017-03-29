@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>The OnBoard Asm User's Guide</title>
+</head>
+<body>
+
+<pre><span style="font-size:20pt; font-weight:bold">
+The OnBoard Asm User's Guide<br/></span>
+<span style="font-size:14pt">0.1</span>
+</pre>
+
+<p>
+<b><u>Copyright</u></b> 2004, Steve Little. Permission is granted to 
+copy and 
+redistribute this document so long as it is unmodified (including the section
+that describes where to get this document for free) and the copyright 
+remains intact.  This should really be copyrighted by the OnBoard C group
+(both Yahoo! and SourceForge) since much of this has been gleaned from 
+that discussion group but I don't
+know if that would be legally binding.  The purpose of the copyright, anyway, 
+is just to make sure that no one charges for the information, such as it is, 
+that we're giving away for free.</p>
+
+<p>
+<b><u>Location</u></b>.  The latest version of this document can be obtained 
+(for free) from
+<a href="http://onboardc.sourceforge.net/OnBAUsersManual.html">
+http://onboardc.sourceforge.net/OnBAUsersManual.html</a>.
+If you have any questions, comments, corrections or suggestions, 
+please don't hesitate to send them to <a href="mailto:onba@boz.org.uk">
+onba@boz.org.uk</a>.</p>
+
+<b><u>Thanks</u></b>.  A special thanks goes to the incredible legion of
+talented individuals who have contributed to this document.  The list 
+(in alphabetical order) can be found at the end of this document. If I've 
+left anyone out, please contact me at the above address.
+</body>
+
+<pre>
+<a name="toc" id="toc"><h2>
+<hr width="70%" align="left"/>
+Table Of Contents</h2></a></pre>
+
+<p>
+<a href="#intro"> 1. Introduction</a><br />
+<a href="#quickstart"> 1.1 Quickstart</a><br />
+<a href="#license"> 1.2 Licensing</a><br />
+<a href="#why_use"> 1.3 Why Use OnBoard Asm?</a><br />
+<a href="#history"> 1.4 A Little History</a><br />
+<a href="#rqmts"> 1.5 Requirements</a><br />
+<a href="#help"> 1.6 Where To Go For Help</a></p>
+<p>
+<a href="#installation"> 2. Installation</a><br />
+<a href="#dist"> 2.1 The OnBoard Asm Distribution</a><br />
+<a href="#needed"> 2.2 Other Stuff You Might Need</a><br />
+<a href="#install"> 2.3 Install OnBoard Asm</a></p>
+<p>
+<a href="#tutorial"> 3. User's Tutorial</a><br />
+<a href="#not_programmer"> 3.1 If You're Not Already A Palm Programmer (in assembler). . .</a><br />
+<a href="#start-coding"> 3.2 If You're An Old Hand At Writing Palm Code in m68k assembler. . .</a><br />
+<a href="#example"> 3.3 A complete example</a></p>
+
+<p>
+<a href="#about"> 4. About The Language</a><br />
+<a href="#not-pila">4.1 How is OnBoard Asm Different From Pila?</a><br />
+<a href="#syntax">4.2 OnBA Syntax</a><br />
+<a href="#directives">4.3 OnBA Directives</a><br />
+<a href="#useful">4.4 Useful Stuff</a><br />
+<a href="#limits">4.5 Limits</a></p>
+
+<!--
+<p>
+<a href="#beyond-basics"> 5. Beyond the Basics</a><br />
+<a href="#editor"> 5.1 Support For Other Editors</a><br />
+<a href="#internal">5.2 Some Dirty Internal Details</a><br /> 
+<a href="#api">5.3 Adding New APIs</a><br /> 
+<a href="#hack">5.4 Building A Hack</a><br />
+<a href="#segments">5.5 Multi-Segmented Code</a></p>
+<p>
+<a href="#reference"> 6. Reference Guide</a><br />
+<a href="#menus"> 6.1 Menus Buttons And Check Boxes</a></p>
+<p>
+<a href="#answers"> 7. Answers To A Few Questions</a><br />
+<a href="#q-platform">7.1 Can I write code for some Palm platforms and have it work on
+others?</a><br />
+<a href="#q-stack">7.2 Is it possible to compile with a larger stack with OnBoardC?</a><br />
+<a href="#q-header">7.3 How do you generate a header file from RsrcEdit?</a><br />
+<a href="#q-prc">7.4 How do you share my OnBoard C projects with CodeWarrior or the
+PRC-Tools?</a></p>
+
+-->
+
+<p><a href="#todo">8. To Do</a></p>
+<p><a href="#thanks"> 9. Thanks!</a></p>
+<p><b>Appendix</b></p>
+<p><a href="#appendixa"> A. Startup code</a></p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<pre>
+<a name="intro" id="intro"><h2>
+<hr width="70%" align="left"/>
+1. Introduction</h2></a></pre>
+
+<p>
+This document is a user's guide for OnBoardAsm, part of the OnBoard Suite 
+The whole suite was originally written by Roger Lawrence of Individeo. It
+runs on, as well as builds for the <a href="http://www.palmsource.com">Palm handheld platform</a>
+
+You can always get the latest version of the tools 
+<!-- (including this document) -->
+from the following address:</p>
+
+<p>
+<pre>
+	<a href="http://sourceforge.net/projects/onboardc/">http://sourceforge.net/projects/onboardc/</a>
+</pre>
+
+For more information about the rest of the Suite, please see <a href="http://onboardc.sourceforge.net/UsersManual.html">The OnBoard Suite User's Manual</a>.<br/>
+
+The OnBoard assembler creates a Palm executable. You can beam your new program 
+or hotsync it to another Palm if you like.  It requires nothing but a Palm 
+(w/ the Palm OS in ROM so your code can take advantage of the library that's 
+there).  It does not need a separate run-time library.</p>
+
+<a name="quickstart" id="quickstart">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.1 Quickstart</span></pre></h3></a>
+<p>
+If you are fully familiar with Palm programming in assembler, you might want a 
+quick way to get started with OnBoard Asm.  That's described here.  If you're 
+not an expert at this stuff, however, you might want to check out some of the 
+othersections of this document.</p>
+
+<p>
+In order to get that quick start we talked about, do the following:
+<ul>
+        <li> <a href="#intro">Download the tools.</a></li>
+        <li> <a href="#install">Install the tools.</a></li>
+        <li> <a href="#project">Create a source file.</a></li>
+        <li> <a href="#compile">Assemble and run your program.</a></li>
+</ul>
+</p>
+
+<a name="license" id="license">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.2 Licensing</span></pre></h3></a>
+
+<p>
+The OnBoard Assembler, like the rest of the OnBoard Suite, is provided under
+the GNU General Public License (GPL).  There should be a file in your OnBoard
+Suite distribution entitled 'COPYING.txt' -- this file provides the entire
+license.  If you can't find this file (or if you just want to), feel free to 
+check out the 
+<a href="http://www.fsf.org/licenses/gpl.html">Free Software Foundation website</a>.
+</p>
+
+<p>
+A quick note about this license.  This license does NOT constrain code that
+you write and compile with any portion of the OnBoard Suite.  You can write a
+program with SrcEdit, compile it with OnBoard C/OnBoard Asm, and sell the
+executable all day long.  You do not have to give away the source to your code
+just because you used OnBoard Asm.  In fact, the SourceForge OnBoard Suite
+people (i.e., the people who hold the copyright over this stuff) have agreed 
+not to apply the GPL to the skeleton application that is generated by the
+OnBoard Suite -- you can start commercial applications with the skeleton.
+</p>
+
+<a name="why_use" id="why_use">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.3 Why Use OnBoard Asm?</span></pre></h3></a>
+
+<p>
+OnBoard Asm is a C compiler for the Palm.  There are other compilers for the
+Palm (e.g., CodeWarrior, GCC, PocketC) so why use OnBoard Suite?  Here are
+some of the reasons.
+
+<ul>
+	<li> OnBoard Asm uses native PalmOS APIs, so most of what you learn 
+	  can be applied to desktop tools like Pila.</li>
+	<li> Further, since OnBoard Asm uses native APIs, most of the source 
+	  code you will find in books written about coding Palms will work 
+	  with OnBoard Asm, as well as the majority of free samples available 
+	  online via Palm's website and other websites and Palm 
+	  programming forums.</li>
+	<li> OnBoard Asm programs need no runtime and are thus easier to 
+	  distribute.</li>
+	<li> OnBoard Asm allows access to native GUI resources.</li>
+	<li> OnBoard Asm runs on your Palm.  Although some find this a bit 
+	  restrictive, others enjoy being able to code during their daily 
+	  commute on the train, on lunch breaks, etc. Some people just 
+	  enjoy being able to get away from the traditional workstation 
+	  they use every day.</li>
+	<li> You can assemble and test your code immediately.</li>
+</ul>
+</p>
+
+<a name="history" id="history">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.4 A Little History</span></pre></h3></a>
+
+<p>
+The OnBoard Suite was originally produced as a commercial product line 
+(along with the RsrcEdit resource compiler) by Individeo At some point in 
+the Fall of 2000 the developers at IndiVideo went their separate ways and 
+Roger Lawrence, the one who developed OnBoard C, took the source code with 
+him. Later, Roger generously released the binaries for the compiler and 
+assembler to be distributed for free by the members of the OnBoard C community.
+RsrcEdit went to <a href="http://www.quartus.net/">Quartus.net</a>, developers 
+of an onboard Forth compiler for the Palm, where it continues to be available 
+as commercial software. It remains a key component of the OnBoard C IDE, but 
+if you need support for that you'll have to visit Quartus.</p>
+
+<p>
+OnBoard C started on it's path to becoming free open source software in 
+March 2002, when Roger released the source to an editor he had built and 
+used personally, but never released. Originally called LED--now renamed 
+SrcEdit to avoid confusion with an existing product--this editor included 
+many features specifically for use with OnBoard C and has been actively 
+developed by the OnBoard C community. </p>
+
+<p>
+In May, contact was reestablished with Roger, and he was shown the work that
+had been done 
+on SrcEdit and asked if he might do one last build of OnBoard C for us that 
+would fix a couple of nagging issues we were having. Attached to his email 
+reply was the source code to the compiler and assembler.</p>
+
+<p>
+That effort resulted in the source to the OnBoard Suite 
+being placed under the GNU Public License (GPL) and put on the SourceForge
+site as an open source project.  Note: a resource compiler (like RsrcEdit) is 
+required to use the OnBoard Suite -- there are currently no GPLed resource
+editors that work with the OnBoard Suite.</p>
+
+<a name="rqmts" id="rqmts">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.5 Requirements</span></pre></h3></a>
+
+<p>
+The OnBoard Suite runs on handheld computers running Palm OS &gt;= 3.x.  It
+may run under other versions of the operating system but it has been tested on
+these.</p>
+
+<a name="help" id="help">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+1.6 Where To Go For Help</span></pre></h3></a>
+
+There are two main places to go for help with the OnBoard Suite.  Users can
+access the 
+<a href="http://groups.yahoo.com/group/OnBoardC">Yahoo OnBoard C discussion group</a>.
+It was created to support OnBoard Suite users.  There's a files section that
+contains documentation and other support material.  Developers (and users,
+alike) can access the
+<a href="http://sourceforge.net/projects/onboardc/">SourceForge site</a>.  The
+latest version of the OnBoard Suite can always be found there.  There is a
+discussion group (available through the 'Lists' link) available to both users
+and developers.  You can also visit the OnBoard Suite 
+<a href="http://onboardc.sourceforge.net/tasks.htm">task list</a>.<p>
+
+You can always 
+<a href="http://sourceforge.net/tracker/?atid=478286&amp;group_id=55794">
+report bugs</a> and
+<a href="http://sourceforge.net/tracker/?atid=478289&amp;group_id=55794">
+request features</a> on the SourceForge site.  When you report a bug, please 
+do the following:
+<ul>
+	<li> go to the 
+<a href="http://sourceforge.net/tracker/?atid=478286&amp;group_id=55794">
+bug reporting site</a> and search (there's a search box on the left)
+	     to see if someone else has submitted the bug,</li>
+	<li> include a detailed description including the version
+	     number of the assembler,</li>
+	<li> explain the problem you see -- does the assembler crash,
+	     does the assembler generate an error message, does your
+	     code crash?</li>
+	<li> include a piece of code that will allow us to reproduce
+	     the problem.</li>
+</ul>
+
+</p> 
+<a href="#toc">Back to TOC</a>.
+
+<!-- ========================================================= -->
+<a name="installation" id="installation">
+<pre><h2>
+<hr width="70%" align="left" />
+2. Installation</h2></pre></a>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="dist" id="dist">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.1 The OnBoard Asm Distribution</span></pre></h3></a>
+
+<p>
+For any particular OnBoard Suite release, you can download one of 
+four different files from the SourceForge
+site.  You can download the source or just the executables and, for each of
+those, you can download a .zip archive or a .tar.gz archive.  If you download
+just a source archive, you'll have to build it (with the PRC tools or one of
+the other supported environments) to get the PRCs.  </p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="needed" id="needed">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.2 Other Stuff You Might Need</span></pre></h3></a>
+
+<p>
+There will be some things other than the OnBoard Suite download that you'll
+need to be able to create code.
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>RsrcEdit </i> </span></pre></h4>
+	RsrcEdit (RsrcEdit.prc).  RsrcEdit builds the forms for the user 
+	interface.  Quartus, by the way, is grandfathering-in previously
+	registered owners of RsrcEdit.  You can get it from
+	<a href="http://www.quartus.net/products/rsrcedit/">here</a>.
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Documentation </i> </span></pre></h4>
+
+<ul>
+	<li> This User's Guide.</li>
+	<li> <a href="http://e-www.motorola.com/files/archives/doc/ref_manual/M68000PRM.pdf">The M68000 Programmers Reference Manual</a></li>
+	<li> <a href="http://www.massena.com/darrin/pilot/pila/pila1b3unix.zip">Pila</a> Is a Palm assembler which runs on Windows and *nix. The User Manual contains some very useful information.</li>
+</ul>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Helpful Source Code </i> </span></pre></h4>
+
+Sometimes nothing helps like looking at someone else's code.  Here are some
+resources for Palm source code.
+
+<ul>
+	<li> <a href="http://www.palmos.com/dev/support/docs/recipes/">
+	Palm's docs.</a></li>
+	<li> <a href="http://www.palmopensource.com/">Palm Open Source.</a></li>
+	<li> <a href="http://sourceforge.net/">SourceForge.</a></li>
+	<li> <a href="http://www.codebeach.com/">Code Beach.</a></li>
+</ul>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="install" id="install">
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+2.3 Install OnBoard Asm</span></pre></h3></a>
+
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Install OnBoard Asm</i> </span></pre></h4>
+
+<p>
+In order to install OnBoard Asm, unpack your distribution (e.g.,
+onboard_2_0_1b.zip).  On a MS-Windows platform, you can do this with WinZip,
+StuffIt, or even (with WinME, at least) with MS-Windows, itself.  On a Linux
+(or other Unix) platform, use 'tar' and 'gzip'.  Once you get things unpacked,
+install the following:
+
+<ul>
+	<li> <u>OnBoard.prc</u>.  This is the assembler.</li>
+
+	<li> <u>SrcEdit.prc</u>.  SrcEdit is a programmer's editor that 
+	allows you to edit DOC files for use as source files for your 
+	OnBoard projects.</li>
+
+	<li> <u>systraps.inc.pdb</u>.  
+	This is an include file (optionally) used by OnBoard Asm, containing 
+	definitions of some systrap numbers, which is helpful if you don't
+	want to have to remember them by number. </li>
+</ul>
+</p>
+<p>
+On MS-Windows, you can do this by double clicking on each of the files
+(assuming that you've installed the Palm Desktop).  There are 
+operating-system-specific ways to install Palm applications for many other
+host systems -- use whatever is appropriate.</p>
+
+<p>
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Install the Other Stuff You Need (see above)  </i> </span></pre></h4>
+
+Unfortunately, the OnBoard Suite requires a component that's not free (it's 
+shareware).  In
+order to use the OnBoard Suite, you need to create resource files.  The
+software that does that is
+<a href="http://www.quartus.net/products/rsrcedit">RsrcEdit.prc</a>.  Get a copy
+of this software and install it like the other prc files. At some point, OnBoard might support the 'res' directive used by Pila, so that you can create resources that way, but as yet this feature has not been added.</p>
+
+<h4><pre><span style="font-size:11pt; font-weight:bold">
+<i>Bring It Up</i> </span></pre></h4>
+
+Now that you've installed everything, go to your Palm and tap the OnBoard Asm
+icon.  You will then see the main screen of OnBoard Asm, prompting you to select a file to assemble
+<ul>
+	<li>Tap either Memo or Doc, depending on what type of source file you wish to assemble</li>
+	<li>Tap the name of the file.</li>
+	<li>Tap 'Build'.</li>
+</ul>
+
+If all assembles correctly, a new PRC should be created for you in the Unfiled category.
+
+Simple as that...
+</p>
+<p> <a href="#toc">Back to TOC</a></p>
+<!-- ========================================================= -->
+<pre>
+<a name="tutorial" id="tutorial"><h2>
+<hr width="70%" align="left" />
+3. User's Tutorial</h2></a></pre>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="not_programmer" id="not_programmer" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+3.1 If You're Not Already A Palm Programmer . . .</span></pre></h3>
+
+<p>
+Assembling programming is not for the faint of heart, and Palm Assembly 
+probably less so. As such, id you don't have any prior experience with 
+programming for Palm OS, you probably don't want to start here. Instead you 
+might want to consider starting in a higher level language such as C. See 
+<a href="http://onboardc.sourceforge.net/UsersManual.html">The OnBoard Suite User's 
+Manual</a> for more information about programming the Palm in C. Likewise, if 
+you've never done any assembler, this might not be the ideal platform to start
+with. This manual does not attempt to teach assembler programming, merely the
+use and eccentricies of OnBoard Asm.
+</p>
+
+<p>
+ Depending on your current programming knowledge, you may want to
+ attack the learning process differently.  Feel free to choose your own route
+ -- the OnBoard community will be happy to help you no matter what your
+ level of experience is.  The suggestions, here, are intended only to make 
+ your path to programming in OnBoard C as painless as possible.  </p>
+
+<p>
+If you're already programming in assembler for PalmOS using Pila or a similar 
+assembler, you won't have much trouble using OnBoard Asm. Skip to 
+<a href="#start-coding">the next section</a>.
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+<a name="start-coding" id="start-coding">
+3.2 If You're An Old Hand At Writing Palm Code in m68k Assembler. . .</a></span></pre></h3>
+
+<p>
+ After you install the tools, you need to create source files and get them to
+ assemble. Here's a quick start guide to get you going:
+</p>
+
+<p>
+<ul>
+<li>Using SrcEdit or another DOC editor, create a new document. Call it &lt;something&gt;.asm</li>
+<li>At the top of the file, you need a few things:
+<ul>
+<li>a directive to tell OnBA what to call the prc:<br />
+<tt>prc "prcname"</tt></li>
+<li>a directive to tell OnBA what creator ID to use:<br />
+<tt>creator "myAp"</tt></li>
+<li>a directive to tell OnBA that this code segment starts here:<br />
+<tt>code</tt></li>
+</ul>
+</li>
+<li>From then on, you just need the rest of the code</li>
+<li>Once you've written your assembler document, fire up OnBA</li>
+<li>Select 'DOC'. Your assembler document (and any other documents names &lt;something&gt;.asm should show up in the list. Select it and hit Build.</li>
+<li>Correct any errors, add more code, rinse and repeat.</li>
+</ul>
+</p>
+<p>
+OnBA adds bootstrap code to your application automatically. For a complete listing of the bootstrap code that it adds, see <a href="#appendixa">Appendix A</a>.
+</p>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+<a name="example" id="example">
+3.3 A complete example</a></span></pre></h3>
+
+<p>
+This example is based largely on the 'Minimal Pilot Application' from the Pila User's Manual. Credit and thanks go to Darrin Massena and Wes Cherry, who wrote that manual.</p>
+<p>
+<tt>
+; Simple skeleton app <br />
+; <br />
+<br />
+; name of the prc to produce <br />
+prc "testasm" <br />
+<br />
+code<br />
+<br />
+; some equ's of common systrap names <br />
+include "systraps.inc"<br />
+<br />
+proc PilotMain_00(cmd.w, cmdPBP.l launchFlags.w)<br />
+local err.w<br />
+local evt.18<br />
+<br />
+beginproc<br />
+tst.w cmd(a6)<br />
+bne PmReturn<br />
+<br />
+systrap FrmAlert(#1000)<br />
+<br />
+PmReturn<br />
+endproc<br />
+<br />
+</tt>
+</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<pre>
+<a name="about" id="about"><h2>
+<hr width="70%" align="left" />
+4. About The Language</h2></a></pre>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="not-pila" id="not-pila" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.1 How is OnBoard Asm Different From Pila?</span></pre></h3>
+
+<p>
+</p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="syntax" id="syntax" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.2 OnBA Syntax</span></pre></h3>
+
+<p>
+</p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="directives" id="directives" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.3 OnBA Directives</span></pre></h3>
+
+<p>
+OnBA supports the following directives:
+<ul>
+<li><tt><b>prc</b> <i>"prc name"</i></tt><br />The name of the prc file to create.<br />The combination of this directive and the creator directive (below) are the equivalent of the <tt>appl</tt> directive in Pila.</li>
+<li><tt><b>creator</b> <i>"creatorID"</i></tt><br />The creator ID to use.</li>
+<li><tt><b>code</b> <i>&lt;num&gt;</i></tt><br />This puts OnBA into code generation mode. OnBA is always in either code generation or data generation mode, which determines where the output of the assembly will be placed. By specifying a number, you can specify which segment number the code will be placed in.</li>
+<li><tt><b>data</b></tt><br />This puts OnBA into data generation mode. See above.</li>
+<li><tt><b>beginproc</b></tt><br />Marks the beginning of a procedure. OnBA will automatically generate a <tt>link a6,#nnn</tt> instruction, where nnn is the negative sum of the size of all locals.</li>
+<li><tt><b>dc</b><i>.size value</i></tt><br />Data Constant. Insert data into the code.</li>
+<li><tt><b>endproc</b></tt><br />Marks the end of a procedure. OnBA will automatically generate the required <tt>unlk</tt> and <tt>rts</tt> instructions</li>
+<li><tt><i>name</i> <b>equ</b> <i>value</i></tt><br />Defines <tt>name</tt> to be equal to <tt>value</tt>. Whenever <tt>name is used from then on, OnBA will substitute the value in it's place.</tt></li>
+<li><tt><b>include</b> <i>"filename"</i></tt><br />Causes OnBA to insert the specified file at the current location.</li>
+<li><tt><b>local</b> <i>localname.size</i></tt><br />Declares a local procedure variable. This directive is only valid between a <tt>proc</tt> and a <tt>beginproc</tt> directive.</li>
+<li><tt><b>proc</b> <i>(arg1.size, arg2.size, ...)</i></tt><br />Declares a procedure, which may have zero or more arguments.</li>
+<li><tt><b>systrap</b> <i>trapname/#trapnum(arg1, arg2, ...)</i></tt><br />Calls the specified systrap. OnBA will automatically emit the code to push the arguments onto the stack, invoke the trap, then cleanup the stack. Either use a trapname, previously declared with an <tt>equ</tt>, or the trap number, prefixed with a #.</li>
+<li><tt><b>call</b> <i>functionname(arg1,arg2, ...)</i></tt><br />Calls the specified function. OnBA will automatically emit the code to push the arguments onto the stack, call the function, then cleanup the stack.</li>
+</ul>
+</p>
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<a name="useful" id="useful" />
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+4.4 Useful Stuff</span></pre></h3>
+
+<p>
+<ul>
+<li><b>systraps.inc</b><br />The file systraps.inc is included in the OnBA distribution and contains a list of <tt>equ</tt>s for systraps, so that the symbolic names can be used in your application instead of the trap number. To use, simply add '<tt>include "systraps.inc"</tt>' to the top of your source file, inside of a <tt>code</tt> section</li>
+</ul>
+</p>
+
+<!-- ========================================================= -->
+<pre>
+<a name="todo" id="todo"><h2>
+<hr width="70%" align="left"/>
+8. To do</h2></a></pre>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h3><pre><span style="font-size:11pt; font-weight:bold">
+<a name="to-add" id="to-add">
+8.1 Things to add to this document.
+</a>
+</span></pre></h3>
+<p>
+<li>OnBA adds bootstrap code</li>
+<li>Useful stuff - systraps.inc</li>
+<li>Directives OnBA understands</li>
+<li>Instructions OnBA doesn't understand</li>
+<li>Don't use 'end'</li>
+<li>How to use memo files</li>
+<li>Stuff from John's inline asm doc</li>
+<li>Explanations of some error messages</li>
+</p>
+
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<pre>
+<a name="thanks" id="thanks"><h2>
+<hr width="70%" align="left"/>
+9. Thanks!</h2></a></pre>
+
+<p>
+ I'm going to try to get everyone.  If you contributed or know someone who
+ did that's not in here, please let me know.
+
+<pre>
+	Keithen and Roger at individeo.net
+	"Darrin Massena" &lt;darrin at massena.com&gt;
+	"Wes Cherry" &lt;wesc at ricochet.ney&gt;
+	"Wade Guthrie" &lt;wade at adventure101.com&gt;
+	"John Wilund" &lt;orlando at runbox.com&gt; 
+	"Reverend" &lt;reverndi at yahoo.com&gt; 
+</pre>
+</p>
+<p> <a href="#toc">Back to TOC</a></p>
+
+<!-- ========================================================= -->
+<pre>
+<a name="appendixa" id="appendixa"><h2>
+<hr width="70%" align="left"/>
+A. Startup code</h2></a></pre>
+<p> For those that are interested, here's a listing of the startup code OnBA atomatically adds to your application:
+</p>
+<p>
+<tt>
+ 0x4e56, 0xfff4,         //     LINK    A6,#-12<br />
+ 0x486e, 0xfff4,         //     PEA -12(A6)<br />
+ 0x486e, 0xfff8,         //     PEA -8(A6)<br />
+ 0x486e, 0xfffc,         //     PEA -4(A6)<br />
+ 0x4e4f,                 //     TRAP    #15<br />
+ 0xa08f,                 //     DC.W    sysTrapSysAppStartup<br />
+ 0x4fef, 0x000c,         //     LEA 12(A7),A7<br />
+ 0x4a40,                 //     TST.W   D0<br />
+ 0x670e,                 //     BEQ L1<br />
+ 0x1f3c, 0x0003,         //     MOVE.B  #3,-(A7)<br />
+ 0x4e4f,                 //     TRAP    #15<br />
+ 0xa234,                 //     DC.W    sysTrapSndPlaySystemSound<br />
+ 0x548f,                 //     ADDQ.L  #2,A7<br />
+ 0x70ff,                 //     MOVEQ   #-1,D0<br />
+ 0x603e,                 //     BRA L2<br />
+ 0x206e, 0xfffc,         // L1  MOVEA.L -4(A6),A0<br />
+ 0x3f28, 0x0006,         //     MOVE.W  6(A0),-(A7)<br />
+ 0x2f28, 0x0002,         //     MOVE.L  2(A0),-(A7)<br />
+ 0x3f10,                 //     MOVE.W  (A0),-(A7)<br />
+ 0x6612,                 //     bne.s *+20      -- skip datainit if cmd != normalLaunch<br />
+ 0x7001,                 //     moveq   #1,d0<br />
+ 0x204D,                 //     move.l  a5,a0<br />
+ 0x4EBA, 0x002C,         //     jsr *+6         -- call datainit<br />
+ 0x7002,                 //     moveq   #2,d0<br />
+ 0x41FA, 0x0090,         //     lea     90(pc),a0       -- start of startupCode, hence start of CODE #1<br />
+ 0x4EBA, 0x0022,         //     jsr *+6         -- call datainit<br />
+ 0x4EBA, 0x0000,         //     jsr main<br />
+ 0x508f,                 //     ADDQ.L  #8,A7<br />
+ 0x2f2e,                 //     MOVE.L  -12(A6),-(A7)<br />
+ 0xfff4,<br />
+ 0x2f2e,                 //     MOVE.L  -8(A6),-(A7)<br />
+ 0xfff8,<br />
+ 0x2f2e,                 //     MOVE.L  -4(A6),-(A7)<br />
+ 0xfffc,<br />
+ 0x4e4f,                 //     TRAP    #15<br />
+ 0xa090,                 //     DC.W    sysTrap SysAppExit<br />
+ 0x4fef,                 //     LEA 12(A7),A7<br />
+ 0x000c,<br />
+ 0x7000,                 //     MOVEQ   #0,D0<br />
+ 0x4e5e,                 // L2  UNLK    A6<br />
+ 0x4e75,                 //     RTS<br />
+ // datainit (@54) :<br />
+ 0x4E56, 0x0000,         // link      a6,#0<br />
+ 0x48E7, 0x1E38,         // movem.l   d3-d6/a2-a4,-(a7)<br />
+ 0x2A08,                 // move.l    a0,d5<br />
+ 0x3F00,                 // move.w    d0,-(a7)<br />
+ 0x2F3C, 0x6461, 0x7461, // move.l    #'data',-(a7)<br />
+ 0x4E4F,                 // trap      #15<br />
+ 0xA05F,                 // sysTrapDmGetResource<br />
+ 0x2448,                 // movea.l   a0,a2<br />
+ 0x47ED, 0x0000,         // lea       0(a5),a3              // this is set to -totalDataSize (i.e. the base of the data block)<br />
+ 0x200A,                 // move.l    a2,d0<br />
+ 0x5C4F,                 // addq.w    #6,a7<br />
+ 0x6740,                 // beq.s     *+64<br />
+ 0x2F0A,                 // move.l    a2,-(a7)<br />
+ 0x4E4F,                 // trap      #15<br />
+ 0xA021,                 // sysTrapMemHandleLock<br />
+ 0x2848,                 // movea.l   a0,a4<br />
+ 0x7800,                 // moveq     #0,d4<br />
+ 0x584F,                 // addq.w    #4,a7<br />
+ 0x601E,                 // bra.s     *+30           ; 0x00000050<br />
+ 0x1C1C,                 // move.b    (a4)+,d6<br />
+ 0x7607,                 // moveq     #7,d3<br />
+ 0x6012,                 // bra.s     *+18           ; 0x0000004a<br />
+ 0x7001,                 // moveq     #1,d0<br />
+ 0xE768,                 // lsl.w     d3,d0<br />
+ 0x7200,                 // moveq     #0,d1<br />
+ 0x1206,                 // move.b    d6,d1<br />
+ 0xC240,                 // and.w     d0,d1<br />
+ 0x6702,                 // beq.s     *+4            ; 0x00000048<br />
+ 0xDB93,                 // add.l     d5,(a3)<br />
+ 0x548B,                 // addq.l    #2,a3<br />
+ 0x5343,                 // subq.w    #1,d3<br />
+ 0x4A43,                 // tst.w     d3<br />
+ 0x6CEA,                 // bge.s     *-18           ; 0x0000003a<br />
+ 0x5244,                 // addq.w    #1,d4<br />
+ 0x0C44, 0x0000,         // cmpi.w    #0000,d4<br />
+ 0x6DDC,                 // blt.s     *-32           ; 0x00000034<br />
+ 0x2F0A,                 // move.l    a2,-(a7)<br />
+ 0x4E4F,                 // trap      #15<br />
+ 0xA022,                 // sysTrapMemHandleUnlock<br />
+ 0x2F0A,                 // move.l    a2,-(a7)<br />
+ 0x4E4F,                 // trap      #15<br />
+ 0xA061,                 // sysTrapDmReleaseResource<br />
+ 0x504F,                 // addq.w    #8,a7<br />
+ 0x4CDF, 0x1C78,         // movem.l   (a7)+,d3-d6/a2-a4<br />
+ 0x4E5E,                 // unlk      a6<br />
+ 0x4E75                  // rts<br />
+
+</tt>
+</p>
+<p>
+This may change in future releases of OnBA, and is correct as of v2.4.
+</p>
+<p> <a href="#toc">Back to TOC</a></p>
+</html>

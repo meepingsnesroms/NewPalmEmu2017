@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="1001" LOCALE="esES" COMMENT="Rom Incompatible">
+		<ALERT_TYPE> ERROR_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<TITLE> "Incompatible con el sistema" </TITLE>
+		<MESSAGE>
+			"Para ejecutar esta aplicación se necesita la versión 2.0 o posterior "
+			"del sistema."
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "Aceptar" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Main View Menu Bar">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU>
+				<TITLE> "Juego" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 110 </WIDTH>
+					<HEIGHT> 38 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Resolver puzzle" </TITLE>
+						<COMMAND> "S" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Instrucciones" </TITLE>
+						<COMMAND> "I" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Acerza de Puzzle" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="esES" COMMENT="Please wait">
+		<TEXT> "Espere..." </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="esES" COMMENT="Instructions String">
+		<TEXT>
+			" Instrucciones para Puzzle\n"
+			"\n"
+			"El objetivo es poner las piezas de mosaico en orden numérico dejando "
+			"el cuadrado vacío en la esquina inferior derecha.\n"
+			"\n"
+			"• Para empezar, toque el botón Puzzle nuevo. Las piezas de mosaico "
+			"quedarán ordenadas al azar.\n"
+			"\n"
+			"• Toque una pieza de mosaico situada en la misma fila o columna que el "
+			"cuadrado vacío. Esta acción desplazará la pieza hacia el cuadrado "
+			"vacío y moverá también las piezas situadas entre ella y el cuadrado "
+			"vacío.\n"
+			"\n"
+			"• Para resolver el puzzle, seleccione Resolver puzzle en el menú "
+			"Juego.\n\n"
+			"\n"
+			"¡Buena suerte!\n"
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

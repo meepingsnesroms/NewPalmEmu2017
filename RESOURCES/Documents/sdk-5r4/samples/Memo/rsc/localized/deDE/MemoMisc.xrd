@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<ALERT_RESOURCE RESOURCE_ID="2000" LOCALE="deDE" COMMENT="Alphabetic Sort">
+		<ALERT_TYPE> CONFIRMATION_ALERT </ALERT_TYPE>
+		<HELP_ID> 0 </HELP_ID>
+		<DEFAULT_BUTTON> 1 </DEFAULT_BUTTON>
+		<TITLE> "Alphabetisch sortieren" </TITLE>
+		<MESSAGE>
+			"Sie verlieren die aktuelle Reihenfolge Ihrer Merkzettel wenn Sie "
+			"alphabetisch sortieren. Möchten Sie jetzt sortieren?"
+		</MESSAGE>
+		<BUTTONS>
+			<TEXT> "Ja" </TEXT>
+			<TEXT> "Nein" </TEXT>
+		</BUTTONS>
+	</ALERT_RESOURCE>
+
+	<APP_DEFAULT_CATEGORY_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="DO NOT LOCALIZE THIS RESOURCE">
+		<TEXT> "Main" </TEXT>
+	</APP_DEFAULT_CATEGORY_RESOURCE>
+
+	<APP_ICON_NAME_RESOURCE RESOURCE_ID="1000" LOCALE="deDE">
+		<TEXT> "Merkzettel" </TEXT>
+	</APP_ICON_NAME_RESOURCE>
+
+	<APP_INFO_STRINGS_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="Category Labels">
+		<STRINGS>
+			<TEXT> "Nicht abgelegt" </TEXT>
+			<TEXT> "Firma" </TEXT>
+			<TEXT> "Privat" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+			<TEXT> "" </TEXT>
+		</STRINGS>
+	</APP_INFO_STRINGS_RESOURCE>
+
+	<APP_VERSION_RESOURCE RESOURCE_ID="1" COMMENT="Version String">
+		<TEXT> "4.0" </TEXT>
+	</APP_VERSION_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="List View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="List View Record">
+				<TITLE> "Eintrag" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 117 </WIDTH>
+					<HEIGHT> 22 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 44 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Kategorie übertragen" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Kategorie senden" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="List View Options">
+				<TITLE> "Optionen" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 50 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 104 </WIDTH>
+					<HEIGHT> 44 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 54 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 200 </ID>
+						<TITLE> "Schrift…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 201 </ID>
+						<TITLE> "Einstellungen…" </TITLE>
+						<COMMAND> "E" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 202 </ID>
+						<TITLE> "Sicherheit…" </TITLE>
+						<COMMAND> "H" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 203 </ID>
+						<TITLE> "Merkzettel-Info" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<MENU_BAR_RESOURCE RESOURCE_ID="1100" LOCALE="deDE" COMMENT="Edit View Menu">
+		<VISIBLE> TRUE </VISIBLE>
+		<MENUS>
+			<MENU COMMENT="Edit View Page Menu">
+				<TITLE> "Eintrag" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 6 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 125 </WIDTH>
+					<HEIGHT> 49 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 4 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 44 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 100 </ID>
+						<TITLE> "Neu" </TITLE>
+						<COMMAND> "N" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 101 </ID>
+						<TITLE> "Löschen…" </TITLE>
+						<COMMAND> "L" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 102 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 103 </ID>
+						<TITLE> "Memo übertragen" </TITLE>
+						<COMMAND> "R" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 104 </ID>
+						<TITLE> "Memo senden" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Edit View Options Menu">
+				<TITLE> "Bearb." </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 45 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 113 </WIDTH>
+					<HEIGHT> 82 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 48 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 40 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 10000 </ID>
+						<TITLE> "Rückgängig" </TITLE>
+						<COMMAND> "U" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10001 </ID>
+						<TITLE> "Ausschneiden" </TITLE>
+						<COMMAND> "X" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10002 </ID>
+						<TITLE> "Kopieren" </TITLE>
+						<COMMAND> "C" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10003 </ID>
+						<TITLE> "Einfügen" </TITLE>
+						<COMMAND> "V" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10004 </ID>
+						<TITLE> "Alles auswählen" </TITLE>
+						<COMMAND> "A" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10005 </ID>
+						<TITLE> "-" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10006 </ID>
+						<TITLE> "Tastatur" </TITLE>
+						<COMMAND> "T" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 10007 </ID>
+						<TITLE> "Graffiti 2-Hilfe" </TITLE>
+						<COMMAND> "G" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+			<MENU COMMENT="Edit View Options Menu">
+				<TITLE> "Optionen" </TITLE>
+				<HIDDEN> FALSE </HIDDEN>
+				<BOUNDS>
+					<LEFT> 63 </LEFT>
+					<TOP> 14 </TOP>
+					<WIDTH> 95 </WIDTH>
+					<HEIGHT> 33 </HEIGHT>
+				</BOUNDS>
+				<TITLE_BOUNDS>
+					<LEFT> 88 </LEFT>
+					<TOP> 0 </TOP>
+					<WIDTH> 54 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</TITLE_BOUNDS>
+				<MENU_ITEMS>
+					<MENU_ITEM>
+						<ID> 300 </ID>
+						<TITLE> "Schrift…" </TITLE>
+						<COMMAND> "F" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 301 </ID>
+						<TITLE> "Telefonbuch" </TITLE>
+						<COMMAND> "B" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+					<MENU_ITEM>
+						<ID> 302 </ID>
+						<TITLE> "Merkzettel-Info" </TITLE>
+						<COMMAND> "" </COMMAND>
+						<HIDDEN> FALSE </HIDDEN>
+					</MENU_ITEM>
+				</MENU_ITEMS>
+			</MENU>
+		</MENUS>
+	</MENU_BAR_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="100" LOCALE="deDE" COMMENT="Find Header Title">
+		<TEXT> "Merkzettel" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1000" LOCALE="deDE" COMMENT="Beam Description String">
+		<TEXT> "ein Memo" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1001" LOCALE="deDE" COMMENT="Beam Filename String">
+		<TEXT> "Memo.txt" </TEXT>
+	</STRING_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1002" LOCALE="deDE" COMMENT="Exchange Description String">
+		<TEXT> "Memo" </TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

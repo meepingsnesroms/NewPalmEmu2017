@@ -1,0 +1,1370 @@
+<html>      
+<title>SrcEdit User's Manual</title>      
+<head>      
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />      
+</head>      
+<body BGCOLOR="#e3e0ff">      
+     
+    
+<TABLE ALIGN="LEFT" WIDTH="100%" CELLSPACING="0" CELLPADDING="0"      
+BORDER="0">    
+<TR><TD>    
+<FONT face="Verdana, Arial, sans-serif">    
+<H1><B>SrcEdit </B><FONT SIZE=-1>version 2.5.1</FONT></H1>    
+<H2>User's Manual</H2>    
+</FONT>    
+</TD></TR>    
+ <TR bgcolor="#b0b0e0"><TD ALIGN="RIGHT"><FONT SIZE=-2  face="Verdana, Arial, sans-serif">    
+&nbsp;<BR>     
+<a href="#About">About this document</A>&nbsp;    
+Updated 2/3-2005e&nbsp;&nbsp;&nbsp;<BR>    
+&nbsp;<BR>   
+</FONT>      
+</TD></TR>    
+<TR><TD>     
+<TABLE ALIGN="LEFT" WIDTH="100%" CELLSPACING="0" CELLPADDING="3"      
+BORDER="0">    
+    
+<TR valign=top><TD align=left width="155" bgColor=#b0b0e0 >     
+<FONT size=-2 face="Verdana, Arial, sans-serif"> <a name="toc">&nbsp;</a>    
+<H3>Contents</H3>     
+<a href="#intro">Introduction</A><BR>     
+<a href="#licensing">Licensing</A><BR>     
+<a href="#features">Main Features</A><BR>
+<a href="#require">Requirements</A><BR>
+<a href="#install">Installation</A><BR>
+<a href="#help">Help</A><BR>     
+<a href="#quickstart">Quick Start</A><BR>     
+<a href="#The Menu">The Menu</A><BR>     
+<BR>     
+     
+<B>Menu/File</B><BR>     
+<a href="#New">New</A><BR>     
+<a href="#Open">Open</A><BR>     
+<a href="#Reload">Reload</A><BR>     
+<a href="#Save">Save</A><BR>     
+<a href="#Save as">Save as</A><BR>     
+<a href="#Delete">Delete</A><BR>     
+<a href="#Info">Info</A><BR>     
+<BR>     
+<B>Menu/Edit</B><BR>     
+<a href="#Cut">Cut</A><BR>     
+<a href="#Copy">Copy</A><BR>     
+<a href="#Paste">Paste</A><BR>     
+<a href="#Undo">Undo</A><BR>     
+<a href="#Find/Replace">Find/Replace</A><BR>     
+<a href="#Find Again">Find Again</A><BR>     
+<a href="#Select All">Select All</A><BR>     
+<a href="#Goto Line">Goto Line</A><BR>     
+<a href="#Mark Position">Mark Position</A><BR>     
+<a href="#Jump Between">Jump Between</A><BR>     
+<a href="#Select Between">Select Between</A><BR>     
+<a href="#Keyboard">Keyboard</A><BR>	     
+<BR>     
+<B>Menu/Options</B><BR>	     
+<a href="#Preferences">Preferences</A><BR>     
+<a href="#Toolbar O">Toolbar</A><BR>     
+<a href="#Tabulator">Tabulator</A><BR>     
+<a href="#Auto Complete">Auto Complete</A><BR>     
+<a href="#Navigator">Navigator</A><BR>     
+<a href="#Function Bookmk O">Function Bookmk</A><BR>     
+<a href="#Keyboard Support">Keyboard Support</A><BR>	     
+<BR>     
+<B>Menu/Tools</A></B><BR>     
+<a href="#Keywd Complete">Keywd Complete</A><BR>     
+<a href="#Header Params">Header Params</A><BR>     
+<a href="#Function Bookmk T">Function Bookmk</A><BR>     
+<a href="#Comment">Comment</A><BR>     
+<a href="#Uncomment">Uncomment</A><BR>     
+<a href="#Launch Compiler">Launch Compiler</A><BR>     
+<a href="#About SrcEdit">About SrcEdit</A><BR>		     
+<BR>		     
+<a href="#toolbar"><B>The Toolbar</B></A><BR>    
+<a href="#Shift Left">Shift Left</A><BR>    
+<a href="#Shift Right">Shift Right</A><BR>    
+<a href="#MRU">MRU</A><BR>    
+<BR>     
+<a href="#popuptools"><B>Popup Tools</B></A><BR>     
+<a href="#Uppercase">Uppercase</A><BR>    
+<a href="#Lowercase">Lowercase</A><BR>    
+<a href="#Toggle Case">Toggle Case</A><BR>    
+<a href="#Reverse">Reverse</A><BR>    
+<BR>    
+<a href="#specialedop">SEO</A><BR>     
+<a href="#skins">Toolbar Skins</A><BR>   
+<a href="#Font">Resource Font</A><BR>    
+<a href="#bugs">Bug reports</A><BR>     
+<a href="#links">Useful Links</A><BR>
+<a href="#Thanks">Thanks</A><BR>
+</FONT>     
+</TD><TD align=left>     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="intro">   
+Introduction</a> </H3>     
+SrcEdit is a source code editor specially written to be used with OnBoardC, but it works well with other environments too like <a href="http://ppcompiler.free.fr/download.php?lng=en">PP compiler</a>, <a href="http://www.aldweb.com/articles.php?lng=en&pg=5350">iziBasic</a>, and <a href="http://netpage.em.com.br/mmand/plua.htm">Plua</a>. SrcEdit is also suited for editing 68kASM and HTML.     
+<BR>     
+A load of work has been put down to make SrcEdit reliable and easy to use,  at the same time as a large range of features has been carefully adapted and incorporated. SrcEdit is a great programming tool, small enough to fit in the palm of your hand. <BR> 
+<BR>     
+Since this manual deals with SrcEdit, some of the subjects belonging to the OnBoard Suite as a whole, like licensing, installation etc., will only be mentioned briefly.    
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif"> 
+<H3><a  name="licensing"> 
+Licensing</a></H3>     
+SrcEdit is provided under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> (GPL). If you want to know more, please visit the <a href="http://www.fsf.org">Free Software Foundation</a> website .     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="features">    
+Main Features</a></H3>     
+<UL>
+<LI>Sony Cli&eacute; 480x320 screen support    
+<LI>Flexible user interface     
+<LI>Configurable Toolbar   
+<LI>Resource Font support  
+<LI>Configurable  Source Code Color Scheme     
+<LI>Quick jump between the Most Recently Used files--MRU.     
+<LI>Jump Between two places within a file     
+<LI>Select Between cursor and a marked position.     
+<LI>Comment/Uncomment tools     
+<LI>Block indenting     
+<LI>Find/jump to function with Function Bookmarks     
+<LI>Find/complete API function name with Keyword Complete     
+<LI>API function parameter lookup with Header Parameters 
+<LI>+ a lot more     
+</UL>     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="require">    
+Requirements</a> </H3>     
+A PDA with Palm OS 3.0+.  Color screen recommended. 
+</FONT></P>   
+  
+     
+<FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="install">    
+Installation</a> </H3>     
+Copy srcedit.prc and optionally a skin file of your choice into your palm's RAM, using the normal installation procedure.      
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="help">    
+If you need help</a></H3>     
+Visit the <a href="http://groups.yahoo.com/group/OnBoardC">OnBoardC Discussion Group</A>. There you'll meet some really nice and helpful people, you'll find useful documents and other files, and you'll be able to search the archive of discussion topics.    
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="quickstart">    
+Quick Start</a> </H3>     
+<H4>SrcEdit's main form components</H4>     
+<UL>     
+<LI>The text editing area     
+<LI>The text scrollbar     
+<LI>The Scroll left and scroll right button     
+<LI>The Menu (normally not visible)     
+<LI>The Toolbar     
+</UL>     
+     
+     
+<H4>How to Scroll Up And Down</H4>     
+There are two ways to scroll the text up and down:     
+     
+<OL>     
+<LI>The text scrollbar on the right.      
+A tap on the small arrows at each end of the scrollbar scrolls the text one line.     
+A tap on the bar above or below the handle will scroll one whole page up or down.     
+Drag the handle to move to fast to any position in the file.     
+<LI>The hardware up and down buttons. For devices with 5-way navigator, see <a href="#Navigator">Menu/Options/Navigator</A> for configuration of behavior.      
+</OL>     
+    
+     
+     
+<H4>How to Scroll Left And Right</H4>     
+As SrcEdit is a source code editor, it does not wrap the text lines, in the text editing area, to screen. A long line therefore continues outside the right margin of the screen where it only finishes with a linefeed. To be able to see beyond the limit of the screen, there are three ways to scroll sidewards:     
+     
+<OL>     
+<LI>The scroll left and right buttons down in the right corner of the screen.     
+     
+<LI>The left and right buttons on machines with 5-way navigator. See <a href="#Navigator">Menu/Options/Navigator</A> for configuration of behavior.     
+     
+<LI>Two hardware buttons configured for the purpose. See <a href="#Navigator">Menu/Options/Navigator</A><BR>   
+<FONT SIZE=-1>         
+* Useful for devices without 5-way navigator, or if the 5-way navigator is set on <I>Moving Cursor</I>. . 
+</FONT>     
+ </OL>    
+     
+     
+     
+<H4>How to Select Text</H4>     
+<UL>     
+<B>A word:</B> Double tap on the word.     
+<BR><BR>     
+<B>A word using the 5-way navigator:</B> Place the cursor immediately before the word, in the word, or immediately after the word and double click on the 5-way navigator's <I>center</I> button. 
+<BR><BR> 
+ 
+<B>A line:</B> Triple tap somewhere on the line.     
+<BR><BR>     
+ <B>A line using the 5-way navigator:</B> Place the cursor somewhere on the line and triple click on the 5-way navigator's <I>center</I> button.  
+ <BR><BR>   
+  
+<B>Multiple lines, normal method:</B> Put and hold down the stylus where you want the selection to begin, and drag over the text to be selected.     
+<BR><BR> 
+     
+<B>Multiple lines using Select Between:</B> Place the cursor at the beginning of the selection. Tap on <a href="#Mark Position">Menu/Edit/Mark Position</A>. Move the cursor to the end of the selection and tap on <a href="#Select Between">Menu/Edit/Select Between</A>.    <BR>          
+<FONT SIZE=-1> 
+* Mark Position and Select Between can also be found as a <a href="#toolbar">Toolbar</A> function and in <a href="#popuptools">Popup Tools</A>.  
+</FONT>    
+     
+     
+<BR><BR>     
+<B>The whole document:</B> Choose Menu/Edit/Select All     
+or use the short cut: /A     
+<BR><BR>     
+     
+<B>Using the 5-way navigator:</B> The 5-way navigator's <I>center</I> button may be used for selecting a word by a double click or a whole line by a triple click.<BR> 
+To select a word place the cursor immediately before the word, in the word, or immediately after the word and double click on the 5-way navigator's <I>center</I> button.<BR> 
+<BR><BR>     
+     
+<B>More on selecting:</B> See the SEO section for how to <a href="#Resizing">resize a selection</a>, how to <a href="#Parenthesis">find a matching parenthesis</a>, and how to <a href="#Curly Brace">find a matching curly brace</a>.
+</UL>     
+     
+<H4>How to Get to the Features</H4>     
+SrcEdit's functions are reached through the following:     
+<UL>     
+<LI><a href="#The Menu">The Menu</A></LI>     
+<LI><a href="#The Menu">The Menu shortcuts</A></LI>     
+<LI><a href="#toolbar">The Toolbar</A></LI>     
+<LI><a href="#popuptools">Popup Tools</A></LI>     
+<LI><a href="#specialedop">Special Editing Operations, SEO</A></LI>     
+</UL>     
+Most of functions can be invoked in several ways, so that the user can choose the way he likes best.  The functions will be explained in order they appear in <I>The Menu</I>.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="The Menu">    
+The Menu</a></H3>     
+The menu is reached by tapping the menu silkscreen button.      
+On each menu you find the name of the different items to the left and their shortcuts to the right. The shortcuts can be entered unshifted (lower case) ex. the shortcut &quot;/H&quot; can be entered as &quot;/h&quot;.     
+<BR>     
+Most menu items opens a window with the menu and item names as headline. The window's contents varies, but two buttons remains the same: the <I>OK</I> and the <I>Cancel</I> buttons. The <I>OK</I> button executes the task of the window . The <I>Cancel</I> button closes the window without any action. <I>Cancel</I> is a good choice if you don't know what to do, but if that happens, a good advice is: read the rest of this manual. If you don't, you will surly miss many of SrcEdit's hidden functions.     
+<BR>     
+Other buttons which may appear will be explained later, but the <I>OK</I> and <I>Cancel</I> buttons will never be mentioned again.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="New">     
+New /N</a><BR>     
+<FONT SIZE=-1>    
+Menu/File </FONT></H3>     
+<FONT SIZE=-1>     
+(Window: New File)     
+</FONT><BR>     
+Creates a new doc file.     
+<BR>     
+Type in the name of the new file.  Limit: 31 characters.     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Open">      
+Open  /O</a><BR> 
+<FONT SIZE=-1>    
+Menu/File </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Open File)     
+</FONT><BR>     
+Saves the opened doc file and opens an other one.     
+<BR>     
+Choose which file to open in the file list.     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Reload"> 
+Reload  /E </a><BR>   
+<FONT SIZE=-1>Menu/File</FONT>     
+ </H3>     
+<FONT SIZE=-1>     
+(Window: Reload File)     
+</FONT><BR>     
+Substitutes the opened doc file with the last saved version of the same.     
+<BR>     
+<FONT SIZE=-1> 
+* Warning! This will delete everything that was changed since the last time it was saved. 
+</FONT>    
+ </FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Save"> 
+Save  /S</a><BR> 
+<FONT SIZE=-1>Menu/File </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none)     
+</FONT><BR>     
+Saves the file. <BR> 
+</FONT> 
+<FONT SIZE=-1> 
+* SrcEdit automatically saves the current document upon: device shut down or sleep, or application stop. 
+ </FONT></FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Save as"> 
+Save as ...  /V</a><BR>    
+<FONT SIZE=-1>Menu/File</FONT>    
+</H3>     
+<FONT SIZE=-1>     
+(Window: Save File as)     
+</FONT><BR>     
+Saves the opened doc file under another name.     
+Type the new name.      
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Delete"> 
+Delete  /D</a><BR>    
+<FONT SIZE=-1> 
+Menu/File </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Delete File)     
+</FONT><BR>     
+Deletes doc files.     
+<BR>     
+Select the file to be deleted in the file list and tap <I>Delete</I>. More files can be deleted, but only one at the time. When you ready, tap on <I>Close</I> to close the window.     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Info"> 
+File Info  /I</a><BR>   
+<FONT SIZE=-1>Menu/File</FONT>   
+</H3>     
+<FONT SIZE=-1>     
+(Window: File Info)     
+</FONT><BR>     
+Displays information about the opened doc file. It also makes it possible to change category and file attributes.     
+     
+<B>DB Name:</B> The name of the doc file     
+<BR><BR>     
+     
+<B>Date:</B> Choose to see dates and time when the file was created, last modified, and last synchronized.     
+<BR><BR>     
+     
+<B>Resides on:</B> Shows where the file is--in RAM , ROM (flash memory) or VFS.     
+<BR><BR>     
+     
+<B>Version:</B> A number that increases each time the file is saved. Can be used to determine the latest version    
+<BR><BR>     
+     
+<B>Category:</B> A way of identifying files belonging to a specific project.<BR>  
+Set a number from 1 - 15 with which you can group your files. By giving the categories different colors under <a href="#Color Setup">Menu/Options/Preferences-Customize</a>, the groups will show up with it's own colors in the <a href="#Open">Menu/File/Open</a> file list.   
+<BR><BR>     
+     
+<B>DB Size:</B> The file size in bytes     
+<BR><BR>     
+     
+<B># Rec:</B> The number of records the file consists of.     
+<BR><BR>     
+     
+<B>Doc Size:</B> The size of the text in bytes.     
+<BR><BR>     
+     
+<B>Compr. Size:</B> (For future use.) Will show the size of the compressed file.      
+<BR><BR>     
+     
+<B># Lines:</B> The number of lines in the text.     
+<BR><BR>     
+     
+<B># Words:</B> The number of words in the text.     
+<BR><BR>     
+     
+<H4>File Attributes<FONT SIZE=-1> (can be changed)</FONT></H4>     
+     
+     
+<B>Backup:</B> If checked, backup during HotSync.     
+<BR><BR>     
+     
+<B>Read Only:</B> If checked, no changes to this document will be saved.     
+<BR><BR>     
+     
+<B>Beam Prvnt:</B> If checked, this document is prevented from being beamed.     
+<BR><BR>     
+     
+<B>Secret:</B> If checked, the file is set to <I>Private</I>. See Operative System/Preferences/Security/Current Privacy.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Cut"> 
+Cut  /X</a><BR>   
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</a>, <a href="#popuptools">Popup tools</a>.)     
+</FONT><BR>     
+Copies selected text to the clipboard and then erases it the text.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Copy"> 
+Copy  /C</a><BR>      
+<FONT SIZE=-1>Menu/Edit</FONT>    
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup tools</A>.)     
+</FONT><BR>     
+Copies select text to clipboard.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Paste"> 
+Paste  /P</a><BR>    
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup tools</A>.)     
+</FONT><BR>     
+ Pastes the contents of the clipboard into the text at the place of the cursor, or a selected text which will be replaced,     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Undo"> 
+Undo  /U</a><BR>    
+<FONT SIZE=-1>Menu/Edit </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>.)     
+</FONT><BR>     
+Makes up for your mistakes and undos the last text operation you did.     
+<BR>     
+<FONT SIZE=-1>     
+* Only the latest operation can be undone.     
+</FONT>     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Find/Replace"> 
+Find/Replace  /F</a><BR>    
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Find/Replace. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Finds a word or phrase and optionally replaces it.      
+<BR>     
+The Find/Replace dialog has two text fields.      
+In the upper one, the <I>Find</I> field, you write the text you want to find.     
+In the lower one, the <I>Replace</I> field, you write what you want to Replace the found text with. If you only want to find, you can leave the Replace field empty.     
+<BR>     
+<FONT SIZE=-1>   
+* The linefeed character is not accepted.  
+</FONT>    
+     
+     
+<H4>Find</H4>     
+1. Write the text you are looking for in the <I>Find</I> field.     
+<BR>     
+<FONT SIZE=-1>   
+* If you have a text selected when opening the <I>Find/Replace</I> dialog, the selected text will appear in the <I>Find</I> field and <I>Find/Replace</I> will find the next occurrence of the selected text.  
+</FONT>    
+     
+<BR><BR>     
+2. Choose setting of <I>Ignore case</I> and <I>Search from top</I>.     
+<BR>     
+<FONT SIZE=-1>     
+* If you don't check <I>Search from top</I> the search will start from the cursor position and finish at the end of the document. 
+</FONT>     
+     
+     
+<BR><BR>     
+3. Tap on the <I>Find</I> button. SrcEdit will now search for the next occurrence of the text you were looking for and then close the window.      
+<BR>     
+If the search is the  successful, the text found will appear as selected. Otherwise the original selection will be shown.      
+     
+     
+<H4>Replace</H4>     
+With the <I>Find</I> field filled in, write what the searched text should be replaced with, in the <I>Replace with</I> field. A tap on the <I>Replace</I> button and the next occurrence of the text in the "Find" field, will be replaced, and the window closed.     
+     
+     
+<H4>Replace All</H4>     
+Tapping <I>Replace All</I> replaces all occurrences of the searched text before the window closes.     
+     
+<H4>Selected Search Area</H4>     
+Select the section of the text (several lines) inside which you want to search.     
+Bring up the <I>Find/Replace</I> window and proceed according to the instructions above, without checking <I>Search From Top</I>. Find and Replace will now only work inside the selected search area.      
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Find Again"> 
+Find Again  /G</a><BR>    
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>.)     
+</FONT><BR>     
+After having performed a <I>Find</I>,  <I>Find Again</I> will find the the next occurrence of the text entered in the <I>Find</I> field of the <I>Find/Replace</I> dialog.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Select All"> 
+Select All  /A</a><BR>   
+<FONT SIZE=-1>Menu/Edit </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none.)     
+</FONT><BR>     
+Selects the whole text in the document     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Goto Line"> 
+Goto Line  /L</a><BR>   
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Goto Line.)     
+</FONT><BR>     
+Shows the line number of the current cursor position in the <I>Line #</I> field when the window opens.      
+<BR>     
+To go to a specific line, type in the line number.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Mark Position"> 
+Mark Position  /M</a><BR>     
+<FONT SIZE=-1>Menu/Edit </FONT>    
+     
+</H3>     
+<FONT SIZE=2>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Marks the current cursor position as a returning point or a starting point for a selection.     
+<BR>     
+Choose the position to mark, then tap <I>Mark Position</I>.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Jump Between"> 
+Jump Between  /J</a><BR>    
+<FONT SIZE=-1>Menu/Edit </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Jumps between the current cursor position and a previously marked position.     
+<BR>     
+Mark a position as described under <a href="#Mark Position">Mark Position</A>. Then after having placed the cursor in an other part of the document, tap <I>Jump Between</I>.     
+<BR>   
+     
+<FONT SIZE=-1>     
+* If no position is marked, <I>Jump Between</I> jumps  top of the document.     
+<BR>     
+* As the jump is about to be made, the current cursor position and the marked position swap places, so that a second tap on <I>Jump Between</I> will make the cursor return to it's original position.  
+</FONT>    
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Select Between"> 
+Select Between  /W</a><BR>    
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Selects the text between the cursor and the mark.     
+<BR>     
+Mark a position to be the starting point of the selection. Then place the cursor at the ending point of the same selection, and tap <I>Select Between</I>. See <a href="#Mark Position">Menu/Edit/Mark Position</A> for more details.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3> <a name="Keyboard"> 
+Keyboard</a><BR>    
+<FONT SIZE=-1>Menu/Edit</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Keyboard.)     
+</FONT><BR>     
+Opens the inbuilt Keyboard window.      
+<BR>     
+     
+<FONT SIZE=-1> 
+* SrcEdit's way of presenting text without fields does not allow scrolling though the text using <i>Keyboard</i>. Only one line is editable at the time. 
+</FONT>    
+</FONT></P>      
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Preferences"> 
+Preferences</a><BR>    
+<FONT SIZE=-1>Menu/Options</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Preferences.)     
+</FONT><BR>     
+Here are some options which affects the basic function of SrcEdit.     
+<BR>     
+     
+    
+<H4><a name="Font">    
+Font</a></H4>     
+Only two buttons: The <I>Standard</I> system font button, and the <I>Resource</I> font button, and yet an endless list of fonts to choose from. The <I>Standard</I> system font needs no further explanation, but the <I>Resource</I> font does. <BR> 
+<FONT SIZE=-1>     
+* SrcEdit also supports FontHack for OS<5.0. 
+</FONT> 
+<BR><BR>     
+<B>Resource Fonts</B> are resources residing inside the .prc files of many programs. SrcEdit can now make use of <I>Resource Fonts</I> copied from almost any program and copied into the optional SrcEditSkin file.  
+<BR><BR>   
+  
+<B>How to Install Resource Fonts</B>  
+<OL>  
+<LI>Use BIRD or RsrcEdit to copy your favorite <I>Resource Font</I> from the program of your choice.  
+<LI>Open the SrcEditSkin file and paste the <I>Resource Font</I> into it.  
+<LI>Change the name to "nfnt 1001" if it is a Hi Res font, and to "NFNT 1000" if it is a Low Res font.  
+<LI>Open SrcEdit and choose <I>Resource</I> under   
+<I>Menu/Options/Preferences-Font</I>  
+</OL>  
+ <FONT SIZE=-1>     
+* If no <I>Resource Font</I> is found in the  SrcEditSkin file or if no SrcEditSkin file is found, SrcEdit will use the built-in <I>Resource Font</I>. 
+</FONT>    
+    
+     
+     
+<H4><a name="Mode">    
+Mode</a></H4>     
+1. Selects which language <I>Keyword</I> set and which comment type is to be colored.<BR>
+2. Alters the function of <a href="#Auto Complete">Menu/Options/Auto complete</a> so that it besides: &quot;&quot;, ' ', also auto completes (), [], and {} in C-mode; < > in HTML-mode, and (), and [] in ASM-mode.<BR>
+3. Decides what Comment indicators are to be inserted by <a href="#Comment">Menu/Tools/Comment</a>, and deleted by <a href="#Uncomment">Menu/Tools/Uncomment</a>. 
+<BR>     
+SrcEdit normally makes the selection automatically by looking at the file extension: .c and .h for C; .htm and .html for HTML; and .asm and .inc for ASM. If no file extension is used, or if it is needed to override the automatic selection, a manual selection can be made here.     
+<BR><BR>     
+Choose:     
+<UL>     
+<LI>C--to use C-language keywords.     
+</LI>     
+<LI>HTML--to use Hypertext Markup Language keywords.     
+</LI>     
+<LI>ASM--to use 68k Assembly language keywords.     
+</LI>     
+</UL>     
+<FONT SIZE=-1>      
+* If no valid file extension is found, C-mode is default.     
+<BR>     
+* The keywords are a part of the source code color scheme and are therefore colored if <I>Color/Grayscale</I> is checked. See <a href="#Customize">Color/Grayscale-Customize</A>.     
+<BR>     
+* See <a href="#Auto Complete">Auto Complete</A> for details of function and configuration.     
+</FONT>     
+     
+<H4><a name="Scrolling w Buttons">    
+Scrolling With Hardware Buttons</a></H4>     
+Makes it possible to configure hardware buttons for scrolling sideways.      
+<BR>     
+Check this option and choose hardware buttons for scrolling <I>Left</I> and <I>Right</I>.     
+<BR>    
+<FONT SIZE=-1>    
+* Useful for devices without 5-way navigator, or if the 5-way navigator is set on <I>Moving cursor</I>. See <a href="#Navigator">Menu/Options/Navigator</A>. 
+</FONT>     
+     
+    
+<H4><a name="Color/Grayscale">    
+Color/Grayscale</a></H4>     
+Enables the source code color scheme.      
+<BR>     
+     
+<FONT SIZE=-1>     
+* SrcEdit works somewhat slower with this option set.   
+</FONT>   
+    
+     
+    
+<H4><a name="Customize">    
+Customize</a> </H4>     
+Takes you to the <a href="#Color Setup">Color Setup window</A>.     
+     
+&nbsp;</a>     
+<H4>Comment Lines</H4>     
+The number of lines SrcEdit will look upwards for is a starting "/*" comment.<BR>
+<FONT SIZE=-1>
+* Valid in C-Mode only.
+</FONT>    
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Color Setup">Color Setup</a> </H3>     
+<FONT SIZE=-1>     
+(Window: Color Setup.)     
+</FONT><BR>     
+<H4>How to customize the colors</H4>     
+Tap on the <I>Customizable colors</I> dropdown and choose one of the three list options: <I>Source colors</I>, <I>Databases in lists</I>, and <I>Miscellaneous</I>. Each of these contains another list of the items to setup.     
+     
+     
+<H4>Source Colors</H4>     
+To Set the Colors of: Text, Keywords, Comments, Strings, Characters, Values, Parenthesis, Brackets, and Operators.     
+     
+<H4>Databases in Lists</H4>     
+To set the colors of: Locked DB, Masked DB, and Categories 1 to 15.     
+<BR><BR>  
+     
+<B>Locked DB:</B> Databases set as Read Only. These files also marked with a padlock. See Menu/File/Info.      
+<BR><BR>     
+     
+<B>Masked DB:</B> Databases set as Secret either by the operating system or in Menu/File/Info.     
+<BR><BR>     
+     
+<B>Category:</B> Categories are used in the <a href="#Open">Menu/File/Open</A>, where files belonging to a specific category will be displayed in the color chosen here.     
+<BR>     
+<FONT SIZE=-1>     
+* To set a file's category, see <a href="#Info">Menu/File/Info</A>.     
+</FONT>    
+    
+<H4>Miscellaneous</H4>     
+To set the colors of the Background<BR>     
+<BR><BR>     
+After having tapped on an item, it's just to choose a color according to your taste.     
+     
+<H4>The Default Button</H4>     
+Restores all values to SrcEdit original color scheme.     
+</FONT></P>     
+     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Toolbar O"> 
+Toolbar</a><BR>    
+<FONT SIZE=-1>Menu/Options</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Toolbar Options.)     
+</FONT><BR>     
+Shows the functions linked to the Toolbar icons, and reconfigures them.     
+     
+<H4>To View an Icon's Function</H4>     
+Tap on the icon to view, and the function linked to it will show on the line below.     
+     
+<H4>To Reconfigure an Icon's Function</H4>     
+After having tapped on an icon, tap on the drop down list and choose a new function to link with the icon.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Tabulator"> 
+Tabulator</a><BR>     
+<FONT SIZE=-1>Menu/Options</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Tabulator Options.)     
+</FONT><BR>     
+Defines SrcEdit's behavior when entering a tab character.     
+     
+<H4>To Use Tab Characters as Tabs</H4>     
+All tabs will be displayed as a blank space, <I>Tab size</I> wide.     
+<BR>     
+Check <I>Tab size</I> and specify the  preferred tab size in lowres pixels.     
+     
+<H4>To Use Spaces Instead of Tabs.</H4>     
+When entering a tab, this option substitutes the tab character with a number of spaces.     
+<BR>     
+Check <I>Spaces</I> and specify the preferred number of spaces to use.     
+<BR>     
+     
+<FONT SIZE=-1>   
+* The auto indent function in <a href="#Auto Complete">Menu/Options/Auto Complete</A> will use the option chosen here to indent the lines.     
+</FONT> 
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Auto Complete"> 
+Auto Complete</a><BR>    
+<FONT SIZE=-1>Menu/Options </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Auto Complete Options.)     
+</FONT>     
+     
+<H4>Auto Completion</H4>     
+If checked SrcEdit will in all modes automatically type in the matched par of: &quot;&quot;, ' '.     
+<BR>     
+In addition C-mode also auto completes: (), [], {}, HTML-mode:  < >, and ASM-mode: (), [].     
+<BR>     
+     
+<FONT SIZE=-1>     
+* See <a href="#Mode">Menu/Options/Preferences-Mode</A> for more details. 
+</FONT>     
+     
+     
+     
+<H4>Auto Indent After Curly Brace</H4>     
+When a &quot;{&quot; or a &quot;)&quot; is entered,  SrcEdit will add one indent level to the following line placing the cursor at the new position.     
+<BR>     
+When a &quot;}&quot; is entered on an empty line, with a following linefeed, SrcEdit will shift the characters on that line one tab position to the left, placing the cursor on the next line.      
+<BR>   
+     
+<FONT SIZE=-1>     
+* If this option is checked, auto completion of &quot;{&quot; is disabled.     
+<BR>     
+* Only available in C-mode.     
+<BR>     
+* This option use tabulators as specified in <a href="#Tabulator">Meny/Options/Tabulator</A>.  
+</FONT>    
+    </FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Navigator"> 
+Navigator</a><BR>    
+<FONT SIZE=-1>Menu/Options </FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Navigator Options.)     
+</FONT><BR>     
+Sets the desired function of the <I>up</I>, <I>down</I>, <I>left</I> and <I>right</I> buttons.      
+     
+<H4>Scrolling Screen</H4>     
+Scrolls one page up or down if possible, and left or right in steps of one character position.     
+<BR>     
+     
+<FONT SIZE=-1>   
+* Leaves the cursor in its position.     
+</FONT>    
+     
+     
+<H4>Moving Cursor</H4>     
+Moves the cursor one line up or down if possible, and left or right in steps of one character position.     
+<BR>     
+     
+<FONT SIZE=-1>     
+* Only available on devices with 5-way navigator! 
+</FONT>      
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Function Bookmk O"> 
+Function Bookmk</a><BR>    
+<FONT SIZE=-1>Menu/Options</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Function Bookmk Options. A C-mode function.)     
+</FONT><BR>     
+Specifies how thorough the function should be when collecting and presenting the function bookmarks. Functions that are completely <I>commented</I> are displayed in the color used for comments. See <a href="#Preferences">Menu/Options/Preferences</A>.     
+     
+<H4>Sort Ascending</H4>     
+If checked, the list will be sorted in ascending order.     
+<BR>     
+<FONT SIZE=-1>      
+* By default the functions are presented in the order they appear in the document.   
+</FONT>   
+     
+     
+     
+<H4>Extra Aware</H4>     
+Uses an advanced search procedure to make the list of functions reliable.       
+<BR>  
+<FONT SIZE=-1>      
+* With this option checked, the Function bookmk popup will take longer time to appear.<BR>     
+* If this option is not checked, the list may occasionally contain <I>false</I> functions.  
+</FONT>    
+     
+     
+<H4>Show Commented</H4>     
+Enables  display of <I>commented</I> functions.     
+<BR>     
+<FONT SIZE=-1>     
+* This option is only available when <I>Extra Aware</I> is checked.   
+</FONT>   
+     
+     
+     
+<H4>Commented Last</H4>     
+Displays all <I>commented</I> functions separated at the end of the list.     
+<BR>     
+     
+<FONT SIZE=-1>    
+* This option is only available when <I>Extra Aware</I> and <I>Show Commented</I> are checked. 
+</FONT>     
+</FONT></P>     
+     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3> <a name="Keyboard Support"> 
+Keyboard Support</a><BR>     
+<FONT SIZE=-1>Menu/Options</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Keyboard Support.)     
+</FONT><BR>     
+Sets what keyboard is to be used.     
+<BR><BR>  
+    
+The keyboard support in SrcEdit is mostly about cursor key navigation: the ability to use Shift to select, Ctrl to move word by word, Cmd to larger amounts, Del to delete the character to the right, Tab to indent selected lines, Shift-Tab to un-indent selected lines, etc.     
+<BR><BR> 
+     
+The keyboards in the list below are linked to the <I>Keyboard Appendix</I> which shows what functionality is implemented, what keys combinations you have to press, and what behaviour you should expect from SrcEdit. The goal  has been to mimic (as much as possible) the behaviour of mainstream Windows editors, such as Notepad, TextPad, SourceEdit, etc.    
+<BR><BR>  
+    
+The following keyboards are supported at the moment:     
+<UL>     
+<LI><a href="SrcEditKeybd.html#PPK">Palm Portable Keyboard</a>   
+<LI><a href="SrcEditKeybd.html#PWK">Palm Wireless Keyboard</a>     
+<LI><a href="SrcEditKeybd.html#PUTK">Palm Ultra-Thin Keyboard</a>    
+<LI><a href="SrcEditKeybd.html#BWK">Belkin Wireless Keyboard</a>    
+<LI><a href="SrcEditKeybd.html#TCI">Tungsten C Internal</a>    
+<LI><a href="SrcEditKeybd.html#SNX">Sony NX Internal Keyboard</a> 
+<LI><a href="SrcEditKeybd.html#SUX">Sony UX Internal Keyboard</a> 
+<LI><a href="SrcEditKeybd.html#C70">Clié PEG-NR70 Internal</a> 
+<LI><a href="SrcEditKeybd.html#T90">Treo 90 Internal Keyboard</a> 
+<LI><a href="SrcEditKeybd.html#T600">Treo 600 Internal Keyboard</a> 
+<LI><a href="SrcEditKeybd.html#ADI">Alphasmart Dana Internal</a>    
+<LI><a href="SrcEditKeybd.html#TZ">Tapwave Zodiac</a>    
+</UL>    
+</P> 
+ 
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Keywd Complete"> 
+Keywd Complete</a><BR> 
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Popup. A C-mode function. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup tools</A>.)     
+</FONT><BR>     
+Helps to find and write a function name.     
+<BR>     
+Place the cursor after at least the first letter in the function name you want to find. Tapping "Keywd complete" brings up a list of functions contained in OnBoardHeader.h (see the OnBoard Suit's user's manual) all starting with the letter or letters immediately to the left of the cursor.     
+</FONT></P>     
+</FONT></P>      
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Header Params"> 
+Header Params</a><BR>    
+<FONT SIZE=-1>Menu/Tools</FONT>     
+ </H3>     
+<FONT SIZE=-1>     
+(Window: none. A C-mode function. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+<I>Header Parameters</I> fills in the function parameters found in OnBoardHeader.h for a given function.     
+<BR>     
+Place the cursor immediately to the right of the function name, and tap on <I>Header Params</I><BR>  
+<FONT SIZE=-1> 
+* Long parameter lists will span over multiple lines. 
+</FONT>    
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Function Bookmk T"> 
+Function Bookmk</a><BR> 
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: Popup. A C-mode function. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+<I>Function Bookmarks</I> is a list of the functions contained in the opened source file, helping you to navigate quickly in your code.     
+<BR>     
+Tap <I>Function Bookmk</I>, choose the function you want to jump to, and tap on it.     
+<BR>     
+<FONT SIZE=-1>     
+* To configurate, see <a href="#Function Bookmk O">Menu/Option/Function Bookmk</A>. 
+</FONT>     
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Comment"> 
+Comment</a><BR> 
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Automatically turns text or code into C-language, HTML, or 68k ASM comments depending on which <I>Mode</I> is chosen.<BR>
+<FONT SIZE=-1>   
+* See <a href="#Preferences">Menu/Options/Preferences-Mode</A>. 
+</FONT>    
+     
+<H4>How To Comment</H4>     
+     
+<B>One Line</B><BR>     
+<FONT SIZE=-1>
+Comment indicator: C-mode &quot;//&quot;, HTML-mode &quot;&lt;!-- ... --&gt;&quot;, 68k ASM &quot;;&quot;.
+</FONT><BR>     
+Select the whole line you want to turn into a comment before tapping on <I>Comment</I>.      
+<BR>     
+<FONT SIZE=-1>   
+* To select a whole line, triple tap on it. 
+</FONT>     
+<BR><BR>     
+     
+<B>The End of a Line</B><BR>     
+<FONT SIZE=-1>
+Comment indicator: C-mode &quot;//&quot;, HTML-mode &quot;&lt;!-- ... --&gt;&quot;, 68k ASM &quot;;&quot;.
+</FONT><BR>     
+Select the end of a line and tap on <I>Comment</I>.      
+<BR>     
+<FONT SIZE=-1>      
+* SrcEdit disregards any ending white spaces. 
+</FONT>     
+<BR><BR>     
+     
+<B>A Block of Text in the Middle of a Line</B><BR>     
+<FONT SIZE=-1>
+Comment indicator: C-mode &quot;/* ... */&quot;, HTML-mode &quot;&lt;!-- ... --&gt;&quot;.
+</FONT><BR>     
+Make a selection anywhere on a line, except the end. Tap on <I>Comment</I>.    
+<BR><BR>     
+     
+<B>Multiple Lines</B><BR>
+<FONT SIZE=-1>     
+Comment indicator: C-mode &quot;/* ... */&quot;, HTML-mode &quot;&lt;!-- ... --&gt;&quot;, 68k ASM &quot;;&quot;.
+</FONT><BR>     
+Select the lines you want to turn into comments, before tapping on <I>Comment</I>.     
+<BR>     
+<FONT SIZE=-1>   
+* Only the selected text will be a "Comment".  
+</FONT>    
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Uncomment"> 
+Uncomment</a><BR> 
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none. Also available in: <a href="#toolbar">Toolbar</A>, <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>     
+Removes the comment characters.     
+     
+<H4>How To Uncomment</H4>     
+<B>One Line</B><BR>     
+Select some of the commented characters and tap on <I>Uncomment</I>.     
+<BR> 
+<FONT SIZE=-1>      
+* Only one selected character is necessary.     
+<BR>     
+* You May also <I>Uncomment</I> multiple whole line comments.  
+</FONT>    
+<BR><BR>     
+     
+<B>Multiple Lines</B><BR>     
+Select all commented characters before tapping on this menu item.     
+<BR>     
+<FONT SIZE=-1>    
+* All the commented characters should be selected, but not any of the  comment indicators (/* or */). 
+</FONT>     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="Launch Compiler"> 
+Launch Compiler</a><BR>  
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: none.)     
+</FONT><BR>     
+Launches a compiler depending on what extension the opened source DOC has.     
+<BR>     
+Launches:     
+<UL>     
+<LI>OnBoardC if the extension is ".c" or ".h"     
+<LI>OnBoard Assembler  if the extension is ".asm" or ".inc     
+<LI>PP Compiler if the extension is ".pas"     
+<LI>iziBasic  if the extension is ".ibas"     
+<LI>Plua  if the extension is ".plua"     
+</UL>     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="About SrcEdit"> 
+About SrcEdit</a><BR> 
+<FONT SIZE=-1>Menu/Tools</FONT>     
+</H3>     
+<FONT SIZE=-1>     
+(Window: About SrcEdit.)     
+</FONT><BR>     
+Here you find information about SrcEdit's version number, licensing, and bug reporting.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="toolbar">     
+The Toolbar     
+</a></H3>     
+The Toolbar consists of eleven icons located at the bottom of the main form, each configurable to hold the function of your choice. See <a href="#Toolbar O">Menu/Options/Toolbar</A> to configure the Toolbar.     
+<BR><BR>     
+Available functions:     
+<UL>     
+<LI><a href="#Cut">Cut</A>    
+<LI><a href="#Copy">Copy</A>    
+<LI><a href="#Paste">Paste</A>    
+<LI><a href="#Undo">Undo</A>    
+<LI><a href="#Find/Replace">Find/Replace    
+<LI><a href="#Find Again">Find Again</A>    
+<LI><a href="#Launch Compiler">Launch Compiler</A>    
+<LI><a name="Shift Left">Shift Left</A><BR>    
+<UL><FONT SIZE=-1>     
+(Also available in: <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>    
+Removes one of the tab characters or the number of space characters corresponding to it (see note), from the beginning of the line and moves the text to the left.    
+Select the lines you want to <I>Shift Left</I>. Then tap the <I>Toolbar</I> icon assigned to it.    
+<BR>     
+<FONT SIZE=-1>     
+* Will erase either a tab character or, if not found the number of space characters found in <a href="#Tabulator">Menu/Options/Tabulator</A>.<BR>     
+* To <I>Shift Left</I> just the current line, no selection is needed.<BR>    
+* See <a href="#Toolbar O">Menu/Options/Toolbar</A> on how to assign <I>Shift Left</I> to a <I>Toolbar</I> icon. 
+</FONT> 
+</UL>   
+<LI><a name="Shift Right">Shift Right</A><BR> 
+<UL>    
+<FONT SIZE=-1>     
+(Also available in: <a href="#popuptools">Popup Tools</A>.)     
+</FONT><BR>    
+Inserts one tab character or the number of space characters corresponding to it (see note), before text and moves the text to the right.    
+Select the lines you want to <I>Shift Right</I> (Indent). Then tap the <I>Toolbar</I> icon assigned to it.    
+<BR> 
+<FONT SIZE=-1> 
+* Uses the setting in <a href="#Tabulator">Menu/Options/Tabulator</A>.<BR>    
+* The Tab character may be entered to <I>Shift Right</I> the current line if it is totally selected.<BR>    
+* No selection is needed to <I>Shift Right</I>  only the current line.<BR>    
+* See <a href="#Toolbar O">Menu/Options/Toolbar</A> on how to assign <I>Shift Right</I> to a <I>Toolbar</I> icon.  
+</FONT> 
+</UL>   
+<LI><a href="#Comment">Comment</A>    
+<LI><a href="#Uncomment">Uncomment</A>    
+<LI><a href="#Mark Position">Mark Position</A>    
+<LI><a href="#Jump Between">Jump Between</A>    
+<LI><a href="#Select Between">Select Between</A>    
+<LI><a href="#Keywd Complete">Keyword Complete</A>    
+<LI><a href="#Function Bookmk T">Function Bookmks</A>    
+<LI><a href="#Header Params">Header Parmetrs</A>    
+<LI>Popup Tool<BR>    
+<UL> 
+A popop list loaded with functions. More about Popup tools in the next section.  
+</UL>    
+ <LI><a name="MRU">MRU</a><BR> 
+ <UL>    
+A popup list with the Most Recently Used files. Makes it easy to jump between the files you are working with.     
+</UL>    
+</UL>     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="popuptools">     
+Popup Tools     
+</a></H3>     
+Popup Tools is really two different popup lists on the same icon. One appears if a text is selected when the icon it is assigned to is tapped, and the other one when no text is selected.     
+<BR><BR>     
+Popup tools when there is a text selection:     
+<UL>     
+<LI><a href="#Cut">Cut</A>    
+<LI><a href="#Copy">Copy</A>    
+<LI><a href="#Paste">Paste</A>    
+<LI><a href="#Find/Replace">Find/Replace</A>    
+<LI><a href="#Comment">Comment</A>    
+<LI><a href="#Uncomment">Uncomment</A>    
+<LI><a href="#Shift Left">Shift Left</A>    
+<LI><a href="#Shift Right">Shift Right</A>    
+<LI><a name="Uppercase">Uppercase</A><BR>    
+<UL> 
+Transforms all characters to uppercase.<BR>    
+Select the text to transform, then tap on <I>Uppercase</I>.  
+</UL> 
+<LI><a name="Lowercase">Lowercase</A><BR> 
+<UL>   
+Transforms all characters to lowercase.<BR>    
+Select the text to transform, then tap on <I>Lowercase</I>.    
+</UL> 
+<LI><a name="Toggle Case">Toggle Case</A><BR>  
+<UL>   
+Changes lowercase characters to uppercase characters and uppercase characters to lowercase characters.  
+Select the text to toggle the case on, then tap on <I>Toggle Case</I>.  
+</UL> 
+<LI><a name="Reverse">Reverse</A><BR>  
+<UL>   
+Reverses a text.  
+Select the text to reverse, then tap on <I>Reverse</I>.  
+</UL> 
+</UL>     
+<BR>     
+Popup tools when there isn't any text selection:     
+<UL>     
+<LI><a href="#Keywd Complete">Keyword completion</A>    
+<LI><a href="#Header Params">Header parameters</A>    
+<LI><a href="#Function Bookmk T">Function Bookmarks</A>    
+<LI><a href="#Mark Position">Mark Position</A>    
+<LI><a href="#Jump Between">Jump Between</A>    
+<LI><a href="#Select Between">Select Between</A>    
+</UL>     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="specialedop">     
+Special Editing Operations     
+</a></H3>     
+     
+<H4><a name="Curly Brace">Find Matching Curly Brace</a></H4>     
+<B>Normal method:</B> Double tap on one of the curly brace and the code between the curly brace tapped on and the matching one will be selected.     
+<BR><BR> 
+<B>Using the 5-way navigator:</B> Place the cursor immediately before one of the curly braces and double click on the 5-way navigator's <I>center</I> button. 
+    
+<H4><a name="Parenthesis">Find Matching Parenthesis</a></H4>     
+<B>Normal method:</B> Double tap on one of the parenthesis and the function parameters between the parenthesis tapped on and the matching one will be selected. 
+<BR><BR> 
+<B>Using the 5-way navigator:</B> Place the cursor immediately before one of the parenthesis and double click on the 5-way navigator's <I>center</I> button. 
+ 
+<H4><a name="Resizing">Resizing a Selection</a></H4> 
+Makes it possible to resize an existing selection. 
+<BR><BR> 
+ 
+<B>To lengthen a selection:</B> Having made a selection, make a grafitti "Shift" as if to write an uppercase character, then tap on the point in the text before or after the selecion to which the selection should be extended. 
+<BR><BR> 
+<B>To shorten a selection:</B> Having made a selection, make a grafitti <I>shift</I> as if to write an uppercase character, then tap on the point inside the selection to which the selection should be shortened. 
+<BR> 
+<FONT SIZE=-1> 
+* The shortening of a selection only works at the end of a selection at the moment.<BR> 
+</FONT><BR> 
+<FONT SIZE=-1> 
+* To make a second resize on the same selection, it's necessary to <I>unshift</I> and then make a new <I>shift</I> before trying to resize. Only one resize per <I>shift</I> is permitted. 
+</FONT> 
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="skins">     
+Toolbar Skins     
+</a></H3>     
+A SrcEdit skin is a resource database. It must have creator ID &quot;LedX&quot;, and be of type &quot;SKIN&quot;. SrcEdit will open this database at startup and use bitmap resources found therein. There can only be one skin database installed on a device.    
+    
+    
+<H4>Bitmap Resources</H4>    
+A SrcEdit Skin database should contain eleven bitmap resources to be displayed as the buttons array at the bottom of the main application form (the edit screen), in the <I>Configure Toolbar</I> window and in the system's Menu Command Bar. These resources must be standard PalmOS bitmaps of type "Tbmp". The resource id's of these bitmaps must be as follows:    
+<UL>    
+ID - Default Function<BR>    
+-------------------------<BR>    
+1040 - Cut<BR>    
+1041 - Copy<BR>    
+1042 - Paste<BR>    
+1043 - Undo<BR>    
+1044 - Search/Replace<BR>    
+1045 - Search Again<BR>    
+1046 - Launch Compiler<BR>    
+1047 - Shift Left<BR>    
+1048 - Shift Right<BR>    
+1049 - Keyword Complete<BR>    
+1050 - Function Bookmarks<BR>    
+</UL>    
+Dimensions of these bitmaps should be: width 11 pixels, height 13 pixels.    
+Every resource must contain at least one Single-Density (Lo-Res) bitmap. Dimensions of Double-Density (Hi-Res) bitmaps, if you intend on adding such, must be twice that of a Single-Density - that is 22 pixels width x 26 pixels height.    
+    
+    
+<H4>Bitmap Editors</H4>    
+This is a list of PalmOS applications which might be used to create SrcEdit skins. This list is by no means full - feel free to extend it. <BR> 
+<a href="http://ppcompiler.free.fr/download.php?lng=en">Bird</a> - a new freeware resource editor. Edits Single- and Double-Density bitmaps as well as icons.<BR> 
+<a href="http://tbmpedit.sourceforge.net">    
+TbmpEdit</a> - edits both, Single- and Double-Density bitmaps, but runs only on OS 5 devices.<BR>      
+<a href="http://www.quartus.net/products/rsrcedit">RsrcEdit</a> - edits only Single-Density bitmaps.    
+  
+   
+  
+<H4>How to Install Resource Fonts</H4>  
+ A skin file can also contain <I>Resource Fonts</I>. See <a href="#Font">Menu/Options/Preferences-Font</a> for more information.  
+</FONT></P>     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="bugs">     
+Bug reports     
+</a></H3>     
+Great care has been taken to catch all the bugs in SrcEdit. But since no program ever has been 100% bug free, we have to alert you: The few that probably are left are the most difficult once to catch!     
+Please help us find them. If you see one, place a bug report at 	<A href="http://sourceforge.net/tracker/?atid=478286&group_id=55794">    
+OnBoardC's site</a>.     
+</FONT></P>     
+     
+     
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="links">     
+Useful Links     
+</a></H3>     
+<UL>     
+<LI>BIRD:<BR>     
+	<a href="http://ppcompiler.free.fr/download.php?lng=en">     
+	http://ppcompiler.free.fr/download.php?lng=en</a>     
+<LI>Free Software Foundation website:<BR>     
+	<a href="http://www.fsf.org">     
+	http://www.fsf.org</a>     
+<LI>GNU Free Documentation License (FDL):<BR> 	    
+	<a href="http://www.gnu.org/licenses/fdl.html">     
+	http://www.gnu.org/licenses/fdl.html</a>     
+<LI>GNU General Public License (GPL):<BR>     
+	<a href="http://www.gnu.org/copyleft/gpl.html">     
+	http://www.gnu.org/copyleft/gpl.html</a>     
+<LI>iziBasic:<BR>     
+	<a href="http://www.aldweb.com/articles.php?lng=en&pg=5350">     
+	http://www.aldweb.com/articles.php?lng=en&pg=5350</a>     
+<LI>Yahoo! OnBoardC Discussion Group: <BR>     
+	<a href="http://groups.yahoo.com/group/OnBoardC">     
+	http://groups.yahoo.com/group/OnBoardC</a>     
+<LI>OnBoardC homepage:<BR>     
+	<a href="http://onboardc.sourceforge.net/">     
+	http://onboardc.sourceforge.net/</a>     
+<LI>OnBoardC, bugreports:<BR>    
+	<A href="http://sourceforge.net/tracker/?atid=478286&group_id=55794">    
+	http://sourceforge.net/tracker/?atid=478286&group_id=55794</A>    
+<LI>SourceForge development site:<BR>     
+	<a href="https://sourceforge.net/projects/onboardc/">     
+	https://sourceforge.net/projects/onboardc/</a>     
+<LI>Plua:  <BR>   
+	<a href="http://netpage.em.com.br/mmand/plua.htm">    
+	http://netpage.em.com.br/mmand/plua.htm</a>    
+<LI>PP Compiler: <BR>     
+	<a href="http://ppcompiler.free.fr/?lng=en">     
+	http://ppcompiler.free.fr/?lng=en</a>     
+<LI>RsrcEdit: <BR>     
+	<a href="http://www.quartus.net/products/rsrcedit">     
+	http://www.quartus.net/products/rsrcedit</a>     
+<LI>TbmpEdit:<BR>     
+ 	<a href="http://tbmpedit.sourceforge.net">    
+	http://tbmpedit.sourceforge.net</a>    
+</UL>     
+</FONT></P>    
+ 
+ <P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Thanks">    
+Thanks    
+</a></H3>    
+We would like to <I>thank</I> everybody who in some way or another has participated in the development of this project. <B>Thank you very, very much!</B><BR>
+</FONT></P> 
+   
+<P><FONT face="Verdana, Arial, sans-serif">     
+<H3><a name="About">     
+About This Document     
+</a></H3>     
+&copy; John Wilund and Peter Thorstenson 2005<BR>    
+<BR>    
+This document is released under <a href="http://www.gnu.org/licenses/fdl.html">     
+GNU Free Documentation License (FDL)</a>.    
+<BR><BR>   
+</FONT></P>    
+</TD></TR>     
+</TABLE>     
+</TD></TR>    
+</TABLE>    
+</body>      
+</html>      
+

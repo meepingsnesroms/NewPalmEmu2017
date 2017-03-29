@@ -1,0 +1,62 @@
+# Twist'n'turn
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 2900, 120, 0, TWIST AND TURN 
+
+# Forward speed of the plane: Default is 128.
+PLANESPEED = 128
+
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 6
+
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop0.pcx,  -10,  -30,  200,   0,   0,  20.0,   o
+HOOP=hoop1.pcx,  40,  20,   500,   0,   0,  20.0,   -
+HOOP=hoop0.pcx,  -60,  -10,  700,   0,   0,  20.0,  o
+HOOP=hoop2.pcx,	 -80,  -30,  1000,   0,   0,  20.0,   /
+HOOP=hoop0.pcx,  -10,  10,  1150,   0,   0,  20.0,   o
+HOOP=hoop4.pcx,  40,  -20,  1400,   0,   0,  20.0,   \
+HOOP=hoop0.pcx,	 30,  60,  1550,   0,   0,  20.0,  o
+HOOP=hoop2.pcx,  80,  20, 1700,   0,   0,  20.0,   /
+HOOP=hoop4.pcx,  60,  80,  1850,   0,   0,  20.0,   \
+HOOP=hoop0.pcx,  70,  100,  1900,   0,   0,  20.0,   o
+HOOP=hoop1.pcx,  70,  50,  2000,   0,   0,  20.0,   -
+HOOP=hoop0.pcx,  90,  70,  2100,   0,   0,  20.0,    o
+HOOP=hoop3.pcx,  90,  80, 2300,   0,   0,  20.0,   |
+HOOP=hoop0.pcx,  80,   100,  2450,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  60,   50,  2650,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  90,   100,  2850,   0,   0,  20.0,    o
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,  0,  0,   190,   30
+BONUS=bonusballoon.pcx,  -20,  5,  400,   10
+BONUS=bonusballoon.pcx,  -50,  20,  650,   10
+BONUS=bonusballoon.pcx,  -30,  -40,  800,   10
+BONUS=bonusballoon.pcx,  -30,  20,  1080,   20
+BONUS=bonusballoon.pcx,  20,  50,  1200,   20
+BONUS=bonusballoon.pcx,  30,  40,  1520,   10
+BONUS=bonusballoon.pcx,  60,  60, 1830,   10
+BONUS=bonusballoon.pcx,  50,  60,  1975,   10
+BONUS=bonusballoon.pcx,  110,  75, 2150,   10
+BONUS=bonusballoon.pcx,  80,  65, 2580,   10
+BONUS=bonusballoon.pcx,  40,  70, 2750,   10
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  10,  20,  10 

@@ -1,0 +1,310 @@
+#!/bin/sh
+# the next line restarts using wish \
+exec wish "$0" "$@"
+
+#
+#  argoned - Argon V level editor, (c) 2000 by Till Harbaum, GPL'd
+#
+#  V1.0 jan 2000  quick and dirty
+#
+#  T.Harbaum@tu-bs.de - http://www.ibr.cs.tu-bs.de/~harbaum/pilot
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+
+set llength 50;   # level length in screens
+
+proc disp_level { } {
+    global llength buffer fileshort
+    set of $fileshort
+
+    for {set y 0} {$y<$llength} {incr y} {
+	for {set x 0} {$x<10} {incr x} {
+	    set a [.main.canvas.c itemcget id($x,$y) -image];
+
+	    if { $buffer($y,$x) != 0 } {
+		if { $a != "tile[expr $buffer($y,$x) -1]" } {
+		    .main.canvas.c itemconfigure id($x,$y)\
+                           -image tile[expr $buffer($y,$x) -1] 
+		}
+	    } else {
+		if { $a != "none" } {
+		  .main.canvas.c itemconfigure id($x,$y) -image none
+		}
+	    }
+	}
+
+	# draw progess line in filename area
+	if { [expr $y%10] == 0 } {
+	    set fileshort [format "processed %d%%" [expr 100*$y/$llength]]
+	    update idletasks
+	}
+    }
+
+    set fileshort $of
+}
+
+proc clear_buffer { } {
+    global llength buffer filename fileshort
+
+    for {set y 0} {$y<$llength} {incr y} {
+	for {set x 0} {$x<10} {incr x} {
+	    set buffer($y,$x) 0;
+	}
+    }
+    set filename "new level.lev";
+    set fileshort "new level.lev";
+
+    disp_level
+}
+
+proc fileio {operation} {
+    global filename fileshort llength buffer
+    set ok false
+
+    set types { {"Level files" {.lev}} {"All files" *}}
+
+    if { (($operation != 1) && ($operation != 3)) || ([string compare $filename "new level.lev"]) == 0 } {
+    
+	if {$operation == 0} {
+	    set file [tk_getOpenFile -filetypes $types -parent .]
+	} else {
+	    set file [tk_getSaveFile -filetypes $types -parent . \
+		-initialfile $filename -defaultextension .lev]
+	}
+
+	if [string compare $file ""] {
+	    set ok true
+	    set filename $file
+	    set fileshort [file tail $file]
+	}
+    } else { 
+	set ok true
+    }
+
+    if { $ok } {
+	# really load/save file 
+	if { ($operation == 0)||($operation == 3) } {
+	    # read
+	    if { [file size $filename] != [expr $llength*10] } {
+		tk_messageBox -message "File size does not match!" -icon error -type ok
+		clear_buffer
+	    } else {
+		set dat [open $filename r]
+		fconfigure $dat -translation binary
+
+	        for {set y 0} {$y<$llength} {incr y} {
+		  set a [read $dat 10]
+		  binary scan $a cccccccccc \
+			buffer($y,0) buffer($y,1) buffer($y,2) buffer($y,3) buffer($y,4) \
+			buffer($y,5) buffer($y,6) buffer($y,7) buffer($y,8) buffer($y,9)
+                }
+		close $dat
+
+		# update view
+		disp_level
+	    }
+	} else {
+	    # write
+	    set dat [open $filename w]
+	    fconfigure $dat -translation binary
+
+	    for {set y 0} {$y<$llength} {incr y} {
+	      puts -nonewline $dat [binary format cccccccccc \
+		    $buffer($y,0) $buffer($y,1) $buffer($y,2) $buffer($y,3) $buffer($y,4) \
+		    $buffer($y,5) $buffer($y,6) $buffer($y,7) $buffer($y,8) $buffer($y,9) ]
+	    }
+	    close $dat
+	}
+    }
+}
+
+proc select { n } {
+    global last_button windows
+
+    # windows obviously doesn't use the 'highlightbackground', but bg is visible
+    # even with full size icons, so using bg instead
+    if { $windows } {
+      .main.buttons.code$last_button configure -bg [.main.buttons.code$n cget -bg]
+      .main.buttons.code$n configure -bg red
+    } else {
+      .main.buttons.code$last_button configure -highlightbackground [.main.buttons.code$n cget -highlightbackground]
+      .main.buttons.code$n configure -highlightbackground red
+    }
+
+    set last_button $n;
+}
+
+proc click { n } {
+  global last_button buffer
+
+  set id [.main.canvas.c find withtag current]
+  if {[lsearch [.main.canvas.c gettags current] tile] >= 0} {
+
+    set x [expr int([lindex [.main.canvas.c coords $id] 0]/16)] 
+    set y [expr int([lindex [.main.canvas.c coords $id] 1]/16)] 
+
+    if { $n == 0 } {
+      set buffer($y,$x) [expr $last_button + 1]
+      .main.canvas.c itemconfigure id($x,$y) -image tile[expr $buffer($y,$x) -1] 
+    } else {
+      set buffer($y,$x) 0
+      .main.canvas.c itemconfigure id($x,$y) -image none
+    }
+  }
+}
+
+#
+# Create all windows, and pack them
+#
+proc createwindows { } {
+    global columns
+    global llength last_button windows
+
+    # determine number of button rows (8 buttons per row)
+    set n 0;
+    while { [file exist [format button%04x.gif $n]] } {
+      incr n;
+    }
+    set columns [expr ($n+7)/8]
+
+    frame .main -borderwidth 0
+    
+    frame .main.canvas -borderwidth 0
+    canvas .main.canvas.c -borderwidth 2 -relief sunken -width 160 -height 160 \
+	    -scrollregion "0 0 160 [expr $llength*16]" -yscrollcommand ".scroll set" 
+    scrollbar .scroll -command ".main.canvas.c yview"
+    .main.canvas.c yview moveto 1.0
+
+    # show canvas
+    pack .main.canvas.c
+    grid .main.canvas.c -padx 1 -in .main.canvas -pady 1 \
+	    -row 0 -column 0 -rowspan 1 -columnspan 1 -sticky news
+    grid .scroll -in .main.canvas -padx 1 -pady 1 \
+	    -row 0 -column 1 -rowspan 1 -columnspan 1 -sticky news
+
+    frame .main.buttons -width [expr $columns*22]
+
+    # draw object buttons
+    set n 0;
+    while { [file exist [format button%04x.gif $n]] } {
+      image create photo tile$n -file [format button%04x.gif $n]
+      button .main.buttons.code$n -image tile$n -command "select $n"
+      place .main.buttons.code$n -x [expr ($n/8)*20+1] -y [expr ($n%8)*20+1] -width 20 -height 20
+      incr n;
+    }
+
+    # highlight default button
+    if { $windows } {
+      .main.buttons.code0 configure -bg red
+    } else {
+      .main.buttons.code0 configure -highlightbackground red
+    }
+
+    # create background image
+    image create photo background -file buttonback.gif
+    for {set y 0} {$y<[expr $llength/10]} {incr y} {
+      .main.canvas.c create image 0 [expr $y*160] -anchor nw -image background
+    }
+
+    # display all columns/rows
+    for {set y 0} {$y<$llength} {incr y} {
+	for {set x 0} {$x<10} {incr x} {
+	   .main.canvas.c create image [expr 16*$x] [expr 16*$y] -anchor nw -tags "id($x,$y) tile"
+	}
+    }
+
+    # create empty image
+    image create photo none -width 16 -height 16
+    # and draw a nice blue box on it
+    none put blue -to 6 6 8 8
+
+    pack .main.canvas .main.buttons -side left -fill both -expand yes
+
+    # filename box
+    frame .fname
+    label .fname.label -textvariable fileshort -relief sunken -bd 1 -font "Helvetica 12" -anchor c
+    pack .fname.label -side left -padx 2 -expand yes -fill both
+
+    set menustatus "    "
+    frame .statusBar
+    label .statusBar.label -textvariable menustatus -relief sunken -bd 1 -font "Helvetica 10" -anchor w
+    pack .statusBar.label -side left -padx 2 -expand yes -fill both
+    menu .menu -tearoff 0
+
+    set m .menu.file
+    menu $m -tearoff 0
+    .menu add cascade -label "File" -menu $m -underline 0
+    $m add command -label "About..." -command { tk_messageBox -icon info \
+       -message "ArgonED V1.0\nArgon V level editor\n(c) 2000 by Till Harbaum" -type ok\
+	-parent . }
+    $m add separator
+    $m add command -label "Open..." -command { fileio 0 }
+    $m add command -label "New" -command { clear_buffer }
+    $m add command -label "Save" -command { fileio 1 }
+    $m add command -label "Save As..." -command { fileio 2 }
+    $m add separator
+    $m add command -label "Quit" -command "destroy .; exit"
+
+    pack .fname .main .statusBar -side top -fill x -pady 2
+
+    . configure -menu .menu
+
+    bind Menu <<MenuSelect>> {
+	global $menustatus
+	if {[catch {%W entrycget active -label} label]} {
+	    set label "    "
+	}
+	set menustatus $label
+	update idletasks
+    }
+
+    # left button sets, middle and right button erase
+    .main.canvas.c bind all <1> "click 0"
+    .main.canvas.c bind all <2> "click 1"
+    .main.canvas.c bind all <3> "click 1"
+
+    # some hints for the window manager
+    wm resizable . 0 0
+    wm title . "ArgonED V1.0"
+}
+
+##############################################################################
+# Main program
+
+set last_button 0;
+
+# determine if we are running under bills os
+if { $tcl_platform(platform) == "windows" } {
+  set windows true  
+} else {
+  set windows false
+}
+
+
+set llength [expr $llength*10]
+set filename ""
+
+# get filename from command line
+if { $argc > 0 } {
+  if { [file exists [lindex $argv 0]] } {
+    set filename [lindex $argv 0]
+    set fileshort [file tail $filename]
+  }
+}
+
+createwindows
+
+# initialize buffer
+if { $filename != "" } {
+  fileio 3
+} else {
+  clear_buffer
+}
+
+#
+# Now, wait for user actions...
+#

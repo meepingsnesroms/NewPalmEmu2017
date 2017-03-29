@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<PALMOS_RESOURCE_FILE>
+
+	<FORM_RESOURCE RESOURCE_ID="1400" LOCALE="itIT" COMMENT="Memo Preferences">
+		<FORM_ID> 1400 </FORM_ID>
+		<BOUNDS>
+			<LEFT> 2 </LEFT>
+			<TOP> 101 </TOP>
+			<WIDTH> 156 </WIDTH>
+			<HEIGHT> 57 </HEIGHT>
+		</BOUNDS>
+		<USABLE> TRUE </USABLE>
+		<MODAL> TRUE </MODAL>
+		<SAVE_BEHIND> TRUE </SAVE_BEHIND>
+		<HELP_ID> 1415 </HELP_ID>
+		<MENU_ID> 0 </MENU_ID>
+		<DEFAULT_BUTTON> 0 </DEFAULT_BUTTON>
+		<FORM_OBJECTS>
+			<FORM_TITLE COMMENT="Memo Preferences">
+				<TEXT> "Preferenze dei memo" </TEXT>
+			</FORM_TITLE>
+			<FORM_LABEL COMMENT="Sort by">
+				<ID> 1402 </ID>
+				<LOCATION>
+					<X> 7 </X>
+					<Y> 18 </Y>
+				</LOCATION>
+				<USABLE> TRUE </USABLE>
+				<FONT_ID> BOLD_FONT </FONT_ID>
+				<TEXT> "Ordinamento:" </TEXT>
+			</FORM_LABEL>
+			<FORM_POPUP COMMENT="Sort Order">
+				<CONTROL_ID> 1404 </CONTROL_ID>
+				<LIST_ID> 1405 </LIST_ID>
+			</FORM_POPUP>
+			<FORM_POPUP_TRIGGER COMMENT="Sort Order">
+				<ID> 1404 </ID>
+				<BOUNDS>
+					<LEFT> 77 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 17 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<TEXT> "" </TEXT>
+				<FONT_ID> STD_FONT </FONT_ID>
+			</FORM_POPUP_TRIGGER>
+			<FORM_LIST COMMENT="Sort Order">
+				<ID> 1405 </ID>
+				<BOUNDS>
+					<LEFT> 77 </LEFT>
+					<TOP> 18 </TOP>
+					<WIDTH> 53 </WIDTH>
+					<HEIGHT> 22 </HEIGHT>
+				</BOUNDS>
+				<USABLE> FALSE </USABLE>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<NUM_VIS_ITEMS> 2 </NUM_VIS_ITEMS>
+				<LIST_ITEMS>
+					<TEXT> "Manuale" </TEXT>
+					<TEXT> "Alfabetico" </TEXT>
+				</LIST_ITEMS>
+			</FORM_LIST>
+			<FORM_BUTTON COMMENT="Ok">
+				<ID> 1406 </ID>
+				<BOUNDS>
+					<LEFT> 5 </LEFT>
+					<TOP> 40 </TOP>
+					<WIDTH> 36 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "OK" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+			<FORM_BUTTON COMMENT="Cancel">
+				<ID> 1407 </ID>
+				<BOUNDS>
+					<LEFT> 47 </LEFT>
+					<TOP> 40 </TOP>
+					<WIDTH> 38 </WIDTH>
+					<HEIGHT> 12 </HEIGHT>
+				</BOUNDS>
+				<USABLE> TRUE </USABLE>
+				<ENABLED> TRUE </ENABLED>
+				<TEXT> "Annulla" </TEXT>
+				<LEFT_ANCHOR> TRUE </LEFT_ANCHOR>
+				<FONT_ID> STD_FONT </FONT_ID>
+				<BUTTON_FRAME> STANDARD_BUTTON_FRAME </BUTTON_FRAME>
+			</FORM_BUTTON>
+		</FORM_OBJECTS>
+	</FORM_RESOURCE>
+
+	<STRING_RESOURCE RESOURCE_ID="1415" LOCALE="itIT" COMMENT="Preferences: Help">
+		<TEXT>
+			"• Ordina per Manuale consente di ordinare manualmente i promemoria "
+			"trascinandoli verso l'alto e verso il basso nell'elenco.  Per "
+			"trascinare, selezionare un promemoria con la penna e trascinarlo nel "
+			"punto desiderato, quindi sollevare la penna.\n"
+			"\n"
+			"• Ordina per Alfabetico consente di ordinare i promemoria in ordine "
+			"alfabetico.  Questo ordinamento sovrascriverà l'ordine corrente."
+		</TEXT>
+	</STRING_RESOURCE>
+
+</PALMOS_RESOURCE_FILE>

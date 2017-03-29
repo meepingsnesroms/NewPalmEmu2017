@@ -1,0 +1,1324 @@
+<html>     
+<title>SrcEdit Keyboard Appendix</title>     
+<head>     
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />     
+</head>     
+<body BGCOLOR="#e3e0ff">     
+    
+   
+<TABLE ALIGN="LEFT" WIDTH="100%" CELLSPACING="0" CELLPADDING="0"     
+BORDER="0">   
+<TR><TD>   
+<FONT face="Verdana, Arial, sans-serif">   
+<H1><B>SrcEdit </B><FONT SIZE=-1>version 2.4.2+</FONT></H1>   
+<H2>Keyboard Appendix</H2>   
+</FONT>   
+</TD></TR>   
+ <TR bgcolor="#b0b0e0"><TD ALIGN="RIGHT"><FONT SIZE=-2  face="Verdana, Arial, sans-serif">   
+&nbsp;<BR>    
+<a href="#About">About this document</A>&nbsp;   
+Updated 2/3-2005b&nbsp;&nbsp;&nbsp;<BR>   
+&nbsp;<BR>  
+</FONT>     
+</TD></TR>   
+<TR><TD>    
+
+    
+<P><FONT face="Verdana, Arial, sans-serif">   
+
+The keyboard support in SrcEdit is mostly about cursor key navigation: the ability to use Shift to select, Ctrl to move word by word, Cmd to larger amounts, Del to delete the character to the right, Tab to indent selected lines, Shift-Tab to un-indent selected lines, etc.    
+<BR><BR>
+    
+Each keyboard in the list below is linked to a chart showing what functionality is implemented, what keys combinations you have to press, and what behaviour you should expect from SrcEdit. The goal  has been to mimic (as much as possible) the behaviour of mainstream Windows editors, such as Notepad, TextPad, SourceEdit, etc.   
+<BR><BR> 
+   
+The following keyboards are supported at the moment:     
+<UL>    
+<LI><a href="#PPK">Palm Portable Keyboard</a>  
+<LI><a href="#PWK">Palm Wireless Keyboard</a>    
+<LI><a href="#PUTK">Palm Ultra-Thin Keyboard</a>   
+<LI><a href="#BWK">Belkin Wireless Keyboard</a>   
+<LI><a href="#TCI">Tungsten C Internal</a>   
+<LI><a href="#SNX">Sony NX Internal Keyboard</a>
+<LI><a href="#SUX">Sony UX Internal Keyboard</a>
+<LI><a href="#C70">Clié PEG-NR70 Internal</a>
+<LI><a href="#T90">Treo 90 Internal Keyboard</a>
+<LI><a href="#T600">Treo 600 Internal Keyboard</a>
+<LI><a href="#ADI">Alphasmart Dana Internal</a>   
+<LI><a href="#TZ">Tapwave Zodiac</a>   
+</UL>   
+ 
+
+<H4><a name="PPK">Palm Portable Keyboard</a></H4>
+<P>
+<B>[Up]</B>   Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+*[Alt][Up] will also work.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+*[Alt][Down] will also work.
+</P>
+
+<P>
+<B>[Left]</B>  Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.<BR>
+*[Alt][Left] will also work.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.<BR>
+*[Alt][Right] will also work.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use the [Fn][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [Fn][Down] for PageDown
+</P>
+
+<P>
+<B>[PageLeft]</B>  Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B>  Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="PWK">Palm Wireless Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+* Use [blue Fn] as [Shift].<BR>
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+* Use [blue Fn] as [Shift].<BR>
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].<BR>
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.<BR>
+* Additional [green Fn][Left][Right] can also be used for [Cmd][Left]('Home') and [Cmd][Right]('End').
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.<BR>
+* Additional [green Fn][Left][Right] can also be used for [Cmd][Left]('Home') and [Cmd][Right]('End').
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use [green Fn][Up].
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [green Fn][Down].
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B>  If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B>  If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="PUTK">Palm Ultra-Thin Keyboard</a></H4>
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B>  Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.<BR>
+* Use [blue Fn] as [Shift].
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.<BR>
+* Use the [green Fn][Left] for [Cmd][Left}('Home') and [green Fn][Right] for [Cmd][Right]('End').
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.<BR>
+* Use the [green Fn][Left] for [Cmd][Left}('Home') and [green Fn][Right] for [Cmd][Right]('End').
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use [green Fn][Up] for PageUp and [green Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [green Fn][Up] for PageUp and [green Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Scrolls the Screen to the left. Does NOT move the cursor.<BR>
+* Use the [Cmd][Left] for PageLeft and [Cmd][Right] for PageRight.
+</P>
+
+<P>
+<B>[PageRight]</B> Scrolls the Screen to the right. Does NOT move the cursor.<BR>
+* Use the [Cmd][Left] for PageLeft and [Cmd][Right] for PageRight.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+<H4><a name="BWK">Belkin Wireless Keyboard</a></H4>
+
+<P>
+<B>[Up]</B>  Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use the [Fn][Up] for PageUp and [Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use the [Fn][Up] for PageUp and [Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B>  Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B>  Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B>  Not supported.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="TCI">Tungsten C Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.<BR>
+* Requires both keys ([Shift]+direction key) to be down together.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.<BR>
+* Requires both keys ([Shift]+direction key) to be down together.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.<BR>
+* Requires both keys ([Shift]+direction key) to be down together.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.<BR>
+* Requires both keys ([Shift]+direction key) to be down together.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Blue] as [Cmd] (Requires both keys to be down together).
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Blue] as [Cmd] (Requires both keys to be down together).
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.<BR>
+* Use [Blue] as [Cmd] (Requires both keys to be down together).
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.<BR>
+* Use [Blue] as [Cmd] (Requires both keys to be down together).
+</P>
+
+<P>
+<B>[PageUp]</B> Not supported.
+</P>
+
+<P>
+<B>[PageDown]</B> Not supported.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Not supported.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> Not supported.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="SNX">Sony NX Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Alt] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Alt] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.<BR>
+* Use [Alt] as [Cmd] (additional: [Fn][Left] will act as [Cmd][Left]).
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.<BR>
+* Use [Alt] as [Cmd] (additional: [Fn][Right] will act as [Cmd][Right]).
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use the [Fn][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use the [Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> Not supported.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="SUX">Sony UX Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+<P>
+
+</P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Alt] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Alt] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.<BR>
+* Use [Alt] as [Cmd] (additional: [Fn][Left] will act as [Cmd][Left]).
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.<BR>
+* Use [Alt] as [Cmd] (additional: [Fn][Right] will act as [Cmd][Right])
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use the [Fn][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use the [Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> Not supported.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="C70">PEG-NR70 Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Fn] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Fn] as [Cmd].
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use [Ctrl][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [Ctrl][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.<BR>
+* Use [Ctrl][Tab] for ShiftTab.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="T90">Treo90 Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the Scroll Up.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the Scroll Down.
+</P>
+
+<P>
+<B>[Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.<BR>
+* Use [Shift]Up.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.<BR>
+* Use [Shift]Down.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use [Blue][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [Blue][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.<BR>
+* Use [Shift][Backspace] or [Blue][Backspace] for [Del]
+</P>
+
+<P>
+<B>[Tab]</B> Not supported.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> Not supported.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="T600">Treo600 Internal Keyboard</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the 5-way navigator.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Silver][Left] for [Ctrl][Left].
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.<BR>
+* Use [Silver][Right] for [Ctrl][Right]
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use [Silver][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use [Silver][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Not supported.
+</P>
+
+<P>
+<B>[PageRight]</B> Not supported.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.<BR>
+* Use [Shift][Backspace] or [Silver][Backspace] for [Del].
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.<BR>
+* Use [Center] for Tab.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.<BR>
+* Use [Shift][Center] for ShiftTab
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="ADI">Alphasmart Dana Internal Keyboard</H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Scrolls the view up one line (unless the top of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the bottommost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Scrolls the view up down line (unless the bottom of the document is already visible). The cursor will not move unless it scrolls from view, at which time it will move to the topmost visible line at the same character position in the line (if possible).
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Moves the cursor to the beginning of the previous word. If the cursor is at the first word in the line, the cursor moves to the last word of the previous line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Moves the cursor to the beginning of the next word. If the cursor is at the last word in the line, the cursor moves to the first word of the next line. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Moves the cursor to before the first character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Moves the cursor to after the last character of the document. The view adjusts if the cursor moves off-screen.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Moves the cursor to the beginning of the current line. The view adjusts if the cursor moves off-screen. This is the [Home] key.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Moves the cursor to the end of the current line. The view adjusts if the cursor moves off-screen. This is the [End] key.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use the [Fn][Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use the [Fn][Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Scrolls the Screen to the left. Does NOT move the cursor.<BR>
+* Use the [Fn][Left] for PageLeft.
+</P>
+
+<P>
+<B>[PageRight]</B> Scrolls the Screen to the right. Does NOT move the cursor.<BR>
+* Use the [Fn][Right] for PageRight.
+</P>
+
+<P>
+<B>[Del]</B> Deletes the character to the right of the cursor. If the cursor is at the end of a line, this moves the contents of the following line into the current line.
+</P>
+
+<P>
+<B>[Tab]</B> If there is a selection then [Tab] indents (add one tab to the beginning of each selected line), otherwise it will just insert a tab in the text.
+</P>
+
+<P>
+<B>[Shift][Tab]</B> If there is a selection [Shift][Tab] will removes one tab if it is possible from the beginning of each selected line, otherwise it will move the cursor in a tab sized step towards the beginning of the line.
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<H4><a name="TZ">Tapwave Zodiac</a></H4>
+
+<P>
+<B>[Up]</B> Moves the cursor to the previous line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the Action 4-way nav.
+</P>
+
+<P>
+<B>[Down]</B> Moves the cursor to the next line at the same character position in the line (if possible). The view adjusts if the cursor moves off-screen.<BR>
+* Use the Action 4-way nav.
+</P>
+
+<P>
+<B>[Left]</B> Moves the cursor one character to the left. If the cursor is at the beginning of the line, the cursor moves to the  end of the previous line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the Action 4-way nav.
+</P>
+
+<P>
+<B>[Right]</B> Moves the cursor one character to the right. If the cursor is at the end of the line, the cursor moves to the beginning of the next line. The view adjusts if the cursor moves off-screen.<BR>
+* Use the Action 4-way nav.
+</P>
+
+<P>
+<B>[Shift][Up]</B> Adds the preceding line to the selection if moving away from the cursor or removes the bottom line of the  selection if moving towards the cursor.<BR>
+* Use [Select] as [Shift].
+</P>
+
+<P>
+<B>[Shift][Down]</B> Adds the suceeding line to the selection if moving away from the cursor or removes the top line of the selection if moving towards the cursor.<BR>
+* Use [Select] as [Shift].
+</P>
+
+<P>
+<B>[Shift][Left]</B> Adds the preceding character to the selection if moving away from the cursor or removes the last character of the selection if moving towards the cursor.<BR>
+* Use [Select] as [Shift].  Not fully tested!
+</P>
+
+<P>
+<B>[Shift][Right]</B> Adds the suceeding character to the selection if moving away from the cursor or removes the first character of the selection if moving towards the cursor.<BR>
+* Use [Select] as [Shift].  Not fully tested!
+</P>
+
+<P>
+<B>[Ctrl][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Ctrl][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Up]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Down]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Left]</B> Not supported.
+</P>
+
+<P>
+<B>[Cmd][Right]</B> Not supported.
+</P>
+
+<P>
+<B>[PageUp]</B> Moves the cursor up one Page. The view adjusts so that the topmost visible line moves just off-screen to the bottom (i.e. if line 20 was the topmost visible line, after a [PageUp] line 19 would be the bottommost visible line).<BR>
+* Use Analog Controller [Up] for PageUp.
+</P>
+
+<P>
+<B>[PageDown]</B> Moves the cursor down one Page. The view adjusts so that the bottommost visible line moves just off-screen to the top (i.e. if line 20 was the bottommost visible line, after a [PageDown] line 21 would be the topmost visible line).<BR>
+* Use Analog Controller Analog Controller [Down] for PageDown.
+</P>
+
+<P>
+<B>[PageLeft]</B> Scrolls the Screen to the left. Does NOT move the cursor.<BR>
+* Use Analog Controller [Left] for PageLeft.
+</P>
+
+<P>
+<B>[PageRight]</B> Scrolls the Screen to the right. Does NOT move the cursor.<BR>
+* Use Analog Controller [Right] for PageRight.
+</P>
+
+<P>
+<B>[Del]</B> Not supported
+</P>
+
+<P>
+<B>[Tab]</B> Not supported
+</P>
+
+<P>
+<B>[Shift][Tab]</B> Not supported
+</P>
+<P>
+<a href="SrcEditUM.html">Users Manual:</a> <a href="SrcEditUM.html#Keyboard Support">Menu/Options/Keyboard Support</a> <BR>
+</P>
+
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="Thanks">    
+Thanks    
+</a></H3>    
+We would like to <I>thank</I> everybody who in some way or another has participated in the development of this project. <B>Thank you very, very much!</B>
+</FONT></P> 
+
+<P><FONT face="Verdana, Arial, sans-serif">    
+<H3><a name="About">    
+About This Document    
+</a></H3>    
+&copy; John Wilund and Peter Thorstenson 2005<BR>   
+<BR>   
+This document is released under <a href="http://www.gnu.org/licenses/fdl.html">    
+GNU Free Documentation License (FDL)</a>.   
+<BR><BR>  
+</FONT></P>   
+   
+</TD></TR>   
+</TABLE>   
+</body>     
+</html>     
+

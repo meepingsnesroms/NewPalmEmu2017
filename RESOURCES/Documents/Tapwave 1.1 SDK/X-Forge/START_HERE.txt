@@ -1,0 +1,22 @@
+
+START HERE
+
+X-Forge 1.6.2 Tapwave BASE
+February 19th 2004
+Fathammer Ltd.
+
+
+
+To get started, you should do some reading before you begin coding.  
+
+First, read the file "release_notes.txt" contained in the root directory of 
+this release. This has a detailed roadmap of the contents of this 
+release, and a summary of changes since the last release.  
+
+Next, follow to X-Forge guide in /documentation/guide/index.html
+It also includes X-Forge API Reference in /documentation/apiref/
+
+To get your development environment installed and ready to use, follow 
+the instructions found in the X-Forge Guide.
+
+

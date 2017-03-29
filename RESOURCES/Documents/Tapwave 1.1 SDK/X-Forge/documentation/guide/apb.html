@@ -1,0 +1,542 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Appendix B. XFF File Format</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt08.html" title="Part VIII. Appendices"><link rel="previous" href="apa.html" title="Appendix A. API Reference"><link rel="next" href="apc.html" title="Appendix C. ARM Assembler Tutorial"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Appendix B. XFF File Format</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apa.html">Prev</a> </td><th width="60%" align="center">Part VIII. Appendices</th><td width="20%" align="right"> <a accesskey="n" href="apc.html">Next</a></td></tr></table></div><div class="appendix"><div class="titlepage"><div><h2 class="title"><a name="id435189"></a>Appendix B. XFF File Format</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="apb.html#id435198">Overview</a></dt><dt><a href="apb.html#id435710">Type Definitions</a></dt><dt><a href="apb.html#id435746">Common Header</a></dt><dt><a href="apb.html#id436408">Chunk Types</a></dt><dt><a href="apb.html#id436442">Chunk Format Definitions</a></dt><dd><dl><dt><a href="apb.html#id436452">Group</a></dt><dt><a href="apb.html#id436478">Geometry</a></dt><dt><a href="apb.html#id436504">Mesh</a></dt><dt><a href="apb.html#id436844">Camera</a></dt><dt><a href="apb.html#id436247">Light</a></dt><dt><a href="apb.html#id436266">Helper</a></dt><dt><a href="apb.html#id436293">Particle System</a></dt><dt><a href="apb.html#id436910">Sprite</a></dt><dt><a href="apb.html#id436965">Sound Source</a></dt><dt><a href="apb.html#id436999">Microphone</a></dt><dt><a href="apb.html#id437035">Collider</a></dt><dt><a href="apb.html#id437055">Vertex Buffer</a></dt><dt><a href="apb.html#id437160">Face List</a></dt><dt><a href="apb.html#id437179">Triangle Info Buffer</a></dt><dt><a href="apb.html#id437221">Material</a></dt><dt><a href="apb.html#id437276">Texture</a></dt><dt><a href="apb.html#id437299">PRS Animation Group</a></dt><dt><a href="apb.html#id437401">Loader</a></dt><dt><a href="apb.html#id437454">Spring</a></dt><dt><a href="apb.html#id437511">Node attribute</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id435198"></a>Overview</h2></div></div><p>
+The XFF file format is the X-Forge default format for 3D content. It is designed
+to be extensible to support, among other things, new user defined custom game
+graph nodes.
+</p><p>
+The XFF format consists of chunks of data, each having a 12 byte header
+that presents the type of chunk, the version of the chunk, a chunk ID and a
+block length. The block length describes the length of the data that follows
+after the header. Roughly speaking, each chunk corresponds to a node in the
+game graph that the file describes.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id435710"></a>Type Definitions</h2></div></div><pre class="programlisting">
+INT8    8-bit signed integer (1 byte)
+UINT8   8-bit unsigned integer (1 byte)
+INT16   16-bit signed integer (2 bytes)
+UINT16  16-bit unsigned integer (2 bytes)
+INT32   32-bit signed integer (4 bytes)
+UINT32  32-bit unsigned integer (4 bytes)
+CHAR8   8-bit character (1 byte)
+Float   Standard IEEE single-precision floating point number (4 bytes)
+        (sign bit, 8-bit exponent, 23-bit mantissa = 32 bits)
+
+Vector3 3 Floats = x,y,z (12 bytes)
+Quat    4 Floats = x,y,z,w (16 bytes)
+
+All basic type values are stored in little endian (LE) byte order.
+</pre></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id435746"></a>Common Header</h2></div></div><pre class="programlisting">
+Every chunk in the file has the common header described below.
+
+  2 bytes   UINT16  Chunk type
+  2 bytes   UINT16  Chunk type version
+  4 bytes   UINT32  Id
+  4 bytes   UINT32  Block length
+
+|2 byt|2 byt|   4 byt   |   4 byt   | BlockLength * bytes |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--   ...     --+--+
+|Type |Ver  |Id         |BlockLength| Data Data Data Data |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--   ...     --+--+
+</pre></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id436408"></a>Chunk Types</h2></div></div><pre class="programlisting">
+   1 = Not used
+   2 = Group
+   3 = Geometry
+   4 = Mesh
+   5 = Camera
+   6 = Light
+   7 = Helper
+   8 = Particle system
+   9 = Sprite
+  10 = Sound source
+  11 = Microphone
+  12 = Collider
+1001 = Vertex buffer
+1002 = Face list
+1003 = Material
+1004 = Texture
+1005 = PRS animation group
+1006 = Loader
+1007 = Spring
+1008 = Triangle info buffer
+1009 = Node attribute
+</pre></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id436442"></a>Chunk Format Definitions</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436452"></a>Group</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+   12 bytes     Vector3 Scale
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436478"></a>Geometry</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+   12 bytes     Vector3 Scale
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436504"></a>Mesh</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    2 byte      UINT16  Sub mesh count (n)
+n*( 4 bytes     UINT32  Vertex buffer id
+    4 bytes     UINT32  Face list id       (max UINT32 if not indexed)
+    4 bytes     UINT32  Material id
+    4 bytes     UINT32  Diffuse texture id (max UINT32 if no texture)
+    4 bytes     UINT32  Vertex offset
+    4 bytes     UINT32  Vertex count
+    1 byte )    UINT8   Primitive type (see below)
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    2 byte      UINT16  Sub mesh count (n)
+n*( 4 bytes     UINT32  Vertex buffer id
+    4 bytes     UINT32  Face list id            (max UINT32 if not indexed)
+    4 bytes     UINT32  Triangle info buffer id (max UINT32 if not used)
+    4 bytes     UINT32  Material id
+    4 bytes     UINT32  Diffuse texture id      (max UINT32 if no texture)
+    4 bytes     UINT32  Vertex offset
+    4 bytes     UINT32  Vertex count
+    1 byte )    UINT8   Primitive type (see below)
+
+Version 3:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    2 byte      UINT16  Sub mesh count (n)
+n*( 4 bytes     UINT32  Vertex buffer id
+    4 bytes     UINT32  Face list id            (max UINT32 if not indexed)
+    4 bytes     UINT32  Triangle info buffer id (max UINT32 if not used)
+    4 bytes     UINT32  Material id
+    4 bytes     UINT32  Diffuse texture id      (max UINT32 if no texture)
+    4 bytes     UINT32  Reflection map id       (max UINT32 if no map)
+    4 bytes     UINT32  Vertex offset
+    4 bytes     UINT32  Vertex count
+    1 byte )    UINT8   Primitive type (see below)
+
+
+Primitive types:
+    Type                Value
+    triangle list       1
+    triangle strip      2
+    triangle fan        3
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436844"></a>Camera</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    4 bytes     UINT32  Target id (max UINT32 if not lookat)
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+    4 bytes     Float   Field of view (FOV)
+    4 bytes     Float   Near clipping plane
+    4 bytes     Float   Far clipping plane
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436247"></a>Light</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+    1 byte      UINT8   Light type (see below)
+    4 bytes     UINT32  Diffuse color (0RGB)
+    4 bytes     Float   Multiplier
+    4 bytes     Float   Attenuation square
+    4 bytes     Float   Range
+    4 bytes     Float   Hotspot Angle
+    4 bytes     Float   Falloff Angle
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+    1 byte      UINT8   Light type (see below)
+    4 bytes     UINT32  Diffuse color (0RGB)
+    4 bytes     Float   Multiplier
+    4 bytes     Float   Attenuation constant
+    4 bytes     Float   Attenuation linear
+    4 bytes     Float   Attenuation square
+    4 bytes     Float   Range
+    4 bytes     Float   Hotspot Angle
+    4 bytes     Float   Falloff Angle
+
+Light types:
+    Type                Value
+    point light         1
+    directional light   2
+    spot light          3
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436266"></a>Helper</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436293"></a>Particle System</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    4 bytes     FLOAT32 Size scale
+    1 byte      UINT8   Filename length
+    n bytes     CHAR8   Filename
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436910"></a>Sprite</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    4 bytes     Float   Width
+    4 bytes     Float   Height
+    1 byte      UINT8   Texture filename length
+    n bytes     CHAR8   Texture filename
+    1 byte      UINT8   Type
+    1 byte      UINT8   Source blend; see XFCGLBLENDMODES
+    1 byte      UINT8   Target blend; see XFCGLBLENDMODES
+    4 bytes     UINT32  Color (ARGB)
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    4 bytes     Float   Width
+    4 bytes     Float   Height
+    1 byte      UINT8   Texture filename length
+    n bytes     CHAR8   Texture filename
+    1 byte      UINT8   Type
+    1 byte      UINT8   Source blend; see XFCGLBLENDMODES
+    1 byte      UINT8   Target blend; see XFCGLBLENDMODES
+    4 bytes     UINT32  Color (ARGB)
+    4 bytes     Float   Polygon offset (for sorting)
+
+Sprite types:
+    Type            Value
+    3D              1
+    3D billboard    2
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436965"></a>Sound Source</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+    1 byte      UINT8   Sound Source type (see below)
+    4 bytes     Float   Multiplier
+    4 bytes     Float   Attenuation start range
+    4 bytes     Float   Attenuation end range
+    1 byte      UINT8   Looping 
+    1 byte      UINT8   Filename length
+    n bytes     CHAR8   Filename
+
+Sound source types:
+    Type                Value
+    omnidirectional     1
+    directional         2
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id436999"></a>Microphone</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+    1 byte      UINT8   Microphone type (see below)
+    4 bytes     Float   Multiplier
+    4 bytes     Float   Range
+
+Microphone types:
+    Type                Value
+    omnidirectional     1
+    directional         2
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437035"></a>Collider</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    2 bytes     UINT16  Collider type
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+
+        Collider types:
+
+        Type                          Value
+        bounding volume                   1
+        point                             2
+        plane                             3
+        heightfield                       4
+        bounding volume from geometry   101
+	
+
+    Rest of the data depends on the collider type:
+
+        Bounding volume:
+
+    1 bytes     UINT8   Bounding volume type
+   12 bytes     Vector3 Minimum
+   12 bytes     Vector3 Maximum
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+   12 bytes     Vector3 Scale
+
+        Bounding volume type can be
+        Type                Value
+        Sphere              1
+        FastSphere          2
+        Box                 3
+        LocalBox            4
+
+        For spherical types the center is the mid-point of minimum and
+        maximum, and radius is the longest axis (NOT the diagonal of the box!)
+
+        Bounding volume from geometry:
+
+    1 bytes     UINT8   Bounding volume type
+    4 bytes     UINT32  Geometry id
+
+        Heightfield volume:
+
+   12 bytes     Vector3 Minimum
+   12 bytes     Vector3 Maximum
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+   12 bytes     Vector3 Scale
+    4 bytes      UINT32  Construction start node id
+    2 bytes      UINT16  Width of data
+    2 bytes      UINT16  Height of data
+    1 byte       UINT8   Base level
+    1 byte       UINT8   Flags (see below)
+
+        Flags:
+    only static               2
+    only contacting           4
+    only contained polygons   8
+    only same partent type    16
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437055"></a>Vertex Buffer</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Vertex buffer flags (see below)
+    2 bytes     UINT16  Size of one vertex in bytes (m)
+    4 bytes     UINT32  Number of vertices (n)
+n*(12 bytes     Vector3 Position
+   12 bytes     Vector3 Normal (present only with normals flag)
+    4 bytes     UINT32  Diffuse Color (0RGB) (only with diffuse color flag)
+    4 bytes     Float   U coordinate (only with u,v coords. flag)
+    4 bytes)    Float   V coordinate (only with u,v coords. flag)
+
+Vertex buffer flags:
+    Type                Bitmask
+    normals             0x0001
+    diffuse color       0x0002
+    u,v coords.         0x0004
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437160"></a>Face List</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    2 bytes     UINT16  Number of faces (n)
+n*( 2 bytes     UINT16  1st vertex index
+    2 bytes     UINT16  2nd vertex index
+    2 bytes     UINT16  3rd vertex index)
+
+Version 2:
+
+   12 bytes             Header
+    2 bytes     UINT16  Number of indexes (n)
+n*( 2 bytes     UINT16  vertex index )
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437179"></a>Triangle Info Buffer</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    2 bytes     UINT16  Number of triangles (n)
+    4 bytes     UINT32  Triangle info buffer flags (see below)
+n*( 4 bytes     UINT32  Diffuse Color for corner 1 (only with diffuse color flag)
+    4 bytes     UINT32  Diffuse Color for corner 2 (only with diffuse color flag)
+    4 bytes     UINT32  Diffuse Color for corner 3 (only with diffuse color flag)
+   12 bytes     Vector3 Normal (only with normals flag)
+    4 bytes     Float   U coordinate for corner 1 (only with u,v coords. flag)
+    4 bytes     Float   V coordinate for corner 1 (only with u,v coords. flag)
+    4 bytes     Float   U coordinate for corner 2 (only with u,v coords. flag)
+    4 bytes     Float   V coordinate for corner 2 (only with u,v coords. flag)
+    4 bytes     Float   U coordinate for corner 3 (only with u,v coords. flag)
+    4 bytes)    Float   V coordinate for corner 3 (only with u,v coords. flag)
+
+Triangle info buffer flags:
+    Type                Bitmask
+    diffuse color       0x0001
+    normal              0x0002
+    u,v coords.         0x0004
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437221"></a>Material</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  Diffuse color (0RGB)
+    4 bytes     UINT32  Specular color (0RGB)
+    4 bytes     UINT32  Ambient color (0RGB)
+    4 bytes     UINT32  Emissive color (0RGB)
+    4 bytes     Float   Specular exponent
+    4 bytes     UINT32  Material flags (see below)
+    4 bytes     UINT32  Shading mode; see XFCGLSHADINGMODES
+    1 byte      UINT8   Source blend; see XFCGLBLENDMODES
+    1 byte      UINT8   Target blend; see XFCGLBLENDMODES
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  Diffuse color (0RGB)
+    4 bytes     UINT32  Specular color (0RGB)
+    4 bytes     UINT32  Ambient color (0RGB)
+    4 bytes     UINT32  Emissive color (0RGB)
+    4 bytes     Float   Specular exponent
+    4 bytes     UINT32  Material flags (see below)
+    4 bytes     UINT32  Shading mode; see XFCGLSHADINGMODES
+    1 byte      UINT8   Source blend; see XFCGLBLENDMODES
+    1 byte      UINT8   Target blend; see XFCGLBLENDMODES
+    4 bytes     Float   Polygon offset (for sorting)
+
+Material flags:
+    Type                        Bitmask
+    alpha blending              0x0001
+    perspective correction      0x0002
+    wireframe mode              0x0004
+    double sided                0x0008
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437276"></a>Texture</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    1 byte      UINT8   Filename length
+    n bytes     CHAR8   Filename
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437299"></a>PRS Animation Group</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    4 bytes     UINT32  First frame = StartTime/DeltaTime
+    4 bytes     UINT32  Last frame = EndTime/DeltaTime
+    4 bytes     UINT32  Frame rate - frames per second
+    4 bytes     UINT32  Delta time - ticks per frame
+    2 bytes     UINT16  Sample rate
+    1 byte      UINT8   Animation type (see below)
+    2 bytes     UINT16  Frame count (n)
+n*(12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation (if animation type is PRS or PR)
+   12 bytes)    Vector3 Scale (only if animation type is PRS)
+
+Animation types:
+    Type                            Value
+    PR = position, rotation           1
+    PRS = position, rotation, scale   2
+    P = position                      3
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    2 bytes     UINT16  Sequence count (n)
+n*( 4 bytes     INT32   Start time (ms) (sample data start at time 0)
+    4 bytes     INT32   End time (ms)
+    4 bytes     FLOAT32 Sample rate (samples / sec)
+    2 bytes     UINT16  Animation flags (see below)
+    4 bytes     UINT32  Sample count (m)
+m*(12 bytes     Vector3 Position (only if position animation flag)
+   16 bytes     Quat    Rotation (only if rotation animation flag)
+   12 bytes)    Vector3 Scale (only if scale animation flag)
+  ))
+
+Version 3:
+
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+    2 bytes     UINT16  Sequence count (n)
+n*( 4 bytes     INT32   Start time (ms) (sample data start at time 0)
+    4 bytes     INT32   End time (ms)
+    4 bytes     FLOAT32 Sample rate (samples / sec)
+    2 bytes     UINT16  Animation flags (see below)
+    12 bytes    Vector3 Default Position (only if not position animation flag)
+    16 bytes    Quat    Default Rotation (only if not rotation animation flag)
+    12 bytes    Vector3 Default Scale (only if not scale animation flag)
+    4 bytes     UINT32  Sample count (m)
+m*(12 bytes     Vector3 Position (only if position animation flag)
+   16 bytes     Quat    Rotation (only if rotation animation flag)
+   12 bytes)    Vector3 Scale (only if scale animation flag)
+  ))
+
+
+Animation flags:
+    Type                        Bitmask
+    looping                     0x0001
+    position                    0x0002
+    rotation                    0x0004
+    scale                       0x0008 
+
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437401"></a>Loader</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    1 byte      UINT8   Name length (n)
+    n bytes     CHAR8   Name
+   12 bytes     Vector3 Position
+   16 bytes     Quat    Rotation
+   12 bytes     Vector3 Scale
+    1 byte      UINT8   File name length (n)
+    n bytes     CHAR8   File name to load
+    1 byte      UINT8   merge mode
+
+Merge modes:
+
+    0 = replace loader with scene root and give scene root the transformation
+        that the loader had
+
+  foo                foo
+    \                  \
+     LD + root   =&gt;    root
+          / | \       / | \
+
+    1 = move all child nodes of the scene root to the parent of the loader
+        and remove both loader and scene root
+
+  foo
+    \
+     LD + root   =&gt;    foo
+          / | \       / | \
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437454"></a>Spring</h3></div></div><pre class="programlisting">
+Version 1:
+
+   12 bytes             Header
+    4 bytes     UINT32  1st parent id
+    4 bytes     UINT32  2nd parent id
+    4 bytes     Float   Spring constant
+    4 bytes     Float   Damping factor
+    4 bytes     Float   Length (-1 = distance between parents)
+
+Version 2:
+
+   12 bytes             Header
+    4 bytes     UINT32  1st parent id
+    4 bytes     UINT32  2nd parent id
+    4 bytes     Float   Spring constant
+    4 bytes     Float   Damping factor
+    4 bytes     Float   Length (-1 = distance between parents)
+    4 bytes     Float   Minimum length scale (0.0 = not used)
+    4 bytes     Float   Maximum length scale (0.0 = not used)
+</pre></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id437511"></a>Node attribute</h3></div></div><pre class="programlisting">
+   12 bytes             Header
+    4 bytes     UINT32  Parent id
+    4 bytes     UINT32  Data length
+    n bytes     UINT8   Data
+</pre></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apa.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt08.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="apc.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix A. API Reference </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Appendix C. ARM Assembler Tutorial</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

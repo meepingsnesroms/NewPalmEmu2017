@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 5. Overview</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt03.html" title="Part III. Core (xfcore)"><link rel="previous" href="pt03.html" title="Part III. Core (xfcore)"><link rel="next" href="ch06.html" title="Chapter 6. Application Framework"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 5. Overview</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="pt03.html">Prev</a> </td><th width="60%" align="center">Part III. Core (xfcore)</th><td width="20%" align="right"> <a accesskey="n" href="ch06.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id416606"></a>Chapter 5. Overview</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch05.html#id413528">Introduction</a></dt><dt><a href="ch05.html#id416254">Application Framework</a></dt><dt><a href="ch05.html#id413440">Graphics</a></dt><dt><a href="ch05.html#id413564">Audio</a></dt><dt><a href="ch05.html#id416353">File I/O</a></dt><dt><a href="ch05.html#id416627">Controls</a></dt><dt><a href="ch05.html#id416670">Memory and Resource Management</a></dt><dt><a href="ch05.html#id416741">Network</a></dt><dt><a href="ch05.html#id416804">Development Platform Requirements</a></dt><dd><dl><dt><a href="ch05.html#id416891">Symbian Platforms</a></dt><dt><a href="ch05.html#id416926">Microsoft PocketPC and Smartphone Platforms</a></dt><dt><a href="ch05.html#id416988">Tapwave Zodiac</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413528"></a>Introduction</h2></div></div><p>
+This document provides an overview of the X-Forge Core API. The X-Forge Core is the low-level layer of the whole X-Forge, providing platform-independent services for the game engine, along with any hardware acceleration features that can be accessed.
+</p><p>
+The X-Forge Engine is built on top of the X-Forge Core, and is completely platform-independent. It is possible to create a game applicatin directly on top of the X-Forge Core. This way, the game developer may develop its own game engine and still remain the platform-independency that the X-Forge Core provides. 
+</p><p>
+In addition to having an overview of all of the major APIs in the X-Forge Core, this document contains short descriptions of the development platform requirements. These can be found in  'development platform requirements'.
+</p><p>
+The design philosophy behind the X-Forge Core has been to hide as much of the platform complexity from the developer, while keeping interfaces as thin as possible in order to avoid any performance penalties. 
+</p><p>
+The code base is written in C++, but it is closer to &quot;C with objects&quot; than full-blown C++. Exceptions, for instance, have not been used due to the problems certain compilers have with them. Template use is also minimal. Operators have been overloaded only in cases where their use should be obvious (such as addition of fixed point values, as opposed to performing dot product via the pipe operator).
+</p><p>
+The recommended main development platform is Windows 2000 or later, with Visual Studio 6. Using this development environment the developer can use our 'desktop Windows' platform to rapidly develop the game code without using any target devices at all. This is also recommended due to the debugging tools available on the desktop windows platform, while some mobile platforms do not support any kind of debugging. Currently Visual Studio 6 is also required for all Symbian and Tapwave development.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416254"></a>Application Framework</h2></div></div><p>
+The application flow is designed to work, without any changes, on multiple platforms, some of which are more restrictive than others. The second important design goal was to keep the application complexity as low as possible and to shield the application developers from most of the complexity that happens behind the scenes on some platforms.
+</p><p>
+Some of the complexity cannot be hidden, such as the lack of explicit &quot;show this on screen&quot; commands, and the fact that the &quot;main loop&quot; is not inside the application. Additionally, the application must not use any global data in order to be portable to Symbian platforms.
+</p><p>
+The application framework consists of two global functions and three interface classes. The two functions are xfcAppPref and xfcAppInit. The xfcAppPref function is called to request information such as required memory from the application, and the xfcAppInit is the initialization function where the application creates the objects it needs to execute.
+</p><p>
+The three interface classes are XFcApp (the application object), XFcRender (renderer object) and XFcInput (controller object). These three classes receive callbacks whenever things happen, such as the rendering phase of the main loop.
+</p><p>
+More through explanation of the application framework can be found in the 'Application Framework' chapter.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413440"></a>Graphics</h2></div></div><p>
+All graphics output in X-Forge Core is handled through the XFcGL object. The XFcGL itself connects to some rendering device. Currently available devices include the default rasterizer with assembler-optimized polygon fillers, full-screen antialiased rasterizer which performs 2x2 supersampling and 2x2 upsample rasterizer. Other devices, using hardware capabilities for acceleration, are also under development, and will be included in the package once consumer devices become available.
+</p><p>
+More throughout explanation of the application framework can be found in the '2D Graphics' and '3D Graphics' chapters.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id413564"></a>Audio</h2></div></div><p>
+The audio API supports multi-channel digital audio, using either static audio buffers (with optional looping) or streaming audio (such as the XM module player).
+</p><p>
+The API was designed so that simple fire-and-forget sound effect would be easy, while letting the user control the sound dynamically if required. Playing speed, volume and panning can be altered. 
+</p><p>
+When the audio library is initialized, the application sets the audio format and desired number of simultaneous audio channels.
+</p><p>
+Whenever some audio is triggered, the application can set its playing speed, panning, volume and priority. If all channels are in use, but some active sound has lower priority than the one being triggered, the lower priority sound is stopped and the new sound plays in its place.
+</p><p>
+The system returns a handle to the playing instance, and this handle can be used to dynamically alter the sound's properties. 
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+The returned handle can be safely ignored if sounds are used in fire-and-forget mode. A handle is returned regardless of whether the sound actually plays (if, for example, all channels are already in use). Handles are also valid even after the sound has stopped. All of the audio library calls have been designed to do nothing if a non-active handle is used.
+</p></div><p>
+As audio sources, the X-Forge Utils library contains RIFF Wave file (.wav) loader which only supports non-compressed audio formats for the time being, and the XM (eXtended Module) player, which uses the note, instrument and sample data inside .XM files to play music. The open XM format was selected due to its compactness, without sacrificing the musical quality.
+</p><p>
+More throughout explanation of the application framework can be found in the 'Audio' chapter.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416353"></a>File I/O</h2></div></div><p>
+The file I/O library in X-Forge is called XFcFile. It has been modeled after the standard C library fopen/fclose style file handling. No C++ file stream extensions are included.
+</p><p>
+In addition to disk files, the file library transparently supports compressed virtual filesystem called CFL (compressed file library).
+</p><p>
+More information about the filesystem and CFL can be found in the 'File I/O' chapter.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416627"></a>Controls</h2></div></div><p>
+All user controls are handled via the XFcInput control library interface. This interface provides callbacks for button and pointer events. On desktop, the mouse is used to emulate the stylus. 
+</p><p>
+In addition to reporting raw scancodes, the interface also supports control codes which can be remapped to different scancodes at runtime.
+</p><p>
+More about the controls can be found in the 'Application Framework' chapter.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416670"></a>Memory and Resource Management</h2></div></div><p>
+At application startup, the application requests certain amount of memory. This memory is allocated as one memory pool, which is managed by the X-Forge memory manager, thus preventing any surprising out of memory situations. It also provides consistent memory allocation performance across all platforms.
+</p><p>
+Additionally the system supports a specialized form of memory management in the form of resource management. Resources are stored in two parts; the resource itself, and the information on how to create the resource if needed. If the system is running low on memory, resources are destroyed and will be recreated whenever they are called upon next. This makes it possible, for example, to have a 3D scene with far more textures than would fit in memory otherwise, at the expense of performance hit whenever a texture is recreated.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Textures are only one possible use for resource management. Other good candidates for resource management would be large 2D graphics, sound effects and large meshes.
+</p></div></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416741"></a>Network</h2></div></div><p>
+The networking API hides all the differences of all the supported network methods behind a simple sockets API. The currently supported networks are bluetooth and WLAN.
+</p><p>
+The developer can choose from 4 different types of packet which are &quot;guaranteed&quot;, &quot;nonguaranteed&quot;, &quot;quickguaranteed&quot; and &quot;recentstate&quot;. Guaranteed packets are resent until they reach their destination. Nonguaranteed packets are only sent once, regardless of whether they reach their destination. Quickguaranteed packets are put in front of the guaranteed packet queue, and finally recentstate packets are resent at certain intervals and the application can still change its contents. The recentstate packets could be considered as distributed variables.
+</p><p>
+Additionally, a simplified higher-level networking API is built on top of this, which makes it easier for the developers to make networked games. This is found in X-Forge Utility Library
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id416804"></a>Development Platform Requirements</h2></div></div><p>
+The recommended base development platform contains the following:
+</p><div class="itemizedlist"><ul type="disc"><li>PIII-class PC</li><li>Windows 2000</li><li>Microsoft Visual Studio 6 with Service Pack 4 or later</li></ul></div><p>
+</p><p>
+A PIII/866 is enough to run X-Forge applications in debug mode a bit faster speed than they run on a Nokia 7650 Imaging Phone.
+</p><p>
+The base development platform is required in order to build desktop PC versions of the applications, which is typically a much more rapid way of developing the game as compared to only developing on the target device itself.
+</p><p>
+The desktop version can also be embedded into some other application, enabling the developer to create tools with which games can be tuned with realtime preview.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id416891"></a>Symbian Platforms</h3></div></div><p>
+In addition to the base development environment (see above), you will need one or more Symbian SDKs. Currently supported platforms are Series 60 with the Series 60 SDK v1.0 and UIQ with the Symbian OS V7.0 UIQ SDK.
+</p><p>
+For more information on getting started with Symbian development see the 'Getting started' chapter.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id416926"></a>Microsoft PocketPC and Smartphone Platforms</h3></div></div><p>
+In order to develop for a PocketPC or Smartphone2002, Microsoft eVC is required. This can be downloaded, for free, from Microsoft at:
+<tt>http://www.microsoft.com/mobile/developer/downloads/</tt>
+</p><p>
+Additionally the SDK for the target device is required. The SDK for PocketPC2000 is included in the eVC package; this is all you need to make software that works on both PocketPC2000 and PocketPC2002.
+</p><p>
+One or more of the target devices are also required to ensure playability and performance.
+</p><p>
+For more information about getting started with the PocketPC development, see the 'Getting started' chapter.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id416988"></a>Tapwave Zodiac</h3></div></div><p>
+In order to develop for a Tapwave Zodiac, Codewarrior 9.2. for Palm and Tapwave SDK is required.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pt03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Part III. Core (xfcore) </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 6. Application Framework</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>

@@ -1,0 +1,10 @@
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WTGWeb] window.c, Line:78, Bad window
+[WTGInstall] i:\simfix\arm\core\emul68k\src\error68k.c, Line:1568, Read from ListType (id 4303) off: 20, size: 2, val: 0000FEFE
+[WebToGo] datamgr.c, Line:8679, Records left locked in closed unprotected DB
+[WTGWeb] window.c, Line:78, Bad window

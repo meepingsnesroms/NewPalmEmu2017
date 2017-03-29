@@ -1,0 +1,231 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "SimpleInstaller.rc.hpp"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include <windows.h>
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Bulgarian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_BGR)
+#ifdef _WIN32
+LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "SimpleInstaller.rc.hpp\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include <windows.h>\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INSTALL_OK          "Please put your device in the cradle and press the Hotsync button to complete the installation...."
+    IDS_INSTALL_UNKNOWN     "Unknown error code"
+    IDS_INSTALL_ALREADY_EXIST 
+                            "You're attempting to install a file that is already pending for installation. Please start HotSync to complete the installation, then try again"
+END
+
+#endif    // Bulgarian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MAIN DIALOG DISCARDABLE  0, 0, 356, 215
+STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_SETFOREGROUND | DS_3DLOOK | 
+    DS_NOFAILCREATE | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
+CAPTION "Tapwave Installer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "User:",IDC_STATIC,76,86,18,8
+    COMBOBOX        IDC_USER,114,85,84,64,CBS_DROPDOWNLIST | CBS_SORT | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_GROUP | 
+                    WS_TABSTOP
+    CONTROL         "Card slot 1 (left)",IDC_CARD_PRIMARY,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,114,122,137,8
+    CONTROL         "Card slot 2 (right)",IDC_CARD_SECONDARY,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,114,133,130,8
+    CONTROL         "Zodiac internal memory",IDC_CARD_INTERNAL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,114,111,129,8
+    DEFPUSHBUTTON   "Install",IDOK,299,194,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,245,194,47,14,WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,178,
+                    342,1
+    RTEXT           "Destination:",IDC_STATIC,56,111,38,8
+    LTEXT           "User has no known slots.  Please sync or select another user.",
+                    IDC_STATUS_NO_SLOTS,7,152,194,8
+    CTEXT           "Welcome to Tapwave Install",IDC_WELCOME,7,8,342,9
+    LTEXT           "Some files need to be installed on the device's expansion memory.",
+                    IDC_WELCOMEMESSAGE,7,28,342,38
+END
+
+IDD_STATUS DIALOG DISCARDABLE  0, 0, 303, 186
+STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_SETFOREGROUND | DS_3DLOOK | 
+    DS_NOFAILCREATE | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
+CAPTION "Tapwave Installer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Done",IDOK,246,165,50,14,WS_GROUP
+    LTEXT           "Status text goes here",IDC_STATUS,10,42,280,65
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,158,
+                    289,1
+    CONTROL         "Status text goes here",IDC_STATUS2,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,10,16,280,23
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 349
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_STATUS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,1,0
+ PRODUCTVERSION 1,1,1,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Tapwave, Inc.\0"
+            VALUE "FileDescription", "SimpleInstaller\0"
+            VALUE "FileVersion", "1, 1, 1, 0\0"
+            VALUE "InternalName", "SimpleInstaller\0"
+            VALUE "LegalCopyright", "Copyright © 2004\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "SimpleInstaller.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "  SimpleInstaller\0"
+            VALUE "ProductVersion", "1, 1, 1, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

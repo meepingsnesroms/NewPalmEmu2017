@@ -1,0 +1,85 @@
+# Wind rises
+
+# Level info: 
+# background image, length, startx, starty, loading screen text
+
+LEVEL=backdrop1.pcx, 2800, 0, 0, WIND RISES 
+
+# Forward speed of the plane: Default is 128.
+
+PLANESPEED = 150
+
+# Cloud info:
+# sprite image, number of clouds 
+
+CLOUDS=stunt_cloud.pcx, 7
+
+# Hoop info:
+# sprite image,   x,   y,   z,   hx,  hy,  hr,    allowed rotation (o=any)
+ 
+HOOP=hoop0.pcx,  -10,  -10,  150,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -40,  20,   280,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  0,  -10,  400,   0,   0,  20.0,  o
+HOOP=hoop0.pcx,	 -40,  -30,  500,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -60,  10,  700,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -20,  40,  900,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,	 30,  60,  1100,   0,   0,  20.0,  o
+HOOP=hoop0.pcx,  20,  20, 1200,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  40,  30,  1300,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  0,  50,  1490,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -10,  60,  1600,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  -40,  40,  1750,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  -20,  0,  1900,   0,   0,  20.0,   o
+HOOP=hoop0.pcx,  0,  -30,  2140,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,  -60,  2300,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  30,   -40,  2500,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  50,   -10,  2680,   0,   0,  20.0,    o
+HOOP=hoop0.pcx,  50,   30,  2780,   0,   0,  20.0,    o
+
+
+
+
+# Bonus item info:
+# sprite image, x, y, z, bonus points
+
+BONUS=bonusballoon.pcx,  0,  0,   200,   10
+BONUS=bonusballoon.pcx,  -50,  0,  650,   10
+BONUS=bonusballoon.pcx,  -30,  -10,  800,   10
+BONUS=bonusballoon.pcx,  -30,  20,  1000,   10
+BONUS=bonusballoon.pcx,  20,  40,  1520,   20
+BONUS=bonusballoon.pcx,  -10,  60, 1830,   20
+BONUS=bonusballoon.pcx,  0,  30,  2075,   30
+BONUS=bonusballoon.pcx,  0,  -10, 2400,   20
+BONUS=bonusballoon.pcx,  60,  0, 2600,   30
+
+
+# Wind scripting. 
+# parameters: z, magnitude, direction (degrees), gust factor.
+# parameters (except z) are linearily interpolated between WIND frames.
+
+WIND =    0,  50,  0,  0
+WIND =  300,  50,  0,  0
+WIND =  305,  50,  180,  0
+WIND =  600,  50,  180,  0
+WIND =  605,  50,  10,  0
+WIND =  620,  50,  10,  0
+WIND =  625,  50,  170,  0
+WIND =  800,  50,  170,  0
+WIND =  805,  50,  0,  0
+WIND =  1000,  50,  0,  0
+WIND =  1005,  50,  190,  0
+WIND =  1220,  50,  190,  0
+WIND =  1225,  50,  10,  0
+WIND =  1500,  50,  10,  0
+WIND =  1505,  50,  180,  0
+WIND =  1800,  50,  180,  0
+WIND =  1805,  50,  0,  0
+WIND =  2100,  50,  0,  0
+WIND =  2105,  50,  180,  0
+WIND =  2105,  50,  180,  0
+WIND =  2150,  50,  0,  0
+WIND =  2155,  50,  0,  0
+WIND =  2400,  50,  180,  0
+WIND =  2405,  50,  180,  0
+WIND =  2700,  50,  0,  0
+

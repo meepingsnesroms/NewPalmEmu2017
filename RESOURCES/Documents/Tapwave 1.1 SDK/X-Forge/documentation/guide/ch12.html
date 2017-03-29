@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Chapter 12. Multiplayer Games</title><link rel="stylesheet" href="x-forge.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.54.1"><link rel="home" href="index.html" title="X-Forge Core 1.4.0 Guide"><link rel="up" href="pt04.html" title="Part IV. Utility Library (xfutil)"><link rel="previous" href="ch11.html" title="Chapter 11. X-Forge Utils"><link rel="next" href="pt05.html" title="Part V. Marketing Aids"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#0000FF" alink="#FF0000"><div class="navbar"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 12. Multiplayer Games</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch11.html">Prev</a> </td><th width="60%" align="center">Part IV. Utility Library (xfutil)</th><td width="20%" align="right"> <a accesskey="n" href="pt05.html">Next</a></td></tr></table></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="id430363"></a>Chapter 12. Multiplayer Games</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="ch12.html#id430373">Overview</a></dt><dt><a href="ch12.html#id429443">Core Networking Concepts</a></dt><dt><a href="ch12.html#id430604">The Network Interfaces</a></dt><dd><dl><dt><a href="ch12.html#id430892">Multiplayer Logic The Bluetooth Way</a></dt><dt><a href="ch12.html#id431199">The Two-player XFuBluetoothNetwork</a></dt><dt><a href="ch12.html#id431333">The XFuBluetoothMultiNetwork</a></dt><dt><a href="ch12.html#id431462">More On Bluetooth</a></dt><dt><a href="ch12.html#id431547">The XFuInetNetwork</a></dt></dl></dd></dl></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430373"></a>Overview</h2></div></div><p>
+The networking API in X-Forge allows packets to be sent from one &quot;client&quot;
+(device) to a &quot;receiver&quot; on another client. Receivers are like mail boxes,
+with an ID number as the address. Receivers allow packets to be sent, for
+example, directly to a specific game object on another client. Packets can
+be sent with various levels of priority, depending on the need.
+</p><p>
+Multiplayer games are implemented by making game objects synchronize their
+state over the network by sending packets to other clients participating in
+the same game. Typically, each game object will have its own receiver,
+allowing packets to be sent directly from one game object to the same game
+object on another client.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id429443"></a>Core Networking Concepts</h2></div></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>
+Remember that you need to call <tt>xfcUseNetwork()</tt> in order to be able
+to use the network components in X-Forge. The method <tt>xfcUseNetwork()</tt> only
+defines that network is used with this application. To enable or disable
+network <tt>xfcNetworkStartup()</tt> or <tt>xfcNetworkCleanup()</tt> must be called.
+The network will not be usable until <tt>xfcNetworkStartup()</tt> has been called.
+</p></div><p>
+While networking is usually handled through the xfutil network interface, which
+simplifies things a lot by hiding most of the complexity of the X-Forge core
+networking API, it is still a good idea to learn the lower level concepts to
+understand what actually goes on behind the scenes.
+</p><p>
+The X-Forge core network API has &quot;communication handlers&quot; (that inherit from
+<tt>XFcCommunicationHandler</tt>) each of which support a specific type of network, for
+example Bluetooth or Internet. The communication handlers are handed to the
+&quot;communication scheduler&quot; (<tt>XFcCommunicationScheduler</tt>), which takes care of
+scheduling and controlling the packet traffic. This is the basic framework
+that manages incoming and outgoing packets.
+</p><p>
+Packets are sent to &quot;clients&quot;, which represent a device on the network.
+The client object is an instance of a subclass of <tt>XFcClientCommWin</tt>. Exactly
+which class, depends on the type of network used to communicate with the
+particular device. For WLAN (or any type of Internet traffic), the class is
+<tt>XFcInetClientWin</tt>. For Bluetooth, it is <tt>XFcBtClientWin</tt>.
+</p><p>
+Clients are added to the communication scheduler, which returns a numerical
+ID that is used from that point on when referring to this client. For
+example, whenever a packet is sent to the client, the numerical client ID is
+used to specify the client.
+</p><p>
+Packets are always sent to a specific &quot;receiver&quot; on a client. A receiver is
+like a mailbox on the client, with a numeric ID as its address. Receivers
+are registered with the communication scheduler. Any packet sent to a non-
+existent receiver will be delivered to the default data receiver, which is
+also registered with the communication scheduler. Packets arrive to the
+receiver in form of a call to <tt>addData()</tt>. It is then up to the receiver (a
+subclass of <tt>XFcDataReceiver</tt>) to parse and handle the packet.
+</p><p>
+Packets are sent by requesting a packet frame from the communication
+scheduler. When requesting the packet frame, one specifies the client ID of
+the receiver and the desired message slot. The message slot determines how
+the packet is sent. There are four slots:
+</p><pre class="programlisting">
+XFCNET_NONGUARANTEED       non-guaranteed, quick delivery of the packet
+XFCNET_GUARANTEED          guaranteed delivery (slower)
+XFCNET_QUICKGUARANTEED     prioritized guaranteed delivery
+XFCNET_RECENTSTATE         recent state (explained below)
+</pre><p>
+The packet frame is like an envelope for the data to be sent in the packet.
+Data is written to the packet frame by locking it, which returns a pointer
+to the data buffer in the packet frame. In addition to the actual data in
+the packet, one must also specify the receiver ID and the size of the data
+to the packet frame. After unlocking the packet frame, the packet is placed
+in the queue of the communication scheduler and is ready for delivery using a
+suitable communication handler (depending on the client to which the packet
+is to be sent).
+</p><p>
+Recent state packet frames work a little differently. Recent state packets
+are modifiable all the way until they are actually delivered. Recent state
+packet frames have an ID that can be used to specify a particular recent
+state packet frame. No matter how many times a recent state frame packet has
+been modified before it is actually delivered, only one copy of that packet
+will be sent at the next delivery. Recent state packet frames exist to allow
+up-to-date data to be sent without needing to flood the network with packets
+that do nothing more than override the previous packet.
+</p><p>
+The X-Forge core networking API does not assume that the underlying network
+and protocol is connection oriented. For this reason, communication is not
+established by explicitly connecting to another client but rather simply by
+sending data to it. Also, since there might not be any actual connection, it
+is impossible to disconnect from a client. Instead, the concept of losing
+contact with a client depends on the underlying network. For UDP/IP, it
+simply means that there has been no traffic with the client for a specific
+time.
+</p><p>
+Getting a notification of communication from a previously unknown client comes
+in form of a callback to <tt>handleSender()</tt>, defined in <tt>XFcUnknownSender</tt>, which
+is meant to be inherited and overridden. The actual object that should
+receive the callback is registered with the communication handler. Based on
+the data of that initial packet, it is up to the application to decide if the
+client that sent the packet should be accepted or rejected. Accepting the
+client simply means that the client is added to the local communication
+scheduler. In the future when that client sends a packet, the client will be
+identified and the packet will go directly to the intended receiver. If the
+client is rejected, any further data from it will again arrive in the
+<tt>handleSender()</tt> method, for re-evaluation.
+</p><p>
+Notifications about losing contact with a client also work using a callback.
+This callback is <tt>clientLost()</tt>, defined in <tt>XFcClientLost</tt>. The actual object
+that should receive this callback is registered with the communication
+handler.
+</p></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="id430604"></a>The Network Interfaces</h2></div></div><p>
+The default implementations of the network interfaces (XFuInetNetwork,
+XFuBluetoothNetwork and XFuBluetoothMultiNetwork) hide much of the
+complexity of the X-Forge core networking API. The Bluetooth/Inet
+network interfaces support Bluetooth and UDP/IP (Internet) as
+networks (though not both at the same time), but at the same time hide
+the low-level APIs (communication scheduler, communication handlers
+and client objects) completely, allowing developers to simply register
+clients using their addresses and deal with the client IDs.  
+</p><p>
+Deciding if new clients should be accepted or rejected is simplified and
+automated with a concept called &quot;game token&quot;. Establishing communication with
+a client is done by sending it a &quot;game connect packet&quot; that contains a game
+token - an unsigned 32 bit integer. The client that receives the game connect
+packet automatically compares the game token in the packet to its own game
+token, which it has previously set using the <tt>setAcceptGameToken()</tt> method. If
+the tokens match, the client is automatically accepted and added to the
+communication scheduler. Rejected clients are quietly ignored. Sending the
+game connect packet is done using the <tt>sendGameConnectPacket()</tt> method.
+</p><p>
+The network interface notifies &quot;network event handlers&quot; about newly
+accepted clients, as well as lost contact with existing clients. Any class
+that inherits from <tt>XFuNetworkEventHandler</tt> can register itself as an
+event handler with the network interface and there can be any number of
+event handlers.
+</p><p>
+Manually adding a client, for example in order to contact a server, is done
+by calling <tt>addClient()</tt> in the network interface and specifying an address.
+Clients can either be removed manually or by letting the network interface
+do it automatically when the contact to a client is lost.
+</p><p>
+Data receivers, including the default receiver that is used when no existing
+receiver is found for a packet, are registered with the network interface
+rather than with the communication scheduler.
+</p><p>
+Sending packets can be done in two ways. Either by requesting a packet frame
+(or recent state frame) from the network interface or by using the <tt>send()</tt>
+or <tt>sendRecentState()</tt> methods. Using packet frames directly is a more low
+level way to send packets and involves more manual work. One must lock the
+packet frame to obtain a pointer to the data buffer, copy the data manually
+into the packet frame data buffer, set the receiver ID and length of data and
+finally unlock the packet frame. The <tt>send()</tt> methods, on the other hand, use so
+called &quot;serializable&quot; objects. Any class that inherits from <tt>XFuSerializable</tt>,
+and implements the pure virtual <tt>serialize()</tt> and <tt>deserialize()</tt> methods, can be
+used as a serializable object with the <tt>send()</tt> methods. Packet frame with data
+size less than 0 is not sent. These packet frames are removed from queue and
+marked as empty packets. If packet frame is &quot;recentstate&quot; the frame is marked
+as empty and frame is erased but not sent.
+</p><p>
+When a serializable object is sent, a pointer to it is passed to the <tt>send()</tt>
+method in the network interface, which requests a packet frame and locks
+it. Next, <tt>serialize()</tt> in the serializable object is called and a pointer to
+the packet frame data buffer is passed to it. It is now up to the serializable
+object to write itself to the data buffer. 
+</p><p>
+In the same way, serializable objects can be created or updated from a packet
+by calling the <tt>deserialize()</tt> method, passing it a pointer to the packet data
+buffer. The serializable object then reads and parses the data buffer and
+creates or updates itself from that data.
+</p><p>
+By implementing packets in a network protocol as classes that inherit from
+<tt>XFuSerializable</tt>, packet creation and parsing can be greatly streamlined. The
+data in the packets can be made accessible with getter and setter methods so
+that the actual game code only needs to deal with the high level primitives,
+and never the bytes from the packets sent over the network. Only the
+<tt>serialize()</tt> and <tt>deserialize()</tt> methods need to concern themselves with packet
+parsing to and from the network.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id430892"></a>Multiplayer Logic The Bluetooth Way</h3></div></div><p>
+There are two Bluetooth network interfaces in X-Forge. The other is for
+two players only, called <tt>XFuBluetoothNetwork</tt>,
+and the other for two or more players, called
+<tt>XFuBluetoothMultiNetwork</tt>. This may sound silly,
+but there is a reason. In Bluetooth the
+devices can be either 'master' or 'slave'. These roles effectively
+dictate the only way a multiplayer framework can be done efficiently
+for more than two players. The Bluetooth master has a chairman-like
+role in the communications. It allocates each slave a time-slice in
+which the slave can transmit information to the master. This is to
+avoid &quot;filling the air&quot; with Bluetooth packets. The master, however,
+can send information to the slaves anytime and the slaves will receive
+it. The Bluetooth slaves also only accept one incoming connection and
+that is from the particular Bluetooth master terminal, whose Bluetooth
+band they are in. This is why the only logical place to have a
+multiplayer game server is on the Bluetooth master. The major
+differences to the two player method are in initiating the
+connections. The slave devices can advertise themselves running a
+certain service the master devices are interested about. The masters
+can run an advertiser discovery and gather a list of slaves running
+that service. This means that working with
+<tt>XFuBluetoothMultiNetwork</tt> the game
+host actually finds out about the advertising game clients and
+connects to them, unlike to what we are used to with the Internet
+games for example.</p><p> The two-player <tt>XFuBluetoothNetwork</tt> is
+there to provide with a more traditional way of setting up a multiplayer
+game. With it the game host works as a Bluetooth slave, listening for
+incoming connections from a game client, i.e. a Bluetooth
+master. During the game there's practically no difference in packet
+exchange between the two Bluetooth network interface
+variants. With the two-player version the mechanism in initiating a
+multiplayer game is similar between the Bluetooth and inet
+versions. With more players - if there are versions of a game for both
+Bluetooth and inet networking - the logic has to follow that of the
+<tt>XFuBluetoothMultiNetwork</tt> or then be
+made different between the Bluetooth and inet versions.  
+</p><p>
+To make things easier to understand (hopefully), we define a local terminology here, 
+which is used in explaining the network interfaces.
+</p><p>
+Role in game logic:
+</p><div class="itemizedlist"><ul type="disc"><li>Game Server = logical server of the game, distributes info among itself and clients</li><li>Game Client = logical client of the game server</li></ul></div><p>
+
+Role in connection:
+</p><div class="itemizedlist"><ul type="disc"><li>Network Server = listens and accepts connections from Network Clients</li><li>Network Client = searches and connects to a Network Server</li></ul></div><p>
+
+Role in Bluetooth:
+</p><div class="itemizedlist"><ul type="disc"><li>Bluetooth Master = master on the Bluetooth band, always the Network Client</li><li>Bluetooth Slave = listener on the Bluetooth band, always the Network Server</li></ul></div><p>
+
+Thus with <tt>XFuBluetoothNetwork</tt> (2 players):
+</p><div class="itemizedlist"><ul type="disc"><li>Game Server = Bluetooth Slave = Network Server</li><li>Game Client = Bluetooth Master = Network Client</li></ul></div><p>
+
+With <tt>XFuBluetoothMultiNetwork</tt> (2 or more players):
+</p><div class="itemizedlist"><ul type="disc"><li>Game Server = Bluetooth Master = Network Client</li><li>Game Clients = Bluetooth Slaves = Network Servers</li></ul></div><p>
+
+With <tt>XFuInetNetwork</tt> (2 or more players):
+</p><div class="itemizedlist"><ul type="disc"><li>Game Server = Network Server</li><li>Game Clients = Network Clients</li></ul></div><p>
+<span class="emphasis"><em>or</em></span>
+</p><div class="itemizedlist"><ul type="disc"><li>Game Server = Network Client</li><li>Game Clients = Network Servers</li></ul></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431199"></a>The Two-player XFuBluetoothNetwork</h3></div></div><p>
+Starting the network interface with Bluetooth support is done by calling <tt>enableClientService()</tt> or <tt>enableServerService()</tt>. Closing the current service is done by calling <tt>closeService()</tt>.
+The <tt>enableServerService()</tt> method creates a Network Server service for a given port. Valid port numbers are between 1-30 (this is a RFCOMM limitation, which is used for now), but port number 0 can also be provided in which case the system will find a free port to the Network Client - here also the Game Client. Starting a Network Server service with port 0, an advertiser service has to be started as well. This is done by calling <tt>startAdvertiser()</tt>. The advertiser service will register a new entry to the SDP (Service Discovery Protocol), here a Game Server.
+</p><p>
+After this a Game Client can request form SDP the running Network Server services, calling <tt>startServerDiscovery()</tt>. If a Game Server is found, SDP will tell the Game Client the port where the Game Server is running. Only after this can the Game Client connect to the Game Server. If the port number 0 is used, a single port won't be concurrently allocated for several services. This limits the number of concurrent services to 30.
+When creating a Network Client with <tt>enableClientService()</tt>, the port number is not needed. The port must be given as parameter to <tt>addClient()</tt> method. The same limitation of the port range is related to the Bluetooth Network Client as is with Bluetooth Network Server (1-30).  The <tt>XFuBluetoothNetwork</tt> can not handle more than one Network Client.
+</p><p>
+Using <tt>startDeviceDiscovery()</tt> one can create a device discovery request over the Bluetooth. The Bluetooth device discovery is not related to the X-Forge Bluetooth server, but is a lower layer Bluetooth functionality. The device discovery can be stopped with <tt>stopDeviceDiscovery()</tt>. The discovery is asynchronous and <tt>deviceDiscovery()</tt> is used as a callback. 
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431333"></a>The XFuBluetoothMultiNetwork</h3></div></div><p>
+Starting the network interface with Bluetooth support for more than two players is similar to that of the two-player <tt>XFuBluetoothNetwork</tt>, but the roles are practically reversed. Starting the network interface is done by calling <tt>enableHostService()</tt> or <tt>enableClientService()</tt>. Closing the current service is done by calling <tt>closeService()</tt>. Please note that the methods are named with the game logic in mind. Here <tt>enableClientService()</tt> method actually creates a Network Server (but for a Game Client) service for a given port. Valid port numbers are again between 1-30 (RFCOMM limitation), but port number 0 can also be provided in which case the system will find a free port to the Network Client - here the Game Server. Starting a Network Server service with port 0, an advertiser service again has to be started as well. This is done by calling <tt>startAdvertiser()</tt>. The advertiser service will register a new entry to the SDP (Service Discovery Protocol), a Game Client.
+</p><p>
+After this a Game Server can request SDP running Bluetooth Network Server services, like our Game Client, by calling <tt>startClientDiscovery()</tt>. If a Game Client is found, SDP will tell the Game Server the port where the Game Client is running. Only after this can the Game Server connect to the Game Client. If the port number 0 is used, a single port won't be concurrently allocated for several services. This limits the number of concurrent services to 30.
+When creating a Network Client with <tt>enableHostService()</tt> the port number is not needed. The port must be given as parameter to <tt>addClient()</tt> method. Again the same limitation of the port range applies (1-30).
+</p><p>
+The device discovery also exists in this interface, and works similarly to that in <tt>XFuBluetoothNetwork</tt>.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431462"></a>More On Bluetooth</h3></div></div><p>
+The Bluetooth connection is connection oriented, althougt it behaves like it would not be. The connection procedure is started with <tt>addClient()</tt> and it is asynchronous. For this reason one is not able to send any packets before the connection is established (X-Forge will not give any packet frames before connection). Basically this means that one has to call <tt>sendGameConnetPacket()</tt> multiple times and when the connection is established, the packet is sent. If an error occurs, <tt>clientLost()</tt> is called.
+The size of the X-Forge Bluetooth packet frame is limited to 128 bytes and the size of MTU (Maximum Transfer Unit) for the X-Forge Bluetooth is limited to 512 bytes by default. 
+</p><p>
+Nothing prevents you from using device discovery in conjunction with the advertiser. This is not recommended, however. In this case you could search for devices with the device discovery, and then search for advertised services on the found devices. This can be very slow, if the advertiser discovery is made to all found devices.
+</p><p>
+The advertiser discovery can be slow in general. The number of devices in the area directly affect this. When requesting for SDP services a connection with other devices have to be made, and making a connection in general is very slow. Another factor is the fact that at least in the Series 60 there's a very short timeout in the SDP service. This slows up the discovery, as a time-out isn't in fact an error, but results in connection retries.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="id431547"></a>The XFuInetNetwork</h3></div></div><p>
+Starting the network interface with inet support is done by calling <tt>enableService()</tt>. Closing the current service is done by calling <tt>closeService()</tt>. The <tt>XFuInetNetwork</tt> uses non-connected methods to send packets over the network. The method used in the inet communication is UDP. This method forces that one must select a game port for the Network Client and Network Server. If 0 is selected the system will use any free port. Unlike with Bluetooth <tt>addClient()</tt> does not make any connection and one can get packet frames immediately. Still one must call <tt>sendGameConnectPacket()</tt> until the Network Server sends reply or <tt>clientLost()</tt> is called. The <tt>XFuInetNetwork</tt> can handle more than one Network Client. Default frame size for a single inet packet is set to 1024 bytes. The <tt>XFuInetNetwork</tt> does not send the whole frame, only size of the data inside it. MTU for maximum packet size is 1500 bytes (usual default MTU for inet networking). 
+</p><p>
+Device discovery is not supported with inet communication.
+</p><p>
+Advertiser service is used for finding X-Forge Game Servers over the network. The advertising service uses UDP broadcast for Network Server queries. The advertiser is started with <tt>startAdvertiser()</tt> and stopped with <tt>stopAdvertiser()</tt>. Before calling these methods one must enable inet service with <tt>enableService()</tt>. After the advertiser is started, the advertiser server can make replies to server queries. Listener discovery service is started by calling <tt>startServerDiscovery()</tt>. This service is asynchronous and its launched on its own thread (remember to set mutexes as needed). The Network Server list is given through the <tt>deviceDiscovery()</tt> callback. The Network Server discovery is ended with <tt>stopServerDiscovery()</tt>. The Network Server query can fail silently if UDP packet is missed. The query is not resent automatically, and is thus the application must resend it if needed.
+</p></div></div></div><div class="navbar"><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch11.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="pt04.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="pt05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 11. X-Forge Utils </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Part V. Marketing Aids</td></tr></table></div><div align="center" style="padding-top: 5px;"><table><tr><td align="left"><a href="http://www.fathammer.com/"><img src="images/fathammer_logo.gif" border="0"></a></td><td>&nbsp; &nbsp; &nbsp; &nbsp;</td><td align="center" class="copyright">
+                X-Forge Documentation<br>
+                Confidential<br>
+                Copyright &copy; 2003 Fathammer<br></td></tr></table></div></body></html>
