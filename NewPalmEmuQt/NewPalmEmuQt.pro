@@ -56,7 +56,6 @@ SOURCES += \
     hardware/m68000/newcpu.cpp \
     hardware/dataexchange.cpp \
     hardware/memmap.cpp \
-    hardware/virtualhardware.cpp \
     palmos/audiodriver.cpp \
     palmos/datamanager.cpp \
     palmos/displaydriver.cpp \
@@ -94,19 +93,18 @@ SOURCES += \
     palmos/graphics/bitmaphandler.cpp \
     palmos/sdfilesystem.cpp \
     palmos/zodiacapi.cpp \
-    palmos/palmlibc.cpp
+    palmos/palmlibc.cpp \
+    hardware/virtuallcd.cpp
 
 
 
 HEADERS  += \
     hardware/m68000/cputbl.h \
-    hardware/m68000/dballvz.h \
     hardware/m68000/m68k.h \
     hardware/m68000/newcpu.h \
     hardware/dataexchange.h \
     hardware/memmap.h \
     hardware/types.h \
-    hardware/virtualhardware.h \
     palmos/audiodriver.h \
     palmos/datamanager.h \
     palmos/displaydriver.h \
@@ -148,7 +146,8 @@ HEADERS  += \
     palmos/graphics/bitmaphandler.h \
     palmos/sdfilesystem.h \
     palmos/zodiacapi.h \
-    palmos/palmlibc.h
+    palmos/palmlibc.h \
+    hardware/virtuallcd.h
 
 
 FORMS    += mainwindow.ui \

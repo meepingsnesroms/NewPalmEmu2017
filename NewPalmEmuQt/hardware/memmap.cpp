@@ -3,7 +3,7 @@
 #include "armv5te.h"
 #include "memmap.h"
 #include "newcpu.h"
-#include "virtualhardware.h"
+#include "virtuallcd.h"
 
 #include "minifunc.h" //hack //separate 68k from palm
 
@@ -330,13 +330,10 @@ int memory_init(){
 	//ram
 	ram_size = (SIZEOFBANK / 2) * 0x100;
 	rammemory = new UWORD[ram_size];
-	if(rammemory == nullptr)return RAMFAIL;
 
 	//banks
 	membanks = new addrbank[65536];
-	if(membanks == nullptr)return BANKSFAIL;
-	offset_68k fluff;
-	for(fluff = 0;fluff < TOTALBANKS;fluff++){
+	for(offset_68k fluff = 0;fluff < TOTALBANKS;fluff++){
 		avchunks[fluff] = notused;
 		dynallocedchunkptrs[fluff] = nullptr;
 		membanks[fluff] = dummy_bank;
@@ -347,8 +344,6 @@ int memory_init(){
 
 	//dynamicly set lcd banks size
 	map_banks(lcd_bank,lcd_start >> 16,NUM_BANKS(LCDBYTES * 2));
-
-	map_banks(custom_bank, custom_start >> 16, 1);
 
 	return 0;
 }

@@ -4,10 +4,10 @@
 
 #include "m68k.h"
 
-#include "virtualhardware.h" //used by 68k emulator to access palm hardware registers
+int  intbase();
+int	 intlev();
 
-
-extern void op_illg(ULONG);
+void op_illg(ULONG);
 
 void fatal(char *, int);
 UWORD nextiword();

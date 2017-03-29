@@ -4,7 +4,7 @@
 //part of "simple functions"
 #include "launchroutines.h" //globals
 #include "prcfile.h" //loading apps
-#include "virtualhardware.h" //interrupts,display,audio
+#include "virtuallcd.h" //framebuffer
 #include "appselector.h" //home screen
 
 //actualy needed by this header file

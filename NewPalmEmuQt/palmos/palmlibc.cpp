@@ -1,4 +1,5 @@
 #include "m68k.h"
+#include "memmap.h"
 #include "minifunc.h"
 #include "dataexchange.h"
 #include "stdlib68k.h"

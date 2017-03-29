@@ -8,7 +8,7 @@
 #include "m68k.h"
 #include "newcpu.h"
 #include "memmap.h"
-#include "virtualhardware.h"
+#include "virtuallcd.h"
 
 #include "minifunc.h" //hack //separate 68k from palm
 
@@ -20,6 +20,41 @@ int imm8_table[] = { 8,1,2,3,4,5,6,7 };
 
 UWORD* InstructionStart_p;
 shared_img* Shptr;
+unsigned long specialflags;
+
+int intbase(){
+	//return db_IVR.anon.VECTOR << 3;
+	return 0;
+}
+
+int intlev(){
+	/*
+	if (db_ISR.anon.IRQ7)	return 7;
+	if (db_ISR.anon.SPIS)	return 6;
+	if (db_ISR.anon.TMR1)	return 6;
+	if (db_ISR.anon.IRQ6)	return 6;
+	if (db_ISR.anon.PEN)	return 5;
+	if (db_ISR.anon.SPIM)	return 4;
+	if (db_ISR.anon.TMR2)	return 4;
+	if (db_ISR.anon.UART)	return 4;
+	if (db_ISR.anon.WDT)	return 4;
+	if (db_ISR.anon.RTC)	return 4;
+	if (db_ISR.anon.KB)		return 4;
+	if (db_ISR.anon.PWM)	return 4;
+	if (db_ISR.anon.INT0)	return 4;
+	if (db_ISR.anon.INT1)	return 4;
+	if (db_ISR.anon.INT2)	return 4;
+	if (db_ISR.anon.INT3)	return 4;
+	if (db_ISR.anon.INT4)	return 4;
+	if (db_ISR.anon.INT5)	return 4;
+	if (db_ISR.anon.INT6)	return 4;
+	if (db_ISR.anon.INT7)	return 4;
+	if (db_ISR.anon.IRQ3)	return 3;
+	if (db_ISR.anon.IRQ2)	return 2;
+	if (db_ISR.anon.IRQ1) return 1;
+	*/
+	return -1;
+}
 
 void fatal(char* file, int line){
 	if(file){
@@ -85,10 +120,6 @@ void MC68000_setpc(CPTR newpc){
 		abort();
     }
 
-    if (Shptr->logF) {
-		fprintf(Shptr->logF, "setpc %08x -> %08x\n",MC68000_getpc(),newpc);
-    }
-
     (Shptr->regs).pc = newpc;
 
     (Shptr->regs).pc_p = get_real_address(newpc);
@@ -141,50 +172,6 @@ ULONG get_disp_ea(ULONG base, UWORD dp){
 void MC68000_init(shared_img *shptr){
   Shptr = shptr;
 }
-
-#if CPU_LEVEL > 1
-ULONG get_disp_ea (ULONG base, UWORD dp)
-{
-  int reg = (dp >> 12) & 7;
-  LONG regd;
-  if (dp & 0x8000)
-    regd = (Shptr->regs).a[reg];
-  else
-    regd = (Shptr->regs).d[reg];
-  if (!(dp & 0x800))
-    regd = (LONG)(WORD)regd;
-  if (dp & 0x100) {
-    LONG extraind = 0;
-   	dbgprintf("020\n");
-    regd <<= (dp >> 9) & 3;
-    if (dp & 0x80)
-      base = 0;
-    if (dp & 0x40)
-      regd = 0;
-    if ((dp & 0x30) == 0x20)
-      base += (LONG)(WORD)nextiword();
-    if ((dp & 0x30) == 0x30)
-      base += nextilong();
-    
-    if ((dp & 0x3) == 0x2)
-      extraind = (LONG)(WORD)nextiword();
-    if ((dp & 0x3) == 0x3)
-      extraind = nextilong();
-    
-    if (!(dp & 4))
-      base += regd;
-    if (dp & 3)
-      base = get_long (base);
-    if (dp & 4)
-      base += regd;
-    
-    return base + extraind;
-    /* Yikes, that's complicated */
-  } else {
-    return base + (BYTE)(dp) + regd;
-  }
-}
-#endif
 
 void MakeSR(){
   (Shptr->regs).sr = (((Shptr->regs).t << 15) | ((Shptr->regs).s << 13) |
@@ -363,7 +350,7 @@ void MC68000_run(){
 			InstructionStart_p = nullptr;
 		}
 
-		if(updateinterrupts)updateisr();//any hardware interrupts
+		//if(updateinterrupts)updateisr();//any hardware interrupts
 
 		if(specialflags){
 			/*
@@ -378,7 +365,7 @@ void MC68000_run(){
 			while(specialflags & SPCFLAG_STOP){
 				std::this_thread::sleep_for(std::chrono::microseconds(100));
 				//maybe_updateisr();
-				if(updateinterrupts)updateisr();
+				//if(updateinterrupts)updateisr();
 				if(specialflags & (SPCFLAG_INT | SPCFLAG_DOINT)){
 					int intr = intlev();
 					specialflags &= ~(SPCFLAG_INT | SPCFLAG_DOINT);
@@ -495,12 +482,7 @@ int CPU_init(shared_img *shptr){
   r = memory_init();
   if(r != 0)return r;
 
-  custom_init(shptr);
-
-  customreset();
-
   MC68000_init(shptr);
-
   MC68000_reset();
 
   return 0;

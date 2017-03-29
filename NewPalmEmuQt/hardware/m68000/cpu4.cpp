@@ -2505,7 +2505,7 @@ void op_4e68(ULONG opcode)
 void op_4e70(ULONG NUOPPRAM)
 {
 {if (!(Shptr->regs).s) { (Shptr->regs).pc_p--; MC68000_exception(8); } else
-{	customreset();
+{
 }}}
 void op_4e71(ULONG NUOPPRAM)
 {

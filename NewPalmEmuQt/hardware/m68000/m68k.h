@@ -141,17 +141,7 @@ typedef struct {
   UWORD penx,peny;
   bool pendown;
 
-  bool		LcdPower;
-
-
-  FILE		*logF;		/* If non-NULL, log to this file */
-
-  /* need to remove */
-  //unsigned long	lssa;		/* shadows dragonball LSSA register */
-  unsigned char	PICF;           /* shadows PICF register */
-  unsigned char	VPW;		/* shadows VPW register */
-  unsigned char	POSR;		/* shadows POSR register */
-  //int		scrnstart;	/* modified by write to LSSA */
+  //bool		LcdPower;
 
   //cpu
   struct regstruct regs;	/* the CPU registers state */

@@ -3,7 +3,7 @@
 #include "m68k.h"
 #include "minifunc.h"
 #include "memmap.h"
-#include "virtualhardware.h"
+#include "virtuallcd.h"
 #include "rawimagetools.h"
 #include "resourcelocator.h"
 #include "displaydriver.h" //hack move coord into rawimagetools.h

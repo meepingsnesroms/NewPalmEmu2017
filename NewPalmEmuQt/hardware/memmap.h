@@ -93,10 +93,8 @@ void  ram_bput(CPTR, UBYTE);
 int   ram_check(CPTR addr, ULONG size);
 UWORD *ram_xlate(CPTR addr);
 
-//extern addrbank rom_bank;
 extern addrbank ram_bank;
 extern addrbank dyn_bank;
-extern addrbank custom_bank;
 
 //dummy
 ULONG dummy_lget(CPTR);
