@@ -65,8 +65,7 @@ void selectappandstart(){
 	//may need to check for icons in app overlays
 
 	size_t appvectorsize = apps.size();
-	size_t bunfluff;
-	inc_for(bunfluff,appvectorsize){
+	for(size_t bunfluff = 0;bunfluff < appvectorsize;bunfluff++){
 		//draw icon
 		CPTR iconptr = nullptr_68k;
 		if(apps[bunfluff].resdb){

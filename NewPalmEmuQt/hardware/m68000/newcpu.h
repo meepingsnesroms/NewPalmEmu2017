@@ -4,7 +4,7 @@
 
 #include "m68k.h"
 
-#include "virtualhardware.h" //hack (remove me when possible)
+#include "virtualhardware.h" //used by 68k emulator to access palm hardware registers
 
 
 extern void op_illg(ULONG);

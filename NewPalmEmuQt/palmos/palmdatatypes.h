@@ -4,44 +4,10 @@
 #include "m68k.h"
 #include <vector>
 
-//new types
-
-//convert to class and remove endian swap
 typedef union{
 	char typec[4];
 	ULONG typen;
 }TYPE;
-
-/**
-class{
-private:
-	ULONG value;
-public:
-	void operator=(ULONG asint){
-		value = asint;
-	}
-	void operator=(string asstring){
-		value = belong(asstring[0] << 24 | asstring[1] << 16 | asstring[2] << 8 | asstring[3]);
-	}
-	bool operator==(ULONG cmp){
-		if(value == cmp)return true;
-		return false;
-	}
-	bool operator==(string cmp){
-		cmpI = belong(cmp[0] << 24 | cmp[1] << 16 | cmp[2] << 8 | cmp[3]);
-		if(value == cmpI)return true;
-		return false;
-	}
-	ULONG INT(){
-		return value;
-	}
-	string STRING(){
-		ULONG swapped = belong(value);
-		return string((char*)&swapped,4);
-	}
-
-}TYPE;
-*/
 
 typedef struct{
 	TYPE type;

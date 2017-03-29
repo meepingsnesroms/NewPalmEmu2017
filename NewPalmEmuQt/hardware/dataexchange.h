@@ -7,8 +7,6 @@
 #include "types.h"
 #include <string>
 
-#define UNIVERSAL
-
 #ifndef BIGENDIAN
 
 #define beword(x) (((x) >> 8 & 0xFF) | ((x) << 8 & 0xFF00))
@@ -18,8 +16,8 @@
 
 #else
 
-#define beword(x) (x)
-#define belong(x) (x)
+#define beword(x)	(x)
+#define belong(x)	(x)
 #define swapword(x)
 #define swaplong(x)
 
