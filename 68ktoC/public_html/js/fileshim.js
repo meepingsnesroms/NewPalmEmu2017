@@ -1,8 +1,8 @@
 /* global FileReaderJS */
 
-function noop() {}
+function noop(){}
 
-function parsefile(e, file) {
+function parsefile(e, file){
     var filedump = e.target.result;
     var output = new Uint8Array(filedump);
     main(output);
@@ -27,7 +27,7 @@ function parsefile(e, file) {
             }
 };
   
-function initfiledriver() {
+function initfiledriver(){
     FileReaderJS.setupInput(document.getElementById('fileinput'), opts);
 }
   
