@@ -35,17 +35,17 @@ void invalidaccess(CPTR addr,bool writing,int length){
 
 int buserr = 0;
 
-UWORD *dynallocedchunkptrs[TOTALBANKS];
+UWORD* dynallocedchunkptrs[TOTALBANKS];
 UBYTE avchunks[TOTALBANKS];
 
-UWORD *rammemory;
+UWORD* rammemory;
+UWORD  dballregs[SIZEOFBANK / sizeof(UWORD)];
 
 int ram_size;
-//int rom_size;
-extern shared_img *Shptr;
+extern shared_img* Shptr;
 extern int exectrace;
 
-addrbank *membanks;
+addrbank* membanks;
 
 enum{
 	notused,
@@ -107,12 +107,12 @@ void freedynchunks(){
 }
 
 /* Default memory access functions */
-int default_check(CPTR addr, ULONG offset)
+int default_check(CPTR, ULONG)
 {
     return 0;
 }
 
-UWORD *default_xlate(CPTR addr)
+UWORD *default_xlate(CPTR)
 {
 	return nullptr;
 }
@@ -146,7 +146,7 @@ UBYTE dummy_bget(CPTR addr)
     return 0;
 }
 
-void dummy_lput(CPTR addr, ULONG IGPRAM)
+void dummy_lput(CPTR addr, ULONG)
 {
 	dbgprintf("Bus error: wrote a long to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -154,7 +154,7 @@ void dummy_lput(CPTR addr, ULONG IGPRAM)
 	palmabrt();//hack
 }
 
-void dummy_wput(CPTR addr, UWORD IGPRAM)
+void dummy_wput(CPTR addr, UWORD)
 {
 	dbgprintf("Bus error: wrote a word to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -162,7 +162,7 @@ void dummy_wput(CPTR addr, UWORD IGPRAM)
 	palmabrt();//hack
 }
 
-void dummy_bput(CPTR addr, UBYTE b)
+void dummy_bput(CPTR addr, UBYTE)
 {
 	dbgprintf("Bus error: wrote a byte to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -170,12 +170,12 @@ void dummy_bput(CPTR addr, UBYTE b)
 	palmabrt();//hack
 }
 
-int dummy_check(CPTR addr, ULONG offset)
+int dummy_check(CPTR, ULONG)
 {
     return 0;
 }
 
-UWORD* dummy_xlate(CPTR IGPRAM)
+UWORD* dummy_xlate(CPTR)
 {
 	dbgprintf("uhhg");
 	return nullptr;
@@ -276,7 +276,7 @@ void dyn_bput(CPTR addr, UBYTE b)
 	}
 }
 
-int dyn_check(CPTR addr, ULONG IGPRAM)
+int dyn_check(CPTR addr, ULONG)
 {
 	if(dynallocedchunkptrs[addr >> 16] != 0)return 1;
 	return 0;
@@ -287,6 +287,50 @@ UWORD *dyn_xlate(CPTR addr)
 	return dynallocedchunkptrs[addr >> 16] + ((addr & 0xFFFF) >> 1);
 }
 
+
+/* Dragonball register area */
+ULONG reg_lget(CPTR addr)
+{
+	addr -= ram_start;
+	return (((ULONG)rammemory[addr >> 1]) << 16) | rammemory[(addr >> 1) + 1];
+}
+
+UWORD reg_wget(CPTR addr)
+{
+	addr -= ram_start;
+	return rammemory[addr >> 1];
+}
+
+UBYTE reg_bget(CPTR addr)
+{
+	addr -= ram_start;
+	if(addr & 1)return rammemory[addr >> 1];
+	else return rammemory[addr >> 1] >> 8;
+}
+
+void reg_lput(CPTR addr, ULONG l)
+{
+	addr -= ram_start;
+	rammemory[addr >> 1] = l >> 16;
+	rammemory[(addr >> 1) + 1] = (UWORD)l;
+}
+
+void reg_wput(CPTR addr, UWORD w)
+{
+	addr -= ram_start;
+	rammemory[addr >> 1] = w;
+}
+
+void reg_bput(CPTR addr, UBYTE b)
+{
+	addr -= ram_start;
+	if (!(addr & 1)) {
+		rammemory[addr >> 1] = (rammemory[addr>>1] & 0xFF) | (((UWORD)b) << 8);
+	} else {
+		rammemory[addr >> 1] = (rammemory[addr >> 1] & 0xFF00) | b;
+	}
+}
+
 /* Address banks */
 
 addrbank dummy_bank = {
@@ -294,14 +338,6 @@ addrbank dummy_bank = {
     dummy_lput, dummy_wput, dummy_bput,
     dummy_xlate, dummy_check
 };
-
-/*
-addrbank rom_bank = {
-	rom_lget, rom_wget, rom_bget,
-	rom_lput, rom_wput, rom_bput,
-	default_xlate, default_check
-};
-*/
 
 addrbank ram_bank = {
     ram_lget, ram_wget, ram_bget,
@@ -313,6 +349,12 @@ addrbank dyn_bank = {
 	dyn_lget, dyn_wget, dyn_bget,
 	dyn_lput, dyn_wput, dyn_bput,
 	dyn_xlate, dyn_check
+};
+
+addrbank reg_bank = {
+    reg_lget, reg_wget, reg_bget,
+    reg_lput, reg_wput, reg_bput,
+    default_xlate, default_check
 };
 
 void map_banks(addrbank bank, int start, int size)
@@ -343,7 +385,9 @@ int memory_init(){
 	map_banks(ram_bank, ram_start >> 16, 0x100 + 1);//16mb ram + 1 page that used to be rom
 
 	//dynamicly set lcd banks size
-	map_banks(lcd_bank,lcd_start >> 16,NUM_BANKS(LCDBYTES * 2));
+	map_banks(lcd_bank, lcd_start >> 16, NUM_BANKS(LCDBYTES * 2));
+
+	map_banks(reg_bank, 0xFFFF0000 >> 16, 1);
 
 	return 0;
 }

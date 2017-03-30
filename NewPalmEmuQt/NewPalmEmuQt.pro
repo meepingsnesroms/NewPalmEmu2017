@@ -31,123 +31,125 @@ android {
 }
 
 INCLUDEPATH += libretro \
-    hardware \
-    hardware/arm \
-    hardware/arm/uarm \
-    hardware/m68000 \
-    palmos \
-    palmos/graphics
+    emucore/hardware \
+    emucore/hardware/arm \
+    emucore/hardware/arm/uarm \
+    emucore/hardware/m68000 \
+    emucore/palmos \
+    emucore/palmos/graphics \
+    emucore
 
 SOURCES += \
-    hardware/m68000/cpu1.cpp \
-    hardware/m68000/cpu2.cpp \
-    hardware/m68000/cpu3.cpp \
-    hardware/m68000/cpu4.cpp \
-    hardware/m68000/cpu5.cpp \
-    hardware/m68000/cpu6.cpp \
-    hardware/m68000/cpu7.cpp \
-    hardware/m68000/cpu8.cpp \
-    hardware/m68000/cpu9.cpp \
-    hardware/m68000/cpuB.cpp \
-    hardware/m68000/cpuC.cpp \
-    hardware/m68000/cpuD.cpp \
-    hardware/m68000/cpuE.cpp \
-    hardware/m68000/cputbl.cpp \
-    hardware/m68000/newcpu.cpp \
-    hardware/dataexchange.cpp \
-    hardware/memmap.cpp \
-    palmos/audiodriver.cpp \
-    palmos/datamanager.cpp \
-    palmos/displaydriver.cpp \
-    palmos/eventqueue.cpp \
-    palmos/floatlib.cpp \
-    palmos/launchroutines.cpp \
-    palmos/palmapi.cpp \
-    palmos/palmmalloc.cpp \
-    palmos/prcfile.cpp \
-    palmos/resourcelocator.cpp \
-    palmos/stdlib68k.cpp \
+    emucore/hardware/arm/armshim.cpp \
+    emucore/hardware/m68000/cpu0.cpp \
+    emucore/hardware/m68000/cpu1.cpp \
+    emucore/hardware/m68000/cpu2.cpp \
+    emucore/hardware/m68000/cpu3.cpp \
+    emucore/hardware/m68000/cpu4.cpp \
+    emucore/hardware/m68000/cpu5.cpp \
+    emucore/hardware/m68000/cpu6.cpp \
+    emucore/hardware/m68000/cpu7.cpp \
+    emucore/hardware/m68000/cpu8.cpp \
+    emucore/hardware/m68000/cpu9.cpp \
+    emucore/hardware/m68000/cpuB.cpp \
+    emucore/hardware/m68000/cpuC.cpp \
+    emucore/hardware/m68000/cpuD.cpp \
+    emucore/hardware/m68000/cpuE.cpp \
+    emucore/hardware/m68000/cputbl.cpp \
+    emucore/hardware/m68000/m68kcycles.cpp \
+    emucore/hardware/m68000/newcpu.cpp \
+    emucore/hardware/dataexchange.cpp \
+    emucore/hardware/memmap.cpp \
+    emucore/hardware/virtuallcd.cpp \
+    emucore/palmos/graphics/biosfont.cpp \
+    emucore/palmos/graphics/bitmapcompression.cpp \
+    emucore/palmos/graphics/bitmaphandler.cpp \
+    emucore/palmos/graphics/bsod.cpp \
+    emucore/palmos/graphics/fbops.cpp \
+    emucore/palmos/graphics/imagescaling.cpp \
+    emucore/palmos/graphics/palette.cpp \
+    emucore/palmos/graphics/rawimagetools.cpp \
+    emucore/palmos/appselector.cpp \
+    emucore/palmos/audiodriver.cpp \
+    emucore/palmos/datamanager.cpp \
+    emucore/palmos/displaydriver.cpp \
+    emucore/palmos/eventqueue.cpp \
+    emucore/palmos/floatlib.cpp \
+    emucore/palmos/launchroutines.cpp \
+    emucore/palmos/palmapi.cpp \
+    emucore/palmos/palmlibc.cpp \
+    emucore/palmos/palmmalloc.cpp \
+    emucore/palmos/prcfile.cpp \
+    emucore/palmos/resourcelocator.cpp \
+    emucore/palmos/sdfilesystem.cpp \
+    emucore/palmos/stdlib68k.cpp \
+    emucore/palmos/zodiacapi.cpp \
+    emucore/palmwrapper.cpp \
+    emucore/hardware/arm/uarm/CPU.c \
+    emucore/hardware/arm/uarm/icache.c \
+    emucore/hardware/arm/uarm/math64.c \
+    emucore/hardware/arm/uarm/rt.c \
+    libretro/palmosemulibretro.cpp \
     main.cpp \
     mainwindow.cpp \
-    palmwrapper.cpp \
     processmanager.cpp \
     settingspanel.cpp \
     touchscreen.cpp \
-    palmos/appselector.cpp \
-    hardware/m68000/cpu0.cpp \
-    hardware/m68000/m68kcycles.cpp \
-    palmos/graphics/rawimagetools.cpp \
-    palmos/graphics/bitmapcompression.cpp \
-    palmos/graphics/imagescaling.cpp \
-    palmos/graphics/palette.cpp \
-    palmos/graphics/fbops.cpp \
-    libretro/palmosemulibretro.cpp \
-    libretro/libretro.c \
-    palmos/graphics/biosfont.cpp \
-    palmos/graphics/bsod.cpp \
-    hardware/arm/armshim.cpp \
-    hardware/arm/uarm/CPU.c \
-    hardware/arm/uarm/icache.c \
-    hardware/arm/uarm/math64.c \
-    hardware/arm/uarm/rt.c \
-    palmos/graphics/bitmaphandler.cpp \
-    palmos/sdfilesystem.cpp \
-    palmos/zodiacapi.cpp \
-    palmos/palmlibc.cpp \
-    hardware/virtuallcd.cpp
+    libretro/libretro.c
 
 
 
 HEADERS  += \
-    hardware/m68000/cputbl.h \
-    hardware/m68000/m68k.h \
-    hardware/m68000/newcpu.h \
-    hardware/dataexchange.h \
-    hardware/memmap.h \
-    hardware/types.h \
-    palmos/audiodriver.h \
-    palmos/datamanager.h \
-    palmos/displaydriver.h \
-    palmos/errorcodes.h \
-    palmos/eventqueue.h \
-    palmos/floatlib.h \
-    palmos/launchroutines.h \
-    palmos/palmapi.h \
-    palmos/palmdatatypes.h \
-    palmos/palmdefines.h \
-    palmos/palmmalloc.h \
-    palmos/palmtypeaccess.h \
-    palmos/prcfile.h \
-    palmos/resourcelocator.h \
-    palmos/stdlib68k.h \
-    palmos/trapapilist.h \
+    emucore/hardware/arm/uarm/CPU.h \
+    emucore/hardware/arm/uarm/icache.h \
+    emucore/hardware/arm/uarm/math64.h \
+    emucore/hardware/arm/uarm/typesarm.h \
+    emucore/hardware/arm/armv5te.h \
+    emucore/hardware/m68000/cputbl.h \
+    emucore/hardware/m68000/m68k.h \
+    emucore/hardware/m68000/newcpu.h \
+    emucore/hardware/dataexchange.h \
+    emucore/hardware/memmap.h \
+    emucore/hardware/types.h \
+    emucore/hardware/virtuallcd.h \
+    emucore/palmos/graphics/biosfont.h \
+    emucore/palmos/graphics/bitmapcompression.h \
+    emucore/palmos/graphics/bitmaphandler.h \
+    emucore/palmos/graphics/bsod.h \
+    emucore/palmos/graphics/fbops.h \
+    emucore/palmos/graphics/imagescaling.h \
+    emucore/palmos/graphics/palette.h \
+    emucore/palmos/graphics/rawimagetools.h \
+    emucore/palmos/appselector.h \
+    emucore/palmos/audiodriver.h \
+    emucore/palmos/datamanager.h \
+    emucore/palmos/displaydriver.h \
+    emucore/palmos/errorcodes.h \
+    emucore/palmos/eventqueue.h \
+    emucore/palmos/floatlib.h \
+    emucore/palmos/launchroutines.h \
+    emucore/palmos/palmapi.h \
+    emucore/palmos/palmdatatypes.h \
+    emucore/palmos/palmdefines.h \
+    emucore/palmos/palmlibc.h \
+    emucore/palmos/palmmalloc.h \
+    emucore/palmos/palmtype.h \
+    emucore/palmos/palmtypeaccess.h \
+    emucore/palmos/prcfile.h \
+    emucore/palmos/resourcelocator.h \
+    emucore/palmos/sdfilesystem.h \
+    emucore/palmos/stdlib68k.h \
+    emucore/palmos/trapapilist.h \
+    emucore/palmos/zodiacapi.h \
+    emucore/minifunc.h \
+    emucore/palmwrapper.h \
+    libretro/libretro.h \
+    libretro/palmosemulibretro.h \
     mainwindow.h \
-    minifunc.h \
-    palmwrapper.h \
     processmanager.h \
     settingarray.h \
     settingspanel.h \
-    touchscreen.h \
-    palmos/appselector.h \
-    palmos/graphics/rawimagetools.h \
-    palmos/graphics/palette.h \
-    palmos/graphics/bitmapcompression.h \
-    libretro/libretro.h \
-    libretro/palmosemulibretro.h \
-    palmos/graphics/fbops.h \
-    palmos/graphics/biosfont.h \
-    palmos/graphics/bsod.h \
-    hardware/arm/uarm/CPU.h \
-    hardware/arm/uarm/icache.h \
-    hardware/arm/uarm/math64.h \
-    hardware/arm/uarm/typesarm.h \
-    hardware/arm/armv5te.h \
-    palmos/graphics/imagescaling.h \
-    palmos/graphics/bitmaphandler.h \
-    palmos/sdfilesystem.h \
-    palmos/zodiacapi.h \
-    palmos/palmlibc.h \
-    hardware/virtuallcd.h
+    touchscreen.h
 
 
 FORMS    += mainwindow.ui \

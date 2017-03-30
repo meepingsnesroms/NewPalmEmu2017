@@ -1,17 +1,10 @@
 #include "palmwrapper.h"
 
-bool customlssa;
-CPTR activelssa;
-
 void lcd_init(int w,int h){
-	customlssa = false;
-	activelssa = lcd_start;
 	LCDBYTES = w * h * 2;
 	LCDW = w;
 	LCDH = h;
 	memset(framebuffer,0xFF,LCDMAXBYTES * 2);//clear framebuffer to white
-
-	//HACK if not 320*480 draw graffiti input panel
 }
 
 UBYTE lcd_bget(CPTR addr){
@@ -55,7 +48,7 @@ UWORD* lcd_xlate(CPTR addr){
 	return framebuffer + ((addr - lcd_start) >> 1);
 }
 
-int lcd_check(CPTR addr, ULONG offset){
+int lcd_check(CPTR, ULONG){
 	return 1;
 }
 

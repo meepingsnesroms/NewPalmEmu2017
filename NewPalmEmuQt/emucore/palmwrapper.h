@@ -29,8 +29,8 @@ extern int curapp;
 extern int curoverlay;
 extern CPTR appcall;
 extern std::string username;
-extern ULONG totalticks;
-//extern float partialticks;
+extern ULONG fullticks;
+extern float partialticks;
 extern ULONG keymask;
 extern std::chrono::high_resolution_clock::time_point starttime;
 

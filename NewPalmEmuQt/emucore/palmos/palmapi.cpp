@@ -1355,8 +1355,9 @@ void systaskdelay(){
 	LONG ticks = (LONG)uticks;
 
 	if(ticks < 0)palmabrt();//hack //cant wait less than 0 ticks
+	//palmabrt();
 
-	std::this_thread::sleep_for(palmTicks(ticks));
+	if(ticks > 0)std::this_thread::sleep_for(palmTicks(ticks));
 	D0 = errNone;
 }
 
@@ -1431,7 +1432,7 @@ void syscurappdatabase(){
 	D0 = errNone;
 }
 
-//1 tick = 100 microseconds
+//there are 100 ticks per second on a palm os device
 void systickspersecond(){
 	D0 = TICKSPERSECOND;
 }
@@ -1499,12 +1500,18 @@ void sysnotifyregister(){
 
 
 void timgetticks(){
-	std::chrono::high_resolution_clock::time_point current = std::chrono::high_resolution_clock::now();
-	ULONG abovezero = (current - starttime) / palmTicks(1);
-	std::chrono::high_resolution_clock::duration belowzero = (current - starttime) % palmTicks(1);
-	totalticks += abovezero;
-	starttime = current - belowzero;//preserve partial ticks
-	D0 = totalticks;
+	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
+	uint32 fulltickspassed = (uint32)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
+	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
+	fullticks   += fulltickspassed;
+	partialticks += partialtickspassed;
+
+	if(partialticks > 1.0){
+		fullticks   += (uint32)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
+		partialticks -= (uint32)partialticks;//remove any full ticks from the partial tick counter
+	}
+
+	D0 = fullticks;
 }
 
 void timgetseconds(){

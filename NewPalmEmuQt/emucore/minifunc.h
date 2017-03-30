@@ -12,7 +12,6 @@
 #endif
 
 #define TEMPHACK
-#define STUCK
 
 //meaningful words
 #define findme 0

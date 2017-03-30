@@ -71,37 +71,42 @@ void snddocmd(){
 	stackbool(nowait);//not used (even by palm)
 
 
+	//from palm os api reference
+	//IMPORTANT: The Sound Manager only supports one channel of
+	//sound synthesis: You must pass NULL as the value of channel.
 	if(channel != nullptr_68k){
-		palmabrt();//hack
-
 		D0 = sndErrBadChannel;
 		return;
 	}
 
-	//from palm os api reference
-	//IMPORTANT: The Sound Manager only supports one channel of
-	//sound synthesis: You must pass NULL as the value of channel.
-
 
 	UBYTE cmd = get_byte(command);
-	LONG pram1 = (LONG)get_long(command + 2);
+	//there is 1 byte of padding here
+	LONG  pram1 = (LONG)get_long(command + 2);
 	UWORD pram2 = get_word(command + 6);
 	UWORD pram3 = get_word(command + 8);
 
+	dbgprintf("Audio command:%d,Freq:%d,Duration:%d,Amplitude:%d\n",cmd,pram1,pram2,pram3);
+
 	switch(cmd){
 		case sndCmdFreqDurationAmp:
-			if(pram3 == 0)break;//if amplitude is 0 return
+			//if(pram3 == 0)break;//if amplitude is 0 return
 
 			//this function is blocking wait for (pram2) milliseconds
-			std::this_thread::sleep_for(std::chrono::milliseconds(pram2));
+			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 2));// / 2 is a hack, but it works for the only game currently supported (Zap2016!)
 			break;
 		case sndCmdFrqOn:
 			//same as above but dosent wait
+
 			break;
 		case sndCmdNoteOn:
+			break;
 		case sndCmdQuiet:
+			//Stops audio playback
+			//can be used as a millisecond delay function as none is officially provided by Palm OS
 
-			//dbgprintf("No audio driver!\n");
+			//this function is blocking wait for (pram2) milliseconds
+			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 2));// / 2 is a hack, but it works for the only game currently supported (Zap2016!)
 			break;
 
 		default:

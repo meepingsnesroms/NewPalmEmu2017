@@ -265,7 +265,8 @@ bool full_init(std::string& palmname, int w, int h){
 	PENY = 0;
 	PENDOWN = false;
 
-	totalticks = 0;
+	fullticks = 0;
+	partialticks = 0.0;
 	starttime = std::chrono::high_resolution_clock::now();
 
 	textclipbank = getnewlinearchunks(1) << 16;

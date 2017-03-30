@@ -85,8 +85,10 @@ enum{
 
 #define evtDataOffset 8
 
+//there are 100 ticks per second on a palm os device
 #define TICKSPERSECOND 100
-#define palmTicks(x) (std::chrono::milliseconds((x)))
+#define palmTick	 (std::chrono::milliseconds(10))
+#define palmTicks(x) (palmTick * (x))
 
 typedef struct{
 	UWORD type = 0;

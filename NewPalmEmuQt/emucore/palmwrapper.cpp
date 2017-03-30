@@ -35,8 +35,8 @@ int curoverlay;//open apps overlay(language file)
 CPTR appcall;//fake data saying how and why the app was launched
 std::string username;
 std::string clipboard;
-ULONG totalticks;
-//float partialticks;
+ULONG fullticks;
+float partialticks;
 ULONG keymask;
 std::chrono::high_resolution_clock::time_point starttime;
 
@@ -70,14 +70,7 @@ bool hasbootableapp = false;
 void get_palm_framebuffer(UWORD* copyto){
 	size_t_68k total = LCDW * LCDH;
 
-	//for old palm games that set the framebuffer address
-	/*
-	if(customlssa){
-		//parse custom display data
-		return;
-	}
-	*/
-
+	//lssa must be fixed for old palm games that set the framebuffer address
 	memcpy(copyto,framebuffer,total * sizeof(UWORD));
 }
 
@@ -126,7 +119,17 @@ bool resume(){
 bool halt(){
 	if(!running)return false;
 
-	totalticks += (std::chrono::high_resolution_clock::now() - starttime) / palmTicks(1);
+	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
+	uint32 fulltickspassed = (uint32)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
+	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
+	fullticks   += fulltickspassed;
+	partialticks += partialtickspassed;
+
+	if(partialticks > 1.0){
+		fullticks   += (uint32)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
+		partialticks -= (uint32)partialticks;//remove any full ticks from the partial tick counter
+	}
+
     CPU_stop(&palm);
 	running = false;
 	return true;
