@@ -10,14 +10,17 @@
     </script>
         
     <!--CPU opcode parsing-->
+    <script type="text/javascript" src="js/sae/config.js"></script>
     <script type="text/javascript" src="js/sae/memory.js"></script>
     <script type="text/javascript" src="js/sae/cpu.js"></script>
     <script type="text/javascript" src="js/sae/disassembler.js"></script>
         
-    <!--ROM uploader-->
+    <!--File Management-->
     <script type="text/javascript" src="js/filereader.js"></script>
     <script type="text/javascript" src="js/fileshim.js"></script>
+    <script type="text/javascript" src="js/download.js"></script>
         
+    <!--Decompiling-->
     <script type="text/javascript" src="js/saehook.js"></script>
     <script type="text/javascript" src="js/cformating.js"></script>
     <script type="text/javascript" src="js/recompiler.js"></script>
@@ -26,12 +29,15 @@
      
     <body>
         There is no GUI for this program!!!<br>
-        Upload your ROM, download your C++ file, if anything went wrong there will be a log in the box below.<br>
+        Upload your ROM, download your C++ file, if anything went wrong there is a log in the box below.<br>
         <input type="file" id="fileinput" /><br>
         Log:<br>
         <textarea id="logoutput" rows="30" cols="50" readonly></textarea><br>
         ROM upload management using filereader.js:<br>
         <a href="https://github.com/bgrins/filereader.js">https://github.com/bgrins/filereader.js</a><br>
+        <br>
+        C++ file download from array using download.js:<br>
+        <a href="http://danml.com/download.html">http://danml.com/download.html</a><br>
         <br>
         Disassembler from Scripted Amiga Emulator:<br>
         <a href="https://github.com/naTmeg/ScriptedAmigaEmulator">https://github.com/naTmeg/ScriptedAmigaEmulator</a><br>

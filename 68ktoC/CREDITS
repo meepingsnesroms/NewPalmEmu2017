@@ -1,5 +1,9 @@
 ROM upload management using filereader.js:
 https://github.com/bgrins/filereader.js
 
+C++ file download from array using download.js:
+http://danml.com/download.html
+
 Disassembler from Scripted Amiga Emulator:
 https://github.com/naTmeg/ScriptedAmigaEmulator
+
