@@ -15,7 +15,7 @@ var SAER_CPU_run_func = null;
 var SAER_CPU_fill_prefetch = null;
 
 /*---------------------------------*/
-/* global variables */
+/* global variables, SAER_Memory_get32, SAER_Memory_get32, SAER_Memory_put32, SAER_Memory_get16, SAER_Memory_put16 */
 
 var SAEV_CPU_cycles = 0;
 
@@ -2356,18 +2356,18 @@ function SAEO_CPU() {
 	/* SECT dissassembling */
 	/*-----------------------------------------------------------------------*/
 
-	var D_RDD 			= 1;
-	var D_RDA 			= 2;
-	var D_RIPR 			= 3;
-	var D_RIPO 			= 4;
-	var D_RID 			= 5;
-	var D_IMD 			= 6;
-	var D_IME				= 7;
-	var D_IME_DP			= 8;
-	var D_EA  			= 10;
-	var D_CCR 			= 11;
-	var D_SR 				= 12;
-	var D_USP 			= 13;
+	var D_RDD 		= 1;
+	var D_RDA 		= 2;
+	var D_RIPR 		= 3;
+	var D_RIPO 		= 4;
+	var D_RID 		= 5;
+	var D_IMD 		= 6;
+	var D_IME		= 7;
+	var D_IME_DP		= 8;
+	var D_EA  		= 10;
+	var D_CCR 		= 11;
+	var D_SR 		= 12;
+	var D_USP 		= 13;
 	var D_EXT_BITFIELD	= 20;
 	var D_EXT_MOVEM		= 21;
 	var D_EXT_MOVEC		= 22;
