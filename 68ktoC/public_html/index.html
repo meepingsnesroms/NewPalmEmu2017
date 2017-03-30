@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <script>
+            function logprintf(data){
+                var textbox = document.getElementById("logoutput");
+                var textbackup = textbox.value;
+                textbox.value = textbackup + data;
+            }
+        </script>
+        
+        <script type="text/javascript" src="js/filereader.js"></script>
+        <script type="text/javascript" src="js/fileshim.js"></script>
+        <script type="text/javascript" src="js/recompiler.js"></script>
+
+        <title>68ktoC Recompiler</title>
+    </head>
+    <body>
+        There is no GUI for this program!!!<br>
+        Upload your ROM, download your C++ file, if anything went wrong there will be a log in the box below.<br>
+        <input type="file" id="fileinput" /><br>
+        Log:<br>
+        <textarea id="logoutput" rows="30" cols="50" readonly></textarea>
+    </body>
+</html>
