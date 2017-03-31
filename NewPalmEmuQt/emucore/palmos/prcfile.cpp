@@ -14,23 +14,6 @@
 #include "dataexchange.h"
 #include "datamanager.h"
 
-//dont pad this struct
-//(i hate that this is non standard
-//but there is no other way except UBYTE x[10])
-typedef struct __attribute__((packed)){
-	TYPE type;
-	UWORD id;
-	CPTR location;
-}prcresource;
-
-//dont pad this struct
-typedef struct __attribute__((packed)){
-	CPTR location;
-	UBYTE attr;
-	UBYTE pad[3];//not used
-}pdbresource;
-
-/*
 typedef struct{
 	TYPE type;
 	UWORD id;
@@ -57,7 +40,6 @@ pdbresource getpdbresourceheader(UBYTE* rawheader){
 	temp.attr = rawheader[0x04];
 	return temp;
 }
-*/
 
 
 //68k malloc info
@@ -92,22 +74,22 @@ static CPTR installresource(UBYTE *resource,size_t_68k size){
 }
 
 static void unpackprcresource(UWORD resourcenum,UBYTE *prcdata,size_t_68k prcsize,int app){
-	prcresource* thisresource = (prcresource*)(prcdata + 0x4E/*end of prc header*/ + (resourcenum * 10));
+	prcresource thisresource = getprcresourceheader(prcdata + 0x4E/*end of prc header*/ + (resourcenum * 10));
 	UWORD numrecords = prcdata[0x4C] << 8 | prcdata[0x4C + 1];
-	ULONG nextresourcestart = belong(((prcresource*)(prcdata + 0x4E/*end of prc header*/ + (resourcenum * 10) + 10))->location);
 	size_t_68k size;
 
 	if(resourcenum + 1 == numrecords){
-		size = prcsize - belong(thisresource->location);
+		size = prcsize - thisresource.location;
 	}else{
-		size = nextresourcestart - belong(thisresource->location);
+		prcresource nextresource = getprcresourceheader(prcdata + 0x4E/*end of prc header*/ + (resourcenum * 10) + 10);
+		size = nextresource.location - thisresource.location;
 	}
 
 	palmresource prcchunk;
 
-	prcchunk.id = beword(thisresource->id);
-	prcchunk.type = thisresource->type;
-	prcchunk.location = installresource((UBYTE*)(prcdata + belong(thisresource->location)),size);
+	prcchunk.id = thisresource.id;
+	prcchunk.type = thisresource.type;
+	prcchunk.location = installresource((UBYTE*)(prcdata + thisresource.location),size);
 	prcchunk.size = size;
 
 	apps[app].parts.push_back(prcchunk);
@@ -116,20 +98,20 @@ static void unpackprcresource(UWORD resourcenum,UBYTE *prcdata,size_t_68k prcsiz
 }
 
 static void unpackpdbresource(UWORD resourcenum,UBYTE *pdbdata,size_t_68k pdbsize,int dbnum){
-	pdbresource* thisresource = (pdbresource*)(pdbdata + 0x4E/*end of pdb header*/ + (resourcenum * 8));
+	pdbresource thisresource = getpdbresourceheader(pdbdata + 0x4E/*end of pdb header*/ + (resourcenum * 8));
 	UWORD numrecords = pdbdata[0x4C] << 8 | pdbdata[0x4C + 1];
-	ULONG nextresourcestart = belong(((pdbresource*)(pdbdata + 0x4E/*end of pdb header*/ + (resourcenum * 8) + 8))->location);
 	size_t_68k size;
 
 	if(resourcenum + 1 == numrecords){
-		size = pdbsize - belong(thisresource->location);
+		size = pdbsize - thisresource.location;
 	}else{
-		size = nextresourcestart - belong(thisresource->location);
+		pdbresource nextresource = getpdbresourceheader(pdbdata + 0x4E/*end of pdb header*/ + (resourcenum * 8) + 8);
+		size = nextresource.location - thisresource.location;
 	}
 	palmresource pdbchunk;
 	pdbchunk.id = resourcenum;
-	pdbchunk.attr = thisresource->attr;
-	pdbchunk.location = installresource((UBYTE*)(pdbdata + belong(thisresource->location)),size);
+	pdbchunk.attr = thisresource.attr;
+	pdbchunk.location = installresource(pdbdata + thisresource.location,size);
 	pdbchunk.size = size;
 
 	//dbgprintf("Resource:PDB,Id:%d,Installloc:0x%08x\n",resourcenum,pdbchunk.location);
