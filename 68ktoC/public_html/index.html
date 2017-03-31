@@ -1,34 +1,66 @@
 <!DOCTYPE html>
 <html>
+    <head>
 
-    <script>
-        function logprintf(data){
-            var textbox = document.getElementById("logoutput");
-            var textbackup = textbox.value;
-            textbox.value = textbackup + data;
+        <script>
+            function logprintf(data){
+                var textbox = document.getElementById("logoutput");
+                if(textbox !== null){
+                    var textbackup = textbox.value;
+                    textbox.value = textbackup + data;
+                }
+            }
+        </script>
+
+        <script type="text/javascript">
+        var CPPHeaderAsString;
+
+        function HeaderToString() {
+            var oFrame = document.getElementById("cppheaderfile");
+            CPPHeaderAsString  = oFrame.contentWindow.document.body.childNodes[0].innerHTML;
+            /*
+            var strRawContents = oFrame.contentWindow.document.body.childNodes[0].innerHTML;
+            while (strRawContents.indexOf("\r") >= 0)
+                strRawContents = strRawContents.replace("\r", "");
+            var arrLines = strRawContents.split("\n");
+            alert("File " + oFrame.src + " has " + arrLines.length + " lines");
+            for (var i = 0; i < arrLines.length; i++) {
+                var curLine = arrLines[i];
+                alert("Line #" + (i + 1) + " is: '" + curLine + "'");
+            }
+            */
         }
-    </script>
+        </script>
+
+        <!--Hacky stuff-->
+        <iframe id="cppheaderfile" src="datafiles/cppfileheader.txt" onload="HeaderToString();" style="display: none;"></iframe>
+
+        <!--CPU opcode parsing-->
+        <script type="text/javascript" src="js/sae/saedefines.js"></script>
+        <script type="text/javascript" src="js/sae/utils.js"></script>
+        <script type="text/javascript" src="js/sae/config.js"></script>
+        <script type="text/javascript" src="js/sae/memory.js"></script>
+        <script type="text/javascript" src="js/sae/cpu.js"></script>
+        <script type="text/javascript" src="js/sae/disassembler.js"></script>
+
+        <!--File Management-->
+        <script type="text/javascript" src="js/filereader.js"></script>
+        <script type="text/javascript" src="js/fileshim.js"></script>
+        <script type="text/javascript" src="js/download.js"></script>
+
+        <!--Decompiling-->
+        <script type="text/javascript" src="js/saehook.js"></script>
+        <script type="text/javascript" src="js/cppoutput.js"></script>
+        <script type="text/javascript" src="js/recompiler.js"></script>
+
         
-    <!--CPU opcode parsing-->
-    <script type="text/javascript" src="js/sae/config.js"></script>
-    <script type="text/javascript" src="js/sae/memory.js"></script>
-    <script type="text/javascript" src="js/sae/cpu.js"></script>
-    <script type="text/javascript" src="js/sae/disassembler.js"></script>
-        
-    <!--File Management-->
-    <script type="text/javascript" src="js/filereader.js"></script>
-    <script type="text/javascript" src="js/fileshim.js"></script>
-    <script type="text/javascript" src="js/download.js"></script>
-        
-    <!--Decompiling-->
-    <script type="text/javascript" src="js/saehook.js"></script>
-    <script type="text/javascript" src="js/cformating.js"></script>
-    <script type="text/javascript" src="js/recompiler.js"></script>
-    
-    <title>68ktoC Recompiler</title>
+        <meta charset="utf-8"/>
+        <title>68ktoC Recompiler</title>
+    </head>
      
     <body>
         There is no GUI for this program!!!<br>
+        This can only decompile 68k Palm OS ROMs, the ARM ones are encrypted and use an entirely different set of instructions these will result in garbled C++ as output!!!<br>
         Upload your ROM, download your C++ file, if anything went wrong there is a log in the box below.<br>
         <input type="file" id="fileinput" /><br>
         Log:<br>

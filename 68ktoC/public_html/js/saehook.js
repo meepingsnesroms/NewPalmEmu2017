@@ -1,4 +1,4 @@
-/* global SAEC_Memory_addrbank_flag_CHIPRAM, SAEC_Memory_addrbank_flag_RAM, SAEC_Memory_addrbank_flag_THREADSAFE */
+/* global SAEC_Memory_addrbank_flag_CHIPRAM, SAEC_Memory_addrbank_flag_RAM, SAEC_Memory_addrbank_flag_THREADSAFE, SAEV_config, SAEC_Config_CPU_Model_68020, SAER_Memory_banks */
 
 var rom_data;
 var rom_addr;
@@ -60,12 +60,22 @@ var null_bank = new SAEO_Memory_addrbank(
     SAEC_Memory_addrbank_flag_RAM | SAEC_Memory_addrbank_flag_THREADSAFE | SAEC_Memory_addrbank_flag_CHIPRAM
 );
 
-var DisassemblerMemory = new SAEO_Memory();
-var SAEDisassemble = new ScriptedDisAssembler();
+function FIXED_map_banks(banktype, bankstart, bankstofill) {
+    for(var count = 0;count < bankstofill;count++){
+        SAER_Memory_banks[bankstart + count] = banktype;
+    }
+}
+
+var m68kmem = new SAEO_Memory();
+var sda = null;//new ScriptedDisAssembler();
+var cfg = null;
 
 function Disassemble68kAddr(addr){
-    SAEDisassemble.cpu.setPC_normal(addr);
-    return SAEDisassemble.disassemble();
+    cfg.offset = addr;
+    for(var count = 0;count < rom_size;count++){
+        cfg.code += rom_data[count];
+    }
+    return sda.disassemble();
 }
 
 function LoadRomTo68k(data,startloc,size){
@@ -79,13 +89,15 @@ function LoadRomTo68k(data,startloc,size){
         size += 0x00010000;
         size &= 0xFFFF0000;
     }
-    SAEO_Configuration();
+    FIXED_map_banks(null_bank, 0x0000/*starting bank*/, 0xFFFF/*banks to map*/);
+    FIXED_map_banks(palmrom_bank, startloc >>> 16, size >>> 16);
+    
+    
     //Target device is Palm m515:
     //CPU: DragonBall MC68VZ328 
     //Opcode set: M68020
-    SAEV_config.cpu.model = SAEC_Config_CPU_Model_68020;
-    SAER_Memory_mapBanks(null_bank, 0x0000/*starting bank*/, 0xFFFF/*banks to map*/, 0/*only needed if provided unformatted data*/);
-    SAER_Memory_mapBanks(palmrom_bank, startloc >>> 16, size >>> 16, 0/*only needed if provided unformatted data*/);
-    SAEDisassemble.cpu.reset(true/*hard reset*/);
+    sda = new ScriptedDisAssembler();
+    cfg = sda.getConfig(); /* reference to config */
+ 
     //ROM now loaded and mapped to 68k address space
 }

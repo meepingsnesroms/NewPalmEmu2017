@@ -10,6 +10,13 @@ function main(file){
     logprintf("68k Execution Start Addr: " + "0x" + initlocation.toString(16).toUpperCase() + '\n');
     
     LoadRomTo68k(file,romaddress,file.length);
-    Disassemble68kAddr(initlocation);
     
+    var txtout = [];
+    try{
+        txtout = Disassemble68kAddr(initlocation);
+    }catch(e){
+        console.log(e);
+    }
+    
+    download(txtout,"m68kfunctions.cpp","text/plain");
 }

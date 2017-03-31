@@ -1,0 +1,25 @@
+#include <stdint.h>
+
+//stores the entire Palm OS ROM as data for any recompiled APIs that access ROM data
+static uint8_t  68kdata[$PALMROMSIZE$] = {$PALMROMFILE$};
+
+static uint32_t REG_data[8];
+static uint32_t REG_addr[8];
+
+//static uint8_t FLAG_trace;//(trace is a 2bit flag) //trace is not possible(or useful) using decompiled code
+//static bool    FLAG_supervisor;//supervisor is not possible(or useful) using decompiled code
+static bool FLAG_extend;
+static bool FLAG_negative;
+static bool FLAG_zero;
+static bool FLAG_overflow;
+static bool FLAG_carry;
+
+//some opcodes clear the flags after reading them
+static void CPU_clearflags(){
+    FLAG_extend = false;
+    FLAG_negative = false;
+    FLAG_zero = false;
+    FLAG_overflow = false;
+    FLAG_carry = false;
+}
+

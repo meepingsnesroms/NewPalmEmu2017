@@ -110,7 +110,6 @@ HEADERS  += \
     emucore/hardware/m68000/newcpu.h \
     emucore/hardware/dataexchange.h \
     emucore/hardware/memmap.h \
-    emucore/hardware/types.h \
     emucore/hardware/virtuallcd.h \
     emucore/palmos/graphics/biosfont.h \
     emucore/palmos/graphics/bitmapcompression.h \
