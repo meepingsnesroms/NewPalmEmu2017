@@ -14,7 +14,7 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include <thread> //HACK move to files that need it
+#include <thread>
 
 
 
@@ -25,10 +25,12 @@ extern void (*TouchDriver)(int,int,bool);
 extern void (*KeyDriver)(char,bool);
 extern void (*ButtonDriver)(int,bool);
 
-extern int curapp;
-extern int curoverlay;
+extern int  curapp;
+extern int  curoverlay;
 extern CPTR appcall;
 extern std::string username;
+extern std::string sdcarddirectory;
+extern bool  multibytecharsupport;
 extern ULONG fullticks;
 extern float partialticks;
 extern ULONG keymask;
@@ -37,20 +39,6 @@ extern std::chrono::high_resolution_clock::time_point starttime;
 //events
 extern CPTR appexceptionlist;
 
-//display
-#define LCDMAXW		320
-#define LCDMAXH		480
-#define LCDMAXPIX	(LCDMAXW * LCDMAXH)
-#define LCDMAXBPP	16
-#define LCDMAXBYTES (LCDMAXPIX * 2)
-
-extern WORD LCDW,LCDH;
-#define LCDBPP 16 //hack //make varible
-#define LCDHASCOLOR (LCDBPP > 4)
-#define LCDDENSITY	(LCDW / 160)
-extern size_t_68k LCDBYTES;
-extern UWORD framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
-
 //ui
 extern CPTR oslcdwindow,lcdbitmaptype;
 
@@ -58,18 +46,6 @@ extern CPTR oslcdwindow,lcdbitmaptype;
 extern std::string lasttrap;
 //End of universal data
 
-
-enum{
-	Power,
-	Up,
-	Down,
-	Calender,
-	Contacts,
-	Todo,
-	Notes
-};
-
-//HACK above is too generic may cause conflicts,switch to "BTN_*" below
 enum{
 	BTN_Power,
 	BTN_Up,
@@ -80,7 +56,7 @@ enum{
 	BTN_Notes
 };
 
-extern std::string directory;
+//extern std::string directory;
 extern shared_img palm;
 extern std::thread palmcpu;
 extern bool started;

@@ -1,5 +1,9 @@
 #include "palmwrapper.h"
 
+WORD LCDW,LCDH;
+size_t_68k LCDBYTES;
+UWORD framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
+
 void lcd_init(int w,int h){
 	LCDBYTES = w * h * 2;
 	LCDW = w;

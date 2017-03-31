@@ -35,6 +35,8 @@ int curoverlay;//open apps overlay(language file)
 CPTR appcall;//fake data saying how and why the app was launched
 std::string username;
 std::string clipboard;
+std::string sdcarddirectory;
+bool multibytecharsupport;
 ULONG fullticks;
 float partialticks;
 ULONG keymask;
@@ -42,12 +44,6 @@ std::chrono::high_resolution_clock::time_point starttime;
 
 //events
 CPTR appexceptionlist;
-
-//display
-WORD LCDW,LCDH;
-size_t_68k LCDBYTES;
-UWORD framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
-bool oldgfxmodes;
 
 //ui
 CPTR oslcdwindow,lcdbitmaptype;

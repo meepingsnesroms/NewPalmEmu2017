@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <stdio.h> //for the FILE* in shared_img
 
-static_assert(sizeof(char) == 1,"char must be 1 byte!");
-
 //fix for compiler warnings about unused parameter for some opcodes
 //(if it wont compile change these)
 
@@ -104,7 +102,7 @@ typedef uint32_t ULONG;
 typedef int32_t LONG;
 
 typedef ULONG CPTR;
-typedef char flagtype;//may change to bool
+typedef uint8_t flagtype;//may change to bool
 typedef void cpuop_func(ULONG);
 
 typedef ULONG size_t_68k;

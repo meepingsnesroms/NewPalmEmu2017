@@ -191,42 +191,42 @@ void MainWindow::on_exitemulator_released()
 
 void MainWindow::on_clock_pressed()
 {
-	sendbutton(Calender,true);
+	sendbutton(BTN_Calender,true);
 }
 
 void MainWindow::on_clock_released()
 {
-	sendbutton(Calender,false);
+	sendbutton(BTN_Calender,false);
 }
 
 void MainWindow::on_phone_pressed()
 {
-	sendbutton(Contacts,true);
+	sendbutton(BTN_Contacts,true);
 }
 
 void MainWindow::on_phone_released()
 {
-	sendbutton(Contacts,false);
+	sendbutton(BTN_Contacts,false);
 }
 
 void MainWindow::on_todo_pressed()
 {
-	sendbutton(Todo,true);
+	sendbutton(BTN_Todo,true);
 }
 
 void MainWindow::on_todo_released()
 {
-	sendbutton(Todo,false);
+	sendbutton(BTN_Todo,false);
 }
 
 void MainWindow::on_notes_pressed()
 {
-	sendbutton(Notes,true);
+	sendbutton(BTN_Notes,true);
 }
 
 void MainWindow::on_notes_released()
 {
-	sendbutton(Notes,false);
+	sendbutton(BTN_Notes,false);
 }
 
 void MainWindow::on_runtest_clicked()
