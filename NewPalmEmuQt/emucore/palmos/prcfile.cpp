@@ -114,24 +114,19 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 
 	memcpy(meep.name,prcfile,32);
 
-	memcpy(&meep.flags,prcfile + 0x20,2);
-	swapword(meep.flags);
-	memcpy(&meep.version,prcfile + 0x22,2);
-	swapword(meep.version);
-	memcpy(&meep.modnum,prcfile + 0x30,4);
-	swaplong(meep.modnum);
-	memcpy(&meep.appinfo,prcfile + 0x34,4);
-	swaplong(meep.appinfo);
-	memcpy(&meep.sortinfo,prcfile + 0x38,4);
-	swaplong(meep.sortinfo);
+	meep.flags	  =	(prcfile[0x20] << 8)  | prcfile[0x21];
+	meep.version  = (prcfile[0x22] << 8)  | prcfile[0x23];
+	meep.modnum   = (prcfile[0x30] << 24) | (prcfile[0x31] << 16) | (prcfile[0x32] << 8) | prcfile[0x33];
+	meep.appinfo  = (prcfile[0x34] << 24) | (prcfile[0x35] << 16) | (prcfile[0x36] << 8) | prcfile[0x37];
+	meep.sortinfo = (prcfile[0x38] << 24) | (prcfile[0x39] << 16) | (prcfile[0x3A] << 8) | prcfile[0x3B];
 
+	//these 2 are 4 character strings
 	memcpy(meep.type.typec,prcfile + 0x3C,4);
 	memcpy(meep.creator.typec,prcfile + 0x40,4);
 
-	memcpy(&meep.uuidseed,prcfile + 0x44,4);
-	swaplong(meep.uuidseed);
-	memcpy(&meep.nextrecordlist,prcfile + 0x48,4);
-	swaplong(meep.nextrecordlist);
+	meep.uuidseed		= (prcfile[0x44] << 24) | (prcfile[0x45] << 16) | (prcfile[0x46] << 8) | prcfile[0x47];
+	meep.nextrecordlist = (prcfile[0x48] << 24) | (prcfile[0x49] << 16) | (prcfile[0x4A] << 8) | prcfile[0x4B];
+
 
 	//get the needed 68k memory
 	curmemloc = getnewlinearchunks(NUM_BANKS(prcsize + meep.numrecords * 4)) << 16;
@@ -145,8 +140,7 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 	meep.resdb = true;
 
 	apps.push_back(meep);
-	unsigned int robin;
-	for(robin = 0;robin < meep.numrecords;robin++){
+	for(uint16 robin = 0;robin < meep.numrecords;robin++){
 		unpackprcresource(robin,prcfile,prcsize,apps.size() - 1);
 	}
 
@@ -165,24 +159,18 @@ static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
 
 	memcpy(meep.name,pdbfile,32);
 
-	memcpy(&meep.fileattr,pdbfile + 0x20,2);
-	swapword(meep.fileattr);
-	memcpy(&meep.version,pdbfile + 0x22,2);
-	swapword(meep.version);
-	memcpy(&meep.modnum,pdbfile + 0x30,4);
-	swaplong(meep.modnum);
-	memcpy(&meep.appinfo,pdbfile + 0x34,4);
-	swaplong(meep.appinfo);
-	memcpy(&meep.sortinfo,pdbfile + 0x38,4);
-	swaplong(meep.sortinfo);
+	meep.fileattr = (pdbfile[0x20] << 8)  | pdbfile[0x21];
+	meep.version  = (pdbfile[0x22] << 8)  | pdbfile[0x23];
+	meep.modnum   = (pdbfile[0x30] << 24) | (pdbfile[0x31] << 16) | (pdbfile[0x32] << 8) | pdbfile[0x33];
+	meep.appinfo  = (pdbfile[0x34] << 24) | (pdbfile[0x35] << 16) | (pdbfile[0x36] << 8) | pdbfile[0x37];
+	meep.sortinfo = (pdbfile[0x38] << 24) | (pdbfile[0x39] << 16) | (pdbfile[0x3A] << 8) | pdbfile[0x3B];
 
+	//these 2 are 4 character strings
 	memcpy(meep.type.typec,pdbfile + 0x3C,4);
 	memcpy(meep.creator.typec,pdbfile + 0x40,4);
 
-	memcpy(&meep.uuidseed,pdbfile + 0x44,4);
-	swaplong(meep.uuidseed);
-	memcpy(&meep.nextrecordlist,pdbfile + 0x48,4);
-	swaplong(meep.nextrecordlist);
+	meep.uuidseed		= (pdbfile[0x44] << 24) | (pdbfile[0x45] << 16) | (pdbfile[0x46] << 8) | pdbfile[0x47];
+	meep.nextrecordlist = (pdbfile[0x48] << 24) | (pdbfile[0x49] << 16) | (pdbfile[0x4A] << 8) | pdbfile[0x4B];
 
 
 	//get the needed 68k memory
@@ -197,8 +185,7 @@ static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
 	meep.resdb = false;
 
 	apps.push_back(meep);
-	unsigned int robin;
-	for(robin = 0;robin < meep.numrecords;robin++){
+	for(uint16 robin = 0;robin < meep.numrecords;robin++){
 		unpackpdbresource(robin,pdbfile,pdbsize,apps.size() - 1);
 	}
 
