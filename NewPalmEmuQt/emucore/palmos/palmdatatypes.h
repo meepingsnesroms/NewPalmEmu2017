@@ -5,8 +5,8 @@
 #include <vector>
 
 typedef union{
-	char typec[4];
-	ULONG typen;
+	UBYTE typec[4];//type as string
+	ULONG typen;//type as number
 }TYPE;
 
 typedef struct{

@@ -15,7 +15,7 @@ struct dbinfo{
 	}
 };
 
-bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool zeroiswild,bool cmpisbigendian);
+bool typecreatorCMP(ULONG type, ULONG creator, ULONG cmptype, ULONG cmpcreator, bool zeroiswild, bool swapendian);
 
 CPTR getresource(int dbnum, UWORD id, ULONG tp);
 CPTR getappresource(UWORD id, ULONG tp);

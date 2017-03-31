@@ -14,7 +14,6 @@
 #include "dataexchange.h"
 #include "datamanager.h"
 
-
 //dont pad this struct
 //(i hate that this is non standard
 //but there is no other way except UBYTE x[10])
@@ -30,6 +29,35 @@ typedef struct __attribute__((packed)){
 	UBYTE attr;
 	UBYTE pad[3];//not used
 }pdbresource;
+
+/*
+typedef struct{
+	TYPE type;
+	UWORD id;
+	CPTR location;
+}prcresource;
+
+typedef struct{
+	CPTR location;
+	UBYTE attr;
+	UBYTE pad[3];//not used
+}pdbresource;
+
+prcresource getprcresourceheader(UBYTE* rawheader){
+	prcresource temp;
+	memcpy(temp.type.typec,rawheader,4);//tiny string
+	temp.id  = (rawheader[0x04] << 8)  | rawheader[0x05];
+	temp.location = (rawheader[0x06] << 24) | (rawheader[0x07] << 16) | (rawheader[0x08] << 8) | rawheader[0x09];
+	return temp;
+}
+
+pdbresource getpdbresourceheader(UBYTE* rawheader){
+	pdbresource temp;
+	temp.location = (rawheader[0x00] << 24) | (rawheader[0x01] << 16) | (rawheader[0x02] << 8) | rawheader[0x03];
+	temp.attr = rawheader[0x04];
+	return temp;
+}
+*/
 
 
 //68k malloc info
