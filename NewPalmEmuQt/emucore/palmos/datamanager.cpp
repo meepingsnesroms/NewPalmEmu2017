@@ -93,7 +93,7 @@ void dmcreatedatabase(){
 
 
 	dbinfo newdbinfo;
-	newdbinfo.name = m68kstr(nameptr);
+	newdbinfo.name = readstring(nameptr);
 	newdbinfo.type = type;
 	newdbinfo.creator = creator;
 
@@ -562,7 +562,7 @@ void dmsetdatabaseinfo(){
 		//swap to new values
 		setlongifvptr(creatorptr,cmpcreator);
 		setlongifvptr(typeptr,cmptype);
-		if(nameptr)cmpname = m68kstr(nameptr);
+		if(nameptr)cmpname = readstring(nameptr);
 
 
 		getnumfromname(0,cmpname)
@@ -581,7 +581,7 @@ void dmsetdatabaseinfo(){
 
 
 	if(nameptr){
-		std::string appname = m68kstr(nameptr);
+		std::string appname = readstring(nameptr);
 		if(appname.size() > 32){
 			D0 = dmErrInvalidDatabaseName;
 			return;
@@ -680,7 +680,7 @@ void dmfinddatabase(){
 	stackword(cardno);//dummy
 	stackptr(nameptr);
 
-	std::string name = m68kstr(nameptr);
+	std::string name = readstring(nameptr);
 
 	dbgprintf("Name:%s\n",name.c_str());
 

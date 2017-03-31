@@ -1,16 +1,6 @@
 #include "m68k.h"
 #include <string>
 
-void membyteswap(UBYTE *start, size_t_68k size){
-	UBYTE temp;
-	offset_68k bunny;
-	for(bunny = 0;bunny < size;bunny += 2){
-		temp = start[bunny];
-		start[bunny] = start[bunny + 1];
-		start[bunny + 1] = temp;
-	}
-}
-
 void readbytearray(CPTR loc, UBYTE *dest, size_t_68k size){
 	offset_68k goo;
 	for(goo = 0;goo < size;goo++){

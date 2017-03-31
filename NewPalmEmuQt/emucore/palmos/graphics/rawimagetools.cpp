@@ -881,7 +881,7 @@ CPTR load_FRMOBJ(UBYTE type,CPTR unopenedobj,CPTR dest){
 		case frmFieldObj:
 			put_long(openedobj + 12,unopenedobj + 40);//text ptr
 			dbgprintf("frmFieldObj ID:%04x,CharPtr:%08x,CharHandle:%08x\n",get_word(openedobj),get_long(openedobj + 12),get_long(openedobj + 16));
-			dbgprintf("%s\n",m68kstr(unopenedobj + 40).c_str());
+			dbgprintf("%s\n",readstring(unopenedobj + 40).c_str());
 			//more
 			break;
 		case frmTitleObj:

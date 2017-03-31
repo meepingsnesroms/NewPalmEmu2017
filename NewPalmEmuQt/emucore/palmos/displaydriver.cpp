@@ -937,7 +937,7 @@ void drawlabel(CPTR window,CPTR labelptr){
 	drwcolor = get_byte(TEXTCOLOR);//hack //must use palette with an index
 
 	dbgprintf("Label %s useable,attr:%04x,charptr:%08x\n",useable ? "IS":"IS NOT",attr,srcptr);
-	dbgprintf("X:%d,Y:%d,Text:%s\n",dstx,dsty,m68kstr(srcptr).c_str());
+	dbgprintf("X:%d,Y:%d,Text:%s\n",dstx,dsty,readstring(srcptr).c_str());
 
 	srcsize = findme;
 	if(useable)text();
@@ -1734,7 +1734,7 @@ void windrawchars(){
 
 	dbgprintf("%d chars to print.\n",length);
 
-	dbgprintf("Chars:%s\n",m68kstr(chrsptr).c_str());//HACK use length if given
+	dbgprintf("Chars:%s\n",readstring(chrsptr).c_str());//HACK use length if given
 
 	dstptr = currentdrawwindow;
 	dstx = thisx;
@@ -2490,9 +2490,9 @@ void frmcustomalert(){
 	stackptr(str2);
 	stackptr(str3);
 	dbgprintf("Custom alert!\n");
-	if(str1)dbgprintf("S1:%s\n",m68kstr(str1).c_str());
-	if(str2)dbgprintf("S2:%s\n",m68kstr(str2).c_str());
-	if(str3)dbgprintf("S3:%s\n",m68kstr(str3).c_str());
+	if(str1)dbgprintf("S1:%s\n",readstring(str1).c_str());
+	if(str2)dbgprintf("S2:%s\n",readstring(str2).c_str());
+	if(str3)dbgprintf("S3:%s\n",readstring(str3).c_str());
 
 	sendpenevents = false;
 
@@ -2507,15 +2507,15 @@ void frmcustomalert(){
 
 	std::vector<std::string> alerttext(2);
 	//string* alerttext = new string[2];
-	alerttext[0] = m68kstr(accessptr);
+	alerttext[0] = readstring(accessptr);
 	accessptr += alerttext[0].size() + 1;
-	alerttext[1] = m68kstr(accessptr);
+	alerttext[1] = readstring(accessptr);
 	accessptr += alerttext[1].size() + 1;
 
 	std::vector<std::string> buttontext(numbuttons);
 	//string* buttontext = new string[numbuttons];
 	for(UWORD count = 0;count < numbuttons;count++){
-		buttontext[count] =  m68kstr(accessptr);
+		buttontext[count] = readstring(accessptr);
 		accessptr += buttontext[count].size() + 1;
 	}
 
@@ -2617,8 +2617,8 @@ void frmalert(){
 	CPTR string2 = string1 + strlen68k(string1) + 1;
 	CPTR string3 = string2 + strlen68k(string2) + 1;
 
-	dbgprintf("AlertName:%s,AlertText:%s,String3:%s\n",m68kstr(string1).c_str(),
-		   m68kstr(string2).c_str(),m68kstr(string3).c_str());
+	dbgprintf("AlertName:%s,AlertText:%s,String3:%s\n",readstring(string1).c_str(),
+	       readstring(string2).c_str(),readstring(string3).c_str());
 
 	//draw alert
 

@@ -39,16 +39,11 @@ inline uint64 double64toraw(double64 data){return *((uint64*)&(data));}
 #define setwordifvptr(x,y) if((x))y = get_word((x))
 #define setlongifvptr(x,y) if((x))y = get_long((x))
 
-//HACK retain compatibility with functions that use m68kstr
-#define m68kstr(x) readstring(x)
-
-void membyteswap(UBYTE *start, size_t_68k size);
 
 void readbytearray(CPTR loc, UBYTE *dest, size_t_68k size);
 void writebytearray(CPTR loc, UBYTE *start, size_t_68k size);
 std::string readstring(CPTR loc);
 void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0);
-
 
 
 #define LINK(x) (emulink = (x))

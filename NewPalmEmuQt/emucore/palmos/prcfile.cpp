@@ -14,6 +14,7 @@
 #include "dataexchange.h"
 #include "datamanager.h"
 
+
 //dont pad this struct
 //(i hate that this is non standard
 //but there is no other way except UBYTE x[10])
@@ -46,11 +47,16 @@ static CPTR installresource(UBYTE *resource,size_t_68k size){
 		curmemloc += 1;
 		avbytes -= 1;
 	}
+
 	CPTR installaddr = curmemloc;
-	memcpy(currealaddr,resource,size);
-	//padding to word boundry for membyteswap
+	for(size_t_68k counter = 0;counter < size;counter++){
+		put_byte(installaddr + counter,resource[counter]);
+	}
+
+	//resources must be installed at EVEN addresses
+	//if not attempting to execute them will cause a bus error(68k equivilant of SIGSEGV)
 	if(!IS_EVEN(size))size++;
-	membyteswap(currealaddr,size);
+
 	currealaddr += size;
 	curmemloc += size;
 	avbytes -= size;

@@ -1365,7 +1365,7 @@ void syslibfind(){
 	stackptr(nameptr);
 	stackptr(libnum);//write this value
 
-	dbgprintf("Find lib:%s,Addr:%08x\n",m68kstr(nameptr).c_str(),nameptr);
+	dbgprintf("Find lib:%s,Addr:%08x\n",readstring(nameptr).c_str(),nameptr);
 
 	//void *meepcheek = get_real_address(nameptr);
 
@@ -1684,9 +1684,9 @@ bool emulateapi(int api){
 				stackptr(fname);
 				stackword(line);
 				stackptr(errstr);
-				dbgprintf("Palm says:%s",m68kstr(fname).c_str());
+				dbgprintf("Palm says:%s",readstring(fname).c_str());
 				dbgprintf(" %d ",line);
-				dbgprintf("%s\n",m68kstr(errstr).c_str());
+				dbgprintf("%s\n",readstring(errstr).c_str());
 			}
 			return true;
 
@@ -1695,7 +1695,7 @@ bool emulateapi(int api){
 				stackptr(formatstring);
 				stackptr(args);
 				dbgprintf("OutPtr:%08x,InPtr:%08x,ArgPtr:%08x\n",outstring,formatstring,args);
-				std::string str = m68kstr(formatstring);
+				std::string str = readstring(formatstring);
 				dbgprintf("Start:%s,ArgPtr:%08x\n",str.c_str(),args);
 				writestring(outstring,str);
 				//D0 = sprintf68k(outstring,formatstring,args);
