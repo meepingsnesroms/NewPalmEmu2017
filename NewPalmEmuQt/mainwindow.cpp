@@ -60,8 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->exitemulator->setEnabled(false);
 
 	//palm tx
-	setting_x = 320;
-	setting_y = 480;
+	//setting_x = 320;
+	//setting_y = 480;
+
+	//palm z22
+	setting_x = 160;
+	setting_y = 160;
 
 	//tapwave zodiac
 	//setting_x = 480;
@@ -231,7 +235,7 @@ void MainWindow::on_notes_released()
 
 void MainWindow::on_runtest_clicked()
 {
-#define SIMPAPP 4
+#define SIMPAPP 13
 
 #if SIMPAPP == -1
 	appstoload.push_back("/sdcard/palm/zap2016.prc");
