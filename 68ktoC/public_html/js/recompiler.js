@@ -19,5 +19,7 @@ function main(file){
         console.log(e);
     }
     
+    txtout = CleanASM(txtout);
+    
     download(txtout,"m68kfunctions.cpp","text/plain");
 }
