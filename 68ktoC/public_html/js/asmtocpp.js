@@ -11,3 +11,8 @@ function gen_apiname(apiname){
     cppfile_rawtext += apiheader;
 }
 
+function gen_opcoderun(opcodename){
+    var newline = "M68K_" + opcodename + "();";
+    cppfile_rawtext += newline;
+}
+

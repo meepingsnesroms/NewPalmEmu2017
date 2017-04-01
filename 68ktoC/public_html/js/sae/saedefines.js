@@ -8,8 +8,6 @@ var SAEC_Video_MAX_UAE_WIDTH = 3072; //max_uae_width
 var SAEC_Video_MIN_UAE_HEIGHT = 128;
 var SAEC_Video_MAX_UAE_HEIGHT = 2048; //max_uae_height
 
-var SAEE_Assert = 5;
-
 
 
 var SAER = null;
@@ -34,25 +32,3 @@ function SAEF_error() {
     if (console.error) console.error(str);
     logprintf(str);
 }
-
-/*
-
-function SAEF_fatal() {
-	var argumentsArray = Array.prototype.slice.call(arguments);
-	var err = argumentsArray[0];
-	var str = sprintf.apply(this, argumentsArray.slice(1));
-	if (console.error) console.error(str);
-        logprintf(str);
-	throw new SAEO_Error(err, str);
-}
-
-function SAEF_assert(cond) {
-	if (!cond) {
-		var err = SAEE_Assert;
-		var str = "Assertion failed. This is a bug in SAE.";
-		if (console.error) console.error(str);
-		throw new SAEO_Error(err, str);
-	}
-}
-
-*/

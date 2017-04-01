@@ -1,3 +1,4 @@
+
 //main() takes a uint8 array
 function main(file){
     //the starting address for execution
@@ -9,11 +10,11 @@ function main(file){
     logprintf("68k ROM Load Addr: " + "0x" + romaddress.toString(16).toUpperCase() + '\n');
     logprintf("68k Execution Start Addr: " + "0x" + initlocation.toString(16).toUpperCase() + '\n');
     
-    LoadRomTo68k(file,romaddress,file.length);
+    LoadRomTo68kDisasm(file,romaddress,file.length);
     
     var txtout = [];
     try{
-        txtout = Disassemble68kAddr(initlocation);
+        txtout = Disassemble68kAddr(initlocation,500/*opcodes to disassemble*/);
     }catch(e){
         console.log(e);
     }
