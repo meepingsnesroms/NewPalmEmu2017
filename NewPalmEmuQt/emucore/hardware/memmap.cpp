@@ -41,7 +41,7 @@ UBYTE avchunks[TOTALBANKS];
 UWORD* rammemory;
 UWORD  dballregs[SIZEOFBANK / sizeof(UWORD)];
 
-int ram_size;
+uint32_t ram_size;
 extern shared_img* Shptr;
 extern int exectrace;
 

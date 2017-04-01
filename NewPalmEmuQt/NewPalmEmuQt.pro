@@ -95,7 +95,10 @@ SOURCES += \
     processmanager.cpp \
     settingspanel.cpp \
     touchscreen.cpp \
-    libretro/libretro.c
+    libretro/libretro.c \
+    emucore/palmos/romloader.cpp \
+    emucore/hardware/romutils.cpp \
+    emucore/palmosv4.1-en-m515.cpp
 
 
 
@@ -148,7 +151,11 @@ HEADERS  += \
     processmanager.h \
     settingarray.h \
     settingspanel.h \
-    touchscreen.h
+    touchscreen.h \
+    emucore/types.h \
+    emucore/palmos/romloader.h \
+    emucore/hardware/romutils.h \
+    emucore/palmosv4.1-en-m515.h
 
 
 FORMS    += mainwindow.ui \

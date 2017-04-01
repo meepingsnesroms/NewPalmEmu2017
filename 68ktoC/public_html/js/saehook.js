@@ -5,7 +5,11 @@ var cfg = null;
 
 var result = [];
 var showAddr = true;
-var showCode = true;
+
+//this prevents the opcode hex values from being printed
+//these will interfere with the conversion to c++
+var showCode = false;
+
 var upperCase = true;
 var filesize = 0;
 function result2text() {
@@ -54,6 +58,6 @@ function LoadRomTo68kDisasm(data,startloc,size){
  
     filesize = size;
     cfg.prefx = "0x";
-    cfg.reloc = false;
+    cfg.reloc = false;//we need absolute addresses to wire the c++ code together with gotos
     //ROM now loaded and mapped to 68k address space
 }

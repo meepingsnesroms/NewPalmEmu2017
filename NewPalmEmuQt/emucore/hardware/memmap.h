@@ -26,6 +26,7 @@
 
 #define ram_start	  0x00000000
 #define dyn_start	  0x01000000
+#define rom_start	  0x10000000
 #define lcd_start	  0x1F000000
 #define custom_start  0xFFFF0000
 
@@ -42,7 +43,7 @@ int		valid_address(CPTR addr, ULONG size);
 UWORD*  get_real_address(CPTR addr);
 
 extern int buserr;
-extern int ram_size;
+extern uint32_t ram_size;
 
 typedef ULONG	(*lget_func)(CPTR);
 typedef UWORD	(*wget_func)(CPTR);
