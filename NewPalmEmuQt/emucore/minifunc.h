@@ -3,15 +3,10 @@
 
 #include "types.h"
 
-#ifdef _DBGMODE
-#define DEBUG(x) x
-#define dbgprintf	printf
-#else
-#define DEBUG(x)
-#define dbgprintf(x,...)
-#endif
 
-#define TEMPHACK
+//this should be moved to the files that need it
+#include "dbgmacros.h"
+
 
 //meaningful words
 #define findme 0

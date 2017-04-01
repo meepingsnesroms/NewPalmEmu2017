@@ -16,8 +16,6 @@
 	(y);\
 	return
 
-extern void *apilist[0x45A];
-
 //shared library traps
 #define	sysLibTrapBase		0xA800
 enum{
@@ -36,7 +34,9 @@ extern CPTR emulstate;
 void ftrget();
 void syslibfind();
 
-bool emulateapi(int api);
+void get_api_list_from_rom(uint8_t* romdata);
+
+bool emulateapi(UWORD api);
 
 #endif // PALMAPI
 

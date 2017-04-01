@@ -7,7 +7,7 @@
 #define BANKSFAIL 2
 
 #define NUM_BANKS(s) (((s) >> 16) + (((s) & 0xFFFF) ? 1 : 0))
-#define bankindex(x) ((x) >> 16)
+#define BANKINDEX(x) ((x) >> 16)
 
 #define SIZEOFBANK 0x10000
 #define TOTALBANKS 0x10000
@@ -26,7 +26,6 @@
 
 #define ram_start	  0x00000000
 #define dyn_start	  0x01000000
-#define rom_start	  0x10000000
 #define lcd_start	  0x1F000000
 #define custom_start  0xFFFF0000
 
@@ -82,7 +81,7 @@ UWORD getnewlinearchunks(UWORD needed);
 void  freedynchunk(int chunk);
 void  freedynchunks();
 
-void map_banks(addrbank bank, int start, int size);
+void map_banks(addrbank bank, uint32_t start, uint32_t size);
 int  memory_init();
 void memory_deinit();
 #endif

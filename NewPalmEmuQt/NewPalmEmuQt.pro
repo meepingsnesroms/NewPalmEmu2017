@@ -37,6 +37,7 @@ INCLUDEPATH += libretro \
     emucore/hardware/m68000 \
     emucore/palmos \
     emucore/palmos/graphics \
+    emucore/debug \
     emucore
 
 SOURCES += \
@@ -96,9 +97,9 @@ SOURCES += \
     settingspanel.cpp \
     touchscreen.cpp \
     libretro/libretro.c \
-    emucore/palmos/romloader.cpp \
     emucore/hardware/romutils.cpp \
-    emucore/palmosv4.1-en-m515.cpp
+    emucore/palmosv4.1-en-m515.cpp \
+    emucore/debug/trapnumtoname.cpp
 
 
 
@@ -155,7 +156,9 @@ HEADERS  += \
     emucore/types.h \
     emucore/palmos/romloader.h \
     emucore/hardware/romutils.h \
-    emucore/palmosv4.1-en-m515.h
+    emucore/palmosv4.1-en-m515.h \
+    emucore/debug/trapnumtoname.h \
+    emucore/debug/dbgmacros.h
 
 
 FORMS    += mainwindow.ui \

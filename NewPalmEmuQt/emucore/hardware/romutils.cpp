@@ -1,9 +1,12 @@
 #include <stdint.h>
 #include "memmap.h"
 
+static const CPTR rom_start =  0x10000000;
+
+static bool rom_loaded = false;
 static bool rom_writes_unlocked = false;
-UWORD* rommemory = nullptr;
-uint32_t rom_size = 0;
+static UWORD* rommemory = nullptr;
+static uint32_t rom_size = 0;
 
 
 /* ROM */
@@ -77,14 +80,25 @@ void install_rom_to_memory(uint8_t* romdata,uint32_t size){
 	rom_size = size;
 	rommemory = new UWORD[size / 2 + 1];
 
+	map_banks(rom_bank, rom_start >> 16, NUM_BANKS(size));
+
 	rom_writes_unlocked = true;
 	for(uint32_t count = 0;count < size;count++){
 		put_byte(rom_start + count, romdata[count]);
 	}
 	rom_writes_unlocked = false;
+
+	rom_loaded = true;
+}
+
+bool rom_active(){
+	return rom_loaded;
 }
 
 void clear_rommemory(){
-	delete[] rommemory;
+	if(rom_loaded){
+		delete[] rommemory;
+		rom_loaded = false;
+	}
 }
 

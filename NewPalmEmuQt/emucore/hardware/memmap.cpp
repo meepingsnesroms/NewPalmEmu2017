@@ -60,14 +60,14 @@ UWORD getnewlinearchunks(UWORD needed){
 	int j;
 
 	int count = 0;
-	for(i = bankindex(dyn_start);i < bankindex(lcd_start);i++){
+	for(i = BANKINDEX(dyn_start);i < BANKINDEX(lcd_start);i++){
 		if(avchunks[i] == notused)count++;
 		else count = 0;
 		if(count == needed)break;
 	}
 
 	//theres no palm address space left
-	if(i == bankindex(lcd_start) - 1)palmabrt();
+	if(i == BANKINDEX(lcd_start) - 1)palmabrt();
 
 	//return i to starting bank now that we know it can provide the banks requested
 	i -= (needed - 1);//change starting point from 1 to 0 based
@@ -357,10 +357,10 @@ addrbank reg_bank = {
     default_xlate, default_check
 };
 
-void map_banks(addrbank bank, int start, int size)
+void map_banks(addrbank bank, uint32_t start, uint32_t size)
 {
-    int bnr;
-    for (bnr = start; bnr < start+size; bnr++) 
+	//must use uint32_t because start+size can overflow a uint16_t
+	for (uint32_t bnr = start; bnr < start+size; bnr++)
        membanks[bnr] = bank;
 }
 
@@ -374,7 +374,7 @@ int memory_init(){
 	rammemory = new UWORD[ram_size];
 
 	//banks
-	membanks = new addrbank[65536];
+	membanks = new addrbank[0xFFFF];
 	for(offset_68k fluff = 0;fluff < TOTALBANKS;fluff++){
 		avchunks[fluff] = notused;
 		dynallocedchunkptrs[fluff] = nullptr;
@@ -400,27 +400,27 @@ void memory_deinit(){
 
 ULONG longget(CPTR addr)
 {
-    return membanks[bankindex(addr)].lget(addr);
+    return membanks[BANKINDEX(addr)].lget(addr);
 }
 UWORD wordget(CPTR addr)
 {
-    return membanks[bankindex(addr)].wget(addr);
+    return membanks[BANKINDEX(addr)].wget(addr);
 }
 UBYTE byteget(CPTR addr) 
 {
-    return membanks[bankindex(addr)].bget(addr);
+    return membanks[BANKINDEX(addr)].bget(addr);
 }
 void longput(CPTR addr, ULONG l)
 {
-    membanks[bankindex(addr)].lput(addr, l);
+    membanks[BANKINDEX(addr)].lput(addr, l);
 }
 void wordput(CPTR addr, UWORD w)
 {
-    membanks[bankindex(addr)].wput(addr, w);
+    membanks[BANKINDEX(addr)].wput(addr, w);
 }
 void byteput(CPTR addr, UBYTE b)
 {
-    membanks[bankindex(addr)].bput(addr, b);
+    membanks[BANKINDEX(addr)].bput(addr, b);
 }
 
 ULONG get_long(CPTR addr) 
@@ -489,7 +489,7 @@ UWORD *get_real_address(CPTR addr)
 		printprcerror(MC68000_getpc());
 		buserr = 1;
     }
-    return membanks[bankindex(addr)].xlateaddr(addr);
+    return membanks[BANKINDEX(addr)].xlateaddr(addr);
 }
 
 int valid_address(CPTR addr, ULONG size)
@@ -499,5 +499,5 @@ int valid_address(CPTR addr, ULONG size)
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
 	buserr = 1;
     }
-    return membanks[bankindex(addr)].check(addr, size);
+    return membanks[BANKINDEX(addr)].check(addr, size);
 }

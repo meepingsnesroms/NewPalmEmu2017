@@ -15,6 +15,9 @@
 #include "datamanager.h"
 #include "palmdefines.h"
 
+#include "romutils.h"
+#include "palmosv4.1-en-m515.h"
+
 static CPTR outa5,outgblstart,outgblend;
 
 //for non aligned ULONG size offsets in compressed globals
@@ -256,6 +259,9 @@ bool full_init(std::string& palmname, int w, int h){
 	if(CPU_init(&palm))return false;
 	resetmallocstate();//palm os memory state
 
+	//Using 68k code as apis whenever possible
+	install_rom_to_memory(palmosv41_en_m515_rom, palmosv41_en_m515_rom_len);
+
 	//set all start values
 	username = palmname;
 
@@ -283,6 +289,7 @@ void full_deinit(){
 	releasefilemem();
 	deinitdisplaydriver();
 	memory_deinit();
+	clear_rommemory();
 
 	hasbootableapp = false;
 }
