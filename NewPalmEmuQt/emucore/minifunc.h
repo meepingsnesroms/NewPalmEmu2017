@@ -22,6 +22,7 @@
 
 
 #define IS_EVEN(x)		(((x) & 1) == 0)
+#define IS_ODD(x)		(((x) & 1) == 1)
 
 #define nextboundry(x)	(((x) + 1) & ~0x1)
 

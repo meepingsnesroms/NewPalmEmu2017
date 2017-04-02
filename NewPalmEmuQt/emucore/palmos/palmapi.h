@@ -34,7 +34,7 @@ extern CPTR emulstate;
 void ftrget();
 void syslibfind();
 
-void get_api_list_from_rom(uint8_t* romdata);
+void make_api_list_from_rom(CPTR rom_SysGetTrapAddress);
 
 bool emulateapi(UWORD api);
 

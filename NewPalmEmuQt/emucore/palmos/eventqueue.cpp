@@ -36,7 +36,7 @@ osevent readevtqueuepos(size_t pos){
 	return temp;
 }
 
-void writeevtqueuepos(size_t pos,const osevent& value){
+void writeevtqueuepos(size_t pos, const osevent& value){
 	event_data_access.lock();
 	osevtqueue[pos] = value;
 	event_data_access.unlock();

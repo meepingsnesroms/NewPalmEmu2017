@@ -30,23 +30,46 @@
 //debug
 #include "trapnumtoname.h"
 
+//used by FtrGet() api to determine devices hardware, also used for some licence tricks along with FtrSet();
+static std::vector<feature> featuretable;
 
-std::vector<feature> featuretable;
+//this is the callback list for the 68k rom
+static CPTR api_entrypoints[0x1000];
 
 
-//call to rom here
+void dump_api_list_from_addr(uint32_t offset){
+	for(uint32_t current_api = 0;current_api < 0x1000;current_api++){
+		api_entrypoints[current_api] = get_long(offset + (current_api * 4));
+		dbgprintf("Loaded API from ROM:%s,0x%04x,Addr:0x%08x\n", lookup_trap(0xA000 | current_api), 0xA000 | current_api, api_entrypoints[current_api]);
+	}
+}
 
-static CPTR api_entrypoints[0xFFF];
+void make_api_list_from_rom(CPTR rom_SysGetTrapAddress){
+	//dump_api_list_from_addr(0x10010122);//this is a hack for now
+	//dump_api_list_from_addr(0x10010230);//this is a hack for now
+	for(uint32_t current_api = 0;current_api < 0x1000;current_api++){
+		CPU_pushwordstack(current_api);
 
-void get_api_list_from_rom(uint8_t* romdata){
+		//call SysGetTrapAddress for each api and log the result
+		//0x00011056 is arbitrary but looks official since it is close to the reset vector
+		CPU_68kfunction(rom_SysGetTrapAddress, 0x00011056/*address to pretend to call from*/);
 
+		if(A0 == nullptr_68k)dbgprintf("ROM Does not contain API:%s,0x%04x\n", lookup_trap(current_api), current_api);
+		else dbgprintf("Loaded API from ROM:%s,0x%04x\n", lookup_trap(current_api), current_api);
+
+		api_entrypoints[current_api] = A0;
+		CPU_popwordstack();
+	}
 }
 
 //returns if the api may have failed, since it is only testing the output you may get many incorrect answers
 static int call_rom_api(UWORD apinum){
 	if(!rom_active())return 2;//guaranteed fail, cant call rom that does not exist
 
-	dbgprintf("Using API from ROM:%s,0x%04x\n",lookup_trap(apinum),apinum);
+	dbgprintf("Using API from ROM:%s,0x%04x\n", lookup_trap(apinum),apinum);
+
+	//no arguments need to be added or removed from the stack since this
+	//function is only a passthrough to the ROMs version of the api
 
 	//args are "function to call" and "address to pretend to call from"
 	CPU_68kfunction(api_entrypoints[apinum & 0xFFF], MC68000_getpc());
@@ -66,7 +89,7 @@ void ftrget(){
 
 	bool ftrexists = true;
 
-	//remove switch eventualy!!
+	//should be replaced with uploading these features to the list
 	switch(creator){
 		case sysFileCSystem:
 			switch(ftrnum){
@@ -180,7 +203,7 @@ void ftrget(){
 
 	ULONG dys = belong(creator);
 	if(!ftrexists)
-		dbgprintf("Creator:%.4s,Ftrnum:%d,Exists:%s\n",(char*)&dys,ftrnum,(ftrexists ? "True" : "False"));
+		dbgprintf("Creator:%.4s,Ftrnum:%d,Exists:%s\n", (char*)&dys, ftrnum, (ftrexists ? "True" : "False"));
 
 	if(ftrexists)D0 = errNone;
 	else D0 = ftrErrNoSuchFeature;
@@ -191,10 +214,10 @@ void ftrset(){
 	stackword(ftrnum);
 	stacklong(value);
 
-	dbgprintf("FTRSET: Creator:%.4s,Ftrnum:%d,Value:%d\n",(char*)&creator,ftrnum,value);
+	dbgprintf("FTRSET: Creator:%.4s,Ftrnum:%d,Value:%d\n", (char*)&creator, ftrnum,value);
 
-	size_t count,tblsize = featuretable.size();
-	for(count = 0;count < tblsize;count++){
+	size_t tblsize = featuretable.size();
+	for(size_t count = 0;count < tblsize;count++){
 		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
 			featuretable[count].value = value;
 			D0 = errNone;

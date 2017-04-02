@@ -566,19 +566,45 @@ void CPU_68kfunction(CPTR addr,CPTR from){
 	//save old pc
 	CPTR oldpc = MC68000_getpc();
 
-	//pretend we called this function from address 0x********
-	//or fake pc to catch the rts op
-	//(just checking for rts wont work because the function may call another function)
-	if(from == 0)from = 0xFFFFFFFF;
+	//push caller pc to stack, will be popped off and called on rts opcode
 	CPU_pushlongstack(from);
 
+	//set destination pc
 	MC68000_setpc(addr);
+
+	//run until rts is called with caller pc
 	MC68000_runtilladdr(from);
 
 	//restore old(correct) pc
 	MC68000_setpc(oldpc);
 }
 
+/*
+//call a function in 68k mode
+struct regstruct CPU_68kfunction_clean_regs(CPTR addr,CPTR from){
+	struct regstruct backup_regs = Shptr.regs;
+	struct regstruct return_regs;
+
+	//save old pc
+	CPTR oldpc = MC68000_getpc();
+
+	//push caller pc to stack, will be popped off and called on rts opcode
+	CPU_pushlongstack(from);
+
+	//set destination pc
+	MC68000_setpc(addr);
+
+	//run until rts is called with caller pc
+	MC68000_runtilladdr(from);
+
+	//restore old(correct) pc
+	MC68000_setpc(oldpc);
+
+	return_regs = Shptr.regs;
+	Shptr.regs = backup_regs;
+	return return_regs;
+}
+*/
 
 //debuging
 void printregs(){

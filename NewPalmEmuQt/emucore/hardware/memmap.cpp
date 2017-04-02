@@ -112,7 +112,7 @@ int default_check(CPTR, ULONG)
     return 0;
 }
 
-UWORD *default_xlate(CPTR)
+UWORD* default_xlate(CPTR)
 {
 	return nullptr;
 }
@@ -231,7 +231,7 @@ int ram_check(CPTR addr, ULONG size)
     return (addr + size) <= (ULONG)ram_size;
 }
 
-UWORD *ram_xlate(CPTR addr)
+UWORD* ram_xlate(CPTR addr)
 {
 	addr -= ram_start;
     return rammemory + (addr >> 1);
@@ -282,7 +282,7 @@ int dyn_check(CPTR addr, ULONG)
 	return 0;
 }
 
-UWORD *dyn_xlate(CPTR addr)
+UWORD* dyn_xlate(CPTR addr)
 {
 	return dynallocedchunkptrs[addr >> 16] + ((addr & 0xFFFF) >> 1);
 }
@@ -291,44 +291,56 @@ UWORD *dyn_xlate(CPTR addr)
 /* Dragonball register area */
 ULONG reg_lget(CPTR addr)
 {
-	addr -= ram_start;
-	return (((ULONG)rammemory[addr >> 1]) << 16) | rammemory[(addr >> 1) + 1];
+	addr &= 0xFFFF;
+	return (((ULONG)dballregs[addr >> 1]) << 16) | dballregs[(addr >> 1) + 1];
 }
 
 UWORD reg_wget(CPTR addr)
 {
-	addr -= ram_start;
-	return rammemory[addr >> 1];
+	addr &= 0xFFFF;
+	return dballregs[addr >> 1];
 }
 
 UBYTE reg_bget(CPTR addr)
 {
-	addr -= ram_start;
-	if(addr & 1)return rammemory[addr >> 1];
-	else return rammemory[addr >> 1] >> 8;
+	addr &= 0xFFFF;
+	if(addr & 1)return dballregs[addr >> 1];
+	else return dballregs[addr >> 1] >> 8;
 }
 
 void reg_lput(CPTR addr, ULONG l)
 {
-	addr -= ram_start;
-	rammemory[addr >> 1] = l >> 16;
-	rammemory[(addr >> 1) + 1] = (UWORD)l;
+	addr &= 0xFFFF;
+	dballregs[addr >> 1] = l >> 16;
+	dballregs[(addr >> 1) + 1] = (UWORD)l;
 }
 
 void reg_wput(CPTR addr, UWORD w)
 {
-	addr -= ram_start;
-	rammemory[addr >> 1] = w;
+	addr &= 0xFFFF;
+	dballregs[addr >> 1] = w;
 }
 
 void reg_bput(CPTR addr, UBYTE b)
 {
-	addr -= ram_start;
+	addr &= 0xFFFF;
 	if (!(addr & 1)) {
-		rammemory[addr >> 1] = (rammemory[addr>>1] & 0xFF) | (((UWORD)b) << 8);
+		dballregs[addr >> 1] = (dballregs[addr>>1] & 0xFF) | (((UWORD)b) << 8);
 	} else {
-		rammemory[addr >> 1] = (rammemory[addr >> 1] & 0xFF00) | b;
+		dballregs[addr >> 1] = (dballregs[addr >> 1] & 0xFF00) | b;
 	}
+}
+
+int reg_check(CPTR addr, ULONG size)
+{
+	addr &= 0xFFFF;
+	return (addr + size) <= 0xFFFF;
+}
+
+UWORD* reg_xlate(CPTR addr)
+{
+	addr &= 0xFFFF;
+	return dballregs + (addr >> 1);
 }
 
 /* Address banks */
@@ -354,7 +366,7 @@ addrbank dyn_bank = {
 addrbank reg_bank = {
     reg_lget, reg_wget, reg_bget,
     reg_lput, reg_wput, reg_bput,
-    default_xlate, default_check
+    reg_xlate, reg_check
 };
 
 void map_banks(addrbank bank, uint32_t start, uint32_t size)
@@ -481,7 +493,7 @@ void put_byte(CPTR addr, UBYTE b)
     byteput(addr, b);
 }
 
-UWORD *get_real_address(CPTR addr)
+UWORD* get_real_address(CPTR addr)
 {
 	if (!IS_EVEN(addr)) {
 		dbgprintf("Bus error: attempted translation of odd address 0x%08x\n", addr);

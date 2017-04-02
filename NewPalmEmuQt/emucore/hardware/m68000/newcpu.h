@@ -9,10 +9,10 @@ int	 intlev();
 
 void op_illg(ULONG);
 
-void fatal(char *, int);
+void  fatal(char *, int);
 UWORD nextiword();
 ULONG nextilong();
-int cctrue(int cc);
+int   cctrue(int cc);
 ULONG get_disp_ea (ULONG base, UWORD dp);
 void MakeSR();
 void MakeFromSR();
@@ -46,6 +46,7 @@ UWORD CPU_popwordstack();
 
 //call a function in 68k mode
 void CPU_68kfunction(CPTR addr, CPTR from);
+//struct regstruct CPU_68kfunction_clean_regs(CPTR addr, CPTR from);
 
 //easily and quickly remove * bytes from stack,used to clean up after calling back into 68k mode
 inline void CPU_cleanargsfromstack(int bytes){SP += bytes;}
