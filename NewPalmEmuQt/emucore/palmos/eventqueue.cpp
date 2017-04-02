@@ -9,8 +9,7 @@
 
 //new list
 #include "palmdefines.h"
-
-void palmabrt();//hack
+#include "palmwrapper.h"
 
 std::mutex event_data_access;
 std::deque<osevent> osevtqueue;

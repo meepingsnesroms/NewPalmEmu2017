@@ -65,8 +65,10 @@ typedef struct{
 
 typedef struct{
 	TYPE creator;
+	//ULONG creator;
 	UWORD id;
 	ULONG value;
+	bool read_only;
 }feature;
 
 typedef struct{

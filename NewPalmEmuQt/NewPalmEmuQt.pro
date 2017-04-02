@@ -136,7 +136,6 @@ HEADERS  += \
     emucore/palmos/palmdefines.h \
     emucore/palmos/palmlibc.h \
     emucore/palmos/palmmalloc.h \
-    emucore/palmos/palmtype.h \
     emucore/palmos/palmtypeaccess.h \
     emucore/palmos/prcfile.h \
     emucore/palmos/resourcelocator.h \

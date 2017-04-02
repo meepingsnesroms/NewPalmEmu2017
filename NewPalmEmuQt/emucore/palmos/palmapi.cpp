@@ -80,133 +80,99 @@ static int call_rom_api(UWORD apinum){
 	return 0;//did not fail
 }
 
+void reset_and_load_default_features(){
+	feature newftr;
+	newftr.read_only = true;
 
+
+	//sysFileCSystem
+	newftr.creator.typen = sysFileCSystem;
+
+	newftr.id = sysFtrNumROMVersion;
+	newftr.value = 0x05493028;//V5.49028 (Palm TX version of palm os)
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumProcessorID;
+	newftr.value = sysFtrNumProcessorXscale;
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumOEMDeviceID;
+	newftr.value = 'D050';
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumOEMHALID;
+	newftr.value = 'P050';
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumWinVersion;
+	newftr.value = 5;//unsure of value
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumHwrMiscFlags;
+	newftr.value = hwrMiscFlagHasSWContrast |
+	        hwrMiscFlagHasCradleDetect |
+	        hwrMiscFlagNoRTCBug |
+	        hwrMiscFlagHasMbdIrDA |
+	        hwrMiscFlagHasBacklight |
+	        0xF000/*all hard keys*/;
+	featuretable.push_back(newftr);
+
+	newftr.id = sysFtrNumOEMCompanyID;
+	newftr.value = 'Palm';
+	featuretable.push_back(newftr);
+
+
+	//navFtrCreator
+	newftr.creator.typen = navFtrCreator;
+
+	newftr.id = navFtrVersion;
+	newftr.value = navVersion;
+	featuretable.push_back(newftr);
+
+
+	//pinCreator
+
+	newftr.creator.typen = pinCreator;
+
+	newftr.id = pinFtrAPIVersion;
+	newftr.value = pinAPIVersion1_1;
+	featuretable.push_back(newftr);
+
+
+	//twFtrCreator //tapwave zodiac identifier
+
+	newftr.creator.typen = twFtrCreator;
+
+	newftr.id = twFtrAPIVersion;
+	newftr.value = TAPWAVE_API_VERSION;
+	featuretable.push_back(newftr);
+
+	newftr.id = twFtrAPIGlue;
+	newftr.value = TAPWAVE_API_VERSION;
+	featuretable.push_back(newftr);
+
+}
 
 void ftrget(){
 	stacklong(creator);
 	stackword(ftrnum);
-	stackptr(retval);//edit this address with feature value,ULONG
+	stackptr(retval);//write feature value to this address, ULONG
 
-	bool ftrexists = true;
-
-	//should be replaced with uploading these features to the list
-	switch(creator){
-		case sysFileCSystem:
-			switch(ftrnum){
-				case sysFtrNumROMVersion://1
-					//say where on palm os 5
-					//put_long(retval,0x05030300);
-					put_long(retval,0x05493028);//V5.49028 (Palm TX version of palm os)
-					break;
-				case sysFtrNumProcessorID://2
-					//hack //find T5 processor type
-
-					put_long(retval,sysFtrNumProcessorXscale);
-					break;
-				case sysFtrNumOEMDeviceID://21
-					/*
-					//TnT5 //Tungsten T5
-					put_byte(retval,(UBYTE)'T');
-					put_byte(retval + 1,(UBYTE)'n');
-					put_byte(retval + 2,(UBYTE)'T');
-					put_byte(retval + 3,(UBYTE)'5');
-					*/
-
-					//D050 //Palm T|X
-					put_byte(retval,(UBYTE)'D');
-					put_byte(retval + 1,(UBYTE)'0');
-					put_byte(retval + 2,(UBYTE)'5');
-					put_byte(retval + 3,(UBYTE)'0');
-					break;
-				case sysFtrNumOEMHALID://22
-					/*
-					//UNK* //Tungsten T5 //find this
-					put_byte(retval,(UBYTE)'T');
-					put_byte(retval + 1,(UBYTE)'n');
-					put_byte(retval + 2,(UBYTE)'T');
-					put_byte(retval + 3,(UBYTE)'5');
-					*/
-
-					//P050 //Palm T|X
-					put_byte(retval,(UBYTE)'P');
-					put_byte(retval + 1,(UBYTE)'0');
-					put_byte(retval + 2,(UBYTE)'5');
-					put_byte(retval + 3,(UBYTE)'0');
-					break;
-				case sysFtrNumWinVersion:
-					put_long(retval,5);//unsure of value
-					break;
-				case sysFtrNumHwrMiscFlags://8
-					put_word(retval,hwrMiscFlagHasSWContrast |
-							 hwrMiscFlagHasCradleDetect |
-							 hwrMiscFlagNoRTCBug |
-							 hwrMiscFlagHasMbdIrDA |
-							 hwrMiscFlagHasBacklight |
-							 0xF000/*all hard keys*/);
-					break;
-				case sysFtrNumOEMCompanyID://20
-					/*
-					//Tungsten T5 'palm'
-					put_byte(retval,(UBYTE)'p');
-					put_byte(retval + 1,(UBYTE)'a');
-					put_byte(retval + 2,(UBYTE)'l');
-					put_byte(retval + 3,(UBYTE)'m');
-					*/
-
-					//Palm T|x 'Palm'
-					put_byte(retval,(UBYTE)'P');
-					put_byte(retval + 1,(UBYTE)'a');
-					put_byte(retval + 2,(UBYTE)'l');
-					put_byte(retval + 3,(UBYTE)'m');
-					break;
-
-
-				//24,8,27
-				//case sysFtrNumVendor://15
-				//	break;
-				default:
-					ftrexists = false;
-					break;
-			}
-			break;
-		case navFtrCreator://five way navigator (DPAD)
-			if(ftrnum == navFtrVersion)put_long(retval,navVersion);//has DPAD
-			else palmabrt();//hack
-			break;
-		case pinCreator://pen input manager
-			if(ftrnum == pinFtrAPIVersion)put_long(retval,pinAPIVersion1_1);
-			else palmabrt();//hack
-			break;
-			/*
-		case twFtrCreator://tapwave zodiac identifier
-			switch(ftrnum){
-				case twFtrAPIVersion:
-				case twFtrAPIGlue:
-					put_long(retval,TAPWAVE_API_VERSION);
-					break;
-			}
-			break;
-			*/
-		default:
-			ftrexists = false;
-			break;
-	}
-
-	size_t count,tblsize = featuretable.size();
-	for(count = 0;count < tblsize;count++){
+	size_t tblsize = featuretable.size();
+	for(size_t count = 0;count < tblsize;count++){
 		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
-			put_long(retval,featuretable[count].value);
-			ftrexists = true;
-			break;
+			put_long(retval, featuretable[count].value);
+			return;
 		}
 	}
 
+	/*
 	ULONG dys = belong(creator);
 	if(!ftrexists)
 		dbgprintf("Creator:%.4s,Ftrnum:%d,Exists:%s\n", (char*)&dys, ftrnum, (ftrexists ? "True" : "False"));
+	*/
 
-	if(ftrexists)D0 = errNone;
-	else D0 = ftrErrNoSuchFeature;
+	D0 = ftrErrNoSuchFeature;
 }
 
 void ftrset(){
@@ -214,12 +180,14 @@ void ftrset(){
 	stackword(ftrnum);
 	stacklong(value);
 
-	dbgprintf("FTRSET: Creator:%.4s,Ftrnum:%d,Value:%d\n", (char*)&creator, ftrnum,value);
+	//dbgprintf("FTRSET: Creator:%.4s,Ftrnum:%d,Value:%d\n", (char*)&creator, ftrnum,value);
 
 	size_t tblsize = featuretable.size();
 	for(size_t count = 0;count < tblsize;count++){
 		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
-			featuretable[count].value = value;
+			if(!featuretable[count].read_only){
+				featuretable[count].value = value;
+			}
 			D0 = errNone;
 			return;
 		}
@@ -229,6 +197,7 @@ void ftrset(){
 	newftr.creator.typen = creator;
 	newftr.id = ftrnum;
 	newftr.value = value;
+	newftr.read_only = false;
 	featuretable.push_back(newftr);
 
 	D0 = errNone;
@@ -864,8 +833,8 @@ bool emulateapi(UWORD api){
 
 		default:
 			{
-				int rom_api_failed = call_rom_api(api);
-				if(rom_api_failed == 0)return false;
+				//int rom_api_failed = call_rom_api(api);
+				//if(rom_api_failed == 0)return false;
 				//rom_api_failed == 1, could have failed but may be fine
 				//rom_api_failed == 2, no rom present
 

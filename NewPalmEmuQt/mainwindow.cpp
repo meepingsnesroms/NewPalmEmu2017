@@ -15,11 +15,10 @@
 
 #include <vector>
 #include <string>
-using namespace std;
 
 //user settings
-static vector<string> appstoload;
-static string palmname;
+static std::vector<std::string> appstoload;
+static std::string palmname;
 
 int setting_x,setting_y;
 
