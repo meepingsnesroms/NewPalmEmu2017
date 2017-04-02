@@ -128,7 +128,7 @@ void initARM(){
    if(failed)palmabrt;//HACK
 }
 
-void callARM(uint32 function){
+void callARM(uint32_t function){
 	inARM = true;
    
 	//use link register instead of stack
@@ -153,10 +153,10 @@ void callARM(uint32 function){
 	inARM = false;
 }
 
-void setregARM(uint8 reg,uint32 value){
+void setregARM(uint8_t reg,uint32_t value){
    cpuSetReg(&palm2ndcpu,reg,value);
 }
 
-uint32 getregARM(uint8 reg){
+uint32_t getregARM(uint8_t reg){
    return cpuGetRegExternal(&palm2ndcpu,reg);
 }

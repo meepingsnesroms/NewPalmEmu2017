@@ -581,7 +581,7 @@ void CPU_68kfunction(CPTR addr,CPTR from){
 
 /*
 //call a function in 68k mode
-struct regstruct CPU_68kfunction_clean_regs(CPTR addr,CPTR from){
+struct regstruct CPU_68kfunction_protect_regs(CPTR addr,CPTR from){
 	struct regstruct backup_regs = Shptr.regs;
 	struct regstruct return_regs;
 

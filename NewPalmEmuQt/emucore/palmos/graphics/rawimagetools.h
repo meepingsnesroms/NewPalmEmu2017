@@ -236,7 +236,7 @@ class RAWimg {
 public:
 	//stats
 	int width = 0,height = 0;
-	uint8 pixelsize = 0;
+	uint8_t pixelsize = 0;
 	bool hastransparent = false;
 	UWORD transparent = 0x0000;
 	size_t_68k totalsize;
@@ -272,16 +272,16 @@ public:
 	void copyrect(RAWimg& host, WORD startx, WORD starty, WORD rectw, WORD recth, WORD outx, WORD outy);
 	void draw(RAWimg& smlimg, WORD x, WORD y);
 	void draw(char letter, RAWfnt& chrimgs, WORD x, WORD y);
-	bool draw5x7(int16 x, int16 y, UWORD color, char letter);//hack //remove this
+	bool draw5x7(int16_t x, int16_t y, UWORD color, char letter);//hack //remove this
 };
 
 //image type creation
-CPTR newbmp(int16 width,int16 height,uint8 bpp,bool hasclearcol,UBYTE clearcolindex,bool hascoltable,CPTR coltable);
+CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,bool hasclearcol,UBYTE clearcolindex,bool hascoltable,CPTR coltable);
 CPTR newdrawstate();
-CPTR newwindow(int16 width,int16 height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
-void initformwindow(CPTR thiswindow,int16 width,int16 height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
+CPTR newwindow(int16_t width,int16_t height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
+void initformwindow(CPTR thiswindow,int16_t width,int16_t height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
 
-inline CPTR newbmpsimple(int16 width,int16 height,uint8 bpp){
+inline CPTR newbmpsimple(int16_t width,int16_t height,uint8_t bpp){
 	return newbmp(width,height,bpp,false,0,false,0);
 }
 

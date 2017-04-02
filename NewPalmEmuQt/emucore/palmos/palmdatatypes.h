@@ -64,8 +64,8 @@ typedef struct{
 }palmdb;
 
 typedef struct{
-	TYPE creator;
-	//ULONG creator;
+	//TYPE creator;
+	ULONG creator;
 	UWORD id;
 	ULONG value;
 	bool read_only;

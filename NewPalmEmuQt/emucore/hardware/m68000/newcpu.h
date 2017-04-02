@@ -46,7 +46,11 @@ UWORD CPU_popwordstack();
 
 //call a function in 68k mode
 void CPU_68kfunction(CPTR addr, CPTR from);
-//struct regstruct CPU_68kfunction_clean_regs(CPTR addr, CPTR from);
+inline void CPU_68kfunction(CPTR addr){CPU_68kfunction(addr, 0xFFFFFFFF);}
+
+//struct regstruct CPU_68kfunction_protect_regs(CPTR addr, CPTR from = 0xFFFFFFFF);
+//inline struct regstruct CPU_68kfunction_protect_regs(CPTR addr){CPU_68kfunction_protect_regs(addr, 0xFFFFFFFF);}
+
 
 //easily and quickly remove * bytes from stack,used to clean up after calling back into 68k mode
 inline void CPU_cleanargsfromstack(int bytes){SP += bytes;}

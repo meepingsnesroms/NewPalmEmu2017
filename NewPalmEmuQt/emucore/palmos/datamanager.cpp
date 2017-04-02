@@ -50,8 +50,8 @@ void forgeuniqueids(){
 }
 
 void reindexrecords(int db){
-	uint16 recordnum = apps[db].parts.size();
-	for(uint16 count = 0;count < recordnum;count++){
+	uint16_t recordnum = apps[db].parts.size();
+	for(uint16_t count = 0;count < recordnum;count++){
 		apps[db].parts[count].id = count;
 	}
 	apps[db].numrecords = recordnum;

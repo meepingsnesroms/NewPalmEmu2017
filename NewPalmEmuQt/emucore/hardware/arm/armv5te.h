@@ -18,11 +18,11 @@ extern bool inARM;
 //void pushstackARM(uint32 stackval);
 //uint32 popstackARM();
 
-void setregARM(uint8 reg,uint32 val);
-uint32 getregARM(uint8 reg);
+void setregARM(uint8_t reg,uint32_t val);
+uint32_t getregARM(uint8_t reg);
 
 void initARM();
-void callARM(uint32 function);
+void callARM(uint32_t function);
 
 #endif // ARMV5TE
 

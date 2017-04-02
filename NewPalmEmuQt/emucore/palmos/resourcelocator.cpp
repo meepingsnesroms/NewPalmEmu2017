@@ -30,8 +30,8 @@ bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool
 CPTR getresource(int dbnum, UWORD id, ULONG tp){
 	if(!apps[dbnum].resdb)return nullptr_68k;
 
-	uint16 end = apps[dbnum].parts.size();
-	for(uint16 cnt = 0;cnt < end;cnt++){
+	uint16_t end = apps[dbnum].parts.size();
+	for(uint16_t cnt = 0;cnt < end;cnt++){
 		//dbgprintf("In:(Type:0x%08x,Id:%d),Cmp:(Type:0x%08x,Id:%d)\n",type,id,belong(apps[appnum].parts[cnt].type.typen),apps[appnum].parts[cnt].id);
 		if(apps[dbnum].parts[cnt].id == id && belong(apps[dbnum].parts[cnt].type.typen) == tp){
 			return apps[dbnum].parts[cnt].location;
@@ -51,9 +51,8 @@ CPTR getappresource(UWORD id, ULONG tp){
 	return addr;
 }
 
-CPTR getrecord(int dbnum, uint16 index){
+CPTR getrecord(int dbnum, uint16_t index){
 	if(apps[dbnum].resdb)return nullptr_68k;
-
 	return apps[dbnum].parts[index].location;
 }
 

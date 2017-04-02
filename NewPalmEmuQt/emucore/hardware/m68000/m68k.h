@@ -2,7 +2,6 @@
 #define M68K
 
 #include <stdint.h>
-#include <stdio.h> //for the FILE* in shared_img
 
 //fix for compiler warnings about unused parameter for some opcodes
 //(if it wont compile change these)

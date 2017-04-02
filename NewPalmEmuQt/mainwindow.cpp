@@ -29,14 +29,6 @@ void QtEmu_init(){
 	for(int count = 0;count < xmany;count++){
 		int pass = loadfiletopalm(appstoload[count]);
 		if(pass != 0)palmabrt();
-		/*
-		switch(pass){
-			case 0:
-				break;
-			default:
-				palmabrt();
-		}
-		*/
 	}
 	appstoload.clear();
 }
@@ -234,7 +226,7 @@ void MainWindow::on_notes_released()
 
 void MainWindow::on_runtest_clicked()
 {
-#define SIMPAPP 13
+#define SIMPAPP 4
 
 #if SIMPAPP == -1
 	appstoload.push_back("/sdcard/palm/zap2016.prc");
@@ -303,6 +295,8 @@ void MainWindow::on_runtest_clicked()
 	appstoload.push_back("/Users/Hoppy/000prcs/bejeweled223/Bejeweled-music3.pdb");
 #elif SIMPAPP == 19
 	appstoload.push_back("/Users/Hoppy/000prcs/quake/zquake.prc");
+#elif SIMPAPP == 20
+	appstoload.push_back("/Users/Hoppy/000prcs/BikeOrDie-2.0d.prc");
 #endif
 
 #if OS_ANDROID

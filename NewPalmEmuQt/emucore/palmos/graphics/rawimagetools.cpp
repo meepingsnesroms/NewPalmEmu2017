@@ -177,7 +177,7 @@ void RAWfnt::parsefnt(){
 	dbgprintf("Font Size: W:%d,H:%d\n",width,height);
 
 	CPTR fntbmp = fontptr + 26;
-	uint16 rowbytes = rowwords * 2;
+	uint16_t rowbytes = rowwords * 2;
 	int finalx,finaly;
 	inc_for(finaly,height){
 		inc_for(finalx,width){
@@ -579,7 +579,7 @@ void FBWriter::draw(char letter, RAWfnt& chrimgs, WORD x, WORD y){
 	}
 }
 
-bool FBWriter::draw5x7(int16 x,int16 y,UWORD color,char letter){
+bool FBWriter::draw5x7(int16_t x,int16_t y,UWORD color,char letter){
 	/*
 	if(letter < 0x20 || letter > 0x7f){
 		if(letter == 0)return true;//end of string
@@ -666,7 +666,7 @@ void FBWriter::copyrect(RAWimg& host, WORD startx, WORD starty,WORD rectw, WORD 
 
 
 //image type creation
-CPTR newbmp(int16 width,int16 height,uint8 bpp,
+CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,
 			   bool hasclearcol,UBYTE clearcolindex,bool hascoltable,CPTR coltable){
 	UWORD rowbytes = makerowbytes(width,bpp);
 	UWORD bmpflags = 0;
@@ -706,7 +706,7 @@ CPTR newbmp(int16 width,int16 height,uint8 bpp,
 		CPTR inputentryptr = coltable + 2;
 		CPTR bmpentryptr = thisbmp + 16 + 2;
 
-		uint16 count;
+		uint16_t count;
 		for(count = 0;count < bmpcoltablesize;count++){
 			put_long(bmpentryptr + count * 4,get_long(inputentryptr + count * 4));
 		}
@@ -758,7 +758,7 @@ CPTR newdrawstate(){
 	return thisdrawstate;
 }
 
-CPTR newwindow(int16 width,int16 height,UWORD flags,UWORD frameflags,
+CPTR newwindow(int16_t width,int16_t height,UWORD flags,UWORD frameflags,
 				  CPTR winbmp,CPTR drawstate,CPTR nextwindowptr){
 	CPTR thiswindow = getfreeheap(40);
 	//WindowType
@@ -790,7 +790,7 @@ CPTR newwindow(int16 width,int16 height,UWORD flags,UWORD frameflags,
 	return thiswindow;
 }
 
-void initformwindow(CPTR thiswindow,int16 width,int16 height,UWORD flags,UWORD frameflags,
+void initformwindow(CPTR thiswindow,int16_t width,int16_t height,UWORD flags,UWORD frameflags,
 				  CPTR winbmp,CPTR drawstate,CPTR nextwindowptr){
 	//WindowType
 	put_word(thiswindow,LCDW);//width of lcd

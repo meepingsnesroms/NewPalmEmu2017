@@ -10,7 +10,6 @@
 
 //meaningful words
 #define findme 0
-#define notrequired 0
 #define ISSPECIAL(x) ((x) > 0xFFFFFF00)
 #define INTERCEPT 0xFFFFFFFF
 

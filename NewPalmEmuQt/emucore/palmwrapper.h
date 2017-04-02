@@ -31,7 +31,7 @@ extern CPTR appcall;
 extern std::string username;
 extern std::string sdcarddirectory;
 extern bool  multibytecharsupport;
-extern ULONG fullticks;
+extern uint32_t fullticks;
 extern float partialticks;
 extern ULONG keymask;
 extern std::chrono::high_resolution_clock::time_point starttime;
@@ -73,7 +73,7 @@ void palmabrt();
 //bool full_init(string& name,int x,int y);//is in launchroutines.h
 //void full_deinit();//is in launchroutines.h
 //void selectappandstart();//is in appselector.h
-bool start(int bootfile);
+bool start(size_t bootfile);
 bool resume();
 bool halt();
 bool end();

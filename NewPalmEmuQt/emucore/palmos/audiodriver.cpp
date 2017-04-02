@@ -93,7 +93,7 @@ void snddocmd(){
 			//if(pram3 == 0)break;//if amplitude is 0 return
 
 			//this function is blocking wait for (pram2) milliseconds
-			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 2));// / 2 is a hack, but it works for the only game currently supported (Zap2016!)
+			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 4));// / 4 is a hack, but it works for the only game currently supported (Zap2016!)
 			break;
 		case sndCmdFrqOn:
 			//same as above but dosent wait
@@ -106,7 +106,7 @@ void snddocmd(){
 			//can be used as a millisecond delay function as none is officially provided by Palm OS
 
 			//this function is blocking wait for (pram2) milliseconds
-			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 2));// / 2 is a hack, but it works for the only game currently supported (Zap2016!)
+			std::this_thread::sleep_for(std::chrono::milliseconds(pram2 / 4));// / 4 is a hack, but it works for the only game currently supported (Zap2016!)
 			break;
 
 		default:

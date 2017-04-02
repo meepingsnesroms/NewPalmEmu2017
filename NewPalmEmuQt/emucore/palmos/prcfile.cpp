@@ -150,7 +150,7 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 	meep.resdb = true;
 
 	apps.push_back(meep);
-	for(uint16 robin = 0;robin < meep.numrecords;robin++){
+	for(uint16_t robin = 0;robin < meep.numrecords;robin++){
 		unpackprcresource(robin,prcfile,prcsize,apps.size() - 1);
 	}
 
@@ -195,7 +195,7 @@ static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
 	meep.resdb = false;
 
 	apps.push_back(meep);
-	for(uint16 robin = 0;robin < meep.numrecords;robin++){
+	for(uint16_t robin = 0;robin < meep.numrecords;robin++){
 		unpackpdbresource(robin,pdbfile,pdbsize,apps.size() - 1);
 	}
 

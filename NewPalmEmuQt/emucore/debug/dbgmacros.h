@@ -1,6 +1,8 @@
 #ifndef DBGMACROS
 #define DBGMACROS
 
+#include <stdio.h>//for printf
+
 #ifdef _DBGMODE
 #define DEBUG(x) x
 #define dbgprintf	printf

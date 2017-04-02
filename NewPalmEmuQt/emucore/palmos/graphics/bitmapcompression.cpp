@@ -11,7 +11,7 @@ static void BMP_ScanLine(UBYTE* compresseddata,UBYTE* uncompresseddata,UWORD row
 
 
 	uint rowptr = 0;//byte in compressed data
-	uint32 datanum = 0;//byte in uncompressed data
+	uint32_t datanum = 0;//byte in uncompressed data
 	uint rowindex = 0;//byte in current scanline
 	UBYTE newdataflags;
 	while(rowptr < compressedsize){
@@ -46,7 +46,7 @@ static void BMP_RLE(UBYTE* compresseddata,UBYTE* uncompresseddata){
 
 
 	uint bunny = 0;//current position in the input
-	uint32 loc = 0;//current position in the output
+	uint32_t loc = 0;//current position in the output
 	UBYTE headerbyte,databyte;
 	while(bunny < compressedsize){
 		headerbyte = compresseddata[bunny];
@@ -68,7 +68,7 @@ static void BMP_PackBits(UBYTE* compresseddata,UBYTE* uncompresseddata){
 
 
 	uint bunny = 0;//current position in the input
-	uint32 loc = 0;//current position in the output
+	uint32_t loc = 0;//current position in the output
 	BYTE headerbyte;//the current command (-128 = skip,< 0 repeat,>= 0 unique data)
 	while(bunny < compressedsize){
 		headerbyte = compresseddata[bunny];

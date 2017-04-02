@@ -282,7 +282,7 @@ void evtgetevent(){
 				std::this_thread::sleep_for(palmTicks(1));
 			}
 		}else if(waittime > evtNoWait){
-			for(int32 count = 0;count < waittime;count++){
+			for(int32_t count = 0;count < waittime;count++){
 				std::this_thread::sleep_for(palmTicks(1));
 				if(hasevent())break;
 			}

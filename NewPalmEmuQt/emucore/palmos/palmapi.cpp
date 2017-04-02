@@ -85,8 +85,12 @@ void reset_and_load_default_features(){
 	newftr.read_only = true;
 
 
+	//wipe feature table
+	featuretable.clear();
+
+
 	//sysFileCSystem
-	newftr.creator.typen = sysFileCSystem;
+	newftr.creator = sysFileCSystem;
 
 	newftr.id = sysFtrNumROMVersion;
 	newftr.value = 0x05493028;//V5.49028 (Palm TX version of palm os)
@@ -123,7 +127,7 @@ void reset_and_load_default_features(){
 
 
 	//navFtrCreator
-	newftr.creator.typen = navFtrCreator;
+	newftr.creator = navFtrCreator;
 
 	newftr.id = navFtrVersion;
 	newftr.value = navVersion;
@@ -132,7 +136,7 @@ void reset_and_load_default_features(){
 
 	//pinCreator
 
-	newftr.creator.typen = pinCreator;
+	newftr.creator = pinCreator;
 
 	newftr.id = pinFtrAPIVersion;
 	newftr.value = pinAPIVersion1_1;
@@ -141,7 +145,7 @@ void reset_and_load_default_features(){
 
 	//twFtrCreator //tapwave zodiac identifier
 
-	newftr.creator.typen = twFtrCreator;
+	newftr.creator = twFtrCreator;
 
 	newftr.id = twFtrAPIVersion;
 	newftr.value = TAPWAVE_API_VERSION;
@@ -160,8 +164,9 @@ void ftrget(){
 
 	size_t tblsize = featuretable.size();
 	for(size_t count = 0;count < tblsize;count++){
-		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
+		if(featuretable[count].creator == creator && featuretable[count].id == ftrnum){
 			put_long(retval, featuretable[count].value);
+			D0 = errNone;
 			return;
 		}
 	}
@@ -184,7 +189,7 @@ void ftrset(){
 
 	size_t tblsize = featuretable.size();
 	for(size_t count = 0;count < tblsize;count++){
-		if(featuretable[count].creator.typen == creator && featuretable[count].id == ftrnum){
+		if(featuretable[count].creator == creator && featuretable[count].id == ftrnum){
 			if(!featuretable[count].read_only){
 				featuretable[count].value = value;
 			}
@@ -194,7 +199,7 @@ void ftrset(){
 	}
 
 	feature newftr;
-	newftr.creator.typen = creator;
+	newftr.creator = creator;
 	newftr.id = ftrnum;
 	newftr.value = value;
 	newftr.read_only = false;
@@ -367,14 +372,14 @@ void sysnotifyregister(){
 
 void timgetticks(){
 	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
-	uint32 fulltickspassed = (uint32)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
+	uint32_t fulltickspassed = (uint32_t)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
 	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
 	fullticks   += fulltickspassed;
 	partialticks += partialtickspassed;
 
 	if(partialticks > 1.0){
-		fullticks   += (uint32)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
-		partialticks -= (uint32)partialticks;//remove any full ticks from the partial tick counter
+		fullticks   += (uint32_t)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
+		partialticks -= (uint32_t)partialticks;//remove any full ticks from the partial tick counter
 	}
 
 	D0 = fullticks;

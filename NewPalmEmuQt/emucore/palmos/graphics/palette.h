@@ -24,7 +24,7 @@ inline UWORD paltopalm(UBYTE* color){
 	return ((color[0] >> 3) << 11) | ((color[1] >> 2) << 5) | (color[2] >> 3);
 }
 
-inline uint16 getrgbdiff(uint8 r1,uint8 g1,uint8 b1,uint8 r2,uint8 g2,uint8 b2){
+inline uint16_t getrgbdiff(uint8_t r1,uint8_t g1,uint8_t b1,uint8_t r2,uint8_t g2,uint8_t b2){
 	return absdiffrence(r1,r2) + absdiffrence(g1,g2) + absdiffrence(b1,b2);
 }
 

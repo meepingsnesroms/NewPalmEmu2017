@@ -90,8 +90,7 @@ void setdisplayaddr(CPTR displayaddr){
 
 void freeopenform(UWORD frmid){
 	openforms.erase(frmid);
-	int32 scan;
-	for(scan = openformids.size() - 1;scan >= 0;scan--){
+	for(int32_t scan = openformids.size() - 1;scan >= 0;scan--){
 		if(openformids[scan] == frmid){
 			openformids.erase(openformids.begin() + scan);
 			break;
@@ -518,7 +517,7 @@ void relaygadgetevent(CPTR eventptr){
 				CPU_pushlongstack(objects[curuisquare].object);
 				CPU_pushwordstack(formGadgetHandleEventCmd);
 				CPU_pushlongstack(eventptr);
-				CPU_68kfunction(functionptr,notrequired);
+				CPU_68kfunction(functionptr);
 				//now remove the arguments of the 68k function call (10 bytes,4+2+4,LONG/WORD/LONG) from stack
 				CPU_cleanargsfromstack(10);
 
@@ -963,7 +962,7 @@ void drawgadget(CPTR window,CPTR gdtptr){
 			CPU_pushlongstack(gdtptr);
 			CPU_pushwordstack(formGadgetDrawCmd);
 			CPU_pushlongstack(nullptr_68k);//no prams
-			CPU_68kfunction(handler,notrequired);
+			CPU_68kfunction(handler);
 			//now remove the arguments of the 68k function call (10 bytes,4+2+4,LONG/WORD/LONG) from stack
 			CPU_cleanargsfromstack(10);
 
@@ -1812,7 +1811,7 @@ void winpalette(){
 			memcpy68k(winpal + startindex * 4,userpalarray,(WORD)paletteentrys * 4);
 			break;
 		case winPaletteSetToDefault:
-			uint16 rabbid;
+			uint16_t rabbid;
 			for(rabbid = 0;rabbid < paletteentrys;rabbid++){
 				put_long(winpal + (startindex + rabbid) * 4,paltorgbindex8(rabbid));
 			}
@@ -2327,7 +2326,7 @@ void frmdispatchevent(){
 	CPTR functionptr = getformeventhandler(frmptr);
 	if(functionptr != nullptr_68k){
 		CPU_pushlongstack(eventptr);
-		CPU_68kfunction(functionptr,notrequired);
+		CPU_68kfunction(functionptr);
 		//now remove eventptr(the argument of the 68k function call) from stack
 		CPU_cleanargsfromstack(4);
 
@@ -2371,9 +2370,7 @@ void frmdeleteform(){
 
 void frmcloseallforms(){
 	//no params
-
-	int32 scan;
-	for(scan = openformids.size() - 1;scan >= 0;scan--){
+	for(int32_t scan = openformids.size() - 1;scan >= 0;scan--){
 		osevent closeevt;
 		closeevt.type = frmCloseEvent;
 		closeevt.data.push_back(openformids[scan]);
@@ -2630,8 +2627,8 @@ void frmgetobjectindex(){
 	stackptr(form);
 	stackword(objid);//not resource id
 
-	uint16 formobjnum = getformnumobjects(form);
-	for(uint16 count = 0;count < formobjnum;count++){
+	uint16_t formobjnum = getformnumobjects(form);
+	for(uint16_t count = 0;count < formobjnum;count++){
 		if(getformobjid(form,count) == objid){
 			D0 = count;
 			return;

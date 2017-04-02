@@ -23,10 +23,10 @@
 
 #endif
 
-inline float32 rawfloat32(uint32 data){return *((float32*)&(data));}
-inline double64 rawdouble64(uint64 data){return *((double64*)&(data));}
-inline uint32 float32toraw(float32 data){return *((uint32*)&(data));}
-inline uint64 double64toraw(double64 data){return *((uint64*)&(data));}
+inline float32_t rawfloat32_t(uint32_t data){return *((float32_t*)&(data));}
+inline double64_t rawdouble64_t(uint64_t data){return *((double64_t*)&(data));}
+inline uint32_t float32_ttoraw(float32_t data){return *((uint32_t*)&(data));}
+inline uint64_t double64_ttoraw(double64_t data){return *((uint64_t*)&(data));}
 
 
 
@@ -54,8 +54,8 @@ void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0);
 #define stackword(x) UWORD x = popwordlink()
 #define stacklong(x) ULONG x = poplonglink()
 
-#define stacklong64(x) uint64 x;{ULONG tmp1 = poplonglink();\
-	ULONG tmp2 = poplonglink();x = (uint64)tmp1 << 32 | tmp2;}
+#define stacklong64(x) uint64_t x;{ULONG tmp1 = poplonglink();\
+	ULONG tmp2 = poplonglink();x = (uint64_t)tmp1 << 32 | tmp2;}
 
 #define stackptr(x) CPTR x = poplonglink()
 
@@ -80,7 +80,7 @@ typedef struct{
 
 TEMPHACK
 //find endian of 64bit values
-inline void return64(CPTR retptr,uint64 val){
+inline void return64(CPTR retptr,uint64_t val){
 	/*
 	A0 = SP;
 	CPU_pushlongstack((ULONG)val);

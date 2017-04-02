@@ -54,19 +54,19 @@ void bitstoscr(){
 }
 */
 typedef union{
-	double64 flt;
-	uint64 data;
+	double64_t flt;
+	uint64_t data;
 }conv64;
 
 typedef union{
-	float32 flt;
-	uint32 data;
+	float32_t flt;
+	uint32_t data;
 }conv32;
 
 conv64 regs64[4];
 conv32 regs32[4];
 
-uint32 FPUscr;
+uint32_t FPUscr;
 
 void fp_set_fpscr(){
 	stacklong(newreg);
@@ -88,14 +88,14 @@ void fp_round(){
 void d_itod(){
 	stackptr(PROTO64);//64bit are returned differently
 	stacklong(intin);
-	return64(PROTO64,double64toraw((double64)intin));
+	return64(PROTO64,double64_ttoraw((double64_t)intin));
 }
 
 void d_div(){
 	stackptr(PROTO64);//64bit are returned differently
 	stacklong64(dbl1);
 	stacklong64(dbl2);
-	uint64 out = double64toraw(rawdouble64(dbl1) / rawdouble64(dbl2));
+	uint64_t out = double64_ttoraw(rawdouble64_t(dbl1) / rawdouble64_t(dbl2));
 	return64(PROTO64,out);
 }
 
@@ -103,8 +103,8 @@ TEMPHACK
 void d_dtof(){
 	stacklong64(dbl);
 	//regs64[0].data = dbl;
-	//D0 = (float32)regs64[0].flt;
-	D0 = float32toraw((float32)rawdouble64(dbl));
+	//D0 = (float32_t)regs64[0].flt;
+	D0 = float32_ttoraw((float32_t)rawdouble64_t(dbl));
 }
 
 TEMPHACK
@@ -112,9 +112,9 @@ void f_ftod(){
 	stackptr(PROTO64);//64bit are returned differently
 	stacklong(flt);
 	//regs32[0].data = flt;
-	//regs64[0].flt = (double64)regs32[0].flt;
+	//regs64[0].flt = (double64_t)regs32[0].flt;
 	//return64(PROTO64,regs64[0].data);
-	return64(PROTO64,double64toraw((double64)rawfloat32(flt)));
+	return64(PROTO64,double64_ttoraw((double64_t)rawfloat32_t(flt)));
 }
 
 TEMPHACK
@@ -122,7 +122,7 @@ void d_feq(){
 	stacklong64(dbl1);
 	stacklong64(dbl2);
 
-	if(rawdouble64(dbl1) == rawdouble64(dbl2)){
+	if(rawdouble64_t(dbl1) == rawdouble64_t(dbl2)){
 		D0 = 1;
 	}else{
 		D0 = 0;
@@ -138,25 +138,25 @@ void d_feq(){
 
 void f_itof(){
 	stacklong(intin);
-	regs32[0].flt = (float32)intin;
+	regs32[0].flt = (float32_t)intin;
 	D0 = regs32[0].data;
 }
 
 void f_div(){
 	stacklong(flt1);
 	stacklong(flt2);
-	D0 = float32toraw(rawfloat32(flt1) / rawfloat32(flt2));
+	D0 = float32_ttoraw(rawfloat32_t(flt1) / rawfloat32_t(flt2));
 }
 
 void f_ftoi(){
 	stacklong(flt);
-	D0 = (int32)rawfloat32(flt);
+	D0 = (int32_t)rawfloat32_t(flt);
 }
 
 void f_mul(){
 	stacklong(flt1);
 	stacklong(flt2);
-	D0 = float32toraw(rawfloat32(flt1) * rawfloat32(flt2));
+	D0 = float32_ttoraw(rawfloat32_t(flt1) * rawfloat32_t(flt2));
 }
 
 

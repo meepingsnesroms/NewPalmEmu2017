@@ -19,7 +19,7 @@ bool typecreatorCMP(ULONG type, ULONG creator, ULONG cmptype, ULONG cmpcreator, 
 
 CPTR getresource(int dbnum, UWORD id, ULONG tp);
 CPTR getappresource(UWORD id, ULONG tp);
-CPTR getrecord(int dbnum, uint16 index);
+CPTR getrecord(int dbnum, uint16_t index);
 //only applies to resource dbs
 UWORD resourcenumfromtypeid(int appnum, UWORD id, ULONG tp);
 

@@ -37,7 +37,7 @@ std::string username;
 std::string clipboard;
 std::string sdcarddirectory;
 bool multibytecharsupport;
-ULONG fullticks;
+uint32_t fullticks;
 float partialticks;
 ULONG keymask;
 std::chrono::high_resolution_clock::time_point starttime;
@@ -79,7 +79,7 @@ void backupram(){
 	//HACK need to do this!!
 }
 
-bool start(int bootfile){
+bool start(size_t bootfile){
 	if(running)return false;
 
 	if(!hasbootableapp)return false;
@@ -116,14 +116,14 @@ bool halt(){
 	if(!running)return false;
 
 	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
-	uint32 fulltickspassed = (uint32)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
+	uint32_t fulltickspassed = (uint32_t)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
 	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
 	fullticks   += fulltickspassed;
 	partialticks += partialtickspassed;
 
 	if(partialticks > 1.0){
-		fullticks   += (uint32)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
-		partialticks -= (uint32)partialticks;//remove any full ticks from the partial tick counter
+		fullticks   += (uint32_t)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
+		partialticks -= (uint32_t)partialticks;//remove any full ticks from the partial tick counter
 	}
 
     CPU_stop(&palm);

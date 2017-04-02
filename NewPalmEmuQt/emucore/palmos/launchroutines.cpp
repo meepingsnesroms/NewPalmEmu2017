@@ -242,9 +242,6 @@ bool launchapp(int num){
 	}else{
 		dbgprintf("App %d has banned overlays.\n",num);
 		curoverlay = -1;
-
-		TEMPHACK;
-		//remove overlay from app list if one exists(just for speed and memory purposes)
 	}
 
 	return true;
