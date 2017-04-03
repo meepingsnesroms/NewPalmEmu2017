@@ -111,7 +111,7 @@ void prefgetpreference();
 
 
 //init DataManager
-void initfilesystemdriver();
+void init_filesystem_driver();
 
 #endif // DATAMGR
 

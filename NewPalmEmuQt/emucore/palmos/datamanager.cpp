@@ -1134,6 +1134,6 @@ void prefgetpreference(){
 
 
 //init DataManager
-void initfilesystemdriver(){
-	//sd card support not implimented yet
+void init_filesystem_driver(){
+	dmlasterror = errNone;
 }

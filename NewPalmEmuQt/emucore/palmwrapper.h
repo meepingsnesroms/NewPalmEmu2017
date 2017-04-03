@@ -17,6 +17,15 @@
 #include <thread>
 
 
+//switch to this later
+typedef struct{
+	std::vector<std::string>	database_files;
+	std::string					username;
+	std::string					sdcard_directory;
+	bool						multibyte_char_support;
+	uint32_t					screen_width;
+	uint32_t					screen_height;
+}emu_config;
 
 //Universal data storage/heap/osvalues
 extern std::vector<palmdb> apps;

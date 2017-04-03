@@ -256,7 +256,10 @@ bool full_init(std::string& palmname, int w, int h){
 	if(CPU_init(&palm))return false;
 	resetmallocstate();//palm os memory state
 
-	//used by FtrGet and FtrSet
+	//Sets default database and sdcard filesystem values
+	init_filesystem_driver();
+
+	//Used by FtrGet and FtrSet
 	reset_and_load_default_features();
 
 	//Using 68k code as apis whenever possible
