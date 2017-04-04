@@ -19,6 +19,18 @@
 
 #include "palmos/graphics/palette.h"
 
+
+#include "ugui.h"
+
+UG_GUI displayctx;
+
+offset_68k frameoffset;
+
+void plotpixel(int16_t x, int16_t y, uint16_t color){
+	put_word(frameoffset + ((y * LCDW + x) * 2), color);
+}
+
+
 //display config //these are hardware abstraction layer values,the actual display size and depth are fixed
 uint8_t bpp;
 int16_t width,height;
@@ -149,7 +161,7 @@ uint16_t getformobjid(offset_68k form,uint16_t count){
 }
 
 
-
+//#if 0
 //Virtual GPU
 //virtual GPU registers
 
@@ -327,6 +339,7 @@ void line(){
 }
 
 //End of virtual GPU
+//#endif
 
 
 //helpers
@@ -414,6 +427,7 @@ COORD trackpen(){
 	return loc;
 }
 
+//#if 0
 void drawborder(SQUARE area){
 	srcsquare = area;
 	drwcolor = 0xFFFF;//white
@@ -436,7 +450,7 @@ void drawbutton(SQUARE area){
 void radioactiveborder(SQUARE area,bool round){
 	palmabrt();
 }
-
+//#endif
 
 //used by emulator when writing os data to screen and the onscreen image needs to be preserved(like alerts)
 static uint16_t spareframe[LCDMAXPIX];
@@ -2966,7 +2980,13 @@ void evtgeteventWIN(){
 
 
 //sets up memory and varibles
-bool initdisplaydriver(){
+bool init_display_driver(){
+	frameoffset = lcd_start;
+
+	UG_Init(&displayctx, plotpixel, LCDW, LCDH);
+	UG_FillScreen(C_WHITE);
+
+
 	//spareframe does not need to be cleared since it is not accessible from inside the emulator
 	//(it is only drawn after being filled with valid screen data)
 
@@ -2977,12 +2997,6 @@ bool initdisplaydriver(){
 	bpp = LCDBPP;
 	color = LCDHASCOLOR;
 
-	/*
-	width = LCDW;
-	height = LCDH;
-	bpp = LCDBPP;
-	color = LCDHASCOLOR;
-	*/
 
 	TEMPHACK;
 	//status bar on devices with dynamic input area
@@ -3049,7 +3063,7 @@ bool initdisplaydriver(){
 	return true;
 }
 
-void deinitdisplaydriver(){
+void deinit_display_driver(){
 }
 
 

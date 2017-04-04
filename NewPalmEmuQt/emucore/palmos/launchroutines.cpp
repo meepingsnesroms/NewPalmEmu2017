@@ -231,7 +231,7 @@ bool launchapp(int num){
 	forgeuniqueids();
 
 	//start lcd driver
-	if(!initdisplaydriver())return false;
+	if(!init_display_driver())return false;
 
 	//overlay (for os >= 3.5)
 	offset_68k overlaysettings = getresource(num,0,'xprf');
@@ -293,7 +293,7 @@ bool full_init(std::string& palmname, int w, int h){
 void full_deinit(){
 	wipeeventqueue();
 	releasefilemem();
-	deinitdisplaydriver();
+	deinit_display_driver();
 	memory_deinit();
 	clear_rommemory();
 }

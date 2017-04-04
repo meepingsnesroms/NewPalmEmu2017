@@ -38,6 +38,7 @@ INCLUDEPATH += libretro \
     emucore/palmos \
     emucore/palmos/graphics \
     emucore/debug \
+    emucore/palmos/graphics/ugui \
     emucore
 
 SOURCES += \
@@ -57,7 +58,6 @@ SOURCES += \
     emucore/hardware/m68000/cpuD.cpp \
     emucore/hardware/m68000/cpuE.cpp \
     emucore/hardware/m68000/cputbl.cpp \
-    emucore/hardware/m68000/m68kcycles.cpp \
     emucore/hardware/m68000/newcpu.cpp \
     emucore/hardware/dataexchange.cpp \
     emucore/hardware/memmap.cpp \
@@ -98,7 +98,8 @@ SOURCES += \
     libretro/libretro.c \
     emucore/hardware/romutils.cpp \
     emucore/palmosv4.1-en-m515.cpp \
-    emucore/debug/trapnumtoname.cpp
+    emucore/debug/trapnumtoname.cpp \
+    emucore/palmos/graphics/ugui/ugui.c
 
 
 
@@ -155,7 +156,9 @@ HEADERS  += \
     emucore/hardware/romutils.h \
     emucore/palmosv4.1-en-m515.h \
     emucore/debug/trapnumtoname.h \
-    emucore/debug/dbgmacros.h
+    emucore/debug/dbgmacros.h \
+    emucore/palmos/graphics/ugui/ugui.h \
+    emucore/palmos/graphics/ugui/ugui_config.h
 
 
 FORMS    += mainwindow.ui \
