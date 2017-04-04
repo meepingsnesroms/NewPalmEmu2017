@@ -90,13 +90,6 @@
 #define cpuLoadApp 4
 #define cpuExit    5
 
-
-
-//type names
-typedef int8_t BYTE;
-typedef int16_t WORD;
-typedef int32_t LONG;
-
 typedef uint8_t flagtype;//Some flags have more that 2 values so this must remain an 8bit int
 typedef void cpuop_func(uint32_t);
 
@@ -164,7 +157,7 @@ extern uint8_t m68kcycles[65536];
 //m68k memory access
 uint32_t get_long(offset_68k addr);
 uint16_t get_word(offset_68k addr);
-uint8_t get_byte(offset_68k addr);
+uint8_t  get_byte(offset_68k addr);
 
 void put_long(offset_68k addr,uint32_t l);
 void put_word(offset_68k addr,uint16_t w);
@@ -174,9 +167,8 @@ int valid_address(offset_68k addr, uint32_t size);
 uint16_t *get_real_address(offset_68k addr);
 
 #define STATECHANGE 1
-#define ABORT 2
+#define ABORT		2
 
-//#define KILLSWITCH if(CPUREQ)throw CPUREQ
 #define KILLSWITCH if(CPUREQ)throw STATECHANGE
 
 

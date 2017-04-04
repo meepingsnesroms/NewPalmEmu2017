@@ -13,25 +13,25 @@ void memset68k(offset_68k dest,uint8_t value,size_t_68k size){
 	}
 }
 
-WORD memcmp68k(offset_68k ptr1, offset_68k ptr2, size_t_68k size){
+int16_t memcmp68k(offset_68k ptr1, offset_68k ptr2, size_t_68k size){
 	uint8_t byte1,byte2;
 	for(offset_68k end = 0;end < size;end++){
 		byte1 = get_byte(ptr1 + end);
 		byte2 = get_byte(ptr2 + end);
-		if(byte1 != byte2)return (BYTE)(byte1 - byte2);
+		if(byte1 != byte2)return (int8_t)(byte1 - byte2);
 	}
 	return 0;
 }
 
 /*
-WORD strcmp68k(offset_68k ptr1, offset_68k ptr2, size_t_68k size){
+int16_t strcmp68k(offset_68k ptr1, offset_68k ptr2, size_t_68k size){
 	//may multithread this by NUMBER_OF_PROCESSORS & switch to UWORDs instead of UBYTEs
 	offset_68k end;
 	uint8_t byte1,byte2;
 	inc_for(end,size){
 		byte1 = get_byte(ptr1 + end);
 		byte2 = get_byte(ptr2 + end);
-		if(byte1 != byte2)return (BYTE)(byte1 - byte2);
+		if(byte1 != byte2)return (int8_t)(byte1 - byte2);
 		//both chars are the same now check if there 0,if yes the strings are the same
 		//this prevents equal strings smaller than the max size from overflowing
 		if(byte1 == '\0')return 0;

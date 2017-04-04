@@ -10,13 +10,13 @@
 #include "palmos/graphics/bitmapcompression.h"
 
 typedef struct{
-	WORD w;
-	WORD h;
+	int16_t w;
+	int16_t h;
 }BOUNDRY;
 
 typedef struct{
-	WORD x;
-	WORD y;
+	int16_t x;
+	int16_t y;
 }COORD;
 
 typedef struct{
@@ -36,15 +36,15 @@ typedef struct{
 
 inline COORD get_coord(offset_68k addr){
 	COORD temp;
-	temp.x = (WORD)get_word(addr);
-	temp.y = (WORD)get_word(addr + 2);
+	temp.x = (int16_t)get_word(addr);
+	temp.y = (int16_t)get_word(addr + 2);
 	return temp;
 }
 
 inline BOUNDRY get_boundry(offset_68k addr){
 	BOUNDRY temp;
-	temp.w = (WORD)get_word(addr);
-	temp.h = (WORD)get_word(addr + 2);
+	temp.w = (int16_t)get_word(addr);
+	temp.h = (int16_t)get_word(addr + 2);
 	return temp;
 }
 
@@ -96,8 +96,8 @@ enum{
 };
 
 typedef struct{
-	std::vector<WORD> x;
-	std::vector<WORD> y;
+	std::vector<int16_t> x;
+	std::vector<int16_t> y;
 	bool fill;
 	uint16_t color;
 }poly;
@@ -159,9 +159,9 @@ public:
 
 	int aboveline();
 	int belowline();
-	WORD width();
-	WORD height();
-	uint16_t getpixel(WORD x,WORD y);
+	int16_t width();
+	int16_t height();
+	uint16_t getpixel(int16_t x,int16_t y);
 };
 
 //palm font
@@ -169,10 +169,10 @@ class RAWfnt {
 	offset_68k fontptr;
 	offset_68k charinfotableoffset;
 
-	WORD firstch,lastch;
-	WORD charwidth;
+	int16_t firstch,lastch;
+	int16_t charwidth;
 	size_t_68k chsize;
-	WORD rowwords;
+	int16_t rowwords;
 	int numch;
 	std::vector<uint16_t> charBMP;
 
@@ -180,11 +180,11 @@ class RAWfnt {
 public:
 	~RAWfnt();
 
-	WORD width,height;
-	WORD ascent,descent;
+	int16_t width,height;
+	int16_t ascent,descent;
 	void setactivefont(offset_68k location);
 	gchar getIMG(unsigned char chnum);
-	uint16_t getpixel(WORD x,WORD y);
+	uint16_t getpixel(int16_t x,int16_t y);
 };
 
 
@@ -225,7 +225,7 @@ class RAWimg {
 	uint8_t datatype,typeversion;
 	uint8_t compression = BitmapCompressionTypeNone;
 
-	void from68k(offset_68k m68kaddr, uint8_t type, WORD datawidth, WORD dataheight, uint8_t bpp, bool leaveinplace);
+	void from68k(offset_68k m68kaddr, uint8_t type, int16_t datawidth, int16_t dataheight, uint8_t bpp, bool leaveinplace);
 
 	void get1bitpixelarr();
 	void get2bitpixelarr();
@@ -244,11 +244,11 @@ public:
 
 	//for width and bpp findme means get from wrapper
 	RAWimg(offset_68k m68kaddr, uint8_t type);
-	RAWimg(offset_68k m68kaddr, uint8_t type, WORD datawidth, WORD dataheight, uint8_t bpp, bool leaveinplace);
+	RAWimg(offset_68k m68kaddr, uint8_t type, int16_t datawidth, int16_t dataheight, uint8_t bpp, bool leaveinplace);
 	~RAWimg();
 
-	uint16_t getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,uint16_t color);
+	uint16_t getpixel(int16_t x,int16_t y);
+	void setpixel(int16_t x,int16_t y,uint16_t color);
 
 private:
 	void tobuff();
@@ -259,19 +259,19 @@ private:
 	uint16_t* test;//hack
 	offset_68k location;
 	uint16_t rowbytes;
-	WORD width;
+	int16_t width;
 	uint8_t pixelsize;
 
 public:
 	FBWriter(offset_68k addr, uint16_t buffwidth, uint8_t bpp);
 
-	uint16_t getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,uint16_t color);
-	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color);
-	void rect(WORD x, WORD y, WORD w, WORD h, int prams, uint16_t color, uint16_t round);
-	void copyrect(RAWimg& host, WORD startx, WORD starty, WORD rectw, WORD recth, WORD outx, WORD outy);
-	void draw(RAWimg& smlimg, WORD x, WORD y);
-	void draw(char letter, RAWfnt& chrimgs, WORD x, WORD y);
+	uint16_t getpixel(int16_t x,int16_t y);
+	void setpixel(int16_t x,int16_t y,uint16_t color);
+	void line(int16_t x, int16_t y, int16_t x2, int16_t y2, int prams, uint16_t color);
+	void rect(int16_t x, int16_t y, int16_t w, int16_t h, int prams, uint16_t color, uint16_t round);
+	void copyrect(RAWimg& host, int16_t startx, int16_t starty, int16_t rectw, int16_t recth, int16_t outx, int16_t outy);
+	void draw(RAWimg& smlimg, int16_t x, int16_t y);
+	void draw(char letter, RAWfnt& chrimgs, int16_t x, int16_t y);
 	bool draw5x7(int16_t x, int16_t y, uint16_t color, char letter);//hack //remove this
 };
 
@@ -295,8 +295,8 @@ offset_68k decompressform(uint16_t id);
 void releaseformmemory(offset_68k frmptr);
 
 //bitmap
-uint8_t* scanline(offset_68k addr, WORD width, WORD height, uint16_t rowbytes);
-uint8_t* RLE(offset_68k addr,WORD width,WORD height,uint16_t rowbytes);
-uint8_t* PackBits(offset_68k addr,WORD width,WORD height,uint16_t rowbytes);
+uint8_t* scanline(offset_68k addr, int16_t width, int16_t height, uint16_t rowbytes);
+uint8_t* RLE(offset_68k addr,int16_t width,int16_t height,uint16_t rowbytes);
+uint8_t* PackBits(offset_68k addr,int16_t width,int16_t height,uint16_t rowbytes);
 #endif // RAWIMAGETOOLS
 

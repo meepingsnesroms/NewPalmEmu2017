@@ -4,19 +4,19 @@ private:
 	uint16_t* test;//hack
 	offset_68k location;
 	uint16_t rowbytes;
-	WORD width;
+	int16_t width;
 	uint8_t pixelsize;
 
 public:
 	FBWriter(offset_68k addr, uint16_t buffwidth, uint8_t bpp);
 
-	uint16_t getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,uint16_t color);
-	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color);
-	void rect(WORD x, WORD y, WORD w, WORD h, int prams, uint16_t color, uint16_t round);
-	void copyrect(RAWimg& host, WORD startx, WORD starty, WORD rectw, WORD recth, WORD outx, WORD outy);
-	void draw(RAWimg& smlimg, WORD x, WORD y);
-	void draw(char letter, RAWfnt& chrimgs, WORD x, WORD y);
+	uint16_t getpixel(int16_t x,int16_t y);
+	void setpixel(int16_t x,int16_t y,uint16_t color);
+	void line(int16_t x, int16_t y, int16_t x2, int16_t y2, int prams, uint16_t color);
+	void rect(int16_t x, int16_t y, int16_t w, int16_t h, int prams, uint16_t color, uint16_t round);
+	void copyrect(RAWimg& host, int16_t startx, int16_t starty, int16_t rectw, int16_t recth, int16_t outx, int16_t outy);
+	void draw(RAWimg& smlimg, int16_t x, int16_t y);
+	void draw(char letter, RAWfnt& chrimgs, int16_t x, int16_t y);
 	bool draw5x7(int16 x, int16 y, uint16_t color, char letter);//hack //remove this
 };
 */

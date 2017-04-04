@@ -13,7 +13,7 @@
 
 char* archs[3] = {"Thumb","ARM","m68k"};
 
-char* datalengths[3] = {"BYTE","WORD","LONG"};
+char* datalengths[3] = {"int8_t","int16_t","int32_t"};
 
 enum{
 	BYTESIZE,

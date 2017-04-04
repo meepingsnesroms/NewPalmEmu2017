@@ -223,7 +223,7 @@ void keycurrentstate(){
 
 void systaskdelay(){
 	stacklong(uticks);
-	LONG ticks = (LONG)uticks;
+	int32_t ticks = (int32_t)uticks;
 
 	if(ticks < 0)palmabrt();//hack //cant wait less than 0 ticks
 	//palmabrt();
@@ -347,7 +347,7 @@ void sysnotifyregister(){
 	stackptr(callback);
 	stackbyte(upriority);
 	stackptr(userdataptr);
-	BYTE priority = (BYTE)upriority;
+	int8_t priority = (int8_t)upriority;
 	localid -= dmOpenRefOffset;
 
 	if(cardno != 0)palmabrt();//hack

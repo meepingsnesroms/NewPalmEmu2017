@@ -32,14 +32,14 @@ static offset_68k getbestbitmap(offset_68k startbitmap){
 	bool hasloresscreen = (LCDW < 320 || LCDH < 320);
 	offset_68k currentbestptr = nullptr_68k;
 	uint16_t currentbestbpp = 0;
-	LONG currentbestsize = 0;
+	int32_t currentbestsize = 0;
 
 	offset_68k curbitmap = startbitmap;
 	while(true){
 		offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
 
 		uint16_t testbpp = getbmpbpp(curbitmap);
-		LONG testsize = ((WORD)get_word(curbitmap)) * ((WORD)get_word(curbitmap + 2));//stored as signed but is an error if negative
+		int32_t testsize = ((int16_t)get_word(curbitmap)) * ((int16_t)get_word(curbitmap + 2));//stored as signed but is an error if negative
 		uint8_t testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
 
 		switch(testversion){
@@ -73,7 +73,7 @@ static offset_68k getbestbitmap(offset_68k startbitmap){
 
 			if(hasloresscreen)return currentbestptr;//found best bitmap for lores screens
 		}else{//valid bitmap proceed with checks
-			BYTE updateprams = 0;
+			int8_t updateprams = 0;
 			if(testbpp > currentbestbpp)updateprams += 2;//better color palette
 			else if(testbpp < currentbestbpp)updateprams -= 2;//worse color palette
 
@@ -115,15 +115,15 @@ int gchar::belowline(){
 	return pxbelowline;
 }
 
-WORD gchar::width(){
+int16_t gchar::width(){
 	return area.w;
 }
 
-WORD gchar::height(){
+int16_t gchar::height(){
 	return area.h;
 }
 
-uint16_t gchar::getpixel(WORD x,WORD y){
+uint16_t gchar::getpixel(int16_t x,int16_t y){
 	uint32_t pxnum = y * yincrement + x + glyphoffset;
 	uint8_t pxbyte = get_byte(start + pxnum / 8);
 	if(pxbyte & (0x80 >> (pxnum % 8)))return oncolor;
@@ -139,7 +139,7 @@ void RAWfnt::setactivefont(offset_68k location){
 
 	//header = 26 bytes
 	//height = asecnt + descent
-	WORD fonttype = get_word(location);//0 always 36864/0x9000 for 'NFNT' (unsure about 'nfnt')
+	int16_t fonttype = get_word(location);//0 always 36864/0x9000 for 'NFNT' (unsure about 'nfnt')
 	firstch = get_word(location + 2);//2 first ascii value
 	lastch = get_word(location + 4);//4 last ascii value
 	//6 maxwidth of char (unknown)
@@ -149,13 +149,13 @@ void RAWfnt::setactivefont(offset_68k location){
 	height = get_word(location + 14);//14
 
 	//offset to offset/width table (dont know if byte,word or long)
-	//WORD OWToffset = get_word(location + 16);
+	//int16_t OWToffset = get_word(location + 16);
 	charinfotableoffset = get_word(location + 16) * 2;
 
 	ascent = get_word(location + 18);//ascent (pix above line)
 	descent = get_word(location + 20);//descent (pix below line)
 
-	WORD leading = get_word(location + 22);//(unknown)
+	int16_t leading = get_word(location + 22);//(unknown)
 	rowwords = get_word(location + 24);//row width of fontbitmap
 	//fonttype is 26 bytes long
 	//then comes bitmap
@@ -195,7 +195,7 @@ void RAWfnt::parsefnt(){
 	FBWriter display(lcd_start,LCDW,LCDBPP);
 	inc_for(finaly,height){
 		inc_for(finalx,width){
-			WORD displayx = finalx,displayy = finaly;
+			int16_t displayx = finalx,displayy = finaly;
 			while(displayx > LCDW){
 				displayx -= LCDW;
 				displayy += height;
@@ -206,7 +206,7 @@ void RAWfnt::parsefnt(){
 #endif
 }
 
-uint16_t RAWfnt::getpixel(WORD x,WORD y){
+uint16_t RAWfnt::getpixel(int16_t x,int16_t y){
 	return charBMP[y * width + x];
 }
 
@@ -214,11 +214,11 @@ TEMPHACK
 //fix above/below line positioning
 gchar RAWfnt::getIMG(unsigned char chnum){
 	offset_68k glyphoffset = (chnum - firstch) * charwidth;//in pixels
-	WORD chrwidth = get_byte(fontptr + charinfotableoffset + (chnum - firstch) * 2 + 1);
+	int16_t chrwidth = get_byte(fontptr + charinfotableoffset + (chnum - firstch) * 2 + 1);
 	offset_68k chrimgoffset = get_byte(fontptr + charinfotableoffset + (chnum - firstch) * 2);
 
 	//offset_68k glyphoffset = chnum * charwidth;//in pixels
-	//WORD chrwidth = get_byte(fontptr + charinfotableoffset + chnum * 2 + 1);
+	//int16_t chrwidth = get_byte(fontptr + charinfotableoffset + chnum * 2 + 1);
 	//offset_68k chrimgoffset = get_byte(fontptr + charinfotableoffset + chnum * 2);
 
 
@@ -242,8 +242,8 @@ RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type){
 	from68k(m68kaddr,type,findme,findme,findme,false);
 }
 
-RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type, WORD datawidth,
-			   WORD dataheight, uint8_t bpp, bool leaveinplace){
+RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type, int16_t datawidth,
+			   int16_t dataheight, uint8_t bpp, bool leaveinplace){
 	from68k(m68kaddr,type,datawidth,dataheight,bpp,leaveinplace);
 }
 
@@ -251,8 +251,8 @@ RAWimg::~RAWimg(){
 	purifieddata.clear();
 }
 
-void RAWimg::from68k(offset_68k m68kaddr, uint8_t type, WORD datawidth,
-					 WORD dataheight, uint8_t bpp, bool leaveinplace){
+void RAWimg::from68k(offset_68k m68kaddr, uint8_t type, int16_t datawidth,
+					 int16_t dataheight, uint8_t bpp, bool leaveinplace){
 	inm68kaddrspace = true;
 	datatype = type;
 	compression = BitmapCompressionTypeNone;
@@ -341,11 +341,11 @@ uint16_t RAWimg::mypalettecolor(uint8_t index){
 	return 0;
 }
 
-uint16_t RAWimg::getpixel(WORD x, WORD y){
+uint16_t RAWimg::getpixel(int16_t x, int16_t y){
 	return purifieddata[y * width + x];
 }
 
-void RAWimg::setpixel(WORD x, WORD y, uint16_t color){
+void RAWimg::setpixel(int16_t x, int16_t y, uint16_t color){
 	purifieddata[y * width + x] = color;
 }
 
@@ -512,7 +512,7 @@ FBWriter::FBWriter(offset_68k addr,uint16_t buffwidth,uint8_t bpp){
 }
 
 
-uint16_t FBWriter::getpixel(WORD x, WORD y){
+uint16_t FBWriter::getpixel(int16_t x, int16_t y){
 	palmabrt();//hack
 	switch(pixelsize){
 		case 16:
@@ -526,7 +526,7 @@ uint16_t FBWriter::getpixel(WORD x, WORD y){
 	return 0;
 }
 
-void FBWriter::setpixel(WORD x, WORD y, uint16_t color){
+void FBWriter::setpixel(int16_t x, int16_t y, uint16_t color){
 	if(pixelsize != 16)palmabrt();//hack
 	switch(pixelsize){
 		case 16:
@@ -546,7 +546,7 @@ void FBWriter::setpixel(WORD x, WORD y, uint16_t color){
 }
 
 
-void FBWriter::draw(RAWimg& smlimg, WORD x, WORD y){
+void FBWriter::draw(RAWimg& smlimg, int16_t x, int16_t y){
 	uint16_t pixstore;
 	int cntx,cnty;
 	int datawidth = smlimg.width;
@@ -569,7 +569,7 @@ void FBWriter::draw(RAWimg& smlimg, WORD x, WORD y){
 	}
 }
 
-void FBWriter::draw(char letter, RAWfnt& chrimgs, WORD x, WORD y){
+void FBWriter::draw(char letter, RAWfnt& chrimgs, int16_t x, int16_t y){
 	gchar IMG = chrimgs.getIMG(letter);
 	int width = IMG.width();
 	int height = IMG.height();
@@ -603,7 +603,7 @@ bool FBWriter::draw5x7(int16_t x,int16_t y,uint16_t color,char letter){
 	return false;
 }
 
-void FBWriter::line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color){
+void FBWriter::line(int16_t x, int16_t y, int16_t x2, int16_t y2, int prams, uint16_t color){
 	//prams dashed,dotted
 
 	//taken from rosetta code
@@ -620,7 +620,7 @@ void FBWriter::line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color)
 	}
 }
 
-void FBWriter::rect(WORD x, WORD y,WORD w, WORD h,int prams,uint16_t color,uint16_t round){
+void FBWriter::rect(int16_t x, int16_t y,int16_t w, int16_t h,int prams,uint16_t color,uint16_t round){
 	int wcnt,hcnt;
 	switch(prams){
 		case FILL:{
@@ -656,7 +656,7 @@ void FBWriter::rect(WORD x, WORD y,WORD w, WORD h,int prams,uint16_t color,uint1
 	//HACK add round edges
 }
 
-void FBWriter::copyrect(RAWimg& host, WORD startx, WORD starty,WORD rectw, WORD recth,WORD outx, WORD outy){
+void FBWriter::copyrect(RAWimg& host, int16_t startx, int16_t starty,int16_t rectw, int16_t recth,int16_t outx, int16_t outy){
 	int x,y;
 	inc_for(y,recth){
 		inc_for(x,rectw){
@@ -939,10 +939,10 @@ offset_68k decompressform(uint16_t id){
 	accesspoint = form + 10;//skip pad
 
 	//change to SQUARE
-	WORD x = get_word(accesspoint);
-	WORD y = get_word(accesspoint + 2);
-	WORD w = get_word(accesspoint + 4);
-	WORD h = get_word(accesspoint + 6);
+	int16_t x = get_word(accesspoint);
+	int16_t y = get_word(accesspoint + 2);
+	int16_t w = get_word(accesspoint + 4);
+	int16_t h = get_word(accesspoint + 6);
 
 	accesspoint = form + 30;
 	uint8_t cornerdiam = get_byte(accesspoint);
@@ -1048,7 +1048,7 @@ void releaseformmemory(offset_68k frmptr){
 //bitmap
 
 //does not convert to rgb_16
-uint8_t* scanline(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
+uint8_t* scanline(offset_68k addr,int16_t width,int16_t height,uint16_t rowbytes){
 #if 0
 	//dbgprintf("height:%d\n",height);
 	size_t_68k uncompressedsize = rowbytes * height;
@@ -1104,7 +1104,7 @@ uint8_t* scanline(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
 }
 
 //does not convert to rgb_16
-uint8_t* RLE(offset_68k addr, WORD width, WORD height, uint16_t rowbytes){
+uint8_t* RLE(offset_68k addr, int16_t width, int16_t height, uint16_t rowbytes){
 #if 1
 	size_t_68k uncompressedsize = rowbytes * height;
 	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
@@ -1159,7 +1159,7 @@ uint8_t* RLE(offset_68k addr, WORD width, WORD height, uint16_t rowbytes){
 #endif
 }
 
-uint8_t* PackBits(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
+uint8_t* PackBits(offset_68k addr,int16_t width,int16_t height,uint16_t rowbytes){
 #if 1
 	size_t_68k uncompressedsize = rowbytes * height;
 	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
@@ -1168,7 +1168,7 @@ uint8_t* PackBits(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
 
 
 	offset_68k loc = 0;
-	BYTE headerbyte;
+	int8_t headerbyte;
 	offset_68k bunny = addr;
 	offset_68k end = addr + compressedsize;
 	while(bunny < end){

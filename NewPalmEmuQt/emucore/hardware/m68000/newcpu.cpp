@@ -130,12 +130,12 @@ int cctrue(int cc){
 
 uint32_t get_disp_ea(uint32_t base, uint16_t dp){
     int reg = (dp >> 12) & 7;
-    LONG regd;
+	int32_t regd;
     
 	if(dp & 0x8000)regd = (Shptr->regs).a[reg];
 	else regd = (Shptr->regs).d[reg];
 
-	if(!(dp & 0x800))regd = (LONG)(WORD)regd;
+	if(!(dp & 0x800))regd = (int32_t)(int16_t)regd;
 	return base + (int8_t)(dp) + regd;
 }
 
@@ -369,7 +369,11 @@ int CPU(shared_img *shptr){
 		case cpuStart:
 			shptr->CpuReq = cpuNone;
 			dbgprintf("I - CPU Started\n");
-			MC68000_run();
+			try{
+				MC68000_run();
+			}catch(int request){
+				//do nothing, just used as a quick exit method
+			};
 			break;
 		case cpuStop:
 			shptr->CpuReq = cpuNone;

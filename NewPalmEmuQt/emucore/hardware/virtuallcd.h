@@ -14,7 +14,7 @@
 #define LCDHASCOLOR (LCDBPP > 4)
 #define LCDDENSITY	(LCDW / 160)
 
-extern WORD LCDW,LCDH;
+extern int16_t LCDW,LCDH;
 extern size_t_68k LCDBYTES;
 extern uint16_t framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
 

@@ -266,7 +266,7 @@ static osevent readeventfromptr(offset_68k eventptr){
 void evtgetevent(){
 	stackptr(eventptr);
 	stacklong(uwaittime);
-	LONG waittime = (LONG)uwaittime;
+	int32_t waittime = (int32_t)uwaittime;
 
 	//dbgprintf("EvtPtr:%08x,WaitTime:%d\n",eventptr,waittime);
 

@@ -136,18 +136,18 @@ static void installglobals(int app){
 	offset_68k offsetofa5;
 	offset_68k dest;
 
-	offsetofa5 = (LONG)nonalignedlong(start);
+	offsetofa5 = (int32_t)nonalignedlong(start);
 	//dbgprintf("OffestOfA5:%08x\n",offsetofa5);
 	dest = a5ptr + offsetofa5;
 	start += 4;
 	start = RLEglobals(dest,start);
 
-	offsetofa5 = (LONG)nonalignedlong(start);
+	offsetofa5 = (int32_t)nonalignedlong(start);
 	dest = a5ptr + offsetofa5;
 	start += 4;
 	start = RLEglobals(dest,start);
 
-	offsetofa5 = (LONG)nonalignedlong(start);
+	offsetofa5 = (int32_t)nonalignedlong(start);
 	dest = a5ptr + offsetofa5;
 	start += 4;
 	start = RLEglobals(dest,start);

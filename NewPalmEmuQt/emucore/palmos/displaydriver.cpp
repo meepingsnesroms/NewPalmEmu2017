@@ -21,7 +21,7 @@
 
 //display config //these are hardware abstraction layer values,the actual display size and depth are fixed
 uint8_t bpp;
-WORD width,height;
+int16_t width,height;
 uint16_t coordsys;
 bool color;
 bool scalevideo;//should be true if using 160*160 resolution,starts true and apps must enable hires mode
@@ -50,7 +50,7 @@ RAWfnt currentfont;
 
 //status bar on devices with dynamic input area
 bool statvisible;
-WORD statw,stath;
+int16_t statw,stath;
 
 //touch driver state
 bool sendpenevents;
@@ -159,24 +159,24 @@ SQUARE dstsquare;
 
 //these used to all be separate values
 COORD& srcstart = srcsquare.start;
-	WORD& srcx = srcstart.x;
-	WORD& srcy = srcstart.y;
+	int16_t& srcx = srcstart.x;
+	int16_t& srcy = srcstart.y;
 COORD& srcend = srcsquare.end;
-	WORD& srcendx = srcend.x;
-	WORD& srcendy = srcend.y;
+	int16_t& srcendx = srcend.x;
+	int16_t& srcendy = srcend.y;
 BOUNDRY& srcarea = srcsquare.size;
-	WORD& srcw = srcarea.w;
-	WORD& srch = srcarea.h;
+	int16_t& srcw = srcarea.w;
+	int16_t& srch = srcarea.h;
 
 COORD& dststart = dstsquare.start;
-	WORD& dstx = dststart.x;
-	WORD& dsty = dststart.y;
+	int16_t& dstx = dststart.x;
+	int16_t& dsty = dststart.y;
 COORD& dstend = dstsquare.end;
-	WORD& dstendx = dstend.x;
-	WORD& dstendy = dstend.y;
+	int16_t& dstendx = dstend.x;
+	int16_t& dstendy = dstend.y;
 BOUNDRY& dstarea = dstsquare.size;
-	WORD& dstw = dstarea.w;
-	WORD& dsth = dstarea.h;
+	int16_t& dstw = dstarea.w;
+	int16_t& dsth = dstarea.h;
 
 
 offset_68k srcptr,dstptr;
@@ -393,8 +393,8 @@ COORD waitforpen(){
 	}
 
 	COORD loc;
-	loc.x = (WORD)PENX;
-	loc.y = (WORD)PENY;
+	loc.x = (int16_t)PENX;
+	loc.y = (int16_t)PENY;
 
 	return loc;
 }
@@ -408,8 +408,8 @@ COORD trackpen(){
 	}
 
 	COORD loc;
-	loc.x = (WORD)PENX;
-	loc.y = (WORD)PENY;
+	loc.x = (int16_t)PENX;
+	loc.y = (int16_t)PENY;
 
 	return loc;
 }
@@ -519,7 +519,7 @@ void relaygadgetevent(offset_68k eventptr){
 				CPU_pushwordstack(formGadgetHandleEventCmd);
 				CPU_pushlongstack(eventptr);
 				CPU_68kfunction(functionptr);
-				//now remove the arguments of the 68k function call (10 bytes,4+2+4,LONG/WORD/LONG) from stack
+				//now remove the arguments of the 68k function call (10 bytes,4+2+4,int32_t/int16_t/int32_t) from stack
 				CPU_cleanargsfromstack(10);
 
 				dbgprintf("Sent event to gadget:%04x,Result:%08x\n",objects[curuisquare].objid,D0);
@@ -857,9 +857,9 @@ void drawlist(offset_68k window,offset_68k listptr){
 	SQUARE area = get_square(listptr + 2);
 	uint16_t attr = get_word(listptr + 10);
 	offset_68k itemlist = get_long(listptr + 12);//array of char pointers
-	WORD numitems = get_word(listptr + 16);
-	WORD currentitem = get_word(listptr + 18);
-	WORD topitem = get_word(listptr + 20);
+	int16_t numitems = get_word(listptr + 16);
+	int16_t currentitem = get_word(listptr + 18);
+	int16_t topitem = get_word(listptr + 20);
 	uint8_t fontid = get_byte(listptr + 22);
 	//skip pad byte 23
 	offset_68k popupwin = get_long(listptr + 24);
@@ -926,8 +926,8 @@ void drawscrollbar(){
 //only called by frmdrawform //labels dont handle or send events
 void drawlabel(offset_68k window,offset_68k labelptr){
 	uint16_t id = get_word(labelptr);
-	dstx = (WORD)get_word(labelptr + 2);
-	dsty = (WORD)get_word(labelptr + 4);
+	dstx = (int16_t)get_word(labelptr + 2);
+	dsty = (int16_t)get_word(labelptr + 4);
 	uint16_t attr = get_word(labelptr + 6);
 	bool useable = (attr & bit(15));
 	prams = get_byte(labelptr + 8);//fontid
@@ -964,7 +964,7 @@ void drawgadget(offset_68k window,offset_68k gdtptr){
 			CPU_pushwordstack(formGadgetDrawCmd);
 			CPU_pushlongstack(nullptr_68k);//no prams
 			CPU_68kfunction(handler);
-			//now remove the arguments of the 68k function call (10 bytes,4+2+4,LONG/WORD/LONG) from stack
+			//now remove the arguments of the 68k function call (10 bytes,4+2+4,int32_t/int16_t/int32_t) from stack
 			CPU_cleanargsfromstack(10);
 
 			dbgprintf("Gadget Function Pointer:%08x,Result:%d\n",handler,D0);
@@ -1475,8 +1475,8 @@ void windrawpixel(){
 	dstptr = currentdrawwindow;
 	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
 
-	dstx = (WORD)x;
-	dsty = (WORD)y;
+	dstx = (int16_t)x;
+	dsty = (int16_t)y;
 	dot();
 	//no return value
 }
@@ -1730,7 +1730,7 @@ void windrawchars(){
 	stackword(thisy);
 
 	TEMPHACK;
-	if((WORD)thisx < 0 || (WORD)thisy < 0)return;
+	if((int16_t)thisx < 0 || (int16_t)thisy < 0)return;
 
 	dbgprintf("%d chars to print.\n",length);
 
@@ -1739,7 +1739,7 @@ void windrawchars(){
 	dstptr = currentdrawwindow;
 	dstx = thisx;
 	dsty = thisy;
-	srcsize = (WORD)length;
+	srcsize = (int16_t)length;
 	srcptr = chrsptr;
 	drwcolor = get_byte(TEXTCOLOR);
 	text();
@@ -1806,10 +1806,10 @@ void winpalette(){
 	offset_68k winpal = getwinpalette(currentdrawwindow);
 	switch(operation){
 		case winPaletteGet:
-			memcpy68k(userpalarray,winpal + startindex * 4,(WORD)paletteentrys * 4);
+			memcpy68k(userpalarray,winpal + startindex * 4,(int16_t)paletteentrys * 4);
 			break;
 		case winPaletteSet:
-			memcpy68k(winpal + startindex * 4,userpalarray,(WORD)paletteentrys * 4);
+			memcpy68k(winpal + startindex * 4,userpalarray,(int16_t)paletteentrys * 4);
 			break;
 		case winPaletteSetToDefault:
 			uint16_t rabbid;
@@ -1933,8 +1933,8 @@ void winerasepixel(){
 	dstptr = currentdrawwindow;
 	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
 
-	dstx = (WORD)x;
-	dsty = (WORD)y;
+	dstx = (int16_t)x;
+	dsty = (int16_t)y;
 	dot();
 	//no return value
 }
@@ -2069,7 +2069,7 @@ void bmpcreate(){
 	stackbyte(bpp);//hack //normal is byte
 	stackptr(colortable);
 	stackptr(err);//return uint16_t
-	WORD w = (WORD)uw,h = (WORD)uh;//sign change
+	int16_t w = (int16_t)uw,h = (int16_t)uh;//sign change
 
 	dbgprintf("W:%d,H:%d,Bpp:%d\n",w,h,bpp);
 
@@ -2163,8 +2163,8 @@ void bmpcreatebitmapv3(){
 
 	/*
 	//copy dataptr data into new bitmap
-	WORD width = get_word(bmpv2ptr);
-	WORD height = get_word(bmpv2ptr + 2);
+	int16_t width = get_word(bmpv2ptr);
+	int16_t height = get_word(bmpv2ptr + 2);
 	uint16_t rowbytes = get_word(bmpv2ptr + 4);
 
 	size_t_68k datasize = rowbytes * height;
@@ -2248,9 +2248,9 @@ void fntcharswidth(){
 	/*
 	stackptr(chrarray);
 	stackword(ulength);
-	WORD length = (WORD)ulength;
-	WORD pixellength = 0;
-	WORD cnt;
+	int16_t length = (int16_t)ulength;
+	int16_t pixellength = 0;
+	int16_t cnt;
 	inc_for(cnt,length){
 		pixellength += getcharwidth(get_byte(chrarray + cnt));
 		//hack ,add spacing inbetween letters if not multi byte character
@@ -2539,7 +2539,7 @@ void frmcustomalert(){
 
 	//draw icon
 
-	WORD btngap = 5 * LCDDENSITY;//hack //find real gap
+	int16_t btngap = 5 * LCDDENSITY;//hack //find real gap
 
 	SQUARE btnloc;
 
@@ -2887,7 +2887,7 @@ void rctptinrectangle(){
 	stackptr(rectptr);
 
 	SQUARE rect = get_square(rectptr);
-	COORD testpt = {(WORD)x,(WORD)y};
+	COORD testpt = {(int16_t)x,(int16_t)y};
 
 	D0 = inboundbox(rect,testpt);
 }

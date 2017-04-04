@@ -1,7 +1,7 @@
 #include "palmwrapper.h"
 #include "virtuallcd.h"
 
-WORD LCDW,LCDH;
+int16_t LCDW,LCDH;
 size_t_68k LCDBYTES;
 uint16_t framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
 

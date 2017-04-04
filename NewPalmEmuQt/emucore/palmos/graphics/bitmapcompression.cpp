@@ -69,7 +69,7 @@ static void BMP_PackBits(uint8_t* compresseddata,uint8_t* uncompresseddata){
 
 	uint bunny = 0;//current position in the input
 	uint32_t loc = 0;//current position in the output
-	BYTE headerbyte;//the current command (-128 = skip,< 0 repeat,>= 0 unique data)
+	int8_t headerbyte;//the current command (-128 = skip,< 0 repeat,>= 0 unique data)
 	while(bunny < compressedsize){
 		headerbyte = compresseddata[bunny];
 		bunny++;

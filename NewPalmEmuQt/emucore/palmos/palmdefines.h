@@ -376,7 +376,7 @@ enum{
 
 // Magic button IDs used by FrmCustomResponseAlert callbacks
 #define frmResponseCreate		1974
-#define frmResponseQuit			((WORD) 0xBEEF)
+#define frmResponseQuit			((int16_t) 0xBEEF)
 
 
 

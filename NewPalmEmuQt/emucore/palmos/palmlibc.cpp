@@ -68,7 +68,7 @@ void strncompare(){
 		byte1 = get_byte(str1 + end);
 		byte2 = get_byte(str2 + end);
 		if(byte1 != byte2){
-			D0 = (BYTE)(byte1 - byte2);//HACK check and fix sign extend
+			D0 = (int8_t)(byte1 - byte2);//HACK check and fix sign extend
 			return;
 		}
 		//both chars are the same,now check if there 0,if yes the strings are the same
@@ -118,7 +118,7 @@ void strcompare(){
 		byte1 = get_byte(str1 + offs);
 		byte2 = get_byte(str2 + offs);
 		if(byte1 != byte2){
-			D0 = (BYTE)(byte1 - byte2);//HACK check and fix sign extend
+			D0 = (int8_t)(byte1 - byte2);//HACK check and fix sign extend
 			return;
 		}
 		//both chars are the same,now check if there 0,if yes the strings are the same
@@ -173,7 +173,7 @@ void stritoa(){
 	stacklong(value);
 
 	char convert[20];//64bit maxes out at 20 digits,this is only 32
-	sprintf(convert,"%d",(LONG)value);
+	sprintf(convert,"%d",(int32_t)value);
 	writestring(dst,convert);
 
 	A0 = dst;

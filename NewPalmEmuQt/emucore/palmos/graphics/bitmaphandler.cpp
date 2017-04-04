@@ -11,14 +11,14 @@ static offset_68k getbestbitmap(offset_68k startbitmap){
 	bool hasloresscreen = (LCDW < 320 || LCDH < 320);
 	offset_68k currentbestptr = nullptr_68k;
 	uint16_t currentbestbpp = 0;
-	LONG currentbestsize = 0;
+	int32_t currentbestsize = 0;
 
 	offset_68k curbitmap = startbitmap;
 	while(true){
 		offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
 
 		uint16_t testbpp = getbmpbpp(curbitmap);
-		LONG testsize = ((WORD)get_word(curbitmap)) * ((WORD)get_word(curbitmap + 2));//stored as signed but is an error if negative
+		int32_t testsize = ((int16_t)get_word(curbitmap)) * ((int16_t)get_word(curbitmap + 2));//stored as signed but is an error if negative
 		uint8_t testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
 
 		switch(testversion){
@@ -52,7 +52,7 @@ static offset_68k getbestbitmap(offset_68k startbitmap){
 
 			if(hasloresscreen)return currentbestptr;//found best bitmap for lores screens
 		}else{//valid bitmap proceed with checks
-			BYTE updateprams = 0;
+			int8_t updateprams = 0;
 			if(testbpp > currentbestbpp)updateprams += 2;//better color palette
 			else if(testbpp < currentbestbpp)updateprams -= 2;//worse color palette
 
@@ -84,8 +84,8 @@ void parsebitmapstruct(offset_68k m68kaddr){
 	m68kaddr = getbestbitmap(m68kaddr);
 
 	//start parsing
-	WORD imgwidth = get_word(m68kaddr);
-	WORD imgheight = get_word(m68kaddr + 2);
+	int16_t imgwidth = get_word(m68kaddr);
+	int16_t imgheight = get_word(m68kaddr + 2);
 	uint16_t rowbytes = get_word(m68kaddr + 4);
 	uint16_t flags = get_word(m68kaddr + 6);
 	uint8_t pixelsize = get_byte(m68kaddr + 8);

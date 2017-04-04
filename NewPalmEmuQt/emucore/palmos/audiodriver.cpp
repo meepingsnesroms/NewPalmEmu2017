@@ -82,7 +82,7 @@ void snddocmd(){
 
 	uint8_t cmd = get_byte(command);
 	//there is 1 byte of padding here
-	LONG  pram1 = (LONG)get_long(command + 2);
+	int32_t  pram1 = (int32_t)get_long(command + 2);
 	uint16_t pram2 = get_word(command + 6);
 	uint16_t pram3 = get_word(command + 8);
 
