@@ -3,7 +3,6 @@ Make call 68k macro that dosent require cleanup
 Replace checking for buserr with an exception
 fix null terminator issues
 unify framebuffer and drawing apis
-move random number generator
 
 Remove savedata ram segment and just log the created databases when they are created
 remove savedata stack and make it allocate memory on the go
@@ -11,14 +10,11 @@ remove savedata stack and make it allocate memory on the go
 Fix drawstatetype offsets
 Make windows draw to the display in the order of the window list instead of only drawing the active form
 HighDensityDisplay Feature Set
-ARM Emulation (Maybe THUMB Too)
 Fix All Bugs With TEMPHACK Tags
 App Selector
-backupram(); Function
 Font Support
 Audio APIs
 Audio Support
-Optimizations
 Form Objects
 screen lock/double buffer support
 make drawStateType universal (palm os only has 1 drawstate for the os not one for each window)
@@ -66,20 +62,12 @@ void main(){
     ...
 }
 
-replace hardcoded "16" for bpp with "LCDBPP"
 investigate bitmap transparncy (assumed not working right now)
 fix touchscreen scaleing and mapping
 
 
-/*unsure if needed*/
-remove started = true;running = true; from start(int bootfile)
-move initilization and booting to appselector
-remove either spare hardware framebuffer or on the go framebuffer allocation
-
-
 
 /*done*/
-
 Reenable text rendering
 must change osevtqueue to be able to access more than the front or back (EvtAddUniqueEventToQueue wont work until then)
 find file type(prc/pdb) without assuming based on the file name
