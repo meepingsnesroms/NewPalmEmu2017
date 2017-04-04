@@ -1,4 +1,4 @@
-//taken from xcopilot
+//taken from xcopilot, mostly original at this point
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,54 +9,21 @@
 #include "newcpu.h"
 #include "memmap.h"
 #include "virtuallcd.h"
-
-#include "minifunc.h" //hack //separate 68k from palm
-
-#include "palmwrapper.h" //hack //separate 68k from palm
-#include "palmapi.h" //hack //separate 68k from palm
-
 #include "prcfile.h"
+
+#include "minifunc.h" //For debug functions
+#include "palmwrapper.h" //hack //only used for palmabrt() function
+#include "palmapi.h" //Callback to emulator for hle OS functions
+
+
 
 int areg_byteinc[] = { 1,1,1,1,1,1,1,2 };
 int imm8_table[] = { 8,1,2,3,4,5,6,7 };
 
-UWORD* InstructionStart_p;
+uint16_t* InstructionStart_p;
 shared_img* Shptr;
 unsigned long specialflags;
 
-int intbase(){
-	//return db_IVR.anon.VECTOR << 3;
-	return 0;
-}
-
-int intlev(){
-	/*
-	if (db_ISR.anon.IRQ7)	return 7;
-	if (db_ISR.anon.SPIS)	return 6;
-	if (db_ISR.anon.TMR1)	return 6;
-	if (db_ISR.anon.IRQ6)	return 6;
-	if (db_ISR.anon.PEN)	return 5;
-	if (db_ISR.anon.SPIM)	return 4;
-	if (db_ISR.anon.TMR2)	return 4;
-	if (db_ISR.anon.UART)	return 4;
-	if (db_ISR.anon.WDT)	return 4;
-	if (db_ISR.anon.RTC)	return 4;
-	if (db_ISR.anon.KB)		return 4;
-	if (db_ISR.anon.PWM)	return 4;
-	if (db_ISR.anon.INT0)	return 4;
-	if (db_ISR.anon.INT1)	return 4;
-	if (db_ISR.anon.INT2)	return 4;
-	if (db_ISR.anon.INT3)	return 4;
-	if (db_ISR.anon.INT4)	return 4;
-	if (db_ISR.anon.INT5)	return 4;
-	if (db_ISR.anon.INT6)	return 4;
-	if (db_ISR.anon.INT7)	return 4;
-	if (db_ISR.anon.IRQ3)	return 3;
-	if (db_ISR.anon.IRQ2)	return 2;
-	if (db_ISR.anon.IRQ1) return 1;
-	*/
-	return -1;
-}
 
 void fatal(char* file, int line){
 	if(file){
@@ -67,21 +34,22 @@ void fatal(char* file, int line){
     exit(1);
 }
 
-UWORD nextiword(){
-	UWORD r = *(Shptr->regs).pc_p;
+uint16_t nextiword(){
+	uint16_t r = *(Shptr->regs).pc_p;
 	(Shptr->regs).pc_p++;
 	return r;
 }
 
-ULONG nextilong(){
-	ULONG r = *(Shptr->regs).pc_p;
+uint32_t nextilong(){
+	uint32_t r = *(Shptr->regs).pc_p;
 	(Shptr->regs).pc_p++;
 	r = (r << 16) + *(Shptr->regs).pc_p;
 	(Shptr->regs).pc_p++;
 	return r;
 }
 
-void MC68000_setpc(CPTR newpc){
+
+void MC68000_setpc(offset_68k newpc){
 	if(newpc == INTERCEPT){
 		if((Shptr->regs).incallback){
 			(Shptr->regs).incallback = false;
@@ -128,8 +96,8 @@ void MC68000_setpc(CPTR newpc){
     (Shptr->regs).pc_oldp = get_real_address(newpc);
 }
 
-CPTR MC68000_getpc(){
-	return (Shptr->regs).pc + ((UBYTE*)(Shptr->regs).pc_p - (UBYTE*)(Shptr->regs).pc_oldp);
+offset_68k MC68000_getpc(){
+	return (Shptr->regs).pc + ((uint8_t*)(Shptr->regs).pc_p - (uint8_t*)(Shptr->regs).pc_oldp);
 }
 
 void MC68000_setstopped(int stop){
@@ -160,7 +128,7 @@ int cctrue(int cc){
 	return 0;
 }
 
-ULONG get_disp_ea(ULONG base, UWORD dp){
+uint32_t get_disp_ea(uint32_t base, uint16_t dp){
     int reg = (dp >> 12) & 7;
     LONG regd;
     
@@ -168,7 +136,7 @@ ULONG get_disp_ea(ULONG base, UWORD dp){
 	else regd = (Shptr->regs).d[reg];
 
 	if(!(dp & 0x800))regd = (LONG)(WORD)regd;
-    return base + (BYTE)(dp) + regd;
+	return base + (uint8_t)(dp) + regd;
 }
 
 void MC68000_init(shared_img *shptr){
@@ -194,7 +162,7 @@ void MakeFromSR(){
 	CFLG = (Shptr->regs).sr & 1;
 
 	if (olds != (Shptr->regs).s) {
-		CPTR temp = (Shptr->regs).usp;
+		offset_68k temp = (Shptr->regs).usp;
 		(Shptr->regs).usp = (Shptr->regs).a[7];
 		(Shptr->regs).a[7] = temp;
 	}
@@ -220,7 +188,7 @@ void MC68000_exception(int nr){
 
   MakeSR();
   if (!(Shptr->regs).s) {
-    CPTR temp = (Shptr->regs).usp;
+	offset_68k temp = (Shptr->regs).usp;
     (Shptr->regs).usp = (Shptr->regs).a[7];
     (Shptr->regs).a[7] = temp;
     (Shptr->regs).s = 1;
@@ -238,17 +206,8 @@ void MC68000_exception(int nr){
   specialflags &= ~(SPCFLAG_TRACE | SPCFLAG_DOTRACE);
 }
 
-static void MC68000_interrupt(int nr){
-	assert(nr < 8 && nr >= 0);
-	MC68000_exception(nr + intbase());//remove intbase()
-
-	(Shptr->regs).intmask = nr;
-	specialflags |= SPCFLAG_INT;
-}
-
 void MC68000_reset(){
-	int regnum;
-	for(regnum = 0;regnum < 8;regnum++){
+	for(int regnum = 0;regnum < 8;regnum++){
 		AX(regnum) = 0;
 		DX(regnum) = 0;
 	}
@@ -267,7 +226,7 @@ void MC68000_reset(){
 	(Shptr->regs).intmask = 7;
 }
 
-void op_illg(ULONG opcode){
+void op_illg(uint32_t opcode){
 
 	palmabrt();//hack
 
@@ -303,7 +262,7 @@ void op_illg(ULONG opcode){
 }
 
 void MC68000_run(){
-	UWORD opcode;
+	uint16_t opcode;
 	Shptr->CpuState = cpuRunning;       /* start running */
 	for(;;) {
 		if (Shptr->CpuReq != cpuNone){   /* check for a request */
@@ -360,46 +319,12 @@ void MC68000_run(){
 				dbgprintf("STOP at PC:%#08x\n",MC68000_getpc()-2);
 			}
 			*/
-			if (specialflags & SPCFLAG_DOTRACE) {
-				MC68000_exception(9);
-			}
 
 			while(specialflags & SPCFLAG_STOP){
 				std::this_thread::sleep_for(std::chrono::microseconds(100));
-				//maybe_updateisr();
-				//if(updateinterrupts)updateisr();
-				if(specialflags & (SPCFLAG_INT | SPCFLAG_DOINT)){
-					int intr = intlev();
-					specialflags &= ~(SPCFLAG_INT | SPCFLAG_DOINT);
-					if(intr != -1 && intr > (Shptr->regs).intmask){
-						 MC68000_interrupt(intr);
-						(Shptr->regs).stopped = 0;
-						specialflags &= ~SPCFLAG_STOP;
-					}
-				}
 				if(Shptr->CpuState > cpuRunning || Shptr->CpuReq != cpuNone){
-					//dbgprintf("not None 2 %d, %d\n", Shptr->CpuReq, Shptr->CpuState); fflush(stderr);
 					return;
 				}
-			}
-
-			if(specialflags & SPCFLAG_TRACE){
-				specialflags &= ~SPCFLAG_TRACE;
-				specialflags |= SPCFLAG_DOTRACE;
-			}
-
-			if(specialflags & SPCFLAG_DOINT){
-				int intr = intlev();
-				specialflags &= ~(SPCFLAG_INT | SPCFLAG_DOINT);
-				if(intr != -1 && intr > (Shptr->regs).intmask){
-					MC68000_interrupt(intr);
-					(Shptr->regs).stopped = 0;
-				}
-			}
-
-			if(specialflags & SPCFLAG_INT){
-				specialflags &= ~SPCFLAG_INT;
-				specialflags |= SPCFLAG_DOINT;
 			}
 
 			if(specialflags & SPCFLAG_BRK){
@@ -422,7 +347,7 @@ void MC68000_step(){
     MC68000_run();
 }
 
-void MC68000_runtilladdr(CPTR nextpc)
+void MC68000_runtilladdr(offset_68k nextpc)
 {
 	(Shptr->regs).incallback = true;
 	do{
@@ -480,8 +405,7 @@ int CPU(shared_img *shptr){
 }
 
 int CPU_init(shared_img *shptr){
-  int r;
-  r = memory_init();
+  int r = memory_init();
   if(r != 0)return r;
 
   MC68000_init(shptr);
@@ -539,34 +463,34 @@ int CPU_setexceptionflag(shared_img *shptr, int exception, int flag){
 }
 
 //68k stack access
-void CPU_pushlongstack(ULONG val){
+void CPU_pushlongstack(uint32_t val){
 	SP -= 4;
 	put_long(SP,val);
 }
 
-ULONG CPU_poplongstack(){
-	ULONG retval;
+uint32_t CPU_poplongstack(){
+	uint32_t retval;
 	retval = get_long(SP);
 	SP += 4;
 	return retval;
 }
 
-void CPU_pushwordstack(UWORD val){
+void CPU_pushwordstack(uint16_t val){
 	SP -= 2;
 	put_word(SP,val);
 }
 
-UWORD CPU_popwordstack(){
-	UWORD retval;
+uint16_t CPU_popwordstack(){
+	uint16_t retval;
 	retval = get_word(SP);
 	SP += 2;
 	return retval;
 }
 
 //call a function in 68k mode
-void CPU_68kfunction(CPTR addr,CPTR from){
+void CPU_68kfunction(offset_68k addr,offset_68k from){
 	//save old pc
-	CPTR oldpc = MC68000_getpc();
+	offset_68k oldpc = MC68000_getpc();
 
 	//push caller pc to stack, will be popped off and called on rts opcode
 	CPU_pushlongstack(from);
@@ -580,33 +504,6 @@ void CPU_68kfunction(CPTR addr,CPTR from){
 	//restore old(correct) pc
 	MC68000_setpc(oldpc);
 }
-
-/*
-//call a function in 68k mode
-struct regstruct CPU_68kfunction_protect_regs(CPTR addr,CPTR from){
-	struct regstruct backup_regs = Shptr.regs;
-	struct regstruct return_regs;
-
-	//save old pc
-	CPTR oldpc = MC68000_getpc();
-
-	//push caller pc to stack, will be popped off and called on rts opcode
-	CPU_pushlongstack(from);
-
-	//set destination pc
-	MC68000_setpc(addr);
-
-	//run until rts is called with caller pc
-	MC68000_runtilladdr(from);
-
-	//restore old(correct) pc
-	MC68000_setpc(oldpc);
-
-	return_regs = Shptr.regs;
-	Shptr.regs = backup_regs;
-	return return_regs;
-}
-*/
 
 //debuging
 void printregs(){

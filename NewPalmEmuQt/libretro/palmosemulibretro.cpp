@@ -4,7 +4,7 @@
 #include <string>
 
 //output framebuffer
-static UWORD libretro_fb[320 * 480];
+static uint16_t libretro_fb[320 * 480];
 
 //touchscreen mouse
 static int mousex = 0,mousey = 0;

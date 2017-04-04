@@ -1,31 +1,28 @@
-//taken from xcopilot
+//taken from xcopilot, mostly original at this point
 #ifndef NEWCPU_H
 #define NEWCPU_H
 
 #include "m68k.h"
 
-int  intbase();
-int	 intlev();
+void op_illg(uint32_t);
 
-void op_illg(ULONG);
-
-void  fatal(char *, int);
-UWORD nextiword();
-ULONG nextilong();
+void  fatal(char* , int);
+uint16_t nextiword();
+uint32_t nextilong();
 int   cctrue(int cc);
-ULONG get_disp_ea (ULONG base, UWORD dp);
+uint32_t get_disp_ea (uint32_t base, uint16_t dp);
 void MakeSR();
 void MakeFromSR();
-void MC68000_oldstep(UWORD opcode);
-void MC68000_setpc(CPTR newpc);
-CPTR MC68000_getpc();
+void MC68000_oldstep(uint16_t opcode);
+void MC68000_setpc(offset_68k newpc);
+offset_68k MC68000_getpc();
 void MC68000_setstopped(int stop);
 void MC68000_exception(int);
 void MC68000_init(shared_img *shptr);
 void MC68000_reset();
 void MC68000_run();
 void MC68000_step();
-void MC68000_runtilladdr(CPTR);
+void MC68000_runtilladdr(offset_68k);
 
 
 //pilotcpu
@@ -38,18 +35,15 @@ void  CPU_stop(shared_img *shptr);
 void  CPU_getregs(shared_img *shptr, struct regstruct *r);
 void  CPU_setregs(shared_img *shptr, struct regstruct *r);
 int   CPU_setexceptionflag(shared_img *shptr, int exception, int flag);
-void  CPU_pushlongstack(ULONG val);
-ULONG CPU_poplongstack();
-void  CPU_pushwordstack(UWORD val);
-UWORD CPU_popwordstack();
+void  CPU_pushlongstack(uint32_t val);
+uint32_t CPU_poplongstack();
+void  CPU_pushwordstack(uint16_t val);
+uint16_t CPU_popwordstack();
 //stack does not support byte ops,so no push/pop bytestack();
 
 //call a function in 68k mode
-void CPU_68kfunction(CPTR addr, CPTR from);
-inline void CPU_68kfunction(CPTR addr){CPU_68kfunction(addr, 0xFFFFFFFF);}
-
-//struct regstruct CPU_68kfunction_protect_regs(CPTR addr, CPTR from = 0xFFFFFFFF);
-//inline struct regstruct CPU_68kfunction_protect_regs(CPTR addr){CPU_68kfunction_protect_regs(addr, 0xFFFFFFFF);}
+void CPU_68kfunction(offset_68k addr, offset_68k from);
+inline void CPU_68kfunction(offset_68k addr){CPU_68kfunction(addr, 0xFFFFFFFF);}
 
 
 //easily and quickly remove * bytes from stack,used to clean up after calling back into 68k mode

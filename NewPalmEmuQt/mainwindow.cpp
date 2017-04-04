@@ -69,7 +69,7 @@ void MainWindow::on_install_pressed()
 	if(app != "")settings.internal_files.push_back(app);
 }
 
-UWORD formattedgfxbuffer[320 * 480];
+uint16_t formattedgfxbuffer[320 * 480];
 
 void MainWindow::updatedisplay(){
 	if(!emu_started())return;

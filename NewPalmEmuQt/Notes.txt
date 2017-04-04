@@ -16,11 +16,11 @@ compatibility and unifies the use of transparency across all source data.
 
 bit struct format
 struct{
-    UBYTE val1:1 //bit(7) ,bits start at 0 and go to numbits - 1
-    UBYTE val2:1 //bit(6)
-    UBYTE val3:1 //bit(5)
-    UBYTE val4:1 //bit(4)
-    UBYTE empty:4 //unused bits 3-0
+    uint8_t val1:1 //bit(7) ,bits start at 0 and go to numbits - 1
+    uint8_t val2:1 //bit(6)
+    uint8_t val3:1 //bit(5)
+    uint8_t val4:1 //bit(4)
+    uint8_t empty:4 //unused bits 3-0
 }name;
 
 
