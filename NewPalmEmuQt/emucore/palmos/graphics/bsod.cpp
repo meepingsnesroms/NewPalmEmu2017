@@ -7,9 +7,8 @@
 #include "virtuallcd.h"
 
 void drawbioschar(int x,int y,char letter){
-	int curx,cury;
-	inc_for(cury,7){
-		inc_for(curx,5){
+	for(int cury = 0;cury < 7;cury++){
+		for(int curx = 0;curx <5;curx++){
 			unsigned int total = (letter - 0x20) * 5;
 			int thisbyte = curx;//bytes
 			int thisbit = cury;//leftover

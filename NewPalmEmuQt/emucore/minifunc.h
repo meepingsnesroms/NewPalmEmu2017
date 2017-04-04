@@ -9,22 +9,21 @@
 
 
 //meaningful words
-#define findme 0
+#define UNDEFINED 0
 #define ISSPECIAL(x) ((x) > 0xFFFFFF00)
 #define INTERCEPT 0xFFFFFFFF
 
 
-//basic misc functions
 
 //this needs to go
 #define inc_for(var,cmp) for(var = 0;var < cmp;var++)
 
 
+
+//basic functions
 #define IS_EVEN(x)		(((x) & 1) == 0)
 #define IS_ODD(x)		(((x) & 1) == 1)
-
 #define nextboundry(x)	(((x) + 1) & ~0x1)
-
 #define bit(x)			(1 << (x))
 
 inline long smallest(long val1,long val2){

@@ -73,18 +73,16 @@ void FB_rect(int x,int y,int w,int h,uint16_t color){
 }
 
 void FB_fillrect(int x,int y,int w,int h,uint16_t color){
-	int wcnt,hcnt;
-	inc_for(hcnt,h){
-		inc_for(wcnt,w){
+	for(int hcnt = 0;hcnt < h;hcnt++){
+		for(int wcnt = 0;wcnt < w;wcnt++){
 			FB_setpixel(x + wcnt,y + hcnt,color);
 		}
 	}
 }
 
 void FB_copyrect(int x,int y,int w,int h,int fromx,int fromy){
-	int wcnt,hcnt;
-	inc_for(hcnt,h){
-		inc_for(wcnt,w){
+	for(int hcnt = 0;hcnt < h;hcnt++){
+		for(int wcnt = 0;wcnt < w;wcnt++){
 			//this function has no regard for transparency,for that use FB_drawbitmap instead
 			FB_pixel(x + wcnt,y + hcnt) = FB_bitmappixel(fromx + wcnt,fromy + hcnt);
 		}
@@ -93,22 +91,20 @@ void FB_copyrect(int x,int y,int w,int h,int fromx,int fromy){
 
 //this function just copys the raw bitmap data into the framebuffer(it ignores transparency)
 void FB_copybitmap(int x,int y){
-	int wcnt,hcnt;
 	//dont check for transparency
-	inc_for(hcnt,FB_bitmapheight){
-		inc_for(wcnt,FB_bitmapwidth){
+	for(int hcnt = 0;hcnt < FB_bitmapheight;hcnt++){
+		for(int wcnt = 0;wcnt < FB_bitmapwidth;wcnt++){
 			FB_pixel(x + wcnt,y + hcnt) = FB_bitmappixel(wcnt,hcnt);
 		}
 	}
 }
 
 void FB_drawbitmap(int x,int y){
-	int wcnt,hcnt;
 	if(FB_bitmaptransparentcolor != -1){
 		//check for transparency
 		uint16_t currentcolor;
-		inc_for(hcnt,FB_bitmapheight){
-			inc_for(wcnt,FB_bitmapwidth){
+		for(int hcnt = 0;hcnt < FB_bitmapheight;hcnt++){
+			for(int wcnt = 0;wcnt < FB_bitmapwidth;wcnt++){
 				currentcolor = FB_bitmappixel(wcnt,hcnt);
 				if(currentcolor != FB_bitmaptransparentcolor)FB_pixel(x + wcnt,y + hcnt) = currentcolor;
 			}

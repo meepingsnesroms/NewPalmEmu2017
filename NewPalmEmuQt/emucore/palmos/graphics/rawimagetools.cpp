@@ -239,7 +239,7 @@ gchar RAWfnt::getIMG(unsigned char chnum){
 
 //RAWimg access
 RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type){
-	from68k(m68kaddr,type,findme,findme,findme,false);
+	from68k(m68kaddr,type,UNDEFINED,UNDEFINED,UNDEFINED,false);
 }
 
 RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type, int16_t datawidth,

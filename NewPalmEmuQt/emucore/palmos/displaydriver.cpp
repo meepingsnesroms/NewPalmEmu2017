@@ -222,7 +222,7 @@ void dot(){
 void bitmap(){
 	dbgprintf("Draw Bitmap:(Src:%08x,Dst:%08x,X:%d,Y:%d)\n",srcptr,dstptr,dstx,dsty);
 
-	RAWimg palmbmp(srcptr,BMP,findme,findme,findme,false);
+	RAWimg palmbmp(srcptr,BMP,UNDEFINED,UNDEFINED,UNDEFINED,false);
 
 	offset_68k winbmp = getwinbmp(dstptr);
 	dbgprintf("FrameBuffLoc:%08x\n",getbmpdata(winbmp));
@@ -248,7 +248,7 @@ void text(){
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	offset_68k count = 0;
 	char curchr;
-	if(srcsize == findme){
+	if(srcsize == UNDEFINED){
 		while(true){
 			curchr = (char)get_byte(srcptr + count);
 
@@ -939,7 +939,7 @@ void drawlabel(offset_68k window,offset_68k labelptr){
 	dbgprintf("Label %s useable,attr:%04x,charptr:%08x\n",useable ? "IS":"IS NOT",attr,srcptr);
 	dbgprintf("X:%d,Y:%d,Text:%s\n",dstx,dsty,readstring(srcptr).c_str());
 
-	srcsize = findme;
+	srcsize = UNDEFINED;
 	if(useable)text();
 }
 
