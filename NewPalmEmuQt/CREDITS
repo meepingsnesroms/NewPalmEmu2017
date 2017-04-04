@@ -1,18 +1,18 @@
 I do not care about licences or legal crap!!!
 
 I used whatever librarys and code worked best and will give proper credit
-for them,other than that I do not care what your licence is or if I stole
+for them, other than that I do not care what your licence is or if I stole
 your code.
 
 ALL INFORMATION IS FAIR USE.
 
 Library             | Inventor
 ------------------------------
-Palm API reference  | PALM
-68k Emulator        | UAE (U* Amiga Emulator)
-68k Cycle Table     | Musashi 68k Emu
-Arm Emulator        | GB Enhanced+ (Daniel Baxter)
-Palm OS Color Table | Pilot Resource Compiler (PilRC)
+Palm API reference  | PALM (Dead)
+68k Emulator        | UAE (U* Amiga Emulator) (Dead, many forks avalible)
+ARM Emulator        | A capitalist and asshole who deserves no credit (I did not make it though.)
+Palm OS Color Table | Pilot Resource Compiler (PilRC) http://pilrc.sourceforge.net (No longer maintained)
+uGUI                | Achim Doebler https://github.com/achimdoebler/UGUI or http://www.embeddedlightning.com
 
 
 
@@ -20,6 +20,15 @@ Original Code
 -------------
 PRC & PDB parser
 API implimentation
+
+
+There was a mistake here that listed the ARM emulator developer as:
+GB Enhanced+ (Daniel Baxter)
+
+This was correct at one point but I found a smaller ARM emulator and this is no longer correct.
+The developer of the new ARM emulator will not be credited due to previous wrongdoings.
+(I bought one of his apps and he ignored me for 3 months before giving me the unlock code, by then I had already found a working crack.)
+I have nothing against the developer of GB Enhanced+ nor did he do anything wrong.
 
 
 //everything else may or may not be used so they have not been added.

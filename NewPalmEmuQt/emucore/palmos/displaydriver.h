@@ -314,8 +314,8 @@ void pinsdispatch();
 void evtgeteventWIN();
 
 //sets up memory and varibles
-bool initdisplaydriver();
-void deinitdisplaydriver();
+bool init_display_driver();
+void deinit_display_driver();
 
 
 

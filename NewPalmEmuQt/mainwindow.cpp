@@ -216,7 +216,7 @@ void MainWindow::on_runtest_clicked()
 	settings.internal_files.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
 #endif
 
-#define SIMPAPP 4
+#define SIMPAPP 13
 
 #if SIMPAPP == -1
 	settings.internal_files.push_back("/sdcard/palm/zap2016.prc");
