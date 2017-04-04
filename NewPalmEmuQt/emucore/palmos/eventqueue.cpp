@@ -71,7 +71,7 @@ void wipeeventqueue(){
 }
 
 //needed for uninterupted access to osevtqueue by sysTrapEvtAddUniqueEventToQueue
-void replaceeventtype(const osevent& newevent,bool inplace,ULONG eventid){
+void replaceeventtype(const osevent& newevent,bool inplace,uint32_t eventid){
 	event_data_access.lock();
 
 	size_t evtcounter,totalevents = osevtqueue.size();
@@ -95,7 +95,7 @@ void replaceeventtype(const osevent& newevent,bool inplace,ULONG eventid){
 
 
 
-static void writeeventtoptr(CPTR eventptr,const osevent& thisevent){
+static void writeeventtoptr(offset_68k eventptr,const osevent& thisevent){
 	put_word(eventptr,thisevent.type);//always need the type
 
 	//dosent hurt to add the pen values just incase
@@ -176,7 +176,7 @@ static void writeeventtoptr(CPTR eventptr,const osevent& thisevent){
 	put_long(eventptr + 12,thisevent.data[3]);
 }
 
-static osevent readeventfromptr(CPTR eventptr){
+static osevent readeventfromptr(offset_68k eventptr){
 	osevent temp;
 	temp.type = get_word(eventptr);//always need the type
 
@@ -357,7 +357,7 @@ void evtadduniqueeventtoqueue(){
 
 void syshandleevent(){
 	stackptr(eventptr);
-	ULONG handled = 0;//handled means the event is over not that it was read/modifyed
+	uint32_t handled = 0;//handled means the event is over not that it was read/modifyed
 	switch(get_word(eventptr)){//event type
 		case keyDownEvent:
 			//exit app or nothing

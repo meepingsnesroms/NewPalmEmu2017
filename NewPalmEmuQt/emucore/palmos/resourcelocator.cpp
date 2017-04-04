@@ -6,7 +6,7 @@
 #include "resourcelocator.h"
 #include "rawimagetools.h"
 
-bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool zeroiswild,bool swapendian){
+bool typecreatorCMP(uint32_t type,uint32_t creator,uint32_t cmptype,uint32_t cmpcreator,bool zeroiswild,bool swapendian){
 	bool typeequ = false;
 	bool creatorequ = false;
 
@@ -27,7 +27,7 @@ bool typecreatorCMP(ULONG type,ULONG creator,ULONG cmptype,ULONG cmpcreator,bool
 	return false;
 }
 
-CPTR getresource(int dbnum, UWORD id, ULONG tp){
+offset_68k getresource(int dbnum, uint16_t id, uint32_t tp){
 	if(!apps[dbnum].resdb)return nullptr_68k;
 
 	uint16_t end = apps[dbnum].parts.size();
@@ -41,8 +41,8 @@ CPTR getresource(int dbnum, UWORD id, ULONG tp){
 }
 
 //above for current app and includes overlay
-CPTR getappresource(UWORD id, ULONG tp){
-	CPTR addr = nullptr_68k;
+offset_68k getappresource(uint16_t id, uint32_t tp){
+	offset_68k addr = nullptr_68k;
 	//check overlay
 	if(curoverlay > -1)addr = getresource(curoverlay,id,tp);
 	//resource not in overlay,check app
@@ -51,12 +51,12 @@ CPTR getappresource(UWORD id, ULONG tp){
 	return addr;
 }
 
-CPTR getrecord(int dbnum, uint16_t index){
+offset_68k getrecord(int dbnum, uint16_t index){
 	if(apps[dbnum].resdb)return nullptr_68k;
 	return apps[dbnum].parts[index].location;
 }
 
-UWORD resourcenumfromtypeid(int appnum, UWORD id, ULONG tp){
+uint16_t resourcenumfromtypeid(int appnum, uint16_t id, uint32_t tp){
 	int end = apps[appnum].parts.size();
 	for(int cnt = 0;cnt < end;cnt++){
 		//dbgprintf("In:(Type:0x%08x,Id:%d),Cmp:(Type:0x%08x,Id:%d)\n",type,id,belong(apps[appnum].parts[cnt].type.typen),apps[appnum].parts[cnt].id);
@@ -74,14 +74,14 @@ int getnumfromname(int startdb,std::string& name){
 	return -1;
 }
 
-void getnumfromptr(CPTR addr,int* app,UWORD* index){
+void getnumfromptr(offset_68k addr,int* app,uint16_t* index){
 	//apps can append records/resources so every record/resource must be checked
 	int appvectorsize = apps.size();
 	for(int count = 0;count < appvectorsize;count++){
-		UWORD partvectorsize = apps[count].parts.size();
-		for(UWORD curindex = 0;curindex < partvectorsize;curindex++){
-			CPTR start = apps[count].parts[curindex].location;
-			CPTR end = start + apps[count].parts[curindex].size;
+		uint16_t partvectorsize = apps[count].parts.size();
+		for(uint16_t curindex = 0;curindex < partvectorsize;curindex++){
+			offset_68k start = apps[count].parts[curindex].location;
+			offset_68k end = start + apps[count].parts[curindex].size;
 			if(addr >= start && addr <= end){
 				*app = count;
 				*index = curindex;
@@ -91,7 +91,7 @@ void getnumfromptr(CPTR addr,int* app,UWORD* index){
 	}
 }
 
-int numfromtypecreator(int startdb, ULONG tp, ULONG ctr){
+int numfromtypecreator(int startdb, uint32_t tp, uint32_t ctr){
 	int goo;
 	int appvectorsize = apps.size();
 	bool correct;
@@ -102,7 +102,7 @@ int numfromtypecreator(int startdb, ULONG tp, ULONG ctr){
 	return -1;
 }
 
-int numfromtypecreatorwildcard(int startdb, ULONG tp, ULONG ctr){
+int numfromtypecreatorwildcard(int startdb, uint32_t tp, uint32_t ctr){
 	int goo;
 	int appvectorsize = apps.size();
 	bool correct;
@@ -115,7 +115,7 @@ int numfromtypecreatorwildcard(int startdb, ULONG tp, ULONG ctr){
 
 
 
-CPTR getfontaddr(UBYTE fontid){
+offset_68k getfontaddr(uint8_t fontid){
 	//font type 'NFNT',extended font type 'nfnt'
 
 	//font prc resource ids
@@ -124,13 +124,13 @@ CPTR getfontaddr(UBYTE fontid){
 	//user fonts = 1000 + fontid
 	//(maybe)extended user fonts = 1100 + fontid
 
-	UWORD fntresid;
+	uint16_t fntresid;
 
 
 	if(fontid < fntAppFontCustomBase)fntresid = 10000 + fontid;//+ 1 is a hack
 	else fntresid = 1000 + fontid - fntAppFontCustomBase;
 
-	CPTR fontres = nullptr_68k;
+	offset_68k fontres = nullptr_68k;
 	int totalapps = apps.size();
 	int count = 0;
 	while(!fontres && count < totalapps){
@@ -156,7 +156,7 @@ dbinfo getdbinfo(int num){
 }
 
 /*
-ULONG getdbtype(int num){
+uint32_t getdbtype(int num){
 	return belong(apps[num].type.typen);
 }
 */

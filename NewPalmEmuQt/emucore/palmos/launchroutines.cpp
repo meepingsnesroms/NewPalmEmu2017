@@ -20,19 +20,19 @@
 #include "romutils.h"
 #include "palmosv4.1-en-m515.h"
 
-static CPTR outa5,outgblstart,outgblend;
+static offset_68k outa5,outgblstart,outgblend;
 
-//for non aligned ULONG size offsets in compressed globals
-static ULONG nonalignedlong(CPTR addr){
+//for non aligned uint32_t size offsets in compressed globals
+static uint32_t nonalignedlong(offset_68k addr){
 	return get_byte(addr) << 24 | get_byte(addr + 1) << 16 | get_byte(addr + 2) << 8 | get_byte(addr + 3);
 }
 
-static CPTR RLEglobals(CPTR output,CPTR compresseddata){
+static offset_68k RLEglobals(offset_68k output,offset_68k compresseddata){
 	dbgprintf("OutputDataStart:%08x\n",output);//hack
 
 	bool moredata = true;
 	while(moredata){
-		UBYTE controlbyte = get_byte(compresseddata);
+		uint8_t controlbyte = get_byte(compresseddata);
 		compresseddata++;
 		if(controlbyte >= 0x80){//1 + (value - 0x80) bytes of literal data
 			size_t_68k bytes = (controlbyte - 0x80) + 1;
@@ -45,7 +45,7 @@ static CPTR RLEglobals(CPTR output,CPTR compresseddata){
 			output += bytes;
 		}else if(controlbyte >= 0x20){//next byte repeated 2 + (value - 0x20) times
 			size_t_68k bytes = (controlbyte - 0x20) + 2;
-			UBYTE value = get_byte(compresseddata);
+			uint8_t value = get_byte(compresseddata);
 			compresseddata++;
 			memset68k(output,value,bytes);
 			output += bytes;
@@ -111,8 +111,8 @@ static CPTR RLEglobals(CPTR output,CPTR compresseddata){
 }
 
 static void installglobals(int app){
-	CPTR globalsinfo = getresource(app,0,'code');
-	CPTR globalsdata = getresource(app,0,'data');
+	offset_68k globalsinfo = getresource(app,0,'code');
+	offset_68k globalsdata = getresource(app,0,'data');
 	if(globalsdata == nullptr_68k || globalsinfo == nullptr_68k){
 		dbgprintf("Flying cow?\n");
 		palmabrt();
@@ -122,19 +122,19 @@ static void installglobals(int app){
 	size_t_68k globalssize = abovea5 + get_long(globalsinfo + 4);
 	size_t_68k jmptblsize = get_long(globalsinfo + 8);
 	offset_68k jmptbla5offset = get_long(globalsinfo + 12);
-	CPTR gbldataarr = getfreeheap(globalssize);
+	offset_68k gbldataarr = getfreeheap(globalssize);
 
 	//set ptr to globals
-	CPTR a5ptr = gbldataarr + globalssize - get_long(globalsinfo);//offset in globals A5 should be at
+	offset_68k a5ptr = gbldataarr + globalssize - get_long(globalsinfo);//offset in globals A5 should be at
 
 
 	dbgprintf("JmptblOffset:%08x,Jmptblsize:%08x,AboveA5:%08x,A5:%08x,Gblsize:%08x\n",
 		   jmptbla5offset,jmptblsize,abovea5,a5ptr,globalssize);
 
 
-	CPTR start = globalsdata + 4;
+	offset_68k start = globalsdata + 4;
 	offset_68k offsetofa5;
-	CPTR dest;
+	offset_68k dest;
 
 	offsetofa5 = (LONG)nonalignedlong(start);
 	//dbgprintf("OffestOfA5:%08x\n",offsetofa5);
@@ -177,10 +177,10 @@ bool launchapp(int num){
 	A5 = outa5;
 	CPU_pushlongstack(INTERCEPT);//if app trys to execute above the stack
 
-	CPTR newexlist = getnewlinearchunks(1) << 16;
+	offset_68k newexlist = getnewlinearchunks(1) << 16;
 
-	CPTR sysappinfoptr = getfreeheap(60);
-	CPTR sysappinfoptrstart = sysappinfoptr;
+	offset_68k sysappinfoptr = getfreeheap(60);
+	offset_68k sysappinfoptrstart = sysappinfoptr;
 
 	put_word(sysappinfoptr,sysAppLaunchCmdNormalLaunch);//command
 	sysappinfoptr += 2;
@@ -234,7 +234,7 @@ bool launchapp(int num){
 	if(!initdisplaydriver())return false;
 
 	//overlay (for os >= 3.5)
-	CPTR overlaysettings = getresource(num,0,'xprf');
+	offset_68k overlaysettings = getresource(num,0,'xprf');
 	if(!overlaysettings || !(get_long(overlaysettings + 2) & bit(0))){//disable overlays if app asks
 		curoverlay = numfromtypecreator(0,'ovly',belong(apps[num].creator.typen));
 		if(curoverlay > -1){

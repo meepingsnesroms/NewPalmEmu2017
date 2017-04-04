@@ -1,30 +1,30 @@
 #include "newcpu.h"
-void op_1000(ULONG opcode)
+void op_1000(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_1010(ULONG opcode)
+void op_1010(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_1018(ULONG opcode)
+void op_1018(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
 {	VFLG = CFLG = 0;
@@ -32,34 +32,34 @@ void op_1018(ULONG opcode)
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}}
-void op_1020(ULONG opcode)
+void op_1020(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}}
-void op_1028(ULONG opcode)
+void op_1028(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_1030(ULONG opcode)
+void op_1030(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
@@ -67,30 +67,30 @@ void op_1030(ULONG opcode)
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}}
-void op_1038(ULONG opcode)
+void op_1038(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_1039(ULONG opcode)
+void op_1039(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_103a(ULONG opcode)
+void op_103a(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
@@ -98,10 +98,10 @@ void op_103a(ULONG opcode)
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}}
-void op_103b(ULONG opcode)
+void op_103b(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
 {	VFLG = CFLG = 0;
@@ -109,931 +109,931 @@ void op_103b(ULONG opcode)
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}}
-void op_103c(ULONG opcode)
+void op_103c(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
 {	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	(Shptr->regs).d[dstreg] &= ~0xff; (Shptr->regs).d[dstreg] |= (src) & 0xff;
 }}}}
-void op_1080(ULONG opcode)
+void op_1080(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1090(ULONG opcode)
+void op_1090(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1098(ULONG opcode)
+void op_1098(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10a0(ULONG opcode)
+void op_10a0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10a8(ULONG opcode)
+void op_10a8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_10b0(ULONG opcode)
+void op_10b0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10b8(ULONG opcode)
+void op_10b8(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_10b9(ULONG opcode)
+void op_10b9(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_10ba(ULONG opcode)
+void op_10ba(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10bb(ULONG opcode)
+void op_10bb(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10bc(ULONG opcode)
+void op_10bc(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_10c0(ULONG opcode)
+void op_10c0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10d0(ULONG opcode)
+void op_10d0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10d8(ULONG opcode)
+void op_10d8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_10e0(ULONG opcode)
+void op_10e0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_10e8(ULONG opcode)
+void op_10e8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10f0(ULONG opcode)
+void op_10f0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_10f8(ULONG opcode)
+void op_10f8(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10f9(ULONG opcode)
+void op_10f9(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_10fa(ULONG opcode)
+void op_10fa(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_10fb(ULONG opcode)
+void op_10fb(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_10fc(ULONG opcode)
+void op_10fc(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 {	(Shptr->regs).a[dstreg] += areg_byteinc[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1100(ULONG opcode)
+void op_1100(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1110(ULONG opcode)
+void op_1110(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1118(ULONG opcode)
+void op_1118(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_1120(ULONG opcode)
+void op_1120(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_1128(ULONG opcode)
+void op_1128(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1130(ULONG opcode)
+void op_1130(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_1138(ULONG opcode)
+void op_1138(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1139(ULONG opcode)
+void op_1139(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_113a(ULONG opcode)
+void op_113a(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_113b(ULONG opcode)
+void op_113b(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}}
-void op_113c(ULONG opcode)
+void op_113c(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
 {	(Shptr->regs).a[dstreg] -= areg_byteinc[dstreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1140(ULONG opcode)
+void op_1140(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1150(ULONG opcode)
+void op_1150(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1158(ULONG opcode)
+void op_1158(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1160(ULONG opcode)
+void op_1160(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1168(ULONG opcode)
+void op_1168(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1170(ULONG opcode)
+void op_1170(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_1178(ULONG opcode)
+void op_1178(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1179(ULONG opcode)
+void op_1179(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_117a(ULONG opcode)
+void op_117a(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_117b(ULONG opcode)
+void op_117b(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_117c(ULONG opcode)
+void op_117c(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
-{	CPTR dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
+{	offset_68k dsta = (Shptr->regs).a[dstreg] + (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1180(ULONG opcode)
+void op_1180(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1190(ULONG opcode)
+void op_1190(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_1198(ULONG opcode)
+void op_1198(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11a0(ULONG opcode)
+void op_11a0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11a8(ULONG opcode)
+void op_11a8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11b0(ULONG opcode)
+void op_11b0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11b8(ULONG opcode)
+void op_11b8(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = (LONG)(WORD)nextiword();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11b9(ULONG opcode)
+void op_11b9(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = nextilong();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11ba(ULONG opcode)
+void op_11ba(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11bb(ULONG opcode)
+void op_11bb(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	CPTR srca = MC68000_getpc();
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11bc(ULONG opcode)
+void op_11bc(uint32_t opcode)
 {
-	ULONG dstreg = (opcode & 3584) >> 9;
+	uint32_t dstreg = (opcode & 3584) >> 9;
 {{	BYTE src = nextiword();
-{	CPTR dsta = (Shptr->regs).a[dstreg];
+{	offset_68k dsta = (Shptr->regs).a[dstreg];
 	dsta = get_disp_ea (dsta, nextiword());
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11c0(ULONG opcode)
+void op_11c0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11d0(ULONG opcode)
+void op_11d0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11d8(ULONG opcode)
+void op_11d8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11e0(ULONG opcode)
+void op_11e0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11e8(ULONG opcode)
+void op_11e8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11f0(ULONG opcode)
+void op_11f0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11f8(ULONG NUOPPRAM)
+void op_11f8(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = (LONG)(WORD)nextiword();
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11f9(ULONG NUOPPRAM)
+void op_11f9(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = nextilong();
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_11fa(ULONG NUOPPRAM)
+void op_11fa(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = MC68000_getpc();
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11fb(ULONG NUOPPRAM)
+void op_11fb(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = MC68000_getpc();
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_11fc(ULONG NUOPPRAM)
+void op_11fc(uint32_t NUOPPRAM)
 {
 {{	BYTE src = nextiword();
-{	CPTR dsta = (LONG)(WORD)nextiword();
+{	offset_68k dsta = (LONG)(WORD)nextiword();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13c0(ULONG opcode)
+void op_13c0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
 {{	BYTE src = (Shptr->regs).d[srcreg];
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13d0(ULONG opcode)
+void op_13d0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13d8(ULONG opcode)
+void op_13d8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
 {	(Shptr->regs).a[srcreg] += areg_byteinc[srcreg];
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_13e0(ULONG opcode)
+void op_13e0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
 {{	(Shptr->regs).a[srcreg] -= areg_byteinc[srcreg];
-{	CPTR srca = (Shptr->regs).a[srcreg];
+{	offset_68k srca = (Shptr->regs).a[srcreg];
 	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_13e8(ULONG opcode)
+void op_13e8(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg] + (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13f0(ULONG opcode)
+void op_13f0(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
-{{	CPTR srca = (Shptr->regs).a[srcreg];
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 7) >> 0);
+{{	offset_68k srca = (Shptr->regs).a[srcreg];
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_13f8(ULONG NUOPPRAM)
+void op_13f8(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = (LONG)(WORD)nextiword();
+{{	offset_68k srca = (LONG)(WORD)nextiword();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13f9(ULONG NUOPPRAM)
+void op_13f9(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = nextilong();
+{{	offset_68k srca = nextilong();
 	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}
-void op_13fa(ULONG NUOPPRAM)
+void op_13fa(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = MC68000_getpc();
+{{	offset_68k srca = MC68000_getpc();
 	srca += (LONG)(WORD)nextiword();
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_13fb(ULONG NUOPPRAM)
+void op_13fb(uint32_t NUOPPRAM)
 {
-{{	CPTR srca = MC68000_getpc();
+{{	offset_68k srca = MC68000_getpc();
 	srca = get_disp_ea (srca, nextiword());
 {	BYTE src = get_byte(srca);
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;
 	put_byte(dsta,src);
 }}}}}
-void op_13fc(ULONG NUOPPRAM)
+void op_13fc(uint32_t NUOPPRAM)
 {
 {{	BYTE src = nextiword();
-{	CPTR dsta = nextilong();
+{	offset_68k dsta = nextilong();
 	VFLG = CFLG = 0;
 	ZFLG = ((BYTE)(src)) == 0;
 	NFLG = ((BYTE)(src)) < 0;

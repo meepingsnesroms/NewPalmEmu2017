@@ -29,26 +29,26 @@ typedef struct{
 typedef struct{
 	COORD start;
 	COORD end;
-	UBYTE objtype;
-	UWORD objid;
-	CPTR object;
+	uint8_t objtype;
+	uint16_t objid;
+	offset_68k object;
 }UISQUARE;
 
-inline COORD get_coord(CPTR addr){
+inline COORD get_coord(offset_68k addr){
 	COORD temp;
 	temp.x = (WORD)get_word(addr);
 	temp.y = (WORD)get_word(addr + 2);
 	return temp;
 }
 
-inline BOUNDRY get_boundry(CPTR addr){
+inline BOUNDRY get_boundry(offset_68k addr){
 	BOUNDRY temp;
 	temp.w = (WORD)get_word(addr);
 	temp.h = (WORD)get_word(addr + 2);
 	return temp;
 }
 
-inline SQUARE get_square(CPTR addr){
+inline SQUARE get_square(offset_68k addr){
 	SQUARE temp;
 	temp.start = get_coord(addr);
 	temp.size = get_boundry(addr + 4);
@@ -57,7 +57,7 @@ inline SQUARE get_square(CPTR addr){
 	return temp;
 }
 
-inline SQUARE get_ABSsquare(CPTR addr){
+inline SQUARE get_ABSsquare(offset_68k addr){
 	SQUARE temp;
 	temp.start = get_coord(addr);
 	temp.end = get_coord(addr + 4);
@@ -99,7 +99,7 @@ typedef struct{
 	std::vector<WORD> x;
 	std::vector<WORD> y;
 	bool fill;
-	UWORD color;
+	uint16_t color;
 }poly;
 
 enum{
@@ -148,25 +148,25 @@ inline uint makerowbytes(int width,int bpp){
 class gchar {
 	//adorable baby ameoba
 	char value;
-	CPTR start;
+	offset_68k start;
 	offset_68k yincrement;
 	offset_68k glyphoffset;
-	UWORD oncolor,offcolor;
+	uint16_t oncolor,offcolor;
 	BOUNDRY area;
 	int pxbelowline;
 public:
-	gchar(CPTR fntbmpstart, offset_68k glyphofft, char val, UWORD oncol, UWORD offcol, BOUNDRY ar, offset_68k yinc, int lineofft);
+	gchar(offset_68k fntbmpstart, offset_68k glyphofft, char val, uint16_t oncol, uint16_t offcol, BOUNDRY ar, offset_68k yinc, int lineofft);
 
 	int aboveline();
 	int belowline();
 	WORD width();
 	WORD height();
-	UWORD getpixel(WORD x,WORD y);
+	uint16_t getpixel(WORD x,WORD y);
 };
 
 //palm font
 class RAWfnt {
-	CPTR fontptr;
+	offset_68k fontptr;
 	offset_68k charinfotableoffset;
 
 	WORD firstch,lastch;
@@ -174,7 +174,7 @@ class RAWfnt {
 	size_t_68k chsize;
 	WORD rowwords;
 	int numch;
-	std::vector<UWORD> charBMP;
+	std::vector<uint16_t> charBMP;
 
 	void parsefnt();
 public:
@@ -182,9 +182,9 @@ public:
 
 	WORD width,height;
 	WORD ascent,descent;
-	void setactivefont(CPTR location);
+	void setactivefont(offset_68k location);
 	gchar getIMG(unsigned char chnum);
-	UWORD getpixel(WORD x,WORD y);
+	uint16_t getpixel(WORD x,WORD y);
 };
 
 
@@ -214,41 +214,41 @@ enum{
 };
 
 class RAWimg {
-	CPTR m68kptr;
+	offset_68k m68kptr;
 	bool inm68kaddrspace = false;
 	bool readonly = false;
-	CPTR custompalette = 0;
-	UBYTE* orgdat;
-	std::vector<UWORD> purifieddata;
+	offset_68k custompalette = 0;
+	uint8_t* orgdat;
+	std::vector<uint16_t> purifieddata;
 
 	//stats
-	UBYTE datatype,typeversion;
-	UBYTE compression = BitmapCompressionTypeNone;
+	uint8_t datatype,typeversion;
+	uint8_t compression = BitmapCompressionTypeNone;
 
-	void from68k(CPTR m68kaddr, UBYTE type, WORD datawidth, WORD dataheight, UBYTE bpp, bool leaveinplace);
+	void from68k(offset_68k m68kaddr, uint8_t type, WORD datawidth, WORD dataheight, uint8_t bpp, bool leaveinplace);
 
 	void get1bitpixelarr();
 	void get2bitpixelarr();
 	void get4bitpixelarr();
 	void get8bitpixelarr();
-	UWORD mypalettecolor(UBYTE index);
+	uint16_t mypalettecolor(uint8_t index);
 
 public:
 	//stats
 	int width = 0,height = 0;
 	uint8_t pixelsize = 0;
 	bool hastransparent = false;
-	UWORD transparent = 0x0000;
+	uint16_t transparent = 0x0000;
 	size_t_68k totalsize;
-	UWORD rowbytes;
+	uint16_t rowbytes;
 
 	//for width and bpp findme means get from wrapper
-	RAWimg(CPTR m68kaddr, UBYTE type);
-	RAWimg(CPTR m68kaddr, UBYTE type, WORD datawidth, WORD dataheight, UBYTE bpp, bool leaveinplace);
+	RAWimg(offset_68k m68kaddr, uint8_t type);
+	RAWimg(offset_68k m68kaddr, uint8_t type, WORD datawidth, WORD dataheight, uint8_t bpp, bool leaveinplace);
 	~RAWimg();
 
-	UWORD getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,UWORD color);
+	uint16_t getpixel(WORD x,WORD y);
+	void setpixel(WORD x,WORD y,uint16_t color);
 
 private:
 	void tobuff();
@@ -256,32 +256,32 @@ private:
 
 class FBWriter{
 private:
-	UWORD* test;//hack
-	CPTR location;
-	UWORD rowbytes;
+	uint16_t* test;//hack
+	offset_68k location;
+	uint16_t rowbytes;
 	WORD width;
-	UBYTE pixelsize;
+	uint8_t pixelsize;
 
 public:
-	FBWriter(CPTR addr, UWORD buffwidth, UBYTE bpp);
+	FBWriter(offset_68k addr, uint16_t buffwidth, uint8_t bpp);
 
-	UWORD getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,UWORD color);
-	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, UWORD color);
-	void rect(WORD x, WORD y, WORD w, WORD h, int prams, UWORD color, UWORD round);
+	uint16_t getpixel(WORD x,WORD y);
+	void setpixel(WORD x,WORD y,uint16_t color);
+	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color);
+	void rect(WORD x, WORD y, WORD w, WORD h, int prams, uint16_t color, uint16_t round);
 	void copyrect(RAWimg& host, WORD startx, WORD starty, WORD rectw, WORD recth, WORD outx, WORD outy);
 	void draw(RAWimg& smlimg, WORD x, WORD y);
 	void draw(char letter, RAWfnt& chrimgs, WORD x, WORD y);
-	bool draw5x7(int16_t x, int16_t y, UWORD color, char letter);//hack //remove this
+	bool draw5x7(int16_t x, int16_t y, uint16_t color, char letter);//hack //remove this
 };
 
 //image type creation
-CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,bool hasclearcol,UBYTE clearcolindex,bool hascoltable,CPTR coltable);
-CPTR newdrawstate();
-CPTR newwindow(int16_t width,int16_t height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
-void initformwindow(CPTR thiswindow,int16_t width,int16_t height,UWORD flags,UWORD frameflags,CPTR winbmp,CPTR drawstate,CPTR nextwindowptr);
+offset_68k newbmp(int16_t width,int16_t height,uint8_t bpp,bool hasclearcol,uint8_t clearcolindex,bool hascoltable,offset_68k coltable);
+offset_68k newdrawstate();
+offset_68k newwindow(int16_t width,int16_t height,uint16_t flags,uint16_t frameflags,offset_68k winbmp,offset_68k drawstate,offset_68k nextwindowptr);
+void initformwindow(offset_68k thiswindow,int16_t width,int16_t height,uint16_t flags,uint16_t frameflags,offset_68k winbmp,offset_68k drawstate,offset_68k nextwindowptr);
 
-inline CPTR newbmpsimple(int16_t width,int16_t height,uint8_t bpp){
+inline offset_68k newbmpsimple(int16_t width,int16_t height,uint8_t bpp){
 	return newbmp(width,height,bpp,false,0,false,0);
 }
 
@@ -290,13 +290,13 @@ inline CPTR newbmpsimple(int16_t width,int16_t height,uint8_t bpp){
 //compression
 
 //form
-extern UWORD frmid;
-CPTR decompressform(UWORD id);
-void releaseformmemory(CPTR frmptr);
+extern uint16_t frmid;
+offset_68k decompressform(uint16_t id);
+void releaseformmemory(offset_68k frmptr);
 
 //bitmap
-UBYTE* scanline(CPTR addr, WORD width, WORD height, UWORD rowbytes);
-UBYTE* RLE(CPTR addr,WORD width,WORD height,UWORD rowbytes);
-UBYTE* PackBits(CPTR addr,WORD width,WORD height,UWORD rowbytes);
+uint8_t* scanline(offset_68k addr, WORD width, WORD height, uint16_t rowbytes);
+uint8_t* RLE(offset_68k addr,WORD width,WORD height,uint16_t rowbytes);
+uint8_t* PackBits(offset_68k addr,WORD width,WORD height,uint16_t rowbytes);
 #endif // RAWIMAGETOOLS
 

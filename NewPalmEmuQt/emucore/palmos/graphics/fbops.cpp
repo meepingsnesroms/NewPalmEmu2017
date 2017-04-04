@@ -1,23 +1,23 @@
 /*
 class FBWriter{
 private:
-	UWORD* test;//hack
-	CPTR location;
-	UWORD rowbytes;
+	uint16_t* test;//hack
+	offset_68k location;
+	uint16_t rowbytes;
 	WORD width;
-	UBYTE pixelsize;
+	uint8_t pixelsize;
 
 public:
-	FBWriter(CPTR addr, UWORD buffwidth, UBYTE bpp);
+	FBWriter(offset_68k addr, uint16_t buffwidth, uint8_t bpp);
 
-	UWORD getpixel(WORD x,WORD y);
-	void setpixel(WORD x,WORD y,UWORD color);
-	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, UWORD color);
-	void rect(WORD x, WORD y, WORD w, WORD h, int prams, UWORD color, UWORD round);
+	uint16_t getpixel(WORD x,WORD y);
+	void setpixel(WORD x,WORD y,uint16_t color);
+	void line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color);
+	void rect(WORD x, WORD y, WORD w, WORD h, int prams, uint16_t color, uint16_t round);
 	void copyrect(RAWimg& host, WORD startx, WORD starty, WORD rectw, WORD recth, WORD outx, WORD outy);
 	void draw(RAWimg& smlimg, WORD x, WORD y);
 	void draw(char letter, RAWfnt& chrimgs, WORD x, WORD y);
-	bool draw5x7(int16 x, int16 y, UWORD color, char letter);//hack //remove this
+	bool draw5x7(int16 x, int16 y, uint16_t color, char letter);//hack //remove this
 };
 */
 
@@ -30,12 +30,12 @@ public:
 //HACK use memcpy for better performance
 
 //the active framebuffers data and info
-UWORD* FB_data;
+uint16_t* FB_data;
 int FB_width,FB_height;
 int FB_linethickness;
 
 //the bitmap to copy from if doing a bitmap operation
-UWORD* FB_bitmapdata;
+uint16_t* FB_bitmapdata;
 int FB_bitmapwidth,FB_bitmapheight;
 int FB_bitmaptransparentcolor;//-1 for none
 
@@ -50,7 +50,7 @@ int FB_bitmaptransparentcolor;//-1 for none
 
 
 
-void FB_line(int x,int y,int x2,int y2,UWORD color){
+void FB_line(int x,int y,int x2,int y2,uint16_t color){
 	//taken from rosetta code
 	int dx = abs(x2 - x), sx = x < x2 ? 1 : -1;
 	int dy = abs(y2 - y), sy = y < y2 ? 1 : -1;
@@ -65,14 +65,14 @@ void FB_line(int x,int y,int x2,int y2,UWORD color){
 	}
 }
 
-void FB_rect(int x,int y,int w,int h,UWORD color){
+void FB_rect(int x,int y,int w,int h,uint16_t color){
 	FB_line(x,y,x,y + h,color);
 	FB_line(x,y,x + w,y,color);
 	FB_line(x + w,y,x + w,y + h,color);
 	FB_line(x,y + h,x + w,y + h,color);
 }
 
-void FB_fillrect(int x,int y,int w,int h,UWORD color){
+void FB_fillrect(int x,int y,int w,int h,uint16_t color){
 	int wcnt,hcnt;
 	inc_for(hcnt,h){
 		inc_for(wcnt,w){
@@ -106,7 +106,7 @@ void FB_drawbitmap(int x,int y){
 	int wcnt,hcnt;
 	if(FB_bitmaptransparentcolor != -1){
 		//check for transparency
-		UWORD currentcolor;
+		uint16_t currentcolor;
 		inc_for(hcnt,FB_bitmapheight){
 			inc_for(wcnt,FB_bitmapwidth){
 				currentcolor = FB_bitmappixel(wcnt,hcnt);

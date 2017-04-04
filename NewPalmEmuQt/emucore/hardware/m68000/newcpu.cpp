@@ -136,7 +136,7 @@ uint32_t get_disp_ea(uint32_t base, uint16_t dp){
 	else regd = (Shptr->regs).d[reg];
 
 	if(!(dp & 0x800))regd = (LONG)(WORD)regd;
-	return base + (uint8_t)(dp) + regd;
+	return base + (int8_t)(dp) + regd;
 }
 
 void MC68000_init(shared_img *shptr){

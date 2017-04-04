@@ -17,7 +17,7 @@ void memmoveAPI(){
 		return;
 	}
 
-	UBYTE* backup = new UBYTE[size];
+	uint8_t* backup = new uint8_t[size];
 	readbytearray(source,backup,size);
 	writebytearray(dest,backup,size);
 	delete[] backup;
@@ -40,7 +40,7 @@ void strcopyAPI(){
 	if(src && dest){
 		offset_68k offset = 0;
 		while(true){
-			UBYTE next = get_byte(src + offset);
+			uint8_t next = get_byte(src + offset);
 			put_byte(dest + offset,next);
 			if(next == '\0' || buserr)break;
 			offset++;
@@ -53,7 +53,7 @@ TEMPHACK //palm os api reference does not state if the null terminator counts as
 //C stdlib does not count the null terminator
 void strlenAPI(){
 	stackptr(strptr);
-	D0 = (UWORD)strlen68k(strptr);//returns unsigned value in palm os 5 and any less than 3.5
+	D0 = (uint16_t)strlen68k(strptr);//returns unsigned value in palm os 5 and any less than 3.5
 }
 
 TEMPHACK //check and fix sign extend
@@ -63,7 +63,7 @@ void strncompare(){
 	stacklong(length);
 
 	offset_68k end;
-	UBYTE byte1,byte2;
+	uint8_t byte1,byte2;
 	for(end = 0;end < length;end++){
 		byte1 = get_byte(str1 + end);
 		byte2 = get_byte(str2 + end);
@@ -89,7 +89,7 @@ void strncopy(){
 	stackword(num);
 
 	offset_68k offset;
-	UBYTE next;
+	uint8_t next;
 	if(src && dest){
 		for(offset = 0;offset < num;offset++){
 			next = get_byte(src + offset);
@@ -113,7 +113,7 @@ void strcompare(){
 	stackptr(str2);
 
 	offset_68k offs = 0;
-	UBYTE byte1,byte2;
+	uint8_t byte1,byte2;
 	while(true){
 		byte1 = get_byte(str1 + offs);
 		byte2 = get_byte(str2 + offs);
@@ -138,12 +138,12 @@ void strchr(){
 
 	//16bit char support is beta
 
-	CPTR stop = chrptr;
+	offset_68k stop = chrptr;
 
 	if(wchartype > 0xFF){
 		//this is a 16bit char
-		UBYTE wcharhighbyte = wchartype >> 8;
-		UBYTE wcharlowbyte = wchartype & 0xFF;
+		uint8_t wcharhighbyte = wchartype >> 8;
+		uint8_t wcharlowbyte = wchartype & 0xFF;
         failed:
 		while(get_byte(stop) != wcharhighbyte && get_byte(stop) != 0)stop++;
 		if(get_byte(stop) == 0){

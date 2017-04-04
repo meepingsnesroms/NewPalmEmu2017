@@ -40,24 +40,24 @@ inline uint64_t double64_ttoraw(double64_t data){return *((uint64_t*)&(data));}
 #define setlongifvptr(x,y) if((x))y = get_long((x))
 
 
-void readbytearray(CPTR loc, UBYTE *dest, size_t_68k size);
-void writebytearray(CPTR loc, UBYTE *start, size_t_68k size);
-std::string readstring(CPTR loc);
-void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0);
+void readbytearray(offset_68k loc, uint8_t *dest, size_t_68k size);
+void writebytearray(offset_68k loc, uint8_t *start, size_t_68k size);
+std::string readstring(offset_68k loc);
+void writestring(offset_68k loc,const std::string& str,size_t_68k forcelength = 0);
 
 
 #define LINK(x) (emulink = (x))
 #define UNLINK(x) ((x) = emulink)
 
 #define stackbool(x) bool x = ((popwordlink() >> 8) != 0)
-#define stackbyte(x) UBYTE x = (popwordlink() >> 8)
-#define stackword(x) UWORD x = popwordlink()
-#define stacklong(x) ULONG x = poplonglink()
+#define stackbyte(x) uint8_t x = (popwordlink() >> 8)
+#define stackword(x) uint16_t x = popwordlink()
+#define stacklong(x) uint32_t x = poplonglink()
 
-#define stacklong64(x) uint64_t x;{ULONG tmp1 = poplonglink();\
-	ULONG tmp2 = poplonglink();x = (uint64_t)tmp1 << 32 | tmp2;}
+#define stacklong64(x) uint64_t x;{uint32_t tmp1 = poplonglink();\
+	uint32_t tmp2 = poplonglink();x = (uint64_t)tmp1 << 32 | tmp2;}
 
-#define stackptr(x) CPTR x = poplonglink()
+#define stackptr(x) offset_68k x = poplonglink()
 
 #define stackskip(type) emulink += sizeof(type)
 //#define stackskip(bytes) emulink += (bytes)
@@ -80,26 +80,26 @@ typedef struct{
 
 TEMPHACK
 //find endian of 64bit values
-inline void return64(CPTR retptr,uint64_t val){
+inline void return64(offset_68k retptr,uint64_t val){
 	/*
 	A0 = SP;
-	CPU_pushlongstack((ULONG)val);
-	CPU_pushlongstack((ULONG)(val >> 32))
+	CPU_pushlongstack((uint32_t)val);
+	CPU_pushlongstack((uint32_t)(val >> 32))
 	*/
-	put_long(retptr,(ULONG)(val >> 32));
-	put_long(retptr + 4,(ULONG)val);
+	put_long(retptr,(uint32_t)(val >> 32));
+	put_long(retptr + 4,(uint32_t)val);
 	return;
 }
 
 
-extern CPTR emulink;
+extern offset_68k emulink;
 
-void pushlonglink(ULONG val);
-ULONG poplonglink();
-void pushwordlink(UWORD val);
-UWORD popwordlink();
-void pushbytelink(UBYTE val);
-UBYTE popbytelink();
+void pushlonglink(uint32_t val);
+uint32_t poplonglink();
+void pushwordlink(uint16_t val);
+uint16_t popwordlink();
+void pushbytelink(uint8_t val);
+uint8_t popbytelink();
 
 #endif // DATAEXCHANGE
 

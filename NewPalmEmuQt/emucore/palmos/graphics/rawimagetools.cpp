@@ -28,19 +28,19 @@
 TEMPHACK
 //support bitmaptypev3
 //testsize reads a 32bit value as 2 16bit values a multiplys them?
-static CPTR getbestbitmap(CPTR startbitmap){
+static offset_68k getbestbitmap(offset_68k startbitmap){
 	bool hasloresscreen = (LCDW < 320 || LCDH < 320);
-	CPTR currentbestptr = nullptr_68k;
-	UWORD currentbestbpp = 0;
+	offset_68k currentbestptr = nullptr_68k;
+	uint16_t currentbestbpp = 0;
 	LONG currentbestsize = 0;
 
-	CPTR curbitmap = startbitmap;
+	offset_68k curbitmap = startbitmap;
 	while(true){
 		offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
 
-		UWORD testbpp = getbmpbpp(curbitmap);
+		uint16_t testbpp = getbmpbpp(curbitmap);
 		LONG testsize = ((WORD)get_word(curbitmap)) * ((WORD)get_word(curbitmap + 2));//stored as signed but is an error if negative
-		UBYTE testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
+		uint8_t testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
 
 		switch(testversion){
 			case 0:
@@ -96,7 +96,7 @@ static CPTR getbestbitmap(CPTR startbitmap){
 
 
 
-gchar::gchar(CPTR fntbmpstart,offset_68k glyphofft,char val, UWORD oncol, UWORD offcol, BOUNDRY ar, offset_68k yinc, int lineofft){
+gchar::gchar(offset_68k fntbmpstart,offset_68k glyphofft,char val, uint16_t oncol, uint16_t offcol, BOUNDRY ar, offset_68k yinc, int lineofft){
 	value = val;
 	start = fntbmpstart;
 	glyphoffset = glyphofft;
@@ -123,9 +123,9 @@ WORD gchar::height(){
 	return area.h;
 }
 
-UWORD gchar::getpixel(WORD x,WORD y){
-	ULONG pxnum = y * yincrement + x + glyphoffset;
-	UBYTE pxbyte = get_byte(start + pxnum / 8);
+uint16_t gchar::getpixel(WORD x,WORD y){
+	uint32_t pxnum = y * yincrement + x + glyphoffset;
+	uint8_t pxbyte = get_byte(start + pxnum / 8);
 	if(pxbyte & (0x80 >> (pxnum % 8)))return oncolor;
 	return offcolor;
 }
@@ -133,7 +133,7 @@ UWORD gchar::getpixel(WORD x,WORD y){
 
 
 //RAWfnt parsing
-void RAWfnt::setactivefont(CPTR location){
+void RAWfnt::setactivefont(offset_68k location){
 
 	dbgprintf("Loading New Font\n");
 
@@ -178,14 +178,14 @@ RAWfnt::~RAWfnt(){
 void RAWfnt::parsefnt(){
 	dbgprintf("Font Size: W:%d,H:%d\n",width,height);
 
-	CPTR fntbmp = fontptr + 26;
+	offset_68k fntbmp = fontptr + 26;
 	uint16_t rowbytes = rowwords * 2;
 	int finalx,finaly;
 	inc_for(finaly,height){
 		inc_for(finalx,width){
-			CPTR thisbyte = fntbmp + finaly * rowbytes + finalx / 8;
-			UBYTE thisbit = (0x80 >> (finalx % 8));
-			UBYTE pig = get_byte(thisbyte) & thisbit;
+			offset_68k thisbyte = fntbmp + finaly * rowbytes + finalx / 8;
+			uint8_t thisbit = (0x80 >> (finalx % 8));
+			uint8_t pig = get_byte(thisbyte) & thisbit;
 			charBMP[finaly * width + finalx] = ((pig != 0) ? 0x0000 : 0xFFFF);
 		}
 	}
@@ -206,7 +206,7 @@ void RAWfnt::parsefnt(){
 #endif
 }
 
-UWORD RAWfnt::getpixel(WORD x,WORD y){
+uint16_t RAWfnt::getpixel(WORD x,WORD y){
 	return charBMP[y * width + x];
 }
 
@@ -238,12 +238,12 @@ gchar RAWfnt::getIMG(unsigned char chnum){
 
 
 //RAWimg access
-RAWimg::RAWimg(CPTR m68kaddr, UBYTE type){
+RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type){
 	from68k(m68kaddr,type,findme,findme,findme,false);
 }
 
-RAWimg::RAWimg(CPTR m68kaddr, UBYTE type, WORD datawidth,
-			   WORD dataheight, UBYTE bpp, bool leaveinplace){
+RAWimg::RAWimg(offset_68k m68kaddr, uint8_t type, WORD datawidth,
+			   WORD dataheight, uint8_t bpp, bool leaveinplace){
 	from68k(m68kaddr,type,datawidth,dataheight,bpp,leaveinplace);
 }
 
@@ -251,8 +251,8 @@ RAWimg::~RAWimg(){
 	purifieddata.clear();
 }
 
-void RAWimg::from68k(CPTR m68kaddr, UBYTE type, WORD datawidth,
-					 WORD dataheight, UBYTE bpp, bool leaveinplace){
+void RAWimg::from68k(offset_68k m68kaddr, uint8_t type, WORD datawidth,
+					 WORD dataheight, uint8_t bpp, bool leaveinplace){
 	inm68kaddrspace = true;
 	datatype = type;
 	compression = BitmapCompressionTypeNone;
@@ -280,7 +280,7 @@ void RAWimg::from68k(CPTR m68kaddr, UBYTE type, WORD datawidth,
 
 				//dbgprintf("Bmp Rowbytes:%d,PixelSize:%d\n",rowbytes,pixelsize);
 
-				UWORD flags = get_word(m68kaddr + 6);
+				uint16_t flags = get_word(m68kaddr + 6);
 
 				if(flags & bit(15))compression = get_byte(m68kaddr + 13);
 
@@ -311,14 +311,14 @@ void RAWimg::from68k(CPTR m68kaddr, UBYTE type, WORD datawidth,
 	}
 	//only reference m68kptr after this point!
 
-	orgdat = (UBYTE*)get_real_address(m68kptr);
+	orgdat = (uint8_t*)get_real_address(m68kptr);
 
 	totalsize = height * rowbytes;
 
 	tobuff();
 }
 
-UWORD RAWimg::mypalettecolor(UBYTE index){
+uint16_t RAWimg::mypalettecolor(uint8_t index){
 	if(custompalette)return getcolortblindex(custompalette,index);
 	else{
 		switch(pixelsize){
@@ -341,11 +341,11 @@ UWORD RAWimg::mypalettecolor(UBYTE index){
 	return 0;
 }
 
-UWORD RAWimg::getpixel(WORD x, WORD y){
+uint16_t RAWimg::getpixel(WORD x, WORD y){
 	return purifieddata[y * width + x];
 }
 
-void RAWimg::setpixel(WORD x, WORD y, UWORD color){
+void RAWimg::setpixel(WORD x, WORD y, uint16_t color){
 	purifieddata[y * width + x] = color;
 }
 
@@ -354,9 +354,9 @@ void RAWimg::get1bitpixelarr(){
 	if(inm68kaddrspace){
 		inc_for(finaly,height){
 			inc_for(finalx,width){
-				CPTR thisbyte = m68kptr + finaly * rowbytes + finalx / 8;
-				UBYTE thisbit = (0x80 >> (finalx % 8));
-				UBYTE pig = get_byte(thisbyte) & thisbit;
+				offset_68k thisbyte = m68kptr + finaly * rowbytes + finalx / 8;
+				uint8_t thisbit = (0x80 >> (finalx % 8));
+				uint8_t pig = get_byte(thisbyte) & thisbit;
 				purifieddata[finaly * width + finalx] = ((pig != 0) ? 0x0000 : 0xFFFF);
 			}
 		}
@@ -364,9 +364,9 @@ void RAWimg::get1bitpixelarr(){
 	else{
 		inc_for(finaly,height){
 			inc_for(finalx,width){
-				UBYTE thisbyte = orgdat[finaly * rowbytes + finalx / 8];
-				UBYTE thisbit = (0x80 >> (finalx % 8));
-				UBYTE pig = thisbyte & thisbit;
+				uint8_t thisbyte = orgdat[finaly * rowbytes + finalx / 8];
+				uint8_t thisbit = (0x80 >> (finalx % 8));
+				uint8_t pig = thisbyte & thisbit;
 				purifieddata[finaly * width + finalx] = ((pig != 0) ? 0x0000 : 0xFFFF);
 			}
 		}
@@ -379,7 +379,7 @@ void RAWimg::get2bitpixelarr(){
 	if(inm68kaddrspace){
 		for(finaly = 0;finaly < height;finaly++){
 			for(finalx = 0;finalx < width;finalx++){
-				UBYTE pig = (get_byte(m68kptr + finaly * rowbytes + finalx / 4) >> 2 * (3 - finalx % 4)) & 0x03;
+				uint8_t pig = (get_byte(m68kptr + finaly * rowbytes + finalx / 4) >> 2 * (3 - finalx % 4)) & 0x03;
 				purifieddata[finaly * width + finalx] = paltopalm(PalmPalette2bpp[pig]);
 			}
 		}
@@ -392,7 +392,7 @@ void RAWimg::get4bitpixelarr(){
 	if(inm68kaddrspace){
 		for(finaly = 0;finaly < height;finaly++){
 			for(finalx = 0;finalx < width;finalx++){
-				UBYTE pig = (get_byte(m68kptr + finaly * rowbytes + finalx / 2) << 4 * (1 - finalx % 2)) & 0x0F;
+				uint8_t pig = (get_byte(m68kptr + finaly * rowbytes + finalx / 2) << 4 * (1 - finalx % 2)) & 0x0F;
 				purifieddata[finaly * width + finalx] = paltopalm(PalmPalette4bpp[pig]);
 			}
 		}
@@ -404,14 +404,14 @@ void RAWimg::get8bitpixelarr(){
 	if(inm68kaddrspace){
 		inc_for(finaly,height){
 			inc_for(finalx,width){
-				UBYTE pig = get_byte(m68kptr + finaly * rowbytes + finalx);
+				uint8_t pig = get_byte(m68kptr + finaly * rowbytes + finalx);
 				purifieddata[finaly * width + finalx] = mypalettecolor(pig);
 			}
 		}
 	}else{
 		inc_for(finaly,height){
 			inc_for(finalx,width){
-				UBYTE pig = orgdat[finaly * rowbytes + finalx];
+				uint8_t pig = orgdat[finaly * rowbytes + finalx];
 				purifieddata[finaly * width + finalx] = mypalettecolor(pig);
 			}
 		}
@@ -420,10 +420,10 @@ void RAWimg::get8bitpixelarr(){
 }
 
 void RAWimg::tobuff(){
-	if(pixelsize < 16)purifieddata = std::vector<UWORD>(width * height);//new UWORD[width * height];
+	if(pixelsize < 16)purifieddata = std::vector<uint16_t>(width * height);//new uint16_t[width * height];
 
 	bool cleanupcompression = false;
-	UBYTE* BKorgdat = orgdat;
+	uint8_t* BKorgdat = orgdat;
 
 	if(compression != BitmapCompressionTypeNone){
 		switch(compression){
@@ -462,7 +462,7 @@ void RAWimg::tobuff(){
 		case 16:
 			//palmabrt();
 			//16bit data can just use a pointer since it dosent need to be byteswapped or shifted
-			purifieddata = std::vector<UWORD>((UWORD*)orgdat,(UWORD*)orgdat + totalsize);
+			purifieddata = std::vector<uint16_t>((uint16_t*)orgdat,(uint16_t*)orgdat + totalsize);
 			break;
 		default:
 			palmabrt();
@@ -481,7 +481,7 @@ void RAWimg::tobuff(){
 
 
 
-FBWriter::FBWriter(CPTR addr,UWORD buffwidth,UBYTE bpp){
+FBWriter::FBWriter(offset_68k addr,uint16_t buffwidth,uint8_t bpp){
 	test = get_real_address(addr);
 	location = addr;
 	width = buffwidth;
@@ -512,7 +512,7 @@ FBWriter::FBWriter(CPTR addr,UWORD buffwidth,UBYTE bpp){
 }
 
 
-UWORD FBWriter::getpixel(WORD x, WORD y){
+uint16_t FBWriter::getpixel(WORD x, WORD y){
 	palmabrt();//hack
 	switch(pixelsize){
 		case 16:
@@ -526,7 +526,7 @@ UWORD FBWriter::getpixel(WORD x, WORD y){
 	return 0;
 }
 
-void FBWriter::setpixel(WORD x, WORD y, UWORD color){
+void FBWriter::setpixel(WORD x, WORD y, uint16_t color){
 	if(pixelsize != 16)palmabrt();//hack
 	switch(pixelsize){
 		case 16:
@@ -547,7 +547,7 @@ void FBWriter::setpixel(WORD x, WORD y, UWORD color){
 
 
 void FBWriter::draw(RAWimg& smlimg, WORD x, WORD y){
-	UWORD pixstore;
+	uint16_t pixstore;
 	int cntx,cnty;
 	int datawidth = smlimg.width;
 	int dataheight = smlimg.height;
@@ -581,7 +581,7 @@ void FBWriter::draw(char letter, RAWfnt& chrimgs, WORD x, WORD y){
 	}
 }
 
-bool FBWriter::draw5x7(int16_t x,int16_t y,UWORD color,char letter){
+bool FBWriter::draw5x7(int16_t x,int16_t y,uint16_t color,char letter){
 	/*
 	if(letter < 0x20 || letter > 0x7f){
 		if(letter == 0)return true;//end of string
@@ -603,7 +603,7 @@ bool FBWriter::draw5x7(int16_t x,int16_t y,UWORD color,char letter){
 	return false;
 }
 
-void FBWriter::line(WORD x, WORD y, WORD x2, WORD y2, int prams, UWORD color){
+void FBWriter::line(WORD x, WORD y, WORD x2, WORD y2, int prams, uint16_t color){
 	//prams dashed,dotted
 
 	//taken from rosetta code
@@ -620,7 +620,7 @@ void FBWriter::line(WORD x, WORD y, WORD x2, WORD y2, int prams, UWORD color){
 	}
 }
 
-void FBWriter::rect(WORD x, WORD y,WORD w, WORD h,int prams,UWORD color,UWORD round){
+void FBWriter::rect(WORD x, WORD y,WORD w, WORD h,int prams,uint16_t color,uint16_t round){
 	int wcnt,hcnt;
 	switch(prams){
 		case FILL:{
@@ -668,10 +668,10 @@ void FBWriter::copyrect(RAWimg& host, WORD startx, WORD starty,WORD rectw, WORD 
 
 
 //image type creation
-CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,
-			   bool hasclearcol,UBYTE clearcolindex,bool hascoltable,CPTR coltable){
-	UWORD rowbytes = makerowbytes(width,bpp);
-	UWORD bmpflags = 0;
+offset_68k newbmp(int16_t width,int16_t height,uint8_t bpp,
+			   bool hasclearcol,uint8_t clearcolindex,bool hascoltable,offset_68k coltable){
+	uint16_t rowbytes = makerowbytes(width,bpp);
+	uint16_t bmpflags = 0;
 	size_t_68k bmpcoltablesize;
 
 	//get size
@@ -688,7 +688,7 @@ CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,
 	if(hasclearcol)bmpflags |= bit(13);
 	else clearcolindex = 0;
 
-	CPTR thisbmp = getfreeheap(bmpsize);
+	offset_68k thisbmp = getfreeheap(bmpsize);
 
 	//BitmapType
 	put_word(thisbmp,width);//size
@@ -705,8 +705,8 @@ CPTR newbmp(int16_t width,int16_t height,uint8_t bpp,
 	if(hascoltable){
 		put_word(thisbmp + 16,bmpcoltablesize);
 
-		CPTR inputentryptr = coltable + 2;
-		CPTR bmpentryptr = thisbmp + 16 + 2;
+		offset_68k inputentryptr = coltable + 2;
+		offset_68k bmpentryptr = thisbmp + 16 + 2;
 
 		uint16_t count;
 		for(count = 0;count < bmpcoltablesize;count++){
@@ -724,8 +724,8 @@ TEMPHACK
 //fix scaling values
 
 //only called during bootup to create the main drawstate!
-CPTR newdrawstate(){
-	CPTR thisdrawstate = getfreeheap(44);//20 without HighDensityDisplay Feature Set
+offset_68k newdrawstate(){
+	offset_68k thisdrawstate = getfreeheap(44);//20 without HighDensityDisplay Feature Set
 
 	//DrawStateType
 	put_byte(thisdrawstate,winPaint);//transfer mode
@@ -734,7 +734,7 @@ CPTR newdrawstate(){
 	put_byte(thisdrawstate + 3,stdFont);//fontid
 	put_long(thisdrawstate + 4,INTERCEPT);//font ptr
 
-	//CustomPatternType ignored CustomPatternType = UBYTE[8]
+	//CustomPatternType ignored CustomPatternType = uint8_t[8]
 
 	put_byte(thisdrawstate + 16,0);//fore color
 	put_byte(thisdrawstate + 17,0x22);//back color
@@ -742,9 +742,9 @@ CPTR newdrawstate(){
 	put_byte(thisdrawstate + 19,0);//reserved
 
 	//Palm os 5 vars here
-	put_long(thisdrawstate + 20,0);//fore rgbcolor (struct{UBYTE r,UBYTE g,UBYTE b,UBYTE index})
-	put_long(thisdrawstate + 24,0);//back rgbcolor (struct{UBYTE r,UBYTE g,UBYTE b,UBYTE index})
-	put_long(thisdrawstate + 28,0);//text rgbcolor (struct{UBYTE r,UBYTE g,UBYTE b,UBYTE index})
+	put_long(thisdrawstate + 20,0);//fore rgbcolor (struct{uint8_t r,uint8_t g,uint8_t b,uint8_t index})
+	put_long(thisdrawstate + 24,0);//back rgbcolor (struct{uint8_t r,uint8_t g,uint8_t b,uint8_t index})
+	put_long(thisdrawstate + 28,0);//text rgbcolor (struct{uint8_t r,uint8_t g,uint8_t b,uint8_t index})
 	put_word(thisdrawstate + 32,kCoordinatesStandard);//coord system
 	put_word(thisdrawstate + 34,0);//reserved
 
@@ -760,9 +760,9 @@ CPTR newdrawstate(){
 	return thisdrawstate;
 }
 
-CPTR newwindow(int16_t width,int16_t height,UWORD flags,UWORD frameflags,
-				  CPTR winbmp,CPTR drawstate,CPTR nextwindowptr){
-	CPTR thiswindow = getfreeheap(40);
+offset_68k newwindow(int16_t width,int16_t height,uint16_t flags,uint16_t frameflags,
+				  offset_68k winbmp,offset_68k drawstate,offset_68k nextwindowptr){
+	offset_68k thiswindow = getfreeheap(40);
 	//WindowType
 
 	//HACK these values should not reflect the framebuffer
@@ -792,8 +792,8 @@ CPTR newwindow(int16_t width,int16_t height,UWORD flags,UWORD frameflags,
 	return thiswindow;
 }
 
-void initformwindow(CPTR thiswindow,int16_t width,int16_t height,UWORD flags,UWORD frameflags,
-				  CPTR winbmp,CPTR drawstate,CPTR nextwindowptr){
+void initformwindow(offset_68k thiswindow,int16_t width,int16_t height,uint16_t flags,uint16_t frameflags,
+				  offset_68k winbmp,offset_68k drawstate,offset_68k nextwindowptr){
 	//WindowType
 	put_word(thiswindow,LCDW);//width of lcd
 	put_word(thiswindow + 2,LCDH);//height of lcd
@@ -822,7 +822,7 @@ void initformwindow(CPTR thiswindow,int16_t width,int16_t height,UWORD flags,UWO
 //compression
 
 //form
-static int sizeof_FRMOBJ(UBYTE type){
+static int sizeof_FRMOBJ(uint8_t type){
 	switch(type){
 		case frmFieldObj://40
 			return 40;
@@ -856,9 +856,9 @@ static int sizeof_FRMOBJ(UBYTE type){
 	return 0;//not valid type
 }
 
-CPTR load_FRMOBJ(UBYTE type,CPTR unopenedobj,CPTR dest){
+offset_68k load_FRMOBJ(uint8_t type,offset_68k unopenedobj,offset_68k dest){
 	size_t_68k objsize = sizeof_FRMOBJ(type);
-	CPTR openedobj = dest;
+	offset_68k openedobj = dest;
 
 	memcpy68k(openedobj,unopenedobj,objsize);
 	switch(type){
@@ -892,8 +892,8 @@ CPTR load_FRMOBJ(UBYTE type,CPTR unopenedobj,CPTR dest){
 			//more
 			break;
 		case frmListObj:{
-				CPTR itemlist = get_long(unopenedobj + 12);//array of char pointers
-				CPTR popupwin = get_long(unopenedobj + 24);
+				offset_68k itemlist = get_long(unopenedobj + 12);//array of char pointers
+				offset_68k popupwin = get_long(unopenedobj + 24);
 				dbgprintf("frmListObj CharPtrArray:%08x,PopupWin:%08x\n",itemlist,popupwin);
 				//load list of strings
 				//more
@@ -915,27 +915,27 @@ CPTR load_FRMOBJ(UBYTE type,CPTR unopenedobj,CPTR dest){
 	return openedobj + sizeof_FRMOBJ(type);
 }
 
-CPTR load_FRMOBJ(UBYTE type,CPTR unopenedobj){
+offset_68k load_FRMOBJ(uint8_t type,offset_68k unopenedobj){
 	//make decompressed object
 	size_t_68k objsize = sizeof_FRMOBJ(type);
 	if(objsize == 0)palmabrt();
 
-	CPTR heapmem = getfreeheap(objsize);
+	offset_68k heapmem = getfreeheap(objsize);
 
 	load_FRMOBJ(type,unopenedobj,heapmem);
 	return heapmem;
 }
 
-UWORD frmid;
-CPTR decompressform(UWORD id){
-	CPTR form = getappresource(id,'tFRM');
+uint16_t frmid;
+offset_68k decompressform(uint16_t id){
+	offset_68k form = getappresource(id,'tFRM');
 
 	//resource does not exist
 	if(!form)return nullptr_68k;
 
 
-	CPTR accesspoint = form + 8;
-	UBYTE windowflags = get_byte(accesspoint);
+	offset_68k accesspoint = form + 8;
+	uint8_t windowflags = get_byte(accesspoint);
 	accesspoint = form + 10;//skip pad
 
 	//change to SQUARE
@@ -945,42 +945,42 @@ CPTR decompressform(UWORD id){
 	WORD h = get_word(accesspoint + 6);
 
 	accesspoint = form + 30;
-	UBYTE cornerdiam = get_byte(accesspoint);
-	UBYTE frameflags = get_byte(accesspoint + 1);
-	UBYTE framewidth = (frameflags & 0x03);
+	uint8_t cornerdiam = get_byte(accesspoint);
+	uint8_t frameflags = get_byte(accesspoint + 1);
+	uint8_t framewidth = (frameflags & 0x03);
 	//3d button and shadow width need to be done later
 	accesspoint = form + 40;
-	UWORD formid = get_word(accesspoint);
+	uint16_t formid = get_word(accesspoint);
 	if(formid != id)dbgprintf("FormId:%04x,ResourceId:%04x\n",formid,id);
-	UBYTE formattr = get_byte(accesspoint + 2);//maybe UWORD
+	uint8_t formattr = get_byte(accesspoint + 2);//maybe uint16_t
 	//check if useable form and save behind
-	ULONG bitsbehind = get_long(accesspoint + 6);
-	ULONG eventhandler = get_long(accesspoint + 10);
+	uint32_t bitsbehind = get_long(accesspoint + 6);
+	uint32_t eventhandler = get_long(accesspoint + 10);
 	accesspoint = form + 56;
-	UWORD defaultbtn = get_word(accesspoint);
-	UWORD helpid = get_word(accesspoint + 2);
-	UWORD menuid = get_word(accesspoint + 4);
-	UWORD numobjects = get_word(accesspoint + 6);
+	uint16_t defaultbtn = get_word(accesspoint);
+	uint16_t helpid = get_word(accesspoint + 2);
+	uint16_t menuid = get_word(accesspoint + 4);
+	uint16_t numobjects = get_word(accesspoint + 6);
 
 	accesspoint = form + 68;//now pointing at first object
 
 	//get total object size
 	size_t_68k totalobjsize = 0;
-	UWORD scan;
+	uint16_t scan;
 	inc_for(scan,numobjects){
-		UBYTE thisobjtype = get_byte(accesspoint);
+		uint8_t thisobjtype = get_byte(accesspoint);
 		totalobjsize += sizeof_FRMOBJ(thisobjtype);
 		accesspoint += 6;
 	}
 
 	size_t_68k formsize = 68 + numobjects * 6;
-	CPTR formmemory = getfreeheap(formsize + totalobjsize);
+	offset_68k formmemory = getfreeheap(formsize + totalobjsize);
 
 	//make windowdata
-	CPTR formframebuffer = newbmpsimple(w,h,LCDBPP);//change to dynamic bpp
+	offset_68k formframebuffer = newbmpsimple(w,h,LCDBPP);//change to dynamic bpp
 
 	//universal drawstate pointer
-	CPTR drawstatetype = osdrawstate;
+	offset_68k drawstatetype = osdrawstate;
 
 	TEMPHACK;
 	//free bitmap with form
@@ -1007,13 +1007,13 @@ CPTR decompressform(UWORD id){
 	//track current object and load it into ram
 	accesspoint = form + 68;//form object list
 
-	UBYTE thisobjtype;
-	//CPTR openedobj;
-	CPTR unopenedobj;
+	uint8_t thisobjtype;
+	//offset_68k openedobj;
+	offset_68k unopenedobj;
 
-	CPTR freedataaddr = formmemory + formsize;//put open object data here
-	CPTR heapobjectpointer = formmemory + 68;//put open object indexes here
-	UWORD count;
+	offset_68k freedataaddr = formmemory + formsize;//put open object data here
+	offset_68k heapobjectpointer = formmemory + 68;//put open object indexes here
+	uint16_t count;
 	inc_for(count,numobjects){
 		thisobjtype = get_byte(accesspoint);
 		put_byte(heapobjectpointer,thisobjtype);//set this objects type
@@ -1035,9 +1035,9 @@ CPTR decompressform(UWORD id){
 	return formmemory;
 }
 
-void releaseformmemory(CPTR frmptr){
+void releaseformmemory(offset_68k frmptr){
 	//form bitmap
-	UWORD flags = get_word(frmptr + 8);//windowflags
+	uint16_t flags = get_word(frmptr + 8);//windowflags
 	if(flags & bit(8))abstractfree(getwinbmp(frmptr));
 
 	//form struct
@@ -1048,11 +1048,11 @@ void releaseformmemory(CPTR frmptr){
 //bitmap
 
 //does not convert to rgb_16
-UBYTE* scanline(CPTR addr,WORD width,WORD height,UWORD rowbytes){
+uint8_t* scanline(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
 #if 0
 	//dbgprintf("height:%d\n",height);
 	size_t_68k uncompressedsize = rowbytes * height;
-	UBYTE* uncompresseddata = new UBYTE[uncompressedsize];
+	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
 
 	size_t_68k datasize = get_word(addr) - 2;//subtract length from its self
 	addr += 2;
@@ -1094,8 +1094,8 @@ UBYTE* scanline(CPTR addr,WORD width,WORD height,UWORD rowbytes){
 #else
 	size_t_68k datasize = get_word(addr);//compressed data size
 	size_t_68k uncompressedsize = rowbytes * height;
-	UBYTE* compresseddata = new UBYTE[datasize];
-	UBYTE* uncompresseddata = new UBYTE[uncompressedsize];
+	uint8_t* compresseddata = new uint8_t[datasize];
+	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
 	readbytearray(addr,compresseddata,datasize);
 	BMP_extract(compresseddata,uncompresseddata,BitmapCompressionTypeScanLine,rowbytes);
 	delete[] compresseddata;
@@ -1104,18 +1104,18 @@ UBYTE* scanline(CPTR addr,WORD width,WORD height,UWORD rowbytes){
 }
 
 //does not convert to rgb_16
-UBYTE* RLE(CPTR addr, WORD width, WORD height, UWORD rowbytes){
+uint8_t* RLE(offset_68k addr, WORD width, WORD height, uint16_t rowbytes){
 #if 1
 	size_t_68k uncompressedsize = rowbytes * height;
-	UBYTE* uncompresseddata = new UBYTE[uncompressedsize];
+	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
 	size_t_68k compressedsize = get_word(addr) - 2;//subtract length from its self
 	addr += 2;
 
 
 	offset_68k loc = 0;
-	UBYTE headerbyte,databyte;
-	CPTR bunny = addr;
-	CPTR end = addr + compressedsize;
+	uint8_t headerbyte,databyte;
+	offset_68k bunny = addr;
+	offset_68k end = addr + compressedsize;
 	while(bunny < end){
 		headerbyte = get_byte(bunny);
 		databyte = get_byte(bunny + 1);
@@ -1142,7 +1142,7 @@ UBYTE* RLE(CPTR addr, WORD width, WORD height, UWORD rowbytes){
 			continue;
 		}
 		else if(headerbyte < 0){//repeat byte x times
-			UBYTE data = 13;//get_byte(bunny);
+			uint8_t data = 13;//get_byte(bunny);
 			for(;headerbyte <= 0;headerbyte++){//maybe <= 0 //was <
 				uncompresseddata[loc] = data;
 				loc++;
@@ -1159,18 +1159,18 @@ UBYTE* RLE(CPTR addr, WORD width, WORD height, UWORD rowbytes){
 #endif
 }
 
-UBYTE* PackBits(CPTR addr,WORD width,WORD height,UWORD rowbytes){
+uint8_t* PackBits(offset_68k addr,WORD width,WORD height,uint16_t rowbytes){
 #if 1
 	size_t_68k uncompressedsize = rowbytes * height;
-	UBYTE* uncompresseddata = new UBYTE[uncompressedsize];
+	uint8_t* uncompresseddata = new uint8_t[uncompressedsize];
 	size_t_68k compressedsize = get_word(addr) - 2;//subtract length from its self
 	addr += 2;
 
 
 	offset_68k loc = 0;
 	BYTE headerbyte;
-	CPTR bunny = addr;
-	CPTR end = addr + compressedsize;
+	offset_68k bunny = addr;
+	offset_68k end = addr + compressedsize;
 	while(bunny < end){
 		headerbyte = get_byte(bunny);
 		bunny++;
@@ -1185,7 +1185,7 @@ UBYTE* PackBits(CPTR addr,WORD width,WORD height,UWORD rowbytes){
 			continue;
 		}
 		else if(headerbyte < 0){//repeat byte x times
-			UBYTE data = get_byte(bunny);
+			uint8_t data = get_byte(bunny);
 			for(;headerbyte <= 0;headerbyte++){//maybe <= 0 //was <
 				uncompresseddata[loc] = data;
 				loc++;

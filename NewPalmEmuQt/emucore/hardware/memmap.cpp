@@ -21,7 +21,7 @@ enum{
 	LONGSIZE
 };
 
-void invalidaccess(CPTR addr,bool writing,int length){
+void invalidaccess(offset_68k addr,bool writing,int length){
 	int arch = 2;
 	/*
 	if(inARM){
@@ -37,11 +37,11 @@ void invalidaccess(CPTR addr,bool writing,int length){
 
 int buserr = 0;
 
-UWORD* dynallocedchunkptrs[TOTALBANKS];
-UBYTE avchunks[TOTALBANKS];
+uint16_t* dynallocedchunkptrs[TOTALBANKS];
+uint8_t avchunks[TOTALBANKS];
 
-UWORD* rammemory;
-UWORD  dballregs[SIZEOFBANK / sizeof(UWORD)];
+uint16_t* rammemory;
+uint16_t  dballregs[SIZEOFBANK / sizeof(uint16_t)];
 
 uint32_t ram_size;
 extern shared_img* Shptr;
@@ -55,7 +55,7 @@ enum{
 	usedmustfree
 };
 
-UWORD getnewlinearchunks(UWORD needed){
+uint16_t getnewlinearchunks(uint16_t needed){
 	if(needed == 0)return 0;
 
 	int i;
@@ -74,7 +74,7 @@ UWORD getnewlinearchunks(UWORD needed){
 	//return i to starting bank now that we know it can provide the banks requested
 	i -= (needed - 1);//change starting point from 1 to 0 based
 
-	UWORD* realaddr = new UWORD[SIZEOFBANK / 2 * needed];
+	uint16_t* realaddr = new uint16_t[SIZEOFBANK / 2 * needed];
 	if(realaddr == nullptr){
 		palmabrt();
 		return 0;
@@ -91,7 +91,7 @@ UWORD getnewlinearchunks(UWORD needed){
 	for(j = i;j < i + needed;j++){
 		//dbgprintf("Bank %04x is allocated at %p!\n",j,realaddr);
 		dynallocedchunkptrs[j] = realaddr;
-		realaddr = (UWORD*)((UBYTE*)realaddr + SIZEOFBANK);
+		realaddr = (uint16_t*)((uint8_t*)realaddr + SIZEOFBANK);
 	}
 	dbgprintf("Banks wanted:%d,Ptr:%04x\n",needed,i);
 	return i;
@@ -109,19 +109,19 @@ void freedynchunks(){
 }
 
 /* Default memory access functions */
-int default_check(CPTR, ULONG)
+int default_check(offset_68k, uint32_t)
 {
     return 0;
 }
 
-UWORD* default_xlate(CPTR)
+uint16_t* default_xlate(offset_68k)
 {
 	return nullptr;
 }
 
 
 /* A dummy bank that only contains zeros */
-ULONG dummy_lget(CPTR addr)
+uint32_t dummy_lget(offset_68k addr)
 {
 	dbgprintf("Bus error: read a long from undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -130,7 +130,7 @@ ULONG dummy_lget(CPTR addr)
     return 0;
 }
 
-UWORD dummy_wget(CPTR addr)
+uint16_t dummy_wget(offset_68k addr)
 {
 	dbgprintf("Bus error: read a word from undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -139,7 +139,7 @@ UWORD dummy_wget(CPTR addr)
     return 0;
 }
 
-UBYTE dummy_bget(CPTR addr)
+uint8_t dummy_bget(offset_68k addr)
 {
 	dbgprintf("Bus error: read a byte from undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -148,7 +148,7 @@ UBYTE dummy_bget(CPTR addr)
     return 0;
 }
 
-void dummy_lput(CPTR addr, ULONG)
+void dummy_lput(offset_68k addr, uint32_t)
 {
 	dbgprintf("Bus error: wrote a long to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -156,7 +156,7 @@ void dummy_lput(CPTR addr, ULONG)
 	palmabrt();//hack
 }
 
-void dummy_wput(CPTR addr, UWORD)
+void dummy_wput(offset_68k addr, uint16_t)
 {
 	dbgprintf("Bus error: wrote a word to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -164,7 +164,7 @@ void dummy_wput(CPTR addr, UWORD)
 	palmabrt();//hack
 }
 
-void dummy_bput(CPTR addr, UBYTE)
+void dummy_bput(offset_68k addr, uint8_t)
 {
 	dbgprintf("Bus error: wrote a byte to undefined memory address 0x%08x\n",addr);
 	dbgprintf("PC=0x%08x\n", MC68000_getpc());
@@ -172,12 +172,12 @@ void dummy_bput(CPTR addr, UBYTE)
 	palmabrt();//hack
 }
 
-int dummy_check(CPTR, ULONG)
+int dummy_check(offset_68k, uint32_t)
 {
     return 0;
 }
 
-UWORD* dummy_xlate(CPTR)
+uint16_t* dummy_xlate(offset_68k)
 {
 	dbgprintf("uhhg");
 	return nullptr;
@@ -185,161 +185,161 @@ UWORD* dummy_xlate(CPTR)
 
 
 /* RAM */
-ULONG ram_lget(CPTR addr)
+uint32_t ram_lget(offset_68k addr)
 {
 	addr -= ram_start;
-	return (((ULONG)rammemory[addr >> 1]) << 16) | rammemory[(addr >> 1) + 1];
+	return (((uint32_t)rammemory[addr >> 1]) << 16) | rammemory[(addr >> 1) + 1];
 }
 
-UWORD ram_wget(CPTR addr)
+uint16_t ram_wget(offset_68k addr)
 {
 	addr -= ram_start;
     return rammemory[addr >> 1];
 }
 
-UBYTE ram_bget(CPTR addr)
+uint8_t ram_bget(offset_68k addr)
 {
 	addr -= ram_start;
 	if(addr & 1)return rammemory[addr >> 1];
 	else return rammemory[addr >> 1] >> 8;
 }
 
-void ram_lput(CPTR addr, ULONG l)
+void ram_lput(offset_68k addr, uint32_t l)
 {
 	addr -= ram_start;
     rammemory[addr >> 1] = l >> 16;
-	rammemory[(addr >> 1) + 1] = (UWORD)l;
+	rammemory[(addr >> 1) + 1] = (uint16_t)l;
 }
 
-void ram_wput(CPTR addr, UWORD w)
+void ram_wput(offset_68k addr, uint16_t w)
 {
 	addr -= ram_start;
     rammemory[addr >> 1] = w;
 }
 
-void ram_bput(CPTR addr, UBYTE b)
+void ram_bput(offset_68k addr, uint8_t b)
 {
 	addr -= ram_start;
 	if (!(addr & 1)) {
-		rammemory[addr >> 1] = (rammemory[addr>>1] & 0xFF) | (((UWORD)b) << 8);
+		rammemory[addr >> 1] = (rammemory[addr>>1] & 0xFF) | (((uint16_t)b) << 8);
     } else {
 		rammemory[addr >> 1] = (rammemory[addr >> 1] & 0xFF00) | b;
     }
 }
 
-int ram_check(CPTR addr, ULONG size)
+int ram_check(offset_68k addr, uint32_t size)
 {
 	addr -= ram_start;
-    return (addr + size) <= (ULONG)ram_size;
+    return (addr + size) <= (uint32_t)ram_size;
 }
 
-UWORD* ram_xlate(CPTR addr)
+uint16_t* ram_xlate(offset_68k addr)
 {
 	addr -= ram_start;
     return rammemory + (addr >> 1);
 }
 
-ULONG dyn_lget(CPTR addr)
+uint32_t dyn_lget(offset_68k addr)
 {
 	//dbgprintf("DynBank:%16p,long addr:%08x\n",dynallocedchunkptrs[addr >> 16],addr);
-	ULONG temp = ((ULONG)dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1]) << 16;
+	uint32_t temp = ((uint32_t)dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1]) << 16;
 	return temp | dynallocedchunkptrs[addr >> 16][((addr & 0xFFFF) >> 1) + 1];
 }
 
-UWORD dyn_wget(CPTR addr)//(default format)
+uint16_t dyn_wget(offset_68k addr)//(default format)
 {
 	return dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1];
 }
 
-UBYTE dyn_bget(CPTR addr)
+uint8_t dyn_bget(offset_68k addr)
 {
 	if(addr & 1)return dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1];
 	return dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] >> 8;
 }
 
-void dyn_lput(CPTR addr, ULONG l)
+void dyn_lput(offset_68k addr, uint32_t l)
 {
 	dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] = l >> 16;
-	dynallocedchunkptrs[addr >> 16][((addr & 0xFFFF) >> 1) + 1] = (UWORD)l;
+	dynallocedchunkptrs[addr >> 16][((addr & 0xFFFF) >> 1) + 1] = (uint16_t)l;
 }
 
-void dyn_wput(CPTR addr, UWORD w)//(default format)
+void dyn_wput(offset_68k addr, uint16_t w)//(default format)
 {
 	dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] = w;
 }
 
-void dyn_bput(CPTR addr, UBYTE b)
+void dyn_bput(offset_68k addr, uint8_t b)
 {
 	if (!(addr & 1)){
-		dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] = (dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] & 0xFF) | (((UWORD)b) << 8);
+		dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] = (dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] & 0xFF) | (((uint16_t)b) << 8);
 	}
 	else{
 		dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] = (dynallocedchunkptrs[addr >> 16][(addr & 0xFFFF) >> 1] & 0xFF00) | b;
 	}
 }
 
-int dyn_check(CPTR addr, ULONG)
+int dyn_check(offset_68k addr, uint32_t)
 {
 	if(dynallocedchunkptrs[addr >> 16] != 0)return 1;
 	return 0;
 }
 
-UWORD* dyn_xlate(CPTR addr)
+uint16_t* dyn_xlate(offset_68k addr)
 {
 	return dynallocedchunkptrs[addr >> 16] + ((addr & 0xFFFF) >> 1);
 }
 
 
 /* Dragonball register area */
-ULONG reg_lget(CPTR addr)
+uint32_t reg_lget(offset_68k addr)
 {
 	addr &= 0xFFFF;
-	return (((ULONG)dballregs[addr >> 1]) << 16) | dballregs[(addr >> 1) + 1];
+	return (((uint32_t)dballregs[addr >> 1]) << 16) | dballregs[(addr >> 1) + 1];
 }
 
-UWORD reg_wget(CPTR addr)
+uint16_t reg_wget(offset_68k addr)
 {
 	addr &= 0xFFFF;
 	return dballregs[addr >> 1];
 }
 
-UBYTE reg_bget(CPTR addr)
+uint8_t reg_bget(offset_68k addr)
 {
 	addr &= 0xFFFF;
 	if(addr & 1)return dballregs[addr >> 1];
 	else return dballregs[addr >> 1] >> 8;
 }
 
-void reg_lput(CPTR addr, ULONG l)
+void reg_lput(offset_68k addr, uint32_t l)
 {
 	addr &= 0xFFFF;
 	dballregs[addr >> 1] = l >> 16;
-	dballregs[(addr >> 1) + 1] = (UWORD)l;
+	dballregs[(addr >> 1) + 1] = (uint16_t)l;
 }
 
-void reg_wput(CPTR addr, UWORD w)
+void reg_wput(offset_68k addr, uint16_t w)
 {
 	addr &= 0xFFFF;
 	dballregs[addr >> 1] = w;
 }
 
-void reg_bput(CPTR addr, UBYTE b)
+void reg_bput(offset_68k addr, uint8_t b)
 {
 	addr &= 0xFFFF;
 	if (!(addr & 1)) {
-		dballregs[addr >> 1] = (dballregs[addr>>1] & 0xFF) | (((UWORD)b) << 8);
+		dballregs[addr >> 1] = (dballregs[addr>>1] & 0xFF) | (((uint16_t)b) << 8);
 	} else {
 		dballregs[addr >> 1] = (dballregs[addr >> 1] & 0xFF00) | b;
 	}
 }
 
-int reg_check(CPTR addr, ULONG size)
+int reg_check(offset_68k addr, uint32_t size)
 {
 	addr &= 0xFFFF;
 	return (addr + size) <= 0xFFFF;
 }
 
-UWORD* reg_xlate(CPTR addr)
+uint16_t* reg_xlate(offset_68k addr)
 {
 	addr &= 0xFFFF;
 	return dballregs + (addr >> 1);
@@ -385,7 +385,7 @@ int memory_init(){
 
 	//ram
 	ram_size = (SIZEOFBANK / 2) * 0x100;
-	rammemory = new UWORD[ram_size];
+	rammemory = new uint16_t[ram_size];
 
 	//banks
 	membanks = new addrbank[0xFFFF];
@@ -412,32 +412,32 @@ void memory_deinit(){
 	delete[] membanks;
 }
 
-ULONG longget(CPTR addr)
+uint32_t longget(offset_68k addr)
 {
     return membanks[BANKINDEX(addr)].lget(addr);
 }
-UWORD wordget(CPTR addr)
+uint16_t wordget(offset_68k addr)
 {
     return membanks[BANKINDEX(addr)].wget(addr);
 }
-UBYTE byteget(CPTR addr) 
+uint8_t byteget(offset_68k addr) 
 {
     return membanks[BANKINDEX(addr)].bget(addr);
 }
-void longput(CPTR addr, ULONG l)
+void longput(offset_68k addr, uint32_t l)
 {
     membanks[BANKINDEX(addr)].lput(addr, l);
 }
-void wordput(CPTR addr, UWORD w)
+void wordput(offset_68k addr, uint16_t w)
 {
     membanks[BANKINDEX(addr)].wput(addr, w);
 }
-void byteput(CPTR addr, UBYTE b)
+void byteput(offset_68k addr, uint8_t b)
 {
     membanks[BANKINDEX(addr)].bput(addr, b);
 }
 
-ULONG get_long(CPTR addr) 
+uint32_t get_long(offset_68k addr) 
 {
 	if(IS_EVEN(addr))return longget(addr);
 	dbgprintf("Bus error: read a long from odd address 0x%08x\n", addr);
@@ -447,7 +447,7 @@ ULONG get_long(CPTR addr)
     return 0;
 }
 
-UWORD get_word(CPTR addr) 
+uint16_t get_word(offset_68k addr) 
 {
 	if(IS_EVEN(addr))return wordget(addr);
 	dbgprintf("Bus error: read a word from odd address 0x%08x\n", addr);
@@ -457,12 +457,12 @@ UWORD get_word(CPTR addr)
     return 0;
 }
 
-UBYTE get_byte(CPTR addr) 
+uint8_t get_byte(offset_68k addr) 
 {
     return byteget(addr); 
 }
 
-void put_long(CPTR addr, ULONG l) 
+void put_long(offset_68k addr, uint32_t l) 
 {
 	if(IS_EVEN(addr)){
 		longput(addr, l);
@@ -476,7 +476,7 @@ void put_long(CPTR addr, ULONG l)
 
 }
 
-void put_word(CPTR addr, UWORD w) 
+void put_word(offset_68k addr, uint16_t w) 
 {
 	if(IS_EVEN(addr)){
 		wordput(addr, w);
@@ -490,12 +490,12 @@ void put_word(CPTR addr, UWORD w)
 
 }
 
-void put_byte(CPTR addr, UBYTE b) 
+void put_byte(offset_68k addr, uint8_t b) 
 {
     byteput(addr, b);
 }
 
-UWORD* get_real_address(CPTR addr)
+uint16_t* get_real_address(offset_68k addr)
 {
 	if (!IS_EVEN(addr)) {
 		dbgprintf("Bus error: attempted translation of odd address 0x%08x\n", addr);
@@ -506,7 +506,7 @@ UWORD* get_real_address(CPTR addr)
     return membanks[BANKINDEX(addr)].xlateaddr(addr);
 }
 
-int valid_address(CPTR addr, ULONG size)
+int valid_address(offset_68k addr, uint32_t size)
 {
 	if (!IS_EVEN(addr)) {
 	dbgprintf("Bus error: attempted validation of odd address 0x%08x\n", addr);

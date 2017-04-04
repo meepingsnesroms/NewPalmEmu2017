@@ -9,8 +9,8 @@
 //uae sends all opcodes themself as varibles but some opcodes dont have varibles
 //the opcodes are NOP,RTS,TRAPV,RTE,RTR,STOP,ILLEGAL and RESET
 
-//changes op_xxxx(ULONG opcode)
-//to op_xxxx(ULONG) ignoreing the parameter
+//changes op_xxxx(uint32_t opcode)
+//to op_xxxx(uint32_t) ignoreing the parameter
 
 #define RMUP//remove unused parameters
 
@@ -93,25 +93,21 @@
 
 
 //type names
-typedef uint8_t UBYTE;
 typedef int8_t BYTE;
-typedef uint16_t UWORD;
 typedef int16_t WORD;
-typedef uint32_t ULONG;
 typedef int32_t LONG;
 
-typedef ULONG CPTR;
-typedef uint8_t flagtype;//may change to bool
-typedef void cpuop_func(ULONG);
+typedef uint8_t flagtype;//Some flags have more that 2 values so this must remain an 8bit int
+typedef void cpuop_func(uint32_t);
 
-typedef ULONG size_t_68k;
-typedef ULONG offset_68k;
+typedef uint32_t size_t_68k;
+typedef uint32_t offset_68k;
 #define nullptr_68k 0
 
 struct regstruct{
-	ULONG d[8];
-	CPTR  a[8],usp;
-	UWORD sr;
+	uint32_t d[8];
+	offset_68k  a[8],usp;
+	uint16_t sr;
 	flagtype t;
 	flagtype s;
 	flagtype x;
@@ -120,10 +116,10 @@ struct regstruct{
 	flagtype n;
 	flagtype z;
 	flagtype stopped;
-	ULONG intmask;
-	ULONG pc;
-	UWORD *pc_p;
-	UWORD *pc_oldp;
+	uint32_t intmask;
+	uint32_t pc;
+	uint16_t *pc_p;
+	uint16_t *pc_oldp;
 	//custom values
 	bool incallback;
 };
@@ -134,8 +130,8 @@ typedef struct {
   int ForceExit;
 
   //touchscreen
-  ULONG buttons;
-  UWORD penx,peny;
+  uint32_t buttons;
+  uint16_t penx,peny;
   bool pendown;
 
   //bool		LcdPower;
@@ -157,25 +153,25 @@ extern int imm8_table[];
 struct cputbl {
 	cpuop_func *handler;
 	int specific;
-	UWORD opcode;
+	uint16_t opcode;
 };
 
 extern struct cputbl smallcputbl[];
 
 extern cpuop_func *cpufunctbl[65536];
-extern UBYTE m68kcycles[65536];
+extern uint8_t m68kcycles[65536];
 
 //m68k memory access
-ULONG get_long(CPTR addr);
-UWORD get_word(CPTR addr);
-UBYTE get_byte(CPTR addr);
+uint32_t get_long(offset_68k addr);
+uint16_t get_word(offset_68k addr);
+uint8_t get_byte(offset_68k addr);
 
-void put_long(CPTR addr,ULONG l);
-void put_word(CPTR addr,UWORD w);
-void put_byte(CPTR addr,UBYTE b);
+void put_long(offset_68k addr,uint32_t l);
+void put_word(offset_68k addr,uint16_t w);
+void put_byte(offset_68k addr,uint8_t b);
 
-int valid_address(CPTR addr, ULONG size);
-UWORD *get_real_address(CPTR addr);
+int valid_address(offset_68k addr, uint32_t size);
+uint16_t *get_real_address(offset_68k addr);
 
 #define STATECHANGE 1
 #define ABORT 2

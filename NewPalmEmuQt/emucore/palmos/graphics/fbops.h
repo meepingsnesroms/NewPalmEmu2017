@@ -3,12 +3,12 @@
 #include "m68k.h"
 
 //the active framebuffers data and info
-extern UWORD* FB_data;
+extern uint16_t* FB_data;
 extern int FB_width,FB_height;
 extern int FB_linethickness;
 
 //the bitmap to copy from if doing a bitmap operation
-extern UWORD* FB_bitmapdata;
+extern uint16_t* FB_bitmapdata;
 extern int FB_bitmapwidth,FB_bitmapheight;
 extern int FB_bitmaptransparentcolor;//-1 for none
 
@@ -19,11 +19,11 @@ extern int FB_bitmaptransparentcolor;//-1 for none
 #define FB_getpixel(x,y) FB_pixel((x),(y))
 #define FB_setpixel(x,y,color) FB_pixel((x),(y)) = (color)
 
-void FB_line(int x,int y,int x2,int y2,UWORD color);
+void FB_line(int x,int y,int x2,int y2,uint16_t color);
 
-void FB_rect(int x,int y,int w,int h,UWORD color);
+void FB_rect(int x,int y,int w,int h,uint16_t color);
 
-void FB_fillrect(int x,int y,int w,int h,UWORD color);
+void FB_fillrect(int x,int y,int w,int h,uint16_t color);
 
 void FB_copyrect(int x,int y,int w,int h,int fromx,int fromy);
 

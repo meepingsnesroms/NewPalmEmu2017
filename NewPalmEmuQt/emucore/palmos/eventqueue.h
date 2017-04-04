@@ -91,13 +91,13 @@ enum{
 #define palmTicks(x) (palmTick * (x))
 
 typedef struct{
-	UWORD type = 0;
-	UBYTE pendown = 0;
-	UBYTE tapcount = 0;
-	UWORD screenx = 0;
-	UWORD screeny = 0;
-	std::vector<ULONG> data;
-	ULONG id = 0;//not officialy part of the event struct(used by sysTrapEvtAddUniqueEventToQueue)
+	uint16_t type = 0;
+	uint8_t pendown = 0;
+	uint8_t tapcount = 0;
+	uint16_t screenx = 0;
+	uint16_t screeny = 0;
+	std::vector<uint32_t> data;
+	uint32_t id = 0;//not officialy part of the event struct(used by sysTrapEvtAddUniqueEventToQueue)
 }osevent;
 
 

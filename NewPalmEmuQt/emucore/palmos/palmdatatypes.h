@@ -5,18 +5,18 @@
 #include <vector>
 
 typedef union{
-	UBYTE typec[4];//type as string
-	ULONG typen;//type as number
+	uint8_t typec[4];//type as string
+	uint32_t typen;//type as number
 }TYPE;
 
 typedef struct{
 	TYPE type;
-	UWORD id;
-	ULONG uniqueid;/*this is a 24 bit value*/ //for records only
-	CPTR location;
+	uint16_t id;
+	uint32_t uniqueid;/*this is a 24 bit value*/ //for records only
+	offset_68k location;
 	//attr flags
-	UBYTE attr = 0;//pdb specification says UBYTE
-	//UWORD attr = 0;
+	uint8_t attr = 0;//pdb specification says uint8_t
+	//uint16_t attr = 0;
 	/*
 	bool busyF = false;
 	bool secretF = false;
@@ -32,21 +32,21 @@ typedef struct{
 	//palm data
 	char name[32];
 	union{
-		UWORD flags;
-		UWORD fileattr;
+		uint16_t flags;
+		uint16_t fileattr;
 	};
-	UWORD version = 0;
-	ULONG creationtime;
-	ULONG modificationtime;
-	ULONG backuptime = 0;
-	ULONG modnum = 0;
-	ULONG appinfo = 0;
-	ULONG sortinfo = 0;
+	uint16_t version = 0;
+	uint32_t creationtime;
+	uint32_t modificationtime;
+	uint32_t backuptime = 0;
+	uint32_t modnum = 0;
+	uint32_t appinfo = 0;
+	uint32_t sortinfo = 0;
 	TYPE type;
 	TYPE creator;
-	ULONG uuidseed = 0;
-	ULONG nextrecordlist = 0;
-	UWORD numrecords = 0;
+	uint32_t uuidseed = 0;
+	uint32_t nextrecordlist = 0;
+	uint16_t numrecords = 0;
 
 	//my data
 	std::vector<palmresource> parts;
@@ -54,26 +54,26 @@ typedef struct{
 	//runtime data
 	bool open = false;
 	unsigned int opencount = 0;
-	UWORD openmode = 0;
+	uint16_t openmode = 0;
 	bool waschanged = false;//changed or created by app
 	//execution data
 	bool exe = false;
-	CPTR intmain;//code1 main function
-	CPTR thisglobals;
-	CPTR icon = 0;//for app launcher
+	offset_68k intmain;//code1 main function
+	offset_68k thisglobals;
+	offset_68k icon = 0;//for app launcher
 }palmdb;
 
 typedef struct{
 	//TYPE creator;
-	ULONG creator;
-	UWORD id;
-	ULONG value;
+	uint32_t creator;
+	uint16_t id;
+	uint32_t value;
 	bool read_only;
 }feature;
 
 typedef struct{
-  UBYTE attributes;
-  UBYTE uniqueID[3];
+  uint8_t attributes;
+  uint8_t uniqueID[3];
 }SortRecordInfoType;
 
 

@@ -9,7 +9,7 @@
 
 void palmabrt();//hack
 
-//SndStreamRef is ULONG
+//SndStreamRef is uint32_t
 
 /*
 SndStreamSetVolume
@@ -35,7 +35,7 @@ If the stream is stereo, both channels are scaled by the same amplitude scalar. 
 Implemented if Sound Stream Feature Set is present.
 */
 
-//UWORD currentfreq;
+//uint16_t currentfreq;
 
 void sndstreamsetvolume(){
 	stacklong(sndstreamref);
@@ -80,11 +80,11 @@ void snddocmd(){
 	}
 
 
-	UBYTE cmd = get_byte(command);
+	uint8_t cmd = get_byte(command);
 	//there is 1 byte of padding here
 	LONG  pram1 = (LONG)get_long(command + 2);
-	UWORD pram2 = get_word(command + 6);
-	UWORD pram3 = get_word(command + 8);
+	uint16_t pram2 = get_word(command + 6);
+	uint16_t pram3 = get_word(command + 8);
 
 	dbgprintf("Audio command:%d,Freq:%d,Duration:%d,Amplitude:%d\n",cmd,pram1,pram2,pram3);
 

@@ -34,7 +34,7 @@
 static std::vector<feature> featuretable;
 
 //this is the callback list for the 68k rom
-static CPTR api_entrypoints[0x1000];
+static offset_68k api_entrypoints[0x1000];
 
 
 void dump_api_list_from_addr(uint32_t offset){
@@ -44,7 +44,7 @@ void dump_api_list_from_addr(uint32_t offset){
 	}
 }
 
-void make_api_list_from_rom(CPTR rom_SysGetTrapAddress){
+void make_api_list_from_rom(offset_68k rom_SysGetTrapAddress){
 	//dump_api_list_from_addr(0x10010122);//this is a hack for now
 	//dump_api_list_from_addr(0x10010230);//this is a hack for now
 	for(uint32_t current_api = 0;current_api < 0x1000;current_api++){
@@ -63,7 +63,7 @@ void make_api_list_from_rom(CPTR rom_SysGetTrapAddress){
 }
 
 //returns if the api may have failed, since it is only testing the output you may get many incorrect answers
-static int call_rom_api(UWORD apinum){
+static int call_rom_api(uint16_t apinum){
 	if(!rom_active())return 2;//guaranteed fail, cant call rom that does not exist
 
 	dbgprintf("Using API from ROM:%s,0x%04x\n", lookup_trap(apinum),apinum);
@@ -160,7 +160,7 @@ void reset_and_load_default_features(){
 void ftrget(){
 	stacklong(creator);
 	stackword(ftrnum);
-	stackptr(retval);//write feature value to this address, ULONG
+	stackptr(retval);//write feature value to this address, uint32_t
 
 	size_t tblsize = featuretable.size();
 	for(size_t count = 0;count < tblsize;count++){
@@ -172,7 +172,7 @@ void ftrget(){
 	}
 
 	/*
-	ULONG dys = belong(creator);
+	uint32_t dys = belong(creator);
 	if(!ftrexists)
 		dbgprintf("Creator:%.4s,Ftrnum:%d,Exists:%s\n", (char*)&dys, ftrnum, (ftrexists ? "True" : "False"));
 	*/
@@ -294,8 +294,8 @@ void sysappexit(){
 }
 
 void syscurappdatabase(){
-	stackptr(cardnoptr);//UWORD
-	stackptr(localidptr);//ULONG
+	stackptr(cardnoptr);//uint16_t
+	stackptr(localidptr);//uint32_t
 
 	put_word(cardnoptr,0);//app storage flash memory
 	put_long(localidptr,curapp + dmOpenRefOffset);
@@ -312,7 +312,7 @@ void systickspersecond(){
 void sysrandom(){
 	stacklong(newseed);
 
-	static ULONG seed;
+	static uint32_t seed;
 
 	if(newseed != 0)seed = newseed;
 	seed = (seed * 22695477) + 1;
@@ -322,7 +322,7 @@ void sysrandom(){
 void syscopystringresource(){
 	stackptr(chrptr);
 	stackword(id);
-	CPTR resptr = getappresource(id,'tSTR');
+	offset_68k resptr = getappresource(id,'tSTR');
 	size_t_68k strsize = strlen68k(resptr) + 1;//+1 to count the null terminator
 	memcpy68k(chrptr,resptr,strsize);
 	//no return value
@@ -391,12 +391,12 @@ void timgetseconds(){
 }
 
 void dlkgetsyncinfo(){
-	CPTR ssdateptr = poplonglink();
-	CPTR lastsdateptr = poplonglink();
-	CPTR syncstateptr = poplonglink();
-	CPTR usernameptr = poplonglink();
-	CPTR logptr = poplonglink();
-	CPTR loglengthptr = poplonglink();
+	offset_68k ssdateptr = poplonglink();
+	offset_68k lastsdateptr = poplonglink();
+	offset_68k syncstateptr = poplonglink();
+	offset_68k usernameptr = poplonglink();
+	offset_68k logptr = poplonglink();
+	offset_68k loglengthptr = poplonglink();
 
 	if(ssdateptr){
 		dbgprintf("Why syncdate?\n");
@@ -430,10 +430,10 @@ void errexceptionlist(){
 }
 
 bool hastextclipbank = true;//use dynalloc chunk for clipboard
-CPTR textclipbank = 0;
+offset_68k textclipbank = 0;
 void clipboardgetitem(){
 	stackbyte(cliptype);
-	stackptr(lengthptr);//UWORD length in bytes of clipboard item
+	stackptr(lengthptr);//uint16_t length in bytes of clipboard item
 
 	switch(cliptype){
 		case clipboardText:{
@@ -471,7 +471,7 @@ typedef struct _tagEmulState {
 
 //switch to ARM instruction set
 bool hasemulstate = true;
-CPTR emulstate;
+offset_68k emulstate;
 void pcenativecall(){
 	stackptr(callptr);
 	stackptr(datablock);
@@ -512,8 +512,8 @@ void pcenativecall(){
 	callARM(callptr);
 
 	//arm passes and returns values in regesters not on the stack
-	//CPTR armreturn = popstackARM();
-	CPTR armreturn = getregARM(0);//arm r0
+	//offset_68k armreturn = popstackARM();
+	offset_68k armreturn = getregARM(0);//arm r0
 
 	//Palm OS API Reference
 	/*This value is placed in both the A0 and D0
@@ -528,7 +528,7 @@ void pcenativecall(){
 #include "bsod.h"
 
 //apis (and call to ARM)
-bool emulateapi(UWORD api){
+bool emulateapi(uint16_t api){
 
 	if(currentactivewindow == nullptr_68k)palmabrt();//hack
 

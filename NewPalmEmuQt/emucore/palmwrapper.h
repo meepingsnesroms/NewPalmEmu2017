@@ -23,13 +23,13 @@ typedef struct{
 extern std::vector<palmdb> apps;
 extern int			curapp;
 extern int			curoverlay;
-extern CPTR			appcall;
+extern offset_68k			appcall;
 
 //Emulated device state
 extern std::string  username;
 extern std::string	sdcard_directory;
 extern bool			multibyte_char_support;
-extern ULONG		keymask;
+extern uint32_t		keymask;
 
 //Time
 extern uint32_t											fullticks;
@@ -37,10 +37,10 @@ extern float											partialticks;
 extern std::chrono::high_resolution_clock::time_point	starttime;
 
 //Events
-extern CPTR appexceptionlist;
+extern offset_68k appexceptionlist;
 
 //Ui
-extern CPTR oslcdwindow, lcdbitmaptype;
+extern offset_68k oslcdwindow, lcdbitmaptype;
 
 //Debug
 extern std::string	lasttrap;
@@ -72,7 +72,7 @@ void emu_sendkeyboardchar(char thiskey, bool state);
 
 //call this to get the newest framebufffer
 //format is 16bit RGB565
-void emu_get_framebuffer(UWORD* copyto);
+void emu_get_framebuffer(uint16_t* copyto);
 
 //HACK add audio
 

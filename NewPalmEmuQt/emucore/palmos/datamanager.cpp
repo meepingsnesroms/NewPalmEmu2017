@@ -17,7 +17,7 @@
 
 
 int recentresdb,recentoverlay;
-UWORD dmlasterror;
+uint16_t dmlasterror;
 
 inline bool caselessequ(char c1,char c2){
 	if(c1 >= 97 && c1 <= 122)c1 -= 32;
@@ -27,11 +27,11 @@ inline bool caselessequ(char c1,char c2){
 	return false;
 }
 
-ULONG uniqueidseed;
+uint32_t uniqueidseed;
 
-ULONG nextuid(){
+uint32_t nextuid(){
 	//palm just increments by one each iteration
-	ULONG curuid = uniqueidseed;
+	uint32_t curuid = uniqueidseed;
 	uniqueidseed++;
 	return curuid;
 }
@@ -42,8 +42,8 @@ void forgeuniqueids(){
 		if(!apps[count].resdb){
 			uniqueidseed = apps[count].uuidseed;
 			//dbgprintf("Seed:%08x\n",uniqueidseed);
-			UWORD records = apps[count].parts.size();
-			for(UWORD reccount = 0;reccount < records;reccount++){
+			uint16_t records = apps[count].parts.size();
+			for(uint16_t reccount = 0;reccount < records;reccount++){
 				apps[count].parts[reccount].uniqueid = nextuid();
 			}
 		}
@@ -137,7 +137,7 @@ void dmcreatedatabase(){
 
 void dmnewrecord(){
 	stackptr(dmopenref);
-	stackptr(atp);//UWORD
+	stackptr(atp);//uint16_t
 	stacklong(size);
 	dmopenref -= dmOpenRefOffset;
 
@@ -148,11 +148,11 @@ void dmnewrecord(){
 		A0 = nullptr_68k;
 	}
 
-	UWORD index = get_word(atp);
+	uint16_t index = get_word(atp);
 
 	dbgprintf("Atp:%d,Index:%d,Dbptr:%d,Size:%d\n",atp,index,dmopenref,size);
 
-	CPTR recaddr = getfreestorageramhandle(size);
+	offset_68k recaddr = getfreestorageramhandle(size);
 
 	dbgprintf("Addr:%08x\n",recaddr);
 
@@ -199,7 +199,7 @@ void dmnewresource(){
 		return;
 	}
 
-	CPTR newresource = getfreeheaphandle(size);
+	offset_68k newresource = getfreeheaphandle(size);
 	if(newresource){
 		palmresource resinfo;
 		resinfo.type.typen = belong(type);//fix endian swap //hack
@@ -238,7 +238,7 @@ void dmwrite(){
 	stackptr(src);//location
 	stacklong(bytes);//amount
 
-	CPTR total = record + offset;//get address of destination
+	offset_68k total = record + offset;//get address of destination
 	//dbgprintf("Record:%08x,Offset:%08x\n",record,offset);
 
 	memcpy68k(total,src,bytes);
@@ -312,7 +312,7 @@ void dmattachrecord(){
 
 	if(ishandle(memisalloc(newhand)) == false)palmabrt();//hack
 
-	UWORD index = get_word(atp);
+	uint16_t index = get_word(atp);
 
 	dbgprintf("AttachRecord:(DB:%d,At:%d,OldPtr:%08x,NewPtr:%08x)\n",dmopenref,index,oldhand,newhand);
 
@@ -332,7 +332,7 @@ void dmattachrecord(){
 
 			//palmabrt();//hack
 		}else{
-			CPTR oldaddr = apps[dmopenref].parts[index].location;
+			offset_68k oldaddr = apps[dmopenref].parts[index].location;
 
 			//replace record
 			apps[dmopenref].parts[index].location = newhand;
@@ -354,13 +354,13 @@ void dmattachrecord(){
 }
 
 void dmopendatabaseinfo(){
-	CPTR dmopenref = poplonglink();
+	offset_68k dmopenref = poplonglink();
 	//below are pointers for data output!
-	CPTR dbidptr = poplonglink();//palm struct
-	CPTR opencountptr = poplonglink();//UWORD
-	CPTR modeptr = poplonglink();//UWORD
-	CPTR cardnumptr = poplonglink();//UWORD
-	CPTR resdbptr = poplonglink();//bool
+	offset_68k dbidptr = poplonglink();//palm struct
+	offset_68k opencountptr = poplonglink();//uint16_t
+	offset_68k modeptr = poplonglink();//uint16_t
+	offset_68k cardnumptr = poplonglink();//uint16_t
+	offset_68k resdbptr = poplonglink();//bool
 
 	//dbgprintf("Db:%08x\n",dmopenref);
 
@@ -370,7 +370,7 @@ void dmopendatabaseinfo(){
 	if(cardnumptr)put_word(cardnumptr,0);
 	if(opencountptr)put_word(opencountptr,1);//only 1 app is running and it is reading this so always 1
 	if(modeptr)put_word(modeptr,apps[dmopenref].openmode);
-	if(resdbptr)put_word(resdbptr,apps[dmopenref].resdb);//maybe UBYTE
+	if(resdbptr)put_word(resdbptr,apps[dmopenref].resdb);//maybe uint8_t
 
 	D0 = errNone;
 }
@@ -379,7 +379,7 @@ void dmget1resource(){
 	stacklong(type);
 	stackword(id);
 
-	CPTR resource = nullptr_68k;
+	offset_68k resource = nullptr_68k;
 
 	TEMPHACK;
 	//should search the most recently opened resource database(and its overlay) not the one launched
@@ -408,7 +408,7 @@ void dmgetresource(){
 
 	int totalapps = apps.size();
 	int openappscan;
-	CPTR resource;
+	offset_68k resource;
 	for(openappscan = 0;openappscan < totalapps;openappscan++){
 		if(apps[openappscan].open)resource = getresource(openappscan,id,type);
 		if(resource)break;
@@ -416,7 +416,7 @@ void dmgetresource(){
 
 	if(!resource){
 		dmlasterror = dmErrCantFind;
-		ULONG buns = belong(type);
+		uint32_t buns = belong(type);
 		dbgprintf("ErrorResNotFound Type:%.4s,Id:%04x,resourceptr:0x%08x,App:%d\n",(char*)&buns,id,resource,openappscan);
 	}
 
@@ -435,7 +435,7 @@ void dmremoverecord(){
 
 	dbgprintf("DB:%d,Index:%04x\n",dmopenref,index);
 
-	CPTR dataloc = getrecord(dmopenref,index);
+	offset_68k dataloc = getrecord(dmopenref,index);
 	abstractfree(dataloc);
 
 	//more
@@ -454,12 +454,12 @@ void dmgetnextdatabasebytypecreator(){
 	stacklong(type);
 	stacklong(creator);
 	stackbool(onlylatest);
-	stackptr(cardnoptr);//dummy UWORD
-	stackptr(dbidptr);//write ULONG
+	stackptr(cardnoptr);//dummy uint16_t
+	stackptr(dbidptr);//write uint32_t
 
 	//palmabrt();//hack
 
-	ULONG thisdb;
+	uint32_t thisdb;
 
 	if(newsearch){
 		thisdb = numfromtypecreatorwildcard(0,type,creator);
@@ -502,22 +502,22 @@ void dmnextopenresdatabase(){
 
 void dmdatabaseinfo(){
 	stackword(cardno);
-	stacklong(localid);//LocalID (ULONG) //treat the same as dmOpenRef
+	stacklong(localid);//LocalID (uint32_t) //treat the same as dmOpenRef
 	stackptr(dbnameptr);//char array
-	stackptr(attrptr);//UWORD
-	stackptr(versionptr);//UWORD
-	stackptr(crdateptr);//ULONG
-	stackptr(moddateptr);//ULONG
-	stackptr(bkupdateptr);//ULONG
-	stackptr(modnumptr);//ULONG
-	stackptr(appinfoidptr);//ULONG
-	stackptr(sortinfoptr);//ULONG
-	stackptr(typeptr);//ULONG
-	stackptr(creatorptr);//ULONG
+	stackptr(attrptr);//uint16_t
+	stackptr(versionptr);//uint16_t
+	stackptr(crdateptr);//uint32_t
+	stackptr(moddateptr);//uint32_t
+	stackptr(bkupdateptr);//uint32_t
+	stackptr(modnumptr);//uint32_t
+	stackptr(appinfoidptr);//uint32_t
+	stackptr(sortinfoptr);//uint32_t
+	stackptr(typeptr);//uint32_t
+	stackptr(creatorptr);//uint32_t
 
 	//dbgprintf("DBid:%d,(in HEX):%08x\n",localid,localid);
 
-	UWORD dbid = localid - dmOpenRefOffset;
+	uint16_t dbid = localid - dmOpenRefOffset;
 
 	if(dbnameptr)writestring(dbnameptr,(char*)apps[dbid].name);
 	putwordifvptr(attrptr,apps[dbid].flags);
@@ -541,23 +541,23 @@ TEMPHACK
 void dmsetdatabaseinfo(){
 	stackword(cardno);//dummy
 	stacklong(localid);
-	stackptr(nameptr);//UWORD
-	stackptr(versionptr);//UWORD
-	stackptr(crdateptr);//ULONG
-	stackptr(moddateptr);//ULONG
-	stackptr(lstbkpdateptr);//ULONG
-	stackptr(modnumptr);//ULONG
-	stackptr(appinfoidptr);//ULONG
-	stackptr(sortinfoidptr);//ULONG
-	stackptr(typeptr);//ULONG
-	stackptr(creatorptr);//ULONG
+	stackptr(nameptr);//uint16_t
+	stackptr(versionptr);//uint16_t
+	stackptr(crdateptr);//uint32_t
+	stackptr(moddateptr);//uint32_t
+	stackptr(lstbkpdateptr);//uint32_t
+	stackptr(modnumptr);//uint32_t
+	stackptr(appinfoidptr);//uint32_t
+	stackptr(sortinfoidptr);//uint32_t
+	stackptr(typeptr);//uint32_t
+	stackptr(creatorptr);//uint32_t
 	localid -= dmOpenRefOffset;
 
 	/*
 	//check for errors
 	if(nameptr || creatorptr || typeptr){
-		ULONG cmpcreator = belong(apps[localid].creator.typen);
-		ULONG cmptype = belong(apps[localid].type.typen);
+		uint32_t cmpcreator = belong(apps[localid].creator.typen);
+		uint32_t cmptype = belong(apps[localid].type.typen);
 		string cmpname = string(apps[localid].name);
 
 		//swap to new values
@@ -616,7 +616,7 @@ void dmopendatabase(){
 	stacklong(localid);
 	stackword(mode);
 
-	UWORD dbindex = localid - dmOpenRefOffset;//HACK use a different offset for localids
+	uint16_t dbindex = localid - dmOpenRefOffset;//HACK use a different offset for localids
 
 
 
@@ -685,7 +685,7 @@ void dmfinddatabase(){
 
 	dbgprintf("Name:%s\n",name.c_str());
 
-	ULONG database = getnumfromname(0,name);
+	uint32_t database = getnumfromname(0,name);
 
 	//type is localid not dmopenref (localid is not a pointer,use D0)
 	if(database != 0xFFFFFFFF)D0 = database + dmOpenRefOffset;
@@ -697,7 +697,7 @@ TEMPHACK
 void dmfindrecordbyid(){
 	stackptr(dmopenref);
 	stacklong(uniqueid);
-	stackptr(indexptr);//UWORD
+	stackptr(indexptr);//uint16_t
 	dmopenref -= dmOpenRefOffset;
 
 	if(apps[dmopenref].resdb){
@@ -706,8 +706,8 @@ void dmfindrecordbyid(){
 	}
 
 	//check records
-	UWORD records = apps[dmopenref].parts.size();
-	for(UWORD count = 0;count < records;count++){
+	uint16_t records = apps[dmopenref].parts.size();
+	for(uint16_t count = 0;count < records;count++){
 		if(apps[dmopenref].parts[count].uniqueid == uniqueid){
 			put_word(indexptr,count);
 			D0 = errNone;
@@ -744,14 +744,14 @@ void dmsearchresource(){
 	stacklong(restype);
 	stackword(resid);
 	stackptr(resptr);//if this is not null check this instead
-	stackptr(dmopenrefout);//write CPTR
+	stackptr(dmopenrefout);//write offset_68k
 
 	//D0 = indexofresource(not id of resource!);
 
 	//pointer mode //DONE
 	if(resptr){
 		int appout = -1;
-		UWORD idbunny = 0xFFFF;
+		uint16_t idbunny = 0xFFFF;
 		getnumfromptr(resptr,&appout,&idbunny);
 		//no need to check for overlay or duplicates since 2 data chunks cant share one pointer
 		if(appout > -1 && apps[appout].open){
@@ -769,11 +769,11 @@ void dmsearchresource(){
 	//if resource db has an overlay return the resource from the overlay
 	//(regardless of wether the overlay is first in the app vector or not)
 	int appbackup = -1;
-	UWORD indexbackup;
+	uint16_t indexbackup;
 	int appvectorsize = apps.size();
 	for(int appscnt = 0;appscnt < appvectorsize;appscnt++){
 		if(apps[appscnt].resdb && apps[appscnt].open){
-			UWORD resloc = resourcenumfromtypeid(appscnt,resid,restype);
+			uint16_t resloc = resourcenumfromtypeid(appscnt,resid,restype);
 			if(resloc < 0xFFFF){
 				dbinfo appcheck = getdbinfo(appscnt);
 				if(appcheck.type == 'appl'){//hack //may apply to non application resource dbs aswell
@@ -801,8 +801,8 @@ void dmresetrecordstates(){
 	//from sdk header DataMgr.h vvv
 	//Utility to unlock all records and clear busy bits
 
-	UWORD itemnum = apps[dmopenref].parts.size();
-	for(UWORD index = 0;index < itemnum;index++){
+	uint16_t itemnum = apps[dmopenref].parts.size();
+	for(uint16_t index = 0;index < itemnum;index++){
 		apps[dmopenref].parts[index].lockcount = 0;
 		apps[dmopenref].parts[index].attr &= ~dmRecAttrBusy;
 	}
@@ -908,7 +908,7 @@ void memchunknew(){
 	stacklong(size);
 	stackword(attr);//flags for allocation //got 0x1245 once
 
-	CPTR chunk;
+	offset_68k chunk;
 	bool prelock = (attr & memNewChunkFlagPreLock);
 	bool limitsize = !(attr & memNewChunkFlagAllowLarge);
 
@@ -945,8 +945,8 @@ void memchunkfree(){
 TEMPHACK
 void memheapfreebytes(){
 	stackword(heapid);//heapid 0=dynamic(application ram),1=storage,2=rom
-	stackptr(free);//ULONG
-	stackptr(max);//ULONG
+	stackptr(free);//uint32_t
+	stackptr(max);//uint32_t
 
 	dbgprintf("HeapNum:%d\n",heapid);
 
@@ -972,14 +972,14 @@ void memheapfreebytes(){
 }
 
 void memcardinfo(){
-	stackword(cardno);//UWORD
+	stackword(cardno);//uint16_t
 	stackptr(cardname);//string char[32]
 	stackptr(manufname);//string char[32]
-	stackptr(version);//UWORD
-	stackptr(crdate);//ULONG
-	stackptr(romsize);//ULONG
-	stackptr(ramsize);//ULONG
-	stackptr(freebytes);//ULONG
+	stackptr(version);//uint16_t
+	stackptr(crdate);//uint32_t
+	stackptr(romsize);//uint32_t
+	stackptr(ramsize);//uint32_t
+	stackptr(freebytes);//uint32_t
 
 	if(cardno != 0)palmabrt();//hack //only one card
 	//(This does not reference sd,cf,usb otg or other memory
@@ -1029,14 +1029,14 @@ void memheapcompact(){
 
 //prefs
 void prefgetapppreferencesv10(){
-	ULONG appid = poplonglink();
-	UWORD version = popwordlink();
+	uint32_t appid = poplonglink();
+	uint16_t version = popwordlink();
 	stackptr(prefptr);
-	UWORD size = popwordlink();
+	uint16_t size = popwordlink();
 
 	//dbgprintf("Appid:%s\n",stringfromtype(appid).c_str());
 	TEMPHACK
-	CPTR resourceptr = getresource(0,130,'pref');
+	offset_68k resourceptr = getresource(0,130,'pref');
 
 	dbgprintf("Resptr:%08x,Prefptr:%08x,Size:%d\n",resourceptr,prefptr,size);
 
@@ -1064,15 +1064,15 @@ void prefgetapppreferences(){
 	stacklong(creator);
 	stackword(id);
 	stackptr(prefptr);//buffer to hold prefs
-	stackptr(sizeptr);//ptr to size in UWORD format
+	stackptr(sizeptr);//ptr to size in uint16_t format
 	stackbool(saved);
 
-	UWORD size = get_word(sizeptr);
+	uint16_t size = get_word(sizeptr);
 
-	ULONG melsk = belong(creator);
+	uint32_t melsk = belong(creator);
 	dbgprintf("Creator:%.4s,Id:%d,prefptr:%08x,szptr:%08x,size:%04x\n",(char*)&melsk,id,prefptr,sizeptr,size);
 
-	CPTR resourceptr = getresource(curapp,id,'pref');
+	offset_68k resourceptr = getresource(curapp,id,'pref');
 
 	dbgprintf("Resptr:%08x,Prefptr:%08x,Size:%d\n",resourceptr,prefptr,size);
 

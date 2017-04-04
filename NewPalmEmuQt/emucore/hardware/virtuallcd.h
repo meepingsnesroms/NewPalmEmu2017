@@ -16,7 +16,7 @@
 
 extern WORD LCDW,LCDH;
 extern size_t_68k LCDBYTES;
-extern UWORD framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
+extern uint16_t framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
 
 void lcd_init(int w,int h);
 extern addrbank lcd_bank;

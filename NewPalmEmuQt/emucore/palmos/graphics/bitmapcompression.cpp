@@ -5,7 +5,7 @@
 #include "palmos/graphics/bitmapcompression.h"
 
 
-static void BMP_ScanLine(UBYTE* compresseddata,UBYTE* uncompresseddata,UWORD rowbytes/*number of bytes per scanline*/){
+static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint16_t rowbytes/*number of bytes per scanline*/){
 	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
@@ -13,7 +13,7 @@ static void BMP_ScanLine(UBYTE* compresseddata,UBYTE* uncompresseddata,UWORD row
 	uint rowptr = 0;//byte in compressed data
 	uint32_t datanum = 0;//byte in uncompressed data
 	uint rowindex = 0;//byte in current scanline
-	UBYTE newdataflags;
+	uint8_t newdataflags;
 	while(rowptr < compressedsize){
 		newdataflags = compresseddata[rowptr];
 		rowptr++;
@@ -40,14 +40,14 @@ static void BMP_ScanLine(UBYTE* compresseddata,UBYTE* uncompresseddata,UWORD row
 	}
 }
 
-static void BMP_RLE(UBYTE* compresseddata,UBYTE* uncompresseddata){
+static void BMP_RLE(uint8_t* compresseddata,uint8_t* uncompresseddata){
 	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
 
 	uint bunny = 0;//current position in the input
 	uint32_t loc = 0;//current position in the output
-	UBYTE headerbyte,databyte;
+	uint8_t headerbyte,databyte;
 	while(bunny < compressedsize){
 		headerbyte = compresseddata[bunny];
 		databyte = compresseddata[bunny + 1];
@@ -62,7 +62,7 @@ static void BMP_RLE(UBYTE* compresseddata,UBYTE* uncompresseddata){
 	}
 }
 
-static void BMP_PackBits(UBYTE* compresseddata,UBYTE* uncompresseddata){
+static void BMP_PackBits(uint8_t* compresseddata,uint8_t* uncompresseddata){
 	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
@@ -84,7 +84,7 @@ static void BMP_PackBits(UBYTE* compresseddata,UBYTE* uncompresseddata){
 			continue;
 		}
 		else if(headerbyte < 0){//repeat byte x times
-			UBYTE data = compresseddata[bunny];
+			uint8_t data = compresseddata[bunny];
 			for(;headerbyte <= 0;headerbyte++){
 				uncompresseddata[loc] = data;
 				loc++;
@@ -95,7 +95,7 @@ static void BMP_PackBits(UBYTE* compresseddata,UBYTE* uncompresseddata){
 	}
 }
 
-void BMP_extract(UBYTE* compressed,UBYTE* output,int type,int rowbytes){
+void BMP_extract(uint8_t* compressed,uint8_t* output,int type,int rowbytes){
 	switch(type){
 		case BitmapCompressionTypeScanLine:
 			BMP_ScanLine(compressed,output,rowbytes);
@@ -114,5 +114,5 @@ void BMP_extract(UBYTE* compressed,UBYTE* output,int type,int rowbytes){
 
 /*
 exported functions
-void BMP_extract(UBYTE* compressed,UBYTE* output,int type,int rowbytes);
+void BMP_extract(uint8_t* compressed,uint8_t* output,int type,int rowbytes);
 */

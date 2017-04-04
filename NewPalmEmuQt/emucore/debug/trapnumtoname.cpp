@@ -3,7 +3,7 @@
 //from mame used for printing apicalls
 typedef struct{
 	const char *name;
-	UWORD trap;
+	uint16_t trap;
 }mamelist;
 
 mamelist traps[] = {
@@ -1151,7 +1151,7 @@ mamelist traps[] = {
     { "sysTrapLastTrapNumber", 0xA475 }
 };
 
-const char *lookup_trap(UWORD opcode){
+const char *lookup_trap(uint16_t opcode){
 	for(int i = 0; i < (sizeof(traps)/sizeof(traps[0])); i++){
 		if (traps[i].trap == opcode)return traps[i].name;
 	}

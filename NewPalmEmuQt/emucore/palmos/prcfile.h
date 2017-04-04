@@ -15,7 +15,7 @@ enum{
 };
 
 //internal functions
-void printprcerror(CPTR pc);
+void printprcerror(offset_68k pc);
 
 //user functions
 int loadfiletopalm(std::string path);

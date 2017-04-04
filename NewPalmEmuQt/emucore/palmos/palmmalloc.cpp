@@ -15,12 +15,12 @@ typedef struct{
 	bool ishandle = false;
 	int lockcount = 0;
 	bool released = false;
-	CPTR start;
+	offset_68k start;
 	size_t_68k size;
 }mallocchunk;
 
 typedef struct{
-	CPTR start;
+	offset_68k start;
 	size_t_68k size;
 }memfragment;
 
@@ -41,10 +41,10 @@ static inline bool fragstouching(memfragment& frag1,memfragment& frag2){
 
 
 //memory stats
-CPTR freesavedataptr;
+offset_68k freesavedataptr;
 size_t_68k avsavedata;
 
-CPTR freeheapptr;
+offset_68k freeheapptr;
 size_t_68k avheapdata;
 
 std::vector<memfragment> freememfragments;
@@ -93,7 +93,7 @@ static bool condensefrags(){
 	return false;//all done
 }
 
-static CPTR getfromfrags(size_t_68k bytes){
+static offset_68k getfromfrags(size_t_68k bytes){
 	if(bytes & 1)bytes += 1;
 	clensememory();
 	uint numfrags = freememfragments.size();
@@ -123,14 +123,14 @@ static CPTR getfromfrags(size_t_68k bytes){
 
 
 //HACK just use normal ram as storage
-CPTR getfreestorageram(size_t_68k bytes){
+offset_68k getfreestorageram(size_t_68k bytes){
 	if(bytes > avsavedata){
 		palmabrt();//hack
 		return nullptr_68k;
 	}
 	if(bytes & 1)bytes += 1;
 
-	CPTR old = freesavedataptr;
+	offset_68k old = freesavedataptr;
 	freesavedataptr += bytes;
 	avsavedata -= bytes;
 
@@ -143,8 +143,8 @@ CPTR getfreestorageram(size_t_68k bytes){
 	return old;
 }
 
-CPTR getfreeheap(size_t_68k bytes){
-	CPTR fromsmall = getfromfrags(bytes);//try to use small chunks first
+offset_68k getfreeheap(size_t_68k bytes){
+	offset_68k fromsmall = getfromfrags(bytes);//try to use small chunks first
 	if(fromsmall)return fromsmall;
 
 	if(bytes > avheapdata){
@@ -153,7 +153,7 @@ CPTR getfreeheap(size_t_68k bytes){
 	}
 	if(bytes & 1)bytes += 1;
 
-	CPTR old = freeheapptr;
+	offset_68k old = freeheapptr;
 	freeheapptr += bytes;
 	avheapdata -= bytes;
 
@@ -166,15 +166,15 @@ CPTR getfreeheap(size_t_68k bytes){
 	return old;
 }
 
-CPTR getfreeheaphandle(size_t_68k bytes){
-	CPTR block = getfreeheap(bytes);
+offset_68k getfreeheaphandle(size_t_68k bytes){
+	offset_68k block = getfreeheap(bytes);
 	if(block == nullptr_68k)return nullptr_68k;
 	malloclist.back().ishandle = true;
 	return block;
 }
 
-CPTR getfreestorageramhandle(size_t_68k bytes){
-	CPTR block = getfreestorageram(bytes);
+offset_68k getfreestorageramhandle(size_t_68k bytes){
+	offset_68k block = getfreestorageram(bytes);
 	if(block == nullptr_68k)return nullptr_68k;
 	malloclist.back().ishandle = true;
 	return block;
@@ -200,11 +200,11 @@ bool unlockmem(int index){
 	return false;
 }
 
-void lockappdata(int index,UWORD resid){
+void lockappdata(int index,uint16_t resid){
 	apps[index].parts[resid].lockcount++;
 }
 
-bool unlockappdata(int index,UWORD resid){
+bool unlockappdata(int index,uint16_t resid){
 	if(apps[index].parts[resid].lockcount > 0){
 		apps[index].parts[resid].lockcount--;
 		return true;
@@ -243,7 +243,7 @@ void clensememory(){
 	}
 }
 
-int memisalloc(CPTR address){
+int memisalloc(offset_68k address){
 	if(address <= HEAP || address >= SAVEDATAEND)return -1;
 
 	size_t_68k size = malloclist.size();
@@ -263,10 +263,10 @@ void quickclean(){
 	}
 }
 
-bool lockmemaddr(CPTR addr,bool handle){
+bool lockmemaddr(offset_68k addr,bool handle){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		//if(ishandle(index) != handle)return false;
@@ -292,10 +292,10 @@ bool lockmemaddr(CPTR addr,bool handle){
 	return true;
 }
 
-bool unlockmemaddr(CPTR addr,bool handle){
+bool unlockmemaddr(offset_68k addr,bool handle){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		//if(ishandle(index) != handle)return false;
@@ -319,7 +319,7 @@ bool unlockmemaddr(CPTR addr,bool handle){
 	return unlockmem(index);
 }
 
-bool freememaddr(CPTR addr,bool handle){
+bool freememaddr(offset_68k addr,bool handle){
 	int index = memisalloc(addr);
 
 	if(index == -1){
@@ -340,10 +340,10 @@ bool freememaddr(CPTR addr,bool handle){
 	return true;
 }
 
-ULONG getsizememaddr(CPTR addr,bool handle){
+uint32_t getsizememaddr(offset_68k addr,bool handle){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		//hack (check if app and id are valid)
@@ -370,10 +370,10 @@ ULONG getsizememaddr(CPTR addr,bool handle){
 
 
 
-bool abstractlock(CPTR addr){
+bool abstractlock(offset_68k addr){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		lockappdata(app,id);
@@ -391,10 +391,10 @@ bool abstractlock(CPTR addr){
 	return true;
 }
 
-bool abstractunlock(CPTR addr){
+bool abstractunlock(offset_68k addr){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		return unlockappdata(app,id);
@@ -409,7 +409,7 @@ bool abstractunlock(CPTR addr){
 	return unlockmem(index);
 }
 
-bool abstractfree(CPTR addr){
+bool abstractfree(offset_68k addr){
 	if(addr <= HEAP || addr >= SAVEDATAEND)return false;//cant free storage ram
 
 	int index = memisalloc(addr);
@@ -423,10 +423,10 @@ bool abstractfree(CPTR addr){
 	return true;
 }
 
-ULONG abstractgetsize(CPTR addr){
+uint32_t abstractgetsize(offset_68k addr){
 	if(addr <= HEAP || addr >= SAVEDATAEND){
 		int app;
-		UWORD id;
+		uint16_t id;
 		getnumfromptr(addr,&app,&id);
 
 		//hack (check if app and id are valid)

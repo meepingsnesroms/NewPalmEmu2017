@@ -1,21 +1,21 @@
 #include "m68k.h"
 #include <string>
 
-void readbytearray(CPTR loc, UBYTE *dest, size_t_68k size){
+void readbytearray(offset_68k loc, uint8_t *dest, size_t_68k size){
 	offset_68k goo;
 	for(goo = 0;goo < size;goo++){
 		dest[goo] = get_byte(loc + goo);
 	}
 }
 
-void writebytearray(CPTR loc,UBYTE* start,size_t_68k size){
+void writebytearray(offset_68k loc,uint8_t* start,size_t_68k size){
 	offset_68k goo;
 	for(goo = 0;goo < size;goo++){
 		put_byte(loc + goo,start[goo]);
 	}
 }
 
-std::string readstring(CPTR loc){
+std::string readstring(offset_68k loc){
 	std::string tempstr;
 	char chr;//is needed to check if the last char was a null terminator before appending it
 	while(true){
@@ -27,7 +27,7 @@ std::string readstring(CPTR loc){
 	return tempstr;
 }
 
-void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0){
+void writestring(offset_68k loc,const std::string& str,size_t_68k forcelength = 0){
 	const char* strptr = str.c_str();
 	offset_68k goo = 0;
 	while(true){
@@ -51,39 +51,39 @@ void writestring(CPTR loc,const std::string& str,size_t_68k forcelength = 0){
 
 
 //fake stack push and pop,used to push and pop without changing 68k memory or registers
-CPTR emulink;
+offset_68k emulink;
 
-void pushlonglink(ULONG val){
+void pushlonglink(uint32_t val){
 	emulink -= 4;
 	put_long(emulink,val);
 }
 
-ULONG poplonglink(){
-	ULONG retval;
+uint32_t poplonglink(){
+	uint32_t retval;
 	retval = get_long(emulink);
 	emulink += 4;
 	return retval;
 }
 
-void pushwordlink(UWORD val){
+void pushwordlink(uint16_t val){
 	emulink -= 2;
 	put_word(emulink,val);
 }
 
-UWORD popwordlink(){
-	UWORD retval;
+uint16_t popwordlink(){
+	uint16_t retval;
 	retval = get_word(emulink);
 	emulink += 2;
 	return retval;
 }
 
-void pushbytelink(UBYTE val){
+void pushbytelink(uint8_t val){
 	emulink -= 1;
 	put_byte(emulink,val);
 }
 
-UBYTE popbytelink(){
-	UBYTE retval;
+uint8_t popbytelink(){
+	uint8_t retval;
 	retval = get_byte(emulink);
 	emulink += 1;
 	return retval;

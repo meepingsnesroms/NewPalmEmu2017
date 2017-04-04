@@ -6,7 +6,7 @@
 
 void op_illg(uint32_t);
 
-void  fatal(char* , int);
+void  fatal(char*, int);
 uint16_t nextiword();
 uint32_t nextilong();
 int   cctrue(int cc);

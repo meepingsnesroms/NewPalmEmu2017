@@ -3,7 +3,7 @@
 
 WORD LCDW,LCDH;
 size_t_68k LCDBYTES;
-UWORD framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
+uint16_t framebuffer[LCDMAXPIX * 2];//2 framebuffers of max size (the second is used for long drawing operations)
 
 void lcd_init(int w,int h){
 	LCDBYTES = w * h * 2;
@@ -12,48 +12,48 @@ void lcd_init(int w,int h){
 	memset(framebuffer,0xFF,LCDMAXBYTES * 2);//clear framebuffer to white
 }
 
-UBYTE lcd_bget(CPTR addr){
+uint8_t lcd_bget(offset_68k addr){
 	addr -= lcd_start;
 	if(addr & 1)return framebuffer[addr >> 1];
 	return framebuffer[addr >> 1] >> 8;
 }
 
-UWORD lcd_wget(CPTR addr){
+uint16_t lcd_wget(offset_68k addr){
 	addr -= lcd_start;
 	return framebuffer[addr >> 1];
 }
 
-ULONG lcd_lget(CPTR addr){
+uint32_t lcd_lget(offset_68k addr){
 	addr -= lcd_start;
-	return (((ULONG)framebuffer[addr >> 1]) << 16) | framebuffer[(addr >> 1) + 1];
+	return (((uint32_t)framebuffer[addr >> 1]) << 16) | framebuffer[(addr >> 1) + 1];
 }
 
-void lcd_bput(CPTR addr,UBYTE b){
+void lcd_bput(offset_68k addr,uint8_t b){
 	addr -= lcd_start;
 	if(!(addr & 1)){
-		framebuffer[addr >> 1] = (framebuffer[addr >> 1] & 0xFF) | (((UWORD)b) << 8);
+		framebuffer[addr >> 1] = (framebuffer[addr >> 1] & 0xFF) | (((uint16_t)b) << 8);
 	}
 	else{
 		framebuffer[addr >> 1] = (framebuffer[addr >> 1] & 0xFF00) | b;
 	}
 }
 
-void lcd_wput(CPTR addr,UWORD w){
+void lcd_wput(offset_68k addr,uint16_t w){
 	addr -= lcd_start;
 	framebuffer[addr >> 1] = w;
 }
 
-void lcd_lput(CPTR addr,ULONG l){
+void lcd_lput(offset_68k addr,uint32_t l){
 	addr -= lcd_start;
 	framebuffer[addr >> 1] = l >> 16;
-	framebuffer[(addr >> 1) + 1] = (UWORD)l;
+	framebuffer[(addr >> 1) + 1] = (uint16_t)l;
 }
 
-UWORD* lcd_xlate(CPTR addr){
+uint16_t* lcd_xlate(offset_68k addr){
 	return framebuffer + ((addr - lcd_start) >> 1);
 }
 
-int lcd_check(CPTR, ULONG){
+int lcd_check(offset_68k, uint32_t){
 	return 1;
 }
 

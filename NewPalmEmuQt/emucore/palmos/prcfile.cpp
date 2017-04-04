@@ -17,17 +17,17 @@
 
 typedef struct{
 	TYPE type;
-	UWORD id;
-	CPTR location;
+	uint16_t id;
+	offset_68k location;
 }prcresource;
 
 typedef struct{
-	CPTR location;
-	UBYTE attr;
-	UBYTE pad[3];//not used
+	offset_68k location;
+	uint8_t attr;
+	uint8_t pad[3];//not used
 }pdbresource;
 
-prcresource getprcresourceheader(UBYTE* rawheader){
+prcresource getprcresourceheader(uint8_t* rawheader){
 	prcresource temp;
 	memcpy(temp.type.typec,rawheader,4);//tiny string
 	temp.id  = (rawheader[0x04] << 8)  | rawheader[0x05];
@@ -35,7 +35,7 @@ prcresource getprcresourceheader(UBYTE* rawheader){
 	return temp;
 }
 
-pdbresource getpdbresourceheader(UBYTE* rawheader){
+pdbresource getpdbresourceheader(uint8_t* rawheader){
 	pdbresource temp;
 	temp.location = (rawheader[0x00] << 24) | (rawheader[0x01] << 16) | (rawheader[0x02] << 8) | rawheader[0x03];
 	temp.attr = rawheader[0x04];
@@ -44,22 +44,22 @@ pdbresource getpdbresourceheader(UBYTE* rawheader){
 
 
 //68k malloc info
-UBYTE *currealaddr;
-CPTR curmemloc;
-CPTR avbytes;
+uint8_t *currealaddr;
+offset_68k curmemloc;
+offset_68k avbytes;
 
 
 //helper functions
 
 //returns the 68k address of what was installed
-static CPTR installresource(UBYTE *resource,size_t_68k size){
+static offset_68k installresource(uint8_t *resource,size_t_68k size){
 	if(!IS_EVEN(curmemloc)){
 		currealaddr += 1;
 		curmemloc += 1;
 		avbytes -= 1;
 	}
 
-	CPTR installaddr = curmemloc;
+	offset_68k installaddr = curmemloc;
 	for(size_t_68k counter = 0;counter < size;counter++){
 		put_byte(installaddr + counter,resource[counter]);
 	}
@@ -74,9 +74,9 @@ static CPTR installresource(UBYTE *resource,size_t_68k size){
 	return installaddr;
 }
 
-static void unpackprcresource(UWORD resourcenum,UBYTE *prcdata,size_t_68k prcsize,int app){
+static void unpackprcresource(uint16_t resourcenum,uint8_t *prcdata,size_t_68k prcsize,int app){
 	prcresource thisresource = getprcresourceheader(prcdata + 0x4E/*end of prc header*/ + (resourcenum * 10));
-	UWORD numrecords = prcdata[0x4C] << 8 | prcdata[0x4C + 1];
+	uint16_t numrecords = prcdata[0x4C] << 8 | prcdata[0x4C + 1];
 	size_t_68k size;
 
 	if(resourcenum + 1 == numrecords){
@@ -90,7 +90,7 @@ static void unpackprcresource(UWORD resourcenum,UBYTE *prcdata,size_t_68k prcsiz
 
 	prcchunk.id = thisresource.id;
 	prcchunk.type = thisresource.type;
-	prcchunk.location = installresource((UBYTE*)(prcdata + thisresource.location),size);
+	prcchunk.location = installresource((uint8_t*)(prcdata + thisresource.location),size);
 	prcchunk.size = size;
 
 	apps[app].parts.push_back(prcchunk);
@@ -98,9 +98,9 @@ static void unpackprcresource(UWORD resourcenum,UBYTE *prcdata,size_t_68k prcsiz
 	//dbgprintf("Resource:%s,Id:%d,Installloc:0x%08x\n",stringfromtype(thisresource->type.typec).c_str(),beword(thisresource->id),apps[app].parts[resourcenum].location);
 }
 
-static void unpackpdbresource(UWORD resourcenum,UBYTE *pdbdata,size_t_68k pdbsize,int dbnum){
+static void unpackpdbresource(uint16_t resourcenum,uint8_t *pdbdata,size_t_68k pdbsize,int dbnum){
 	pdbresource thisresource = getpdbresourceheader(pdbdata + 0x4E/*end of pdb header*/ + (resourcenum * 8));
-	UWORD numrecords = pdbdata[0x4C] << 8 | pdbdata[0x4C + 1];
+	uint16_t numrecords = pdbdata[0x4C] << 8 | pdbdata[0x4C + 1];
 	size_t_68k size;
 
 	if(resourcenum + 1 == numrecords){
@@ -119,7 +119,7 @@ static void unpackpdbresource(UWORD resourcenum,UBYTE *pdbdata,size_t_68k pdbsiz
 	apps[dbnum].parts.push_back(pdbchunk);
 }
 
-static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
+static int prcparse(uint8_t *prcfile,size_t_68k prcsize){
 	palmdb meep;
 	meep.numrecords = prcfile[0x4C] << 8 | prcfile[0x4C + 1];
 
@@ -143,7 +143,7 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 	curmemloc = getnewlinearchunks(NUM_BANKS(prcsize + meep.numrecords * 4)) << 16;
 	if(curmemloc != 0){
 		avbytes = NUM_BANKS(prcsize + meep.numrecords * 4) * SIZEOFBANK;
-		currealaddr = (UBYTE*)get_real_address(curmemloc);
+		currealaddr = (uint8_t*)get_real_address(curmemloc);
 	}
 	else return FAILEDMALLOC;
 
@@ -163,7 +163,7 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 	return WORKED;
 }
 
-static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
+static int pdbparse(uint8_t *pdbfile,size_t_68k pdbsize){
 	palmdb meep;
 	meep.numrecords = pdbfile[0x4C] << 8 | pdbfile[0x4C + 1];
 
@@ -187,7 +187,7 @@ static int pdbparse(UBYTE *pdbfile,size_t_68k pdbsize){
 	curmemloc = getnewlinearchunks(NUM_BANKS(pdbsize + meep.numrecords * 4)) << 16;
 	if(curmemloc != 0){
 		avbytes = NUM_BANKS(pdbsize + meep.numrecords * 4) * SIZEOFBANK;
-		currealaddr = (UBYTE*)get_real_address(curmemloc);
+		currealaddr = (uint8_t*)get_real_address(curmemloc);
 	}
 	else return FAILEDMALLOC;
 
@@ -215,14 +215,14 @@ int loadfiletopalm(std::string path){
 	stat(path.c_str(), &stat_buf);
 	if(stat_buf.st_size == 0)return LOCKEDFILE;
 	size_t_68k size = stat_buf.st_size;
-	UBYTE *mempool = new UBYTE[size];
+	uint8_t *mempool = new uint8_t[size];
 	std::ifstream appfile (path,std::ios::in | std::ios::binary);
 	if (appfile.is_open()){
 		appfile.read((char*)mempool,size);
 	}
 	appfile.close();
 
-	UWORD flags = (UWORD)mempool[0x20] << 8 | mempool[0x21];
+	uint16_t flags = (uint16_t)mempool[0x20] << 8 | mempool[0x21];
 
 	int pass;
 	std::string ftype = getfiletype(path);
@@ -254,6 +254,6 @@ void releasefilemem(){
 	apps.clear();
 }
 
-void printprcerror(CPTR pc){
+void printprcerror(offset_68k pc){
 	dbgprintf("Prc Loc:0x%08x\n",pc - apps[0].intmain);
 }

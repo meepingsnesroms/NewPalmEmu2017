@@ -20,28 +20,28 @@
 #include "palmos/graphics/palette.h"
 
 //display config //these are hardware abstraction layer values,the actual display size and depth are fixed
-UBYTE bpp;
+uint8_t bpp;
 WORD width,height;
-UWORD coordsys;
+uint16_t coordsys;
 bool color;
 bool scalevideo;//should be true if using 160*160 resolution,starts true and apps must enable hires mode
 int screenlockcount;
-ULONG UIColorTable[31];
-CPTR osdrawstate;//theres only one drawstate,every window points to this drawstate
-#define XFERTYPE  (osdrawstate)//UBYTE
+uint32_t UIColorTable[31];
+offset_68k osdrawstate;//theres only one drawstate,every window points to this drawstate
+#define XFERTYPE  (osdrawstate)//uint8_t
 #define PATTERN	  (osdrawstate + 1)
 #define UNDERLINE (osdrawstate + 2)
-#define FONTID	  (osdrawstate + 3)//UBYTE
-#define FONTPTR	  (osdrawstate + 4)//CPTR
-#define FORECOLOR (osdrawstate + 18)//UBYTE
-#define BACKCOLOR (osdrawstate + 19)//UBYTE
-#define TEXTCOLOR (osdrawstate + 20)//UBYTE
-#define COORDSYS  (osdrawstate + 32)//UWORD
+#define FONTID	  (osdrawstate + 3)//uint8_t
+#define FONTPTR	  (osdrawstate + 4)//offset_68k
+#define FORECOLOR (osdrawstate + 18)//uint8_t
+#define BACKCOLOR (osdrawstate + 19)//uint8_t
+#define TEXTCOLOR (osdrawstate + 20)//uint8_t
+#define COORDSYS  (osdrawstate + 32)//uint16_t
 
 
-#define FORECOLORRGB (osdrawstate + 18)//UBYTE
-#define BACKCOLORRGB (osdrawstate + 19)//UBYTE
-#define TEXTCOLORRGB (osdrawstate + 20)//UBYTE
+#define FORECOLORRGB (osdrawstate + 18)//uint8_t
+#define BACKCOLORRGB (osdrawstate + 19)//uint8_t
+#define TEXTCOLORRGB (osdrawstate + 20)//uint8_t
 
 
 
@@ -58,38 +58,38 @@ bool sendpenevents;
 COORD touchstart;
 
 //for winsetactivewindow
-CPTR newwindowptr;
+offset_68k newwindowptr;
 bool changewindow;
 
 //what drawing commands use
-CPTR currentdrawwindow;
+offset_68k currentdrawwindow;
 
 //what is on the display
-CPTR currentactivewindow;
+offset_68k currentactivewindow;
 
-std::vector<CPTR> windowlist;
+std::vector<offset_68k> windowlist;
 
-std::vector<CPTR> drawstates;
+std::vector<offset_68k> drawstates;
 
 //form
-UWORD activeform;
-CPTR activeformptr;
+uint16_t activeform;
+offset_68k activeformptr;
 //form objects
 std::vector<UISQUARE> objects;
 
 bool anyformsopen;
 bool sendwinenterondraw;
 
-std::unordered_map<UWORD,CPTR> openforms;
-std::vector<UWORD> openformids;//added to access open forms as a list
+std::unordered_map<uint16_t,offset_68k> openforms;
+std::vector<uint16_t> openformids;//added to access open forms as a list
 
-void setdisplayaddr(CPTR displayaddr){
+void setdisplayaddr(offset_68k displayaddr){
 	put_long(oslcdwindow + 4,displayaddr);
-	CPTR bitmap = getwinbmp(oslcdwindow);
+	offset_68k bitmap = getwinbmp(oslcdwindow);
 	put_long(bitmap + 16,displayaddr);
 }
 
-void freeopenform(UWORD frmid){
+void freeopenform(uint16_t frmid){
 	openforms.erase(frmid);
 	for(int32_t scan = openformids.size() - 1;scan >= 0;scan--){
 		if(openformids[scan] == frmid){
@@ -99,22 +99,22 @@ void freeopenform(UWORD frmid){
 	}
 }
 
-void setopenform(UWORD frmid,CPTR ptr){
+void setopenform(uint16_t frmid,offset_68k ptr){
 	openforms[frmid] = ptr;
 	openformids.push_back(frmid);
 }
 
-CPTR getopenform(UWORD frmid){
+offset_68k getopenform(uint16_t frmid){
 	if(openforms.find(frmid) == openforms.end())return nullptr_68k;
 	return openforms[frmid];
 }
 
-UWORD getformobjid(CPTR form,UWORD count){
-	CPTR objindex = getformobjlist(form) + 6 * count;
-	UBYTE objtype = get_byte(objindex);
-	CPTR obj = get_long(objindex + 2);
+uint16_t getformobjid(offset_68k form,uint16_t count){
+	offset_68k objindex = getformobjlist(form) + 6 * count;
+	uint8_t objtype = get_byte(objindex);
+	offset_68k obj = get_long(objindex + 2);
 
-	UWORD finalid;
+	uint16_t finalid;
 	switch(objtype){
 		//standard id location
 		case frmFieldObj:
@@ -179,20 +179,20 @@ BOUNDRY& dstarea = dstsquare.size;
 	WORD& dsth = dstarea.h;
 
 
-CPTR srcptr,dstptr;
+offset_68k srcptr,dstptr;
 offset_68k srcindex,dstindex;
 int srcbpp,dstbpp;
 int dstround;
 size_t_68k srcsize;
-UWORD drwcolor;
-UBYTE drwfnt;
+uint16_t drwcolor;
+uint8_t drwfnt;
 int prams;
 
 
 
 void copyrectangle(){
 	RAWimg hostwindow(srcptr,WINDOW);
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.copyrect(hostwindow,srcx,srcy,srcw,srch,dstx,dsty);
@@ -202,18 +202,18 @@ void rectangle(){
 	//dbgprintf("WinBmpPtr:%08x,WinDataPtr:%08x,X:%d,Y:%d,EndX:%d,EndY:%d,Rect:%08x\n",
 	//	   getwinbmp(currentdrawwindow),getwindata(currentdrawwindow),x,y,endx,endy,rectptr);
 
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.rect(srcx,srcy,srcw,srch,prams,drwcolor,dstround);
 
-	//write ULONG
+	//write uint32_t
 	//simulatecycles(srcw * srch);
 }
 
 void dot(){
 	//dbgprintf("Draw Pixel:(Dst:%08x,Dst data:%08x,X:%d,Y:%d,Color:%d)\n",dstptr,getwindata(dstptr),dstx,dsty,drwcolor);
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.setpixel(dstx,dsty,drwcolor);
@@ -224,7 +224,7 @@ void bitmap(){
 
 	RAWimg palmbmp(srcptr,BMP,findme,findme,findme,false);
 
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	dbgprintf("FrameBuffLoc:%08x\n",getbmpdata(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	//FBWriter window(getbmpdata(winbmp),get_word(winbmp),getbmpbpp(winbmp));
@@ -239,12 +239,12 @@ void text(){
 	if(drwfnt == get_byte(FONTID)){
 		activefont = &currentfont;
 	}else{
-		CPTR tempnewfont = getfontaddr(drwfnt);
+		offset_68k tempnewfont = getfontaddr(drwfnt);
 		activefont = new RAWfnt;
 		activefont->setactivefont(tempnewfont);
 	}
 
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	offset_68k count = 0;
 	char curchr;
@@ -281,8 +281,8 @@ void text(){
 
 
 	/*
-	UBYTE fontid = get_byte(FONTID);
-	CPTR fontptr = get_long(FONTPTR);
+	uint8_t fontid = get_byte(FONTID);
+	offset_68k fontptr = get_long(FONTPTR);
 
 	if(fontid >= fntAppFontCustomBase){
 		dbgprintf("Custom font err\n");
@@ -295,7 +295,7 @@ void text(){
 	*/
 
 	/*
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	offset_68k count = 0;
@@ -320,7 +320,7 @@ void text(){
 }
 
 void line(){
-	CPTR winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = getwinbmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.line(srcx,srcy,srcendx,srcendy,prams,drwcolor);
@@ -330,7 +330,7 @@ void line(){
 
 
 //helpers
-CPTR getuiresource(UWORD id,ULONG type){
+offset_68k getuiresource(uint16_t id,uint32_t type){
 	return getappresource(id,type);
 }
 
@@ -348,7 +348,7 @@ bool inboundbox(SQUARE& box,COORD compare){
 	return false;
 }
 
-void addobjtocollisionmatrix(SQUARE& area,CPTR object,UBYTE type,UWORD id){
+void addobjtocollisionmatrix(SQUARE& area,offset_68k object,uint8_t type,uint16_t id){
 	UISQUARE temp;
 	temp.start = area.start;
 	temp.end = area.end;
@@ -362,8 +362,8 @@ void resetcollisionmatrix(){
 	objects.clear();
 }
 
-void disableobject(CPTR objectptr,UBYTE type){
-	UWORD attr;
+void disableobject(offset_68k objectptr,uint8_t type){
+	uint16_t attr;
 	switch(type){
 		case frmFieldObj:
 			attr = get_word(objectptr + 10);
@@ -439,7 +439,7 @@ void radioactiveborder(SQUARE area,bool round){
 
 
 //used by emulator when writing os data to screen and the onscreen image needs to be preserved(like alerts)
-static UWORD spareframe[LCDMAXPIX];
+static uint16_t spareframe[LCDMAXPIX];
 
 void backupframe(){
 	memcpy(spareframe,framebuffer,LCDBYTES);
@@ -460,7 +460,7 @@ void restorepartialframe(COORD start,COORD end){
 
 
 
-bool relaytouchevent(CPTR eventptr){
+bool relaytouchevent(offset_68k eventptr){
 	COORD touch = get_coord(eventptr + 4);
 
 	size_t_68k totalobjs = objects.size();
@@ -501,9 +501,9 @@ bool relaytouchevent(CPTR eventptr){
 	return false;
 }
 
-void relaygadgetevent(CPTR eventptr){
-	UWORD evttype = get_word(eventptr);
-	UWORD targetobj = get_word(eventptr + evtDataOffset);
+void relaygadgetevent(offset_68k eventptr){
+	uint16_t evttype = get_word(eventptr);
+	uint16_t targetobj = get_word(eventptr + evtDataOffset);
 
 	if(evttype != frmGadgetEnterEvent && evttype != frmGadgetMiscEvent)palmabrt();
 
@@ -512,9 +512,9 @@ void relaygadgetevent(CPTR eventptr){
 	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
 		if(objects[curuisquare].objtype == frmGadgetObj && objects[curuisquare].objid == targetobj){
 			//found the target,now will it accept the event
-			UWORD attr = get_word(objects[curuisquare].object + 2);
+			uint16_t attr = get_word(objects[curuisquare].object + 2);
 			if(attr & bit(14)){//has a callback //guaranteed to be visible because it is in the collision matrix
-				CPTR functionptr = get_long(objects[curuisquare].object + 16);
+				offset_68k functionptr = get_long(objects[curuisquare].object + 16);
 				CPU_pushlongstack(objects[curuisquare].object);
 				CPU_pushwordstack(formGadgetHandleEventCmd);
 				CPU_pushlongstack(eventptr);
@@ -532,11 +532,11 @@ void relaygadgetevent(CPTR eventptr){
 	palmabrt();
 }
 
-void relaycontrolevent(CPTR eventptr){
-	UWORD targetobj = get_word(eventptr + evtDataOffset);
-	CPTR targetptr = get_long(eventptr + evtDataOffset + 2);
+void relaycontrolevent(offset_68k eventptr){
+	uint16_t targetobj = get_word(eventptr + evtDataOffset);
+	offset_68k targetptr = get_long(eventptr + evtDataOffset + 2);
 
-	UWORD evttype = get_word(eventptr);
+	uint16_t evttype = get_word(eventptr);
 	if(evttype != ctlEnterEvent && evttype != ctlExitEvent && evttype != ctlSelectEvent)palmabrt();
 
 	size_t_68k totalobjs = objects.size();
@@ -549,11 +549,11 @@ void relaycontrolevent(CPTR eventptr){
 	}
 }
 
-void relayfieldevent(CPTR eventptr){
-	UWORD targetobj = get_word(eventptr + evtDataOffset);
-	CPTR targetptr = get_long(eventptr + evtDataOffset + 2);
+void relayfieldevent(offset_68k eventptr){
+	uint16_t targetobj = get_word(eventptr + evtDataOffset);
+	offset_68k targetptr = get_long(eventptr + evtDataOffset + 2);
 
-	UWORD evttype = get_word(eventptr);
+	uint16_t evttype = get_word(eventptr);
 	if(evttype != fldEnterEvent)palmabrt();
 
 	size_t_68k totalobjs = objects.size();
@@ -571,15 +571,15 @@ void relayfieldevent(CPTR eventptr){
 //object interaction/drawing
 
 TEMPHACK //all color get functions are unconfirmed and are hacks
-UWORD getbackcolor(){
-	CPTR activebmp = getwinbmp(activeform);
-	UBYTE colortype = getbmpbpp(activebmp);
+uint16_t getbackcolor(){
+	offset_68k activebmp = getwinbmp(activeform);
+	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
 			return get_word(BACKCOLORRGB);
 		case 8:
 			{
-				CPTR palette = getbmppalette(activebmp);
+				offset_68k palette = getbmppalette(activebmp);
 				if(palette != nullptr_68k)palmabrt();//later
 				return paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
 			}
@@ -600,15 +600,15 @@ UWORD getbackcolor(){
 	return 0;
 }
 
-UWORD getforecolor(){
-	CPTR activebmp = getwinbmp(activeform);
-	UBYTE colortype = getbmpbpp(activebmp);
+uint16_t getforecolor(){
+	offset_68k activebmp = getwinbmp(activeform);
+	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
 			return get_word(FORECOLORRGB);
 		case 8:
 			{
-				CPTR palette = getbmppalette(activebmp);
+				offset_68k palette = getbmppalette(activebmp);
 				if(palette != nullptr_68k)palmabrt();//later
 				return paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
 			}
@@ -629,15 +629,15 @@ UWORD getforecolor(){
 	return 0;
 }
 
-UWORD gettextcolor(){
-	CPTR activebmp = getwinbmp(activeform);
-	UBYTE colortype = getbmpbpp(activebmp);
+uint16_t gettextcolor(){
+	offset_68k activebmp = getwinbmp(activeform);
+	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
 			return get_word(TEXTCOLORRGB);
 		case 8:
 			{
-				CPTR palette = getbmppalette(activebmp);
+				offset_68k palette = getbmppalette(activebmp);
 				if(palette != nullptr_68k)palmabrt();//later
 				return paltopalm(PalmPalette8bpp[get_byte(TEXTCOLOR)]);
 			}
@@ -660,7 +660,7 @@ UWORD gettextcolor(){
 
 
 
-void fielddisassociateaddr(CPTR field){
+void fielddisassociateaddr(offset_68k field){
 	//just disasociate pointer and handle
 	put_long(field + 12,0);//char ptr
 	put_long(field + 16,0);//memhandle
@@ -669,13 +669,13 @@ void fielddisassociateaddr(CPTR field){
 	//may have to place cursor at end of text and recalculate word wrapping
 }
 
-void fieldappointtextaddr(CPTR field,CPTR handle,size_t_68k textsize,offset_68k textoffset){
+void fieldappointtextaddr(offset_68k field,offset_68k handle,size_t_68k textsize,offset_68k textoffset){
 	if(handle == nullptr_68k){
 		fielddisassociateaddr(field);
 		return;
 	}
 
-	UWORD lengthinchars = strlen68k(handle);
+	uint16_t lengthinchars = strlen68k(handle);
 
 	put_long(field + 12,handle);//char ptr
 	put_long(field + 16,handle);//memhandle
@@ -692,7 +692,7 @@ void fieldappointtextaddr(CPTR field,CPTR handle,size_t_68k textsize,offset_68k 
 	//place cursor at end of text and recalculate word wrapping
 }
 
-void fieldappointtextptr(CPTR field, CPTR ptr){
+void fieldappointtextptr(offset_68k field, offset_68k ptr){
 	if(ptr == nullptr_68k){
 		fielddisassociateaddr(field);
 		return;
@@ -706,12 +706,12 @@ void fieldappointtextptr(CPTR field, CPTR ptr){
 	if(islocked(mallocchk))palmabrt();
 	*/
 
-	CPTR mallocsize = abstractgetsize(ptr);
+	offset_68k mallocsize = abstractgetsize(ptr);
 
 	fieldappointtextaddr(field,ptr,mallocsize,0);
 }
 
-void fieldappointtexthandle(CPTR field,CPTR handle){
+void fieldappointtexthandle(offset_68k field,offset_68k handle){
 	if(handle == nullptr_68k){
 		fielddisassociateaddr(field);
 		return;
@@ -724,15 +724,15 @@ void fieldappointtexthandle(CPTR field,CPTR handle){
 	if(!ishandle(mallocchk))palmabrt();
 	if(islocked(mallocchk))palmabrt();
 
-	CPTR mallocsize = abstractgetsize(handle);//malloclist[mallocchk].size;
+	offset_68k mallocsize = abstractgetsize(handle);//malloclist[mallocchk].size;
 
 	fieldappointtextaddr(field,handle,mallocsize,0);
 }
 
 //to accomadate different type names ABMP,Tbmp,tAIB,tbmf,taif,PICT
 //may or may not count tFBM,Tbsb (boot screen bitmap)
-CPTR getbitmap(UWORD bmpid){
-	CPTR bitmap = getappresource(bmpid,'Tbmp');
+offset_68k getbitmap(uint16_t bmpid){
+	offset_68k bitmap = getappresource(bmpid,'Tbmp');
 	//if(!bitmap)bitmap = getappresource(bmpid,'PICT');
 	if(bitmap)return bitmap;
 	else palmabrt();//error
@@ -740,7 +740,7 @@ CPTR getbitmap(UWORD bmpid){
 	return nullptr_68k;
 }
 
-CPTR getcontrolobject(int type,UWORD id){
+offset_68k getcontrolobject(int type,uint16_t id){
 	switch(type){
 		//case buttonCtl:
 		//	return getuiresource(id,'tBTN');
@@ -752,14 +752,14 @@ CPTR getcontrolobject(int type,UWORD id){
 	return 0;
 }
 
-void drawcontrolobject(CPTR window,CPTR controlptr){
-	UWORD id = get_word(controlptr);
+void drawcontrolobject(offset_68k window,offset_68k controlptr){
+	uint16_t id = get_word(controlptr);
 	SQUARE area = get_square(controlptr + 2);
-	CPTR text = get_long(controlptr + 10);
-	UWORD attr = get_word(controlptr + 14);
-	UBYTE style = get_byte(controlptr + 16);
-	UBYTE fontid = get_byte(controlptr + 17);
-	UBYTE group = get_byte(controlptr + 18);
+	offset_68k text = get_long(controlptr + 10);
+	uint16_t attr = get_word(controlptr + 14);
+	uint8_t style = get_byte(controlptr + 16);
+	uint8_t fontid = get_byte(controlptr + 17);
+	uint8_t group = get_byte(controlptr + 18);
 	//ignore pad to word (controlptr + 19)
 
 	if(attr & bit(15)){
@@ -805,29 +805,29 @@ void drawcontrolobject(CPTR window,CPTR controlptr){
 	}
 }
 
-void drawfield(CPTR window,CPTR fieldptr){
-	UWORD id = get_word(fieldptr);//dev defined id
+void drawfield(offset_68k window,offset_68k fieldptr){
+	uint16_t id = get_word(fieldptr);//dev defined id
 	SQUARE area = get_square(fieldptr + 2);
-	UWORD attr = get_word(fieldptr + 10);
-	CPTR textptr = get_long(fieldptr + 12);
-	CPTR texthandle = get_long(fieldptr + 16);
-	CPTR lineinfoptr = get_long(fieldptr + 20);
-	UWORD textlength = get_word(fieldptr + 24);
-	UWORD textblksize = get_word(fieldptr + 26);
-	UWORD maxchars = get_word(fieldptr + 28);
-	UWORD firstpos = get_word(fieldptr + 30);
-	UWORD lastpos = get_word(fieldptr + 32);
-	UWORD insptx = get_word(fieldptr + 34);
-	UWORD inspty = get_word(fieldptr + 36);
-	UBYTE fontid = get_byte(fieldptr + 38);
+	uint16_t attr = get_word(fieldptr + 10);
+	offset_68k textptr = get_long(fieldptr + 12);
+	offset_68k texthandle = get_long(fieldptr + 16);
+	offset_68k lineinfoptr = get_long(fieldptr + 20);
+	uint16_t textlength = get_word(fieldptr + 24);
+	uint16_t textblksize = get_word(fieldptr + 26);
+	uint16_t maxchars = get_word(fieldptr + 28);
+	uint16_t firstpos = get_word(fieldptr + 30);
+	uint16_t lastpos = get_word(fieldptr + 32);
+	uint16_t insptx = get_word(fieldptr + 34);
+	uint16_t inspty = get_word(fieldptr + 36);
+	uint8_t fontid = get_byte(fieldptr + 38);
 
 	if(attr & bit(15)){
 		addobjtocollisionmatrix(area,fieldptr,frmFieldObj,id);
 
 		dbgprintf("Field:%04x is useable\n",id);
 
-		//UWORD linestart = get_word(lineinfoptr);
-		//UWORD linelength = get_word(lineinfoptr + 2);
+		//uint16_t linestart = get_word(lineinfoptr);
+		//uint16_t linelength = get_word(lineinfoptr + 2);
 
 		dstptr = window;
 
@@ -852,18 +852,18 @@ void drawfield(CPTR window,CPTR fieldptr){
 }
 
 TEMPHACK
-void drawlist(CPTR window,CPTR listptr){
-	UWORD id = get_word(listptr);
+void drawlist(offset_68k window,offset_68k listptr){
+	uint16_t id = get_word(listptr);
 	SQUARE area = get_square(listptr + 2);
-	UWORD attr = get_word(listptr + 10);
-	CPTR itemlist = get_long(listptr + 12);//array of char pointers
+	uint16_t attr = get_word(listptr + 10);
+	offset_68k itemlist = get_long(listptr + 12);//array of char pointers
 	WORD numitems = get_word(listptr + 16);
 	WORD currentitem = get_word(listptr + 18);
 	WORD topitem = get_word(listptr + 20);
-	UBYTE fontid = get_byte(listptr + 22);
+	uint8_t fontid = get_byte(listptr + 22);
 	//skip pad byte 23
-	CPTR popupwin = get_long(listptr + 24);
-	CPTR drawfunction = get_long(listptr + 28);//function pointer
+	offset_68k popupwin = get_long(listptr + 24);
+	offset_68k drawfunction = get_long(listptr + 28);//function pointer
 
 	if(attr & bit(15)){
 		if(attr & bit(14)){
@@ -897,20 +897,20 @@ void drawtable(){
 }
 
 TEMPHACK
-void drawtitle(CPTR window,CPTR titleptr){
+void drawtitle(offset_68k window,offset_68k titleptr){
 	SQUARE area = get_square(titleptr);
 	addobjtocollisionmatrix(area,titleptr,frmTitleObj,0);//theres only one title
 	//draw title/menu bar popup
 }
 
 //only called by frmdrawform (draws bitmap useing special form struct)
-void drawbitmap(CPTR window,CPTR bmpptr){
+void drawbitmap(offset_68k window,offset_68k bmpptr){
 	//draw bitmap
-	UWORD attr = get_word(bmpptr);
+	uint16_t attr = get_word(bmpptr);
 	if(attr & bit(15)){
 		dststart = get_coord(bmpptr + 2);
 
-		UWORD bmpid = get_word(bmpptr + 6);
+		uint16_t bmpid = get_word(bmpptr + 6);
 
 		dstptr = window;
 		srcptr = getbitmap(bmpid);
@@ -924,11 +924,11 @@ void drawscrollbar(){
 }
 
 //only called by frmdrawform //labels dont handle or send events
-void drawlabel(CPTR window,CPTR labelptr){
-	UWORD id = get_word(labelptr);
+void drawlabel(offset_68k window,offset_68k labelptr){
+	uint16_t id = get_word(labelptr);
 	dstx = (WORD)get_word(labelptr + 2);
 	dsty = (WORD)get_word(labelptr + 4);
-	UWORD attr = get_word(labelptr + 6);
+	uint16_t attr = get_word(labelptr + 6);
 	bool useable = (attr & bit(15));
 	prams = get_byte(labelptr + 8);//fontid
 	//ignore pad byte
@@ -943,17 +943,17 @@ void drawlabel(CPTR window,CPTR labelptr){
 	if(useable)text();
 }
 
-void drawgadget(CPTR window,CPTR gdtptr){
-	UWORD id = get_word(gdtptr);//resource not dev defined id
-	UWORD attr = get_word(gdtptr + 2);
+void drawgadget(offset_68k window,offset_68k gdtptr){
+	uint16_t id = get_word(gdtptr);//resource not dev defined id
+	uint16_t attr = get_word(gdtptr + 2);
 	SQUARE area = get_square(gdtptr + 4);
-	CPTR data = get_long(gdtptr + 12);
-	CPTR handler = get_long(gdtptr + 16);
+	offset_68k data = get_long(gdtptr + 12);
+	offset_68k handler = get_long(gdtptr + 16);
 	bool useable = (attr & bit(15));
 	bool extended = (attr & bit(14));//has a handler
 	//bool visible = (attr & bit(13));
 
-	//CPTR gdtres = getuiresource(id,'tGDT');
+	//offset_68k gdtres = getuiresource(id,'tGDT');
 
 	if(useable){
 		addobjtocollisionmatrix(area,gdtptr,frmGadgetObj,id);
@@ -972,10 +972,10 @@ void drawgadget(CPTR window,CPTR gdtptr){
 	}
 }
 
-void placeformobj(CPTR form,UWORD index){
-	CPTR objloc = get_long(form + 64) + index * 6;
-	UBYTE type = get_byte(objloc);
-	CPTR objdataloc = get_long(objloc + 2);
+void placeformobj(offset_68k form,uint16_t index){
+	offset_68k objloc = get_long(form + 64) + index * 6;
+	uint8_t type = get_byte(objloc);
+	offset_68k objdataloc = get_long(objloc + 2);
 	switch(type){
 		case frmFieldObj:
 			drawfield(form,objdataloc);
@@ -1017,15 +1017,15 @@ void placeformobj(CPTR form,UWORD index){
 	}
 }
 
-void removeformobject(CPTR form,UWORD index){
-	CPTR objloc = get_long(form + 64) + index * 6;
-	UBYTE type = get_byte(objloc);
-	CPTR objdataloc = get_long(objloc + 2);
+void removeformobject(offset_68k form,uint16_t index){
+	offset_68k objloc = get_long(form + 64) + index * 6;
+	uint8_t type = get_byte(objloc);
+	offset_68k objdataloc = get_long(objloc + 2);
 	disableobject(objdataloc,type);
 }
 
-void updateanddrawform(CPTR form){
-	UWORD attr = getformattr(form);//the enabled and dirty bits are unused by all os versions
+void updateanddrawform(offset_68k form){
+	uint16_t attr = getformattr(form);//the enabled and dirty bits are unused by all os versions
 
 	TEMPHACK;
 	//backup pixels behind form if savebehind bit is set
@@ -1043,7 +1043,7 @@ void updateanddrawform(CPTR form){
 	}
 
 	//clean up form framebuffer //may break some apps check os version before deleting
-	CPTR formbmp = getwinbmp(form);
+	offset_68k formbmp = getwinbmp(form);
 	srcx = 0;
 	srcy = 0;
 	srcw = get_word(formbmp);
@@ -1065,11 +1065,11 @@ void updateanddrawform(CPTR form){
 	resetcollisionmatrix();
 
 	//draw the objects
-	UWORD numobjects = getformnumobjects(form);
+	uint16_t numobjects = getformnumobjects(form);
 
 	//dbgprintf("Numobjs:%d,Formptr:%08x\n",numobjects,formptr);
 
-	for(UWORD count = 0;count < numobjects;count++){
+	for(uint16_t count = 0;count < numobjects;count++){
 		placeformobj(form,count);
 	}
 
@@ -1105,9 +1105,9 @@ void updateanddrawform(CPTR form){
 
 
 //event handlers
-void formeventhandler(CPTR formptr,CPTR eventptr){
-	UWORD evttype = get_word(eventptr);
-	ULONG handled = 0;
+void formeventhandler(offset_68k formptr,offset_68k eventptr){
+	uint16_t evttype = get_word(eventptr);
+	uint32_t handled = 0;
 	switch(evttype){
 		case penUpEvent:
 		case penMoveEvent://may or may not handle pen"Move/Up"Event
@@ -1142,7 +1142,7 @@ void formeventhandler(CPTR formptr,CPTR eventptr){
 			break;
 		case frmCloseEvent:{
 				//clean up form memory
-				UWORD frmid = get_word(eventptr + evtDataOffset);
+				uint16_t frmid = get_word(eventptr + evtDataOffset);
 				releaseformmemory(getopenform(frmid));
 				freeopenform(frmid);
 				handled = 1;
@@ -1200,8 +1200,8 @@ void formeventhandler(CPTR formptr,CPTR eventptr){
 	D0 = handled;
 }
 
-void menueventhandler(CPTR menubarptr,CPTR eventptr,CPTR errorptr){
-	ULONG handled = 0;
+void menueventhandler(offset_68k menubarptr,offset_68k eventptr,offset_68k errorptr){
+	uint32_t handled = 0;
 
 	//only handles pen and key down events
 	switch(get_word(eventptr)){
@@ -1211,7 +1211,7 @@ void menueventhandler(CPTR menubarptr,CPTR eventptr,CPTR errorptr){
 			palmabrt();//hack
 			break;
 		case keyDownEvent:{
-				UWORD vchr = get_word(eventptr + evtDataOffset + 2);
+				uint16_t vchr = get_word(eventptr + evtDataOffset + 2);
 				if(vchr == vchrMenu){
 					palmabrt();//hack
 					handled = 1;
@@ -1232,9 +1232,9 @@ void menueventhandler(CPTR menubarptr,CPTR eventptr,CPTR errorptr){
 }
 
 TEMPHACK
-void controleventhandler(CPTR controlptr,CPTR eventptr){
-	UWORD evttype = get_word(eventptr);
-	ULONG handled = 0;
+void controleventhandler(offset_68k controlptr,offset_68k eventptr){
+	uint16_t evttype = get_word(eventptr);
+	uint32_t handled = 0;
 	switch(evttype){
 		//controls dont handle or send pen"Move/Up"Events
 		case penDownEvent:{
@@ -1252,11 +1252,11 @@ void controleventhandler(CPTR controlptr,CPTR eventptr){
 			}
 			break;
 		case ctlEnterEvent:{
-				UWORD ctlid = get_word(controlptr);
-				UWORD ctlidtest = get_word(eventptr + evtDataOffset);//verify that this is the correct control
+				uint16_t ctlid = get_word(controlptr);
+				uint16_t ctlidtest = get_word(eventptr + evtDataOffset);//verify that this is the correct control
 				if(ctlidtest != ctlid)palmabrt();//hack
 
-				//CPTR curcontrol = get_long(eventptr + evtDataOffset + 2);//the current control as specified by the event
+				//offset_68k curcontrol = get_long(eventptr + evtDataOffset + 2);//the current control as specified by the event
 
 				osevent ctlevent;
 
@@ -1309,12 +1309,12 @@ void controleventhandler(CPTR controlptr,CPTR eventptr){
 	D0 = handled;
 }
 
-void fieldeventhandler(CPTR fieldptr,CPTR eventptr){
-	UWORD evttype = get_word(eventptr);
-	ULONG handled = 0;
+void fieldeventhandler(offset_68k fieldptr,offset_68k eventptr){
+	uint16_t evttype = get_word(eventptr);
+	uint32_t handled = 0;
 	switch(evttype){
 		case penDownEvent:{
-				UWORD fldid = get_word(fieldptr);
+				uint16_t fldid = get_word(fieldptr);
 				osevent fieldenter;
 				fieldenter.type = fldEnterEvent;
 				fieldenter.data.push_back(fldid);
@@ -1337,11 +1337,11 @@ void fieldeventhandler(CPTR fieldptr,CPTR eventptr){
 	D0 = handled;
 }
 
-void listeventhandler(CPTR listptr,CPTR eventptr){
+void listeventhandler(offset_68k listptr,offset_68k eventptr){
 	palmabrt();//hack
 }
 
-//no gadgeteventhandler(CPTR eventptr), gadgets are program defined and have a callback for there event handler
+//no gadgeteventhandler(offset_68k eventptr), gadgets are program defined and have a callback for there event handler
 
 
 
@@ -1358,13 +1358,13 @@ void wincreateoffscreenwindow(){
 	TEMPHACK;
 	//fix different format types
 
-	UWORD flags = bit(8) | bit(14);//free bitmap on delete & offscreen flags
+	uint16_t flags = bit(8) | bit(14);//free bitmap on delete & offscreen flags
 	//if(winformat != 0)flags |= bit(15);
-	CPTR thisbmp = newbmpsimple(width,height,bpp);//global bpp of display
-	//CPTR thisbmp = newbmpsimple(width,height,16);//global bpp of display
-	//CPTR thisdrawstate = newdrawstate();
+	offset_68k thisbmp = newbmpsimple(width,height,bpp);//global bpp of display
+	//offset_68k thisbmp = newbmpsimple(width,height,16);//global bpp of display
+	//offset_68k thisdrawstate = newdrawstate();
 
-	CPTR retval = newwindow(width,height,flags,0,thisbmp,osdrawstate,0);
+	offset_68k retval = newwindow(width,height,flags,0,thisbmp,osdrawstate,0);
 
 	//dbgprintf("Win addr:%08x,Real addr:%016lx\n",retval,get_real_address(thisbmp + 16));
 
@@ -1375,7 +1375,7 @@ void wincreateoffscreenwindow(){
 TEMPHACK
 void wincreatebitmapwindow(){
 	stackptr(bmpptr);
-	stackptr(errptr);//UWORD
+	stackptr(errptr);//uint16_t
 
 	TEMPHACK;
 	//check for sysErrParamErr
@@ -1383,7 +1383,7 @@ void wincreatebitmapwindow(){
 	 * have a valid pixel size (1, 2, 4, or 8).
 	 * It must not be the screen bitmap.*/
 
-	CPTR bmpwindow = newwindow(get_word(bmpptr),get_word(bmpptr + 2),/*flags*/0,
+	offset_68k bmpwindow = newwindow(get_word(bmpptr),get_word(bmpptr + 2),/*flags*/0,
 							   /*frameflags*/0,bmpptr,osdrawstate,/*nextwindowptr*/0);
 
 	A0 = bmpwindow;
@@ -1394,7 +1394,7 @@ void windeletewindow(){
 	stackbool(erase);
 
 	if(erase){
-		UWORD flags = get_word(winhandle + 8);
+		uint16_t flags = get_word(winhandle + 8);
 		//free bitmap if flag set
 		if(flags & bit(8)){
 			abstractfree(getwinbmp(winhandle));
@@ -1483,9 +1483,9 @@ void windrawpixel(){
 
 void winscreenmode(){
 	stackbyte(operand);
-	stackptr(widthptr);//ptr to ULONG
-	stackptr(heightptr);//ptr to ULONG
-	stackptr(bppptr);//ptr to ULONG
+	stackptr(widthptr);//ptr to uint32_t
+	stackptr(heightptr);//ptr to uint32_t
+	stackptr(bppptr);//ptr to uint32_t
 	stackptr(colenableptr);//ptr to bool
 
 	//only winScreenModeGetSupportedDepths uses bit position(1 << 16) instead of value(0x10 or 16) for bppptr
@@ -1508,7 +1508,7 @@ void winscreenmode(){
 			dbgprintf("getdefaultscreenmode\n");
 			return;
 		case winScreenModeSet:{
-				ULONG resultw = width,resulth = height,resultbpp = bpp;
+				uint32_t resultw = width,resulth = height,resultbpp = bpp;
 				bool resultcolor = color;
 
 				if(widthptr)resultw = get_long(widthptr);
@@ -1559,7 +1559,7 @@ void winscreenmode(){
 			if(bppptr){
 				TEMPHACK;
 				//some apps may try to use 24/32 bit color (This is not supported but may work with dithering!);
-				ULONG modes;
+				uint32_t modes;
 				if(colenableptr){
 					//hack //4bit mode may or may not support color
 					if(get_byte(colenableptr)/*must support color*/){
@@ -1701,7 +1701,7 @@ void winsetactivewindow(){
 	//sendwinenterondraw = false;
 
 	//set enable flag in window
-	UWORD flags = get_word(dstwindow + 8);
+	uint16_t flags = get_word(dstwindow + 8);
 	put_word(dstwindow + 8,flags | bit(10));
 
 
@@ -1714,7 +1714,7 @@ void winsetclip(){
 	stackword(endx);
 	stackword(endy);
 
-	CPTR clipptr = getwinclipping(currentdrawwindow);
+	offset_68k clipptr = getwinclipping(currentdrawwindow);
 
 	put_word(clipptr,startx);
 	put_word(clipptr + 2,starty);
@@ -1747,9 +1747,9 @@ void windrawchars(){
 }
 
 void winresetclip(){
-	UWORD winw = get_word(currentdrawwindow);
-	UWORD winh = get_word(currentdrawwindow + 2);
-	CPTR clip = getwinclipping(currentdrawwindow);
+	uint16_t winw = get_word(currentdrawwindow);
+	uint16_t winh = get_word(currentdrawwindow + 2);
+	offset_68k clip = getwinclipping(currentdrawwindow);
 
 	put_word(clip,0);
 	put_word(clip + 2,0);
@@ -1803,7 +1803,7 @@ void winpalette(){
 		dbgprintf("top robin premium dirt noodles.\n");
 	}
 
-	CPTR winpal = getwinpalette(currentdrawwindow);
+	offset_68k winpal = getwinpalette(currentdrawwindow);
 	switch(operation){
 		case winPaletteGet:
 			memcpy68k(userpalarray,winpal + startindex * 4,(WORD)paletteentrys * 4);
@@ -1828,26 +1828,26 @@ void winpalette(){
 void winrgbtoindex(){
 	stackptr(rgbcolor);
 
-	UBYTE red = get_byte(rgbcolor + 1);
-	UBYTE green = get_byte(rgbcolor + 2);
-	UBYTE blue = get_byte(rgbcolor + 3);
+	uint8_t red = get_byte(rgbcolor + 1);
+	uint8_t green = get_byte(rgbcolor + 2);
+	uint8_t blue = get_byte(rgbcolor + 3);
 
-	UBYTE bestindex = 0;
-	CPTR clut = getwinpalette(currentdrawwindow);
-	UWORD tablesize = getwinpalettenumentrys(currentdrawwindow);
+	uint8_t bestindex = 0;
+	offset_68k clut = getwinpalette(currentdrawwindow);
+	uint16_t tablesize = getwinpalettenumentrys(currentdrawwindow);
 
 	TEMPHACK;
 	//get bpp and compare indicies properly
 	offset_68k count;
 	if(clut == nullptr_68k || tablesize == 0){
-		UBYTE bpp = getbmpbpp(getwinbmp(currentdrawwindow));
+		uint8_t bpp = getbmpbpp(getwinbmp(currentdrawwindow));
 		bestindex = getbestdefaultindex(red,green,blue,bpp);
 	}
 	else{
-		UWORD closeness = 0xFFFF;//the bigger the more diffrence
-		CPTR curcolor = clut;
+		uint16_t closeness = 0xFFFF;//the bigger the more diffrence
+		offset_68k curcolor = clut;
 		for(count = 0;count < tablesize;count++){
-			UWORD thisdiff = getrgbdiff(red,green,blue,get_byte(curcolor + 1),get_byte(curcolor + 2),get_byte(curcolor + 3));
+			uint16_t thisdiff = getrgbdiff(red,green,blue,get_byte(curcolor + 1),get_byte(curcolor + 2),get_byte(curcolor + 3));
 			if(thisdiff < closeness){
 				closeness = thisdiff;
 				bestindex = get_byte(curcolor);
@@ -1855,13 +1855,13 @@ void winrgbtoindex(){
 			curcolor += 4;
 		}
 	}
-	D0 = bestindex;//IndexedColorType (UBYTE/uint8)
+	D0 = bestindex;//IndexedColorType (uint8_t/uint8)
 	dbgprintf("TableSize:%d,BestIndex:%d,Red:%d,Green:%d,Blue:%d\n",tablesize,D0,red,green,blue);
 }
 
 void winpushdrawstate(){
-	CPTR curdrwstate = getwindrawstate(currentdrawwindow);
-	CPTR newdrwptr = getfreeheap(44);
+	offset_68k curdrwstate = getwindrawstate(currentdrawwindow);
+	offset_68k newdrwptr = getfreeheap(44);
 
 	drawstates.push_back(curdrwstate);
 	memcpy68k(newdrwptr,curdrwstate,44);
@@ -1890,7 +1890,7 @@ TEMPHACK
 void winerasewindow(){
 	//just calls wineraserectangle
 
-	CPTR winbmp = getwinbmp(currentdrawwindow);
+	offset_68k winbmp = getwinbmp(currentdrawwindow);
 
 	srcx = 0;
 	srcy = 0;
@@ -2028,12 +2028,12 @@ void bmpgetbits(){
 
 void bmpbitssize(){
 	stackptr(bmpptr);
-	UWORD flags = get_word(bmpptr + 6);
+	uint16_t flags = get_word(bmpptr + 6);
 
 	//compressed
 	if(flags & bit(15)){
-		UBYTE version = get_byte(bmpptr + 9);
-		CPTR cmpdata = getbmpdata(bmpptr);
+		uint8_t version = get_byte(bmpptr + 9);
+		offset_68k cmpdata = getbmpdata(bmpptr);
 		switch(version){
 			case 0://version 0 has no compression
 				D0 = (get_word(bmpptr + 2)/*height*/ * get_word(bmpptr + 4)/*rowbytes*/);
@@ -2058,7 +2058,7 @@ void bmpbitssize(){
 void bmpgetdensity(){
 	stackptr(bmpptr);
 
-	UBYTE version = get_byte(bmpptr + 9);
+	uint8_t version = get_byte(bmpptr + 9);
 	if(version < 3)D0 = kDensityLow;
 	else D0 = get_word(bmpptr + 14);//density
 }
@@ -2068,7 +2068,7 @@ void bmpcreate(){
 	stackword(uh);
 	stackbyte(bpp);//hack //normal is byte
 	stackptr(colortable);
-	stackptr(err);//return UWORD
+	stackptr(err);//return uint16_t
 	WORD w = (WORD)uw,h = (WORD)uh;//sign change
 
 	dbgprintf("W:%d,H:%d,Bpp:%d\n",w,h,bpp);
@@ -2093,7 +2093,7 @@ void bmpcreate(){
 	}
 
 	bool hastable = (colortable != nullptr_68k);
-	CPTR newbitmap = newbmp(w,h,bpp,false,0,hastable,colortable);
+	offset_68k newbitmap = newbmp(w,h,bpp,false,0,hastable,colortable);
 
 	//palm sets all pixels to white
 	//get clear params
@@ -2118,14 +2118,14 @@ void bmpcreatebitmapv3(){
 	stackptr(coltblptr);//color table to use if bpp <= 8
 
 
-	UWORD v2flags = get_word(bmpv2ptr + 6);
+	uint16_t v2flags = get_word(bmpv2ptr + 6);
 
 
 	//palm os cant handle compressed bitmaps with this function
 	if(v2flags & bit(15))palmabrt();//hack
 
 
-	CPTR bmpv3out = getfreeheap(100);//hack //dont know correct size
+	offset_68k bmpv3out = getfreeheap(100);//hack //dont know correct size
 
 	/*
 	put_word(bmpv3out,get_word(bmpv2ptr));//width
@@ -2135,8 +2135,8 @@ void bmpcreatebitmapv3(){
 	put_byte(bmpv3out + 8,get_byte(bmpv2ptr + 8));//pixelsize
 	*/
 
-	UBYTE v2bpp = get_byte(bmpv2ptr + 8);
-	UBYTE v2clearindex = get_byte(bmpv2ptr + 12);
+	uint8_t v2bpp = get_byte(bmpv2ptr + 8);
+	uint8_t v2clearindex = get_byte(bmpv2ptr + 12);
 
 	memcpy68k(bmpv3out,bmpv2ptr,9);
 	put_byte(bmpv3out + 9,3);//version
@@ -2165,7 +2165,7 @@ void bmpcreatebitmapv3(){
 	//copy dataptr data into new bitmap
 	WORD width = get_word(bmpv2ptr);
 	WORD height = get_word(bmpv2ptr + 2);
-	UWORD rowbytes = get_word(bmpv2ptr + 4);
+	uint16_t rowbytes = get_word(bmpv2ptr + 4);
 
 	size_t_68k datasize = rowbytes * height;
 
@@ -2178,8 +2178,8 @@ void bmpcreatebitmapv3(){
 	 * the bitmap must be read only because blitting to it would cause an
 	 * error.*/
 
-	const UWORD flgmask = bit(13)/*hasclear*/ | bit(10)/*directcolor*/ | bit(8)/*nodither*/;
-	UWORD v3flags = (v2flags & flgmask) | bit(12)/*indirectdata*/;
+	const uint16_t flgmask = bit(13)/*hasclear*/ | bit(10)/*directcolor*/ | bit(8)/*nodither*/;
+	uint16_t v3flags = (v2flags & flgmask) | bit(12)/*indirectdata*/;
 
 	if(coltblptr){
 		v3flags |= bit(14)/*hascoltbl*/ | bit(9)/*indirectcoltbl*/;
@@ -2216,7 +2216,7 @@ void fntsetfont(){
 	stackbyte(newfont);
 
 	/*
-	CPTR drwstate = getwindrawstate(currentactivewindow);
+	offset_68k drwstate = getwindrawstate(currentactivewindow);
 	D0 = get_byte(drwstate + 3);
 	put_byte(drwstate + 3,newfont);
 	*/
@@ -2226,7 +2226,7 @@ void fntsetfont(){
 
 	dbgprintf("font id:%d\n",newfont);
 
-	CPTR newfntptr = getfontaddr(newfont);
+	offset_68k newfntptr = getfontaddr(newfont);
 	currentfont.setactivefont(newfntptr);
 	put_long(FONTPTR,newfntptr);
 
@@ -2304,9 +2304,9 @@ void frmgetwindowhandle(){
 
 void frmdispatchevent(){
 	stackptr(eventptr);
-	UWORD event = get_word(eventptr);
+	uint16_t event = get_word(eventptr);
 
-	CPTR frmptr;
+	offset_68k frmptr;
 	switch(event){
 		case frmOpenEvent:
 		case frmGotoEvent:
@@ -2324,7 +2324,7 @@ void frmdispatchevent(){
 	if(event != 0)dbgprintf("Evtnum:%d,Frmid:%04x,FrmPtr:%08x\n",event,get_word(eventptr + evtDataOffset),frmptr);
 
 	//custom event handler
-	CPTR functionptr = getformeventhandler(frmptr);
+	offset_68k functionptr = getformeventhandler(frmptr);
 	if(functionptr != nullptr_68k){
 		CPU_pushlongstack(eventptr);
 		CPU_68kfunction(functionptr);
@@ -2436,15 +2436,15 @@ void frmsettitle(){
 	stackptr(formptr);
 	stackptr(chrptr);
 
-	UWORD frmid = getformid(formptr);
-	UWORD attr = getformattr(formptr);
+	uint16_t frmid = getformid(formptr);
+	uint16_t attr = getformattr(formptr);
 
 	dbgprintf("Formptr:%08x,New Title:%08x\n",formptr,chrptr);
 
-	CPTR formobjlist = getformobjlist(formptr);
-	CPTR titleobj = nullptr_68k;
-	UWORD thisnumobjects = getformnumobjects(formptr);
-	for(UWORD count = 0;count < thisnumobjects;count++){
+	offset_68k formobjlist = getformobjlist(formptr);
+	offset_68k titleobj = nullptr_68k;
+	uint16_t thisnumobjects = getformnumobjects(formptr);
+	for(uint16_t count = 0;count < thisnumobjects;count++){
 		if(get_byte(formobjlist + count * 6) == frmTitleObj){
 			titleobj = get_long(formobjlist + count * 6 + 2);
 			break;
@@ -2494,14 +2494,14 @@ void frmcustomalert(){
 
 	sendpenevents = false;
 
-	CPTR alert = getuiresource(resourcenum,'Talt');
+	offset_68k alert = getuiresource(resourcenum,'Talt');
 
-	UWORD alertype = get_word(alert);
-	UWORD helprscid = get_word(alert + 2);
-	UWORD numbuttons = get_word(alert + 4);
-	UWORD defaultbutton = get_word(alert + 6);
+	uint16_t alertype = get_word(alert);
+	uint16_t helprscid = get_word(alert + 2);
+	uint16_t numbuttons = get_word(alert + 4);
+	uint16_t defaultbutton = get_word(alert + 6);
 
-	CPTR accessptr = alert + 8;
+	offset_68k accessptr = alert + 8;
 
 	std::vector<std::string> alerttext(2);
 	//string* alerttext = new string[2];
@@ -2512,7 +2512,7 @@ void frmcustomalert(){
 
 	std::vector<std::string> buttontext(numbuttons);
 	//string* buttontext = new string[numbuttons];
-	for(UWORD count = 0;count < numbuttons;count++){
+	for(uint16_t count = 0;count < numbuttons;count++){
 		buttontext[count] = readstring(accessptr);
 		accessptr += buttontext[count].size() + 1;
 	}
@@ -2520,7 +2520,7 @@ void frmcustomalert(){
 	dbgprintf("%s\n,%s\n,%s\n,%s\n",alerttext[0].c_str(),alerttext[1].c_str(),buttontext[0].c_str(),buttontext[1].c_str());
 
 
-	UWORD result;
+	uint16_t result;
 	SQUARE buttonbounds[numbuttons];
 
 	backupframe();
@@ -2557,7 +2557,7 @@ void frmcustomalert(){
 	btnloc.end.y = LCDH - 6 * LCDDENSITY;
 	btnloc.end.x = btnloc.start.x + btnloc.size.w;
 
-	for(UWORD count = 0;count < numbuttons;count++){
+	for(uint16_t count = 0;count < numbuttons;count++){
 		buttonbounds[count] = btnloc;
 		drawbutton(btnloc);
 		btnloc.start.x += btnloc.size.w + btngap;
@@ -2570,7 +2570,7 @@ void frmcustomalert(){
 
 	//wait
 	bool done = false;
-	UWORD button;
+	uint16_t button;
 	COORD pressloc;
 	COORD releaseloc;
 	while(true){
@@ -2603,17 +2603,17 @@ void frmcustomalert(){
 
 void frmalert(){
 	stackword(id);
-	UWORD button = 0;
-	CPTR alert = getuiresource(id,'Talt');
+	uint16_t button = 0;
+	offset_68k alert = getuiresource(id,'Talt');
 
-	UWORD alerttype = get_word(alert);
-	UWORD helprsc = get_word(alert + 2);
-	UWORD numbuttons = get_word(alert + 4);
-	UWORD defaultbutton = get_word(alert + 6);
+	uint16_t alerttype = get_word(alert);
+	uint16_t helprsc = get_word(alert + 2);
+	uint16_t numbuttons = get_word(alert + 4);
+	uint16_t defaultbutton = get_word(alert + 6);
 
-	CPTR string1 = alert + 8;
-	CPTR string2 = string1 + strlen68k(string1) + 1;
-	CPTR string3 = string2 + strlen68k(string2) + 1;
+	offset_68k string1 = alert + 8;
+	offset_68k string2 = string1 + strlen68k(string1) + 1;
+	offset_68k string3 = string2 + strlen68k(string2) + 1;
 
 	dbgprintf("AlertName:%s,AlertText:%s,String3:%s\n",readstring(string1).c_str(),
 	       readstring(string2).c_str(),readstring(string3).c_str());
@@ -2644,7 +2644,7 @@ void frmsetgadgethandler(){
 	stackword(gadgetindex);
 	stackptr(handler);
 
-	CPTR gadget = getformobjloc(form,gadgetindex);
+	offset_68k gadget = getformobjloc(form,gadgetindex);
 	setgadgethandler(gadget,handler);
 	//no return value
 }
@@ -2674,10 +2674,10 @@ void frmsetcontrolvalue(){
 	stackword(index);
 	stackword(newvalue);
 
-	CPTR objptr = getformobjloc(formptr,index);
+	offset_68k objptr = getformobjloc(formptr,index);
 
-	UWORD attr = get_word(objptr + 14);
-	UBYTE type = get_byte(objptr + 16);
+	uint16_t attr = get_word(objptr + 14);
+	uint8_t type = get_byte(objptr + 16);
 
 	if(type == sliderCtl){
 		palmabrt();//hack
@@ -2729,7 +2729,7 @@ void fldsetuseable(){
 	stackptr(field);
 	stackbool(enabled);
 
-	UWORD curflags = get_word(field + 10);
+	uint16_t curflags = get_word(field + 10);
 
 	if(enabled){
 		put_word(field + 10,curflags | bit(15));
@@ -2792,7 +2792,7 @@ void ctlsetusable(){
 	stackptr(ctlptr);
 	stackbool(value);
 
-	UWORD newattr = get_word(ctlptr + 14);//get old attr
+	uint16_t newattr = get_word(ctlptr + 14);//get old attr
 	if(value)newattr |= bit(15);
 	else newattr &= ~bit(15);
 	put_word(ctlptr + 14,newattr);
@@ -2803,7 +2803,7 @@ void ctlsetusable(){
 
 //pen input manager //none of these are in the dispatch table
 
-UWORD lcddirection = 0;//dummy value
+uint16_t lcddirection = 0;//dummy value
 
 TEMPHACK
 void syssetorientationtriggerstate(){
@@ -2851,7 +2851,7 @@ void statgetattribute(){
 			put_long(dataptr,statvisible);
 			break;
 		case statAttrDimension:
-			put_long(dataptr,((ULONG)statw << 16 | stath));
+			put_long(dataptr,((uint32_t)statw << 16 | stath));
 			break;
 		default:
 			D0 = sysErrParamErr;
@@ -2895,7 +2895,7 @@ void rctptinrectangle(){
 TEMPHACK
 //hardcoded to tx fullscreen mode (no pen/silkscreen buttons)
 void evtgetpenbuttonlist(){
-	stackptr(countptr);//UWORD
+	stackptr(countptr);//uint16_t
 
 	put_word(countptr,0);
 
@@ -3031,7 +3031,7 @@ bool initdisplaydriver(){
 	currentactivewindow = oslcdwindow;
 
 	//fonts
-	CPTR stdfntaddr = getfontaddr(stdFont);
+	offset_68k stdfntaddr = getfontaddr(stdFont);
 	currentfont.setactivefont(stdfntaddr);
 	put_byte(FONTID,stdFont);
 	put_long(FONTPTR,stdfntaddr);
@@ -3106,14 +3106,14 @@ void appKeyDriver(char thiskey,bool pressed){
 	if(pressed){
 		osevent keypress;
 		keypress.type = keyDownEvent;
-		keypress.data.push_back((UBYTE)thiskey);//chr
+		keypress.data.push_back((uint8_t)thiskey);//chr
 		keypress.data.push_back(0);//virtual key num
 		keypress.data.push_back(0);//modifiers
 		addnewevent(keypress);
 	}else{
 		osevent keypress;
 		keypress.type = keyUpEvent;
-		keypress.data.push_back((UBYTE)thiskey);//chr
+		keypress.data.push_back((uint8_t)thiskey);//chr
 		keypress.data.push_back(0);//virtual key num
 		keypress.data.push_back(0);//modifiers
 		addnewevent(keypress);

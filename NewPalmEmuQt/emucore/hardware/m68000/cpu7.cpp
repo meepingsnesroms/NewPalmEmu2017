@@ -1,9 +1,9 @@
 #include "newcpu.h"
-void op_7000(ULONG opcode)
+void op_7000(uint32_t opcode)
 {
-	ULONG srcreg = (LONG)(BYTE)((opcode & 255) >> 0);
-	ULONG dstreg = (opcode & 3584) >> 9;
-{{	ULONG src = srcreg;
+	uint32_t srcreg = (LONG)(BYTE)((opcode & 255) >> 0);
+	uint32_t dstreg = (opcode & 3584) >> 9;
+{{	uint32_t src = srcreg;
 {	VFLG = CFLG = 0;
 	ZFLG = ((LONG)(src)) == 0;
 	NFLG = ((LONG)(src)) < 0;

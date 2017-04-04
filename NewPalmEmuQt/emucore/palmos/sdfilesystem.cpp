@@ -8,8 +8,8 @@
 
 //VFSVolumeEnumerate
 static void volumeenumerate(){
-	stackptr(volrefnumptr);//UWORD ptr
-	stackptr(voliteratorptr);//ULONG ptr
+	stackptr(volrefnumptr);//uint16_t ptr
+	stackptr(voliteratorptr);//uint32_t ptr
 
 	if(get_long(voliteratorptr) == vfsIteratorStart){
 		//the first index has a sd card,all others are empty

@@ -27,17 +27,17 @@ enum{
 	sysLibTrapCustom
 };
 
-extern CPTR textclipbank;
-extern CPTR emulstate;
+extern offset_68k textclipbank;
+extern offset_68k emulstate;
 
 //api functions
 void ftrget();
 void syslibfind();
 
 void reset_and_load_default_features();
-void make_api_list_from_rom(CPTR rom_SysGetTrapAddress);
+void make_api_list_from_rom(offset_68k rom_SysGetTrapAddress);
 
-bool emulateapi(UWORD api);
+bool emulateapi(uint16_t api);
 
 #endif // PALMAPI
 

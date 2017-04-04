@@ -78,7 +78,7 @@ void fp_set_fpscr(){
 void fp_round(){
 	stacklong(command);
 	dbgprintf("Command:%d\n",command);
-	ULONG oldround = (FPUscr >> flpModeShift) & 3;
+	uint32_t oldround = (FPUscr >> flpModeShift) & 3;
 	FPUscr &= 0xFFFFF8FF;
 	FPUscr |= command << flpModeShift;
 	D0 = oldround;

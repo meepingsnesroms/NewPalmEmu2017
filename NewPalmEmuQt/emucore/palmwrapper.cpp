@@ -25,14 +25,14 @@
 std::vector<palmdb> apps;
 int					curapp;//open app
 int					curoverlay;//open apps overlay(language file)
-CPTR				appcall;//fake data saying how and why the app was launched
+offset_68k				appcall;//fake data saying how and why the app was launched
 
 //Device state
 std::string username;
 std::string clipboard;
 std::string sdcarddirectory;
 bool		multibytecharsupport;
-ULONG		keymask;
+uint32_t		keymask;
 
 //Time
 uint32_t fullticks;
@@ -40,10 +40,10 @@ float partialticks;
 std::chrono::high_resolution_clock::time_point starttime;
 
 //Events
-CPTR appexceptionlist;
+offset_68k appexceptionlist;
 
 //Ui
-CPTR oslcdwindow,lcdbitmaptype;
+offset_68k oslcdwindow,lcdbitmaptype;
 
 //I/o thread safety
 std::mutex os_data_lock;
@@ -59,11 +59,11 @@ bool started = false;
 bool running = false;
 
 
-void emu_get_framebuffer(UWORD* copyto){
+void emu_get_framebuffer(uint16_t* copyto){
 	size_t_68k total = LCDW * LCDH;
 
 	//lssa must be fixed for old palm games that set the framebuffer address
-	memcpy(copyto,framebuffer,total * sizeof(UWORD));
+	memcpy(copyto,framebuffer,total * sizeof(uint16_t));
 }
 
 void palmabrt(){
@@ -153,7 +153,7 @@ bool emu_paused(){
 
 
 
-UWORD buttontovchr[7] = {520,0,0,516,517,518,519};
+uint16_t buttontovchr[7] = {520,0,0,516,517,518,519};
 
 void emu_sendbutton(int button, bool state){
 	if(!running)return;

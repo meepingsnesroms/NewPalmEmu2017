@@ -188,21 +188,21 @@ enum{
 
 
 //what drawing commands use
-extern CPTR currentdrawwindow;
+extern offset_68k currentdrawwindow;
 
 //what is on the display
-extern CPTR currentactivewindow;
+extern offset_68k currentactivewindow;
 
-extern CPTR osdrawstate;
+extern offset_68k osdrawstate;
 
 //if the framebuffer size needs to be doubled
 extern bool scalevideo;
 
 //event handlers
-void formeventhandler(CPTR formptr,CPTR eventptr);
-void menueventhandler(CPTR menubarptr,CPTR eventptr,CPTR errorptr);
-void controleventhandler(CPTR controlptr,CPTR eventptr);
-void fieldeventhandler(CPTR fieldptr,CPTR eventptr);
+void formeventhandler(offset_68k formptr,offset_68k eventptr);
+void menueventhandler(offset_68k menubarptr,offset_68k eventptr,offset_68k errorptr);
+void controleventhandler(offset_68k controlptr,offset_68k eventptr);
+void fieldeventhandler(offset_68k fieldptr,offset_68k eventptr);
 
 //win functions
 void wincreateoffscreenwindow();

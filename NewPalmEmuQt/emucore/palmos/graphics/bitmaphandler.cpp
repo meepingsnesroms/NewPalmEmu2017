@@ -7,19 +7,19 @@
 TEMPHACK
 //support bitmaptypev3
 //testsize reads a 32bit value as 2 16bit values a multiplys them?
-static CPTR getbestbitmap(CPTR startbitmap){
+static offset_68k getbestbitmap(offset_68k startbitmap){
 	bool hasloresscreen = (LCDW < 320 || LCDH < 320);
-	CPTR currentbestptr = nullptr_68k;
-	UWORD currentbestbpp = 0;
+	offset_68k currentbestptr = nullptr_68k;
+	uint16_t currentbestbpp = 0;
 	LONG currentbestsize = 0;
 
-	CPTR curbitmap = startbitmap;
+	offset_68k curbitmap = startbitmap;
 	while(true){
 		offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
 
-		UWORD testbpp = getbmpbpp(curbitmap);
+		uint16_t testbpp = getbmpbpp(curbitmap);
 		LONG testsize = ((WORD)get_word(curbitmap)) * ((WORD)get_word(curbitmap + 2));//stored as signed but is an error if negative
-		UBYTE testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
+		uint8_t testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
 
 		switch(testversion){
 			case 0:
@@ -73,29 +73,29 @@ static CPTR getbestbitmap(CPTR startbitmap){
 	return currentbestptr;
 }
 
-static UBYTE compressedbuffer[65535];//the max size of compressed images is 65535 bytes since the size is stored as a UWORD
-static UBYTE uncompressedbuffer[1048576];//1mb
-static UWORD finishedbuffer[1048576];//2mb
-static UWORD* lastbuffptr;
-static UWORD* nextbuffptr;
+static uint8_t compressedbuffer[65535];//the max size of compressed images is 65535 bytes since the size is stored as a uint16_t
+static uint8_t uncompressedbuffer[1048576];//1mb
+static uint16_t finishedbuffer[1048576];//2mb
+static uint16_t* lastbuffptr;
+static uint16_t* nextbuffptr;
 
-void parsebitmapstruct(CPTR m68kaddr){
+void parsebitmapstruct(offset_68k m68kaddr){
 	//get the best bitmap from the chain
 	m68kaddr = getbestbitmap(m68kaddr);
 
 	//start parsing
 	WORD imgwidth = get_word(m68kaddr);
 	WORD imgheight = get_word(m68kaddr + 2);
-	UWORD rowbytes = get_word(m68kaddr + 4);
-	UWORD flags = get_word(m68kaddr + 6);
-	UBYTE pixelsize = get_byte(m68kaddr + 8);
-	UBYTE version = get_byte(m68kaddr + 9);
+	uint16_t rowbytes = get_word(m68kaddr + 4);
+	uint16_t flags = get_word(m68kaddr + 6);
+	uint8_t pixelsize = get_byte(m68kaddr + 8);
+	uint8_t version = get_byte(m68kaddr + 9);
 	//no need to check nextdepthoffset since the best bitmap was already found
 
 	//private values
 	int compression = BitmapCompressionTypeNone;
 	bool hastransparent = false;
-	CPTR custompalette = nullptr_68k;
+	offset_68k custompalette = nullptr_68k;
 	size_t_68k imgbytes;
 
 	//version 3 not supported yet

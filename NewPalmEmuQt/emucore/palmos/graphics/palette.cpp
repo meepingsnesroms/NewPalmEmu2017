@@ -6,25 +6,25 @@
 #include "palmwrapper.h"
 
 //from PilRC(Pilot Resource Compiler)
-UBYTE PalmPalette2bpp[4][3] = {
+uint8_t PalmPalette2bpp[4][3] = {
   { 255, 255, 255}, { 192, 192, 192}, { 128, 128, 128 }, {   0,   0,   0 }
 };
 
-UBYTE PalmPalette4bpp[16][3] = {
+uint8_t PalmPalette4bpp[16][3] = {
   { 255, 255, 255}, { 238, 238, 238 }, { 221, 221, 221 }, { 204, 204, 204 },
   { 187, 187, 187}, { 170, 170, 170 }, { 153, 153, 153 }, { 136, 136, 136 },
   { 119, 119, 119}, { 102, 102, 102 }, {  85,  85,  85 }, {  68,  68,  68 },
   {  51,  51,  51}, {  34,  34,  34 }, {  17,  17,  17 }, {   0,   0,   0 }
 };
 
-UBYTE PalmPalette4bppColor[16][3] = {
+uint8_t PalmPalette4bppColor[16][3] = {
   { 255, 255, 255}, { 128, 128, 128 }, { 128,   0,   0 }, { 128, 128,   0 },
   {   0, 128,   0}, {   0, 128, 128 }, {   0,   0, 128 }, { 128,   0, 128 },
   { 255,   0, 255}, { 192, 192, 192 }, { 255,   0,   0 }, { 255, 255,   0 },
   {   0, 255,   0}, {   0, 255, 255 }, {   0,   0, 255 }, {   0,   0,   0 }
 };
 
-UBYTE PalmPalette8bpp[256][3] = {
+uint8_t PalmPalette8bpp[256][3] = {
   { 255, 255, 255 }, { 255, 204, 255 }, { 255, 153, 255 }, { 255, 102, 255 },
   { 255,  51, 255 }, { 255,   0, 255 }, { 255, 255, 204 }, { 255, 204, 204 },
   { 255, 153, 204 }, { 255, 102, 204 }, { 255,  51, 204 }, { 255,   0, 204 },
@@ -94,12 +94,12 @@ UBYTE PalmPalette8bpp[256][3] = {
 
 
 
-int getbestdefaultindex(UBYTE red,UBYTE green,UBYTE blue,int bpp){
+int getbestdefaultindex(uint8_t red,uint8_t green,uint8_t blue,int bpp){
 	//uint maxforbpp = bitstocolors(bpp);
 	//dbgprintf("ColorsAv:%d,BPP:%d\n",maxforbpp,bpp);
 
-	UWORD closeness = 0xFFFF;//the bigger the more diffrence
-	UWORD thisdiff;
+	uint16_t closeness = 0xFFFF;//the bigger the more diffrence
+	uint16_t thisdiff;
 	int bestindex;
 	int count;
 	if(bpp == 8 || bpp == 16){

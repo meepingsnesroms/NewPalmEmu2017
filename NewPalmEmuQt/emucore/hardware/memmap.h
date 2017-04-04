@@ -31,27 +31,27 @@
 
 /* Default memory access functions */
 
-ULONG get_long(CPTR addr);
-UWORD get_word(CPTR addr);
-UBYTE get_byte(CPTR addr);
-void  put_long(CPTR addr,ULONG l);
-void  put_word(CPTR addr,UWORD w);
-void  put_byte(CPTR addr,UBYTE b);
+uint32_t get_long(offset_68k addr);
+uint16_t get_word(offset_68k addr);
+uint8_t get_byte(offset_68k addr);
+void  put_long(offset_68k addr,uint32_t l);
+void  put_word(offset_68k addr,uint16_t w);
+void  put_byte(offset_68k addr,uint8_t b);
 
-int		valid_address(CPTR addr, ULONG size);
-UWORD*  get_real_address(CPTR addr);
+int		valid_address(offset_68k addr, uint32_t size);
+uint16_t*  get_real_address(offset_68k addr);
 
 extern int buserr;
 extern uint32_t ram_size;
 
-typedef ULONG	(*lget_func)(CPTR);
-typedef UWORD	(*wget_func)(CPTR);
-typedef UBYTE	(*bget_func)(CPTR);
-typedef void	(*lput_func)(CPTR,ULONG);
-typedef void	(*wput_func)(CPTR,UWORD);
-typedef void	(*bput_func)(CPTR,UBYTE);
-typedef UWORD*  (*xlate_func)(CPTR);
-typedef int		(*check_func)(CPTR, ULONG);
+typedef uint32_t	(*lget_func)(offset_68k);
+typedef uint16_t	(*wget_func)(offset_68k);
+typedef uint8_t	(*bget_func)(offset_68k);
+typedef void	(*lput_func)(offset_68k,uint32_t);
+typedef void	(*wput_func)(offset_68k,uint16_t);
+typedef void	(*bput_func)(offset_68k,uint8_t);
+typedef uint16_t*  (*xlate_func)(offset_68k);
+typedef int		(*check_func)(offset_68k, uint32_t);
 
 typedef struct {
 	lget_func  lget;
@@ -70,14 +70,14 @@ extern addrbank dummy_bank;
 
 extern addrbank* membanks;
 
-ULONG longget(CPTR addr);
-UWORD wordget(CPTR addr);
-UBYTE byteget(CPTR addr);
-void  longput(CPTR addr, ULONG l);
-void  wordput(CPTR addr, UWORD w);
-void  byteput(CPTR addr, UBYTE b);
+uint32_t longget(offset_68k addr);
+uint16_t wordget(offset_68k addr);
+uint8_t byteget(offset_68k addr);
+void  longput(offset_68k addr, uint32_t l);
+void  wordput(offset_68k addr, uint16_t w);
+void  byteput(offset_68k addr, uint8_t b);
 
-UWORD getnewlinearchunks(UWORD needed);
+uint16_t getnewlinearchunks(uint16_t needed);
 void  freedynchunk(int chunk);
 void  freedynchunks();
 

@@ -5,14 +5,14 @@
 #include "types.h"
 
 //default color tables
-extern UBYTE PalmPalette2bpp[4][3];
-extern UBYTE PalmPalette4bpp[16][3];
-extern UBYTE PalmPalette4bppColor[16][3];
-extern UBYTE PalmPalette8bpp[256][3];
+extern uint8_t PalmPalette2bpp[4][3];
+extern uint8_t PalmPalette4bpp[16][3];
+extern uint8_t PalmPalette4bppColor[16][3];
+extern uint8_t PalmPalette8bpp[256][3];
 
 //palette functions
-inline ULONG paltorgbindex8(UBYTE color){
-	ULONG result = 0;
+inline uint32_t paltorgbindex8(uint8_t color){
+	uint32_t result = 0;
 	result |= color << 24;
 	result |= PalmPalette8bpp[color][0] << 16;
 	result |= PalmPalette8bpp[color][1] << 8;
@@ -20,7 +20,7 @@ inline ULONG paltorgbindex8(UBYTE color){
 	return result;
 }
 
-inline UWORD paltopalm(UBYTE* color){
+inline uint16_t paltopalm(uint8_t* color){
 	return ((color[0] >> 3) << 11) | ((color[1] >> 2) << 5) | (color[2] >> 3);
 }
 
@@ -29,9 +29,9 @@ inline uint16_t getrgbdiff(uint8_t r1,uint8_t g1,uint8_t b1,uint8_t r2,uint8_t g
 }
 
 //point to ColorTableType not first color index
-inline UWORD getcolortblindex(CPTR customtable,UBYTE index){
-	CPTR indexptr = customtable + index * 4 + 2/*the first 2 bytes record the number of entrys*/;
-	UBYTE minipal[3];
+inline uint16_t getcolortblindex(offset_68k customtable,uint8_t index){
+	offset_68k indexptr = customtable + index * 4 + 2/*the first 2 bytes record the number of entrys*/;
+	uint8_t minipal[3];
 	//the first byte of each entry is its index,then comes actual color data
 	for(int flea = 0;flea < 3;flea++)
 		minipal[flea] = get_byte(indexptr + flea + 1/*skip index byte*/);
@@ -50,6 +50,6 @@ inline uint bitstocolors(int bits){
 }
 
 
-int getbestdefaultindex(UBYTE red, UBYTE green, UBYTE blue, int bpp);
+int getbestdefaultindex(uint8_t red, uint8_t green, uint8_t blue, int bpp);
 
 #endif // PALETTE_H
