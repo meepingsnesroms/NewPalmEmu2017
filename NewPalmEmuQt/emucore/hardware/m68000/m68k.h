@@ -2,6 +2,8 @@
 #define M68K
 
 #include <stdint.h>
+#include <thread>
+#include <chrono>
 
 //fix for compiler warnings about unused parameter for some opcodes
 //(if it wont compile change these)
@@ -55,13 +57,13 @@
 
 #define USERSP ((Shptr->regs).usp)
 
-#define PENX (Shptr->penx)
-#define PENY (Shptr->peny)
+#define PENX	(Shptr->penx)
+#define PENY	(Shptr->peny)
 #define PENDOWN (Shptr->pendown)
-#define BTNTBL (Shptr->buttons)
+#define BTNTBL	(Shptr->buttons)
 
-#define CPUSTATE (Shptr->CpuState)
-#define CPUREQ (Shptr->CpuReq)
+#define CPUSTATE	(Shptr->CpuState)
+#define CPUREQ		(Shptr->CpuReq)
 
 #define SPCFLAG_STOP 2
 #define SPCFLAG_INT  8
@@ -87,8 +89,7 @@
 #define cpuReset   1
 #define cpuStart   2
 #define cpuStop    3
-#define cpuLoadApp 4
-#define cpuExit    5
+#define cpuExit    4
 
 typedef uint8_t flagtype;//Some flags have more that 2 values so this must remain an 8bit int
 typedef void cpuop_func(uint32_t);
@@ -169,7 +170,22 @@ uint16_t *get_real_address(offset_68k addr);
 #define STATECHANGE 1
 #define ABORT		2
 
-#define KILLSWITCH if(CPUREQ)throw STATECHANGE
+inline void m68k_handle_changes(){
+    check_again:
+	switch(Shptr->CpuReq){
+		case cpuStart:
+		case cpuNone:
+			break;
+		case cpuExit:
+		case cpuReset:
+			throw STATECHANGE;
+		case cpuStop:
+			while(Shptr->CpuReq == cpuStop){
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
+			goto check_again;
+	}
+}
 
 
 #endif // M68K

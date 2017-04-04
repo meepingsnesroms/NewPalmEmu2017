@@ -311,7 +311,6 @@ void MC68000_run(){
 			InstructionStart_p = nullptr;
 		}
 
-		//if(updateinterrupts)updateisr();//any hardware interrupts
 
 		if(specialflags){
 			/*
@@ -363,6 +362,7 @@ void MC68000_runtilladdr(offset_68k nextpc)
 
 //pilotcpu
 int CPU(shared_img *shptr){
+	bool forceexit = false;
 	shptr->CpuState = cpuStopped;
 	do{
 		switch(shptr->CpuReq){
@@ -372,7 +372,8 @@ int CPU(shared_img *shptr){
 			try{
 				MC68000_run();
 			}catch(int request){
-				//do nothing, just used as a quick exit method
+				//if(request == STATECHANGE);//just let it run, it will change in this loop
+				if(request == ABORT)forceexit = true;
 			};
 			break;
 		case cpuStop:
@@ -392,8 +393,11 @@ int CPU(shared_img *shptr){
 			std::this_thread::sleep_for(std::chrono::milliseconds(1)); /* sleep for 1 ms */
 			break;
 		}
+		if(forceexit)break;
 	}
 	while(shptr->CpuReq != cpuExit);
+
+	shptr->CpuReq = cpuNone;
 
 	return 0;
 }
