@@ -92,10 +92,9 @@ static bool condensefrags(){
 }
 
 static offset_68k getfromfrags(size_t_68k bytes){
-	if(bytes & 1)bytes += 1;
 	clensememory();
-	uint numfrags = freememfragments.size();
-	for(uint count = 0;count < numfrags;count++){
+	uint32_t numfrags = freememfragments.size();
+	for(uint32_t count = 0;count < numfrags;count++){
 		if(freememfragments[count].size >= bytes){
 			mallocchunk taken;
 			taken.start = freememfragments[count].start;
@@ -122,11 +121,12 @@ static offset_68k getfromfrags(size_t_68k bytes){
 
 //HACK just use normal ram as storage
 offset_68k getfreestorageram(size_t_68k bytes){
+	if(bytes & 1)bytes += 1;//Make all boundrys word aligned
+
 	if(bytes > avsavedata){
 		palmabrt();//hack
 		return nullptr_68k;
 	}
-	if(bytes & 1)bytes += 1;
 
 	offset_68k old = freesavedataptr;
 	freesavedataptr += bytes;
@@ -142,6 +142,8 @@ offset_68k getfreestorageram(size_t_68k bytes){
 }
 
 offset_68k getfreeheap(size_t_68k bytes){
+	if(bytes & 1)bytes += 1;//Make all boundrys word aligned
+
 	offset_68k fromsmall = getfromfrags(bytes);//try to use small chunks first
 	if(fromsmall)return fromsmall;
 
@@ -149,7 +151,6 @@ offset_68k getfreeheap(size_t_68k bytes){
 		palmabrt();//hack
 		return nullptr_68k;
 	}
-	if(bytes & 1)bytes += 1;
 
 	offset_68k old = freeheapptr;
 	freeheapptr += bytes;

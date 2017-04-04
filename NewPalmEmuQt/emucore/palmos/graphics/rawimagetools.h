@@ -136,9 +136,9 @@ inline int chraction(char tst){
 }
 
 
-inline uint makerowbytes(int width,int bpp){
-	uint bytes = width * bpp / 8 + ((width * bpp % 8 != 0) ? 1 : 0);
-	if(bytes & 1)bytes += 1;//pad
+inline uint32_t makerowbytes(int width,int bpp){
+	uint32_t bytes = width * bpp / 8 + ((width * bpp % 8 != 0) ? 1 : 0);
+	if(bytes & 1)bytes += 1;//pad to word boundry
 	return bytes;
 }
 

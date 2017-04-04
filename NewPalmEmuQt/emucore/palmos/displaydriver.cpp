@@ -2095,7 +2095,7 @@ void bmpcreate(){
 
 	//palm sets all pixels to white
 	//get clear params
-	uint rowbytes = (w * bpp) / 8;//full bytes in row
+	uint32_t rowbytes = (w * bpp) / 8;//full bytes in row
 	bool leftoverbyte = (((w * bpp) % 8) != 0);//has byte with unused data on end(since all rows are byte aligned)
 	if(leftoverbyte)rowbytes += 1;
 	//clear bitmap to white
