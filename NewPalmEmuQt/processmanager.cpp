@@ -6,7 +6,7 @@ MainWindow *output;
 settingspanel *setpan;
 
 void setprocess(int process){
-		if(running)halt();
+	    if(emu_started() && !emu_paused())emu_halt();
 		if(process == EMULATOR){
 			setpan->hide();
             output->show();

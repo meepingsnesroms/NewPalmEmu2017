@@ -1,59 +1,50 @@
 #ifndef PALMWRAPPER
 #define PALMWRAPPER
 
-//part of "simple functions"
-#include "launchroutines.h" //globals
-#include "prcfile.h" //loading apps
-#include "virtuallcd.h" //framebuffer
-#include "appselector.h" //home screen
-
-//actualy needed by this header file
-#include "m68k.h"
-#include "palmdatatypes.h" //palm os custom structs
-
 #include <vector>
 #include <string>
 #include <chrono>
 #include <thread>
 
+#include "m68k.h"
+#include "palmdatatypes.h"
 
-//switch to this later
 typedef struct{
-	std::vector<std::string>	database_files;
-	std::string					username;
-	std::string					sdcard_directory;
-	bool						multibyte_char_support;
-	uint32_t					screen_width;
-	uint32_t					screen_height;
+	std::vector<std::string>	internal_files;//Prc, pdb files that are installed on the palm, put the app you want to run last in the list
+	std::string					sdcard_directory;//Root directory of the sdcard
+	std::string					username = "cuttlefish";//Your hotsync id
+	bool						multibyte_char_support = false;//Allow UTF-16 chars
+	uint32_t					screen_width  = 160;//Pixels left to right
+	uint32_t					screen_height = 160;//Pixels top to bottom
+	bool						confusion_is_fatal = true;//On any undefined function or error kill the emulator
 }emu_config;
 
-//Universal data storage/heap/osvalues
+//App state
 extern std::vector<palmdb> apps;
+extern int			curapp;
+extern int			curoverlay;
+extern CPTR			appcall;
 
-extern void (*TouchDriver)(int,int,bool);
-extern void (*KeyDriver)(char,bool);
-extern void (*ButtonDriver)(int,bool);
+//Emulated device state
+extern std::string  username;
+extern std::string	sdcard_directory;
+extern bool			multibyte_char_support;
+extern ULONG		keymask;
 
-extern int  curapp;
-extern int  curoverlay;
-extern CPTR appcall;
-extern std::string username;
-extern std::string sdcarddirectory;
-extern bool  multibytecharsupport;
-extern uint32_t fullticks;
-extern float partialticks;
-extern ULONG keymask;
-extern std::chrono::high_resolution_clock::time_point starttime;
+//Time
+extern uint32_t											fullticks;
+extern float											partialticks;
+extern std::chrono::high_resolution_clock::time_point	starttime;
 
-//events
+//Events
 extern CPTR appexceptionlist;
 
-//ui
-extern CPTR oslcdwindow,lcdbitmaptype;
+//Ui
+extern CPTR oslcdwindow, lcdbitmaptype;
 
-//debug
-extern std::string lasttrap;
-//End of universal data
+//Debug
+extern std::string	lasttrap;
+extern bool			confusion_is_fatal;
 
 enum{
 	BTN_Power,
@@ -65,39 +56,28 @@ enum{
 	BTN_Notes
 };
 
-//extern std::string directory;
 extern shared_img palm;
-extern std::thread palmcpu;
-extern bool started;
-extern bool running;
-extern bool hasbootableapp;
 
-
-void backupram();
 void palmabrt();
 
-//simple functions
-//bool loadfiletopalm(std::string path);//is in prcfile.h
-//bool launchapp(int num);//is in launchroutines.h
-//bool full_init(string& name,int x,int y);//is in launchroutines.h
-//void full_deinit();//is in launchroutines.h
-//void selectappandstart();//is in appselector.h
-bool start(size_t bootfile);
-bool resume();
-bool halt();
-bool end();
-void sendbutton(int button, bool state);
-void sendtouch(int x,int y,bool pressed);
-void sendkeyboardchar(char thiskey,bool state);
+bool emu_start(emu_config params);
+bool emu_resume();
+bool emu_halt();
+bool emu_end();
+bool emu_started();
+bool emu_paused();
+void emu_sendbutton(int button, bool state);
+void emu_sendtouch(int x, int y, bool pressed);
+void emu_sendkeyboardchar(char thiskey, bool state);
 
 //call this to get the newest framebufffer
 //format is 16bit RGB565
-void get_palm_framebuffer(UWORD* copyto);
+void emu_get_framebuffer(UWORD* copyto);
 
 //HACK add audio
 
-std::string getclipboard();
-void setclipboard(std::string data);
+std::string emu_getclipboard();
+void		emu_setclipboard(std::string data);
 
 #endif // PALMWRAPPER
 

@@ -1,4 +1,5 @@
 #include "palmwrapper.h"
+#include "virtuallcd.h"
 
 WORD LCDW,LCDH;
 size_t_68k LCDBYTES;

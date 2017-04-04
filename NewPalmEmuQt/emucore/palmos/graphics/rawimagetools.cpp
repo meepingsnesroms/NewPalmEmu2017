@@ -12,6 +12,8 @@
 #include "dataexchange.h"
 #include "palmdefines.h"
 
+#include "virtuallcd.h"
+
 //HACK remove bitset
 #include <bitset>
 

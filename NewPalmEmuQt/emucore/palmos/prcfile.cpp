@@ -10,6 +10,7 @@
 
 //new list
 #include "m68k.h"
+#include "memmap.h"
 #include "resourcelocator.h"
 #include "dataexchange.h"
 #include "datamanager.h"
@@ -157,7 +158,6 @@ static int prcparse(UBYTE *prcfile,size_t_68k prcsize){
 	apps[apps.size() - 1].intmain = getresource(apps.size() - 1,1,'code');
 	if(apps[apps.size() - 1].intmain != 0){
 		apps[apps.size() - 1].exe = true;
-		hasbootableapp = true;
 	}
 
 	return WORKED;

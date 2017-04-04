@@ -9,6 +9,8 @@
 
 #include "palmwrapper.h" //hack //separate 68k from palm
 
+#include "prcfile.h"
+
 char* archs[3] = {"Thumb","ARM","m68k"};
 
 char* datalengths[3] = {"BYTE","WORD","LONG"};

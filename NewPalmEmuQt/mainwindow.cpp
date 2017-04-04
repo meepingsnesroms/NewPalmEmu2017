@@ -4,6 +4,7 @@
 #include "settingarray.h"
 
 #include "palmwrapper.h"
+#include "virtuallcd.h"
 
 #include <QDir>
 #include <QFileDialog>
@@ -17,21 +18,8 @@
 #include <string>
 
 //user settings
-static std::vector<std::string> appstoload;
-static std::string palmname;
-
-int setting_x,setting_y;
-
-//Qt emulator wrapper stuff
-void QtEmu_init(){
-	full_init(palmname,setting_x,setting_y);
-	int xmany = appstoload.size();
-	for(int count = 0;count < xmany;count++){
-		int pass = loadfiletopalm(appstoload[count]);
-		if(pass != 0)palmabrt();
-	}
-	appstoload.clear();
-}
+emu_config settings;
+int setting_x = 160,setting_y = 160;
 
 QImage video;
 QTimer* refreshdisplay;
@@ -51,23 +39,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->exitemulator->setEnabled(false);
 
 	//palm tx
-	//setting_x = 320;
-	//setting_y = 480;
+	//settings.screen_width = 320;
+	//settings.screen_height  = 480;
 
 	//palm z22
-	setting_x = 160;
-	setting_y = 160;
+	settings.screen_width = 160;
+	settings.screen_height = 160;
 
 	//tapwave zodiac
-	//setting_x = 480;
-	//setting_y = 320;
-
-	palmname = "wugbun";
+	//settings.screen_width = 480;
+	//settings.screen_height  = 320;
 }
 
 MainWindow::~MainWindow()
 {
-	end();
+	emu_end();
 	delete ui;
 }
 
@@ -80,15 +66,15 @@ void MainWindow::on_install_pressed()
 {
 	string app = QFileDialog::getOpenFileName(this,"Open Prc/Pdb",
 											  QDir::root().path(),0).toStdString();
-	if(app != "")appstoload.push_back(app);
+	if(app != "")settings.internal_files.push_back(app);
 }
 
 UWORD formattedgfxbuffer[320 * 480];
 
 void MainWindow::updatedisplay(){
-	if(!running)return;
+	if(!emu_started())return;
 
-	get_palm_framebuffer(formattedgfxbuffer);
+	emu_get_framebuffer(formattedgfxbuffer);
 	video = QImage((unsigned char*)formattedgfxbuffer,LCDW,LCDH,QImage::Format_RGB16);//16 bit
 	ui->display->setPixmap(QPixmap::fromImage(video).scaled(
 							   ui->display->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
@@ -141,9 +127,9 @@ void MainWindow::on_settings_clicked()
 
 void MainWindow::on_controlemulator_clicked()
 {
-	if(!started){
-		QtEmu_init();
-		selectappandstart();
+	if(!emu_started()){
+		//QtEmu_init();
+		//selectappandstart();
 		/*
 		bool pass = start(0);
 		if(pass){
@@ -154,78 +140,86 @@ void MainWindow::on_controlemulator_clicked()
 		return;
 	}
 
-    if(!running){
-		if(!resume())return;
+	if(!emu_paused()){
+		if(!emu_resume())return;
         ui->controlemulator->setText("Pause");
     }
 	else{
-		if(!halt())return;
+		if(!emu_halt())return;
 		ui->controlemulator->setText("Resume");
     }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* ev){
-	sendkeyboardchar(ev->key(),true);
+	emu_sendkeyboardchar(ev->key(),true);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* ev){
-	sendkeyboardchar(ev->key(),false);
+	emu_sendkeyboardchar(ev->key(),false);
 }
 
 void MainWindow::on_exitemulator_pressed()
 {
-	end();
+	emu_end();
 	ui->controlemulator->setText("Start");
 	ui->exitemulator->setEnabled(false);
 }
 
 void MainWindow::on_exitemulator_released()
 {
-	//sendbutton(Power,false);
+	//emu_sendbutton(Power,false);
 }
 
 void MainWindow::on_clock_pressed()
 {
-	sendbutton(BTN_Calender,true);
+	emu_sendbutton(BTN_Calender,true);
 }
 
 void MainWindow::on_clock_released()
 {
-	sendbutton(BTN_Calender,false);
+	emu_sendbutton(BTN_Calender,false);
 }
 
 void MainWindow::on_phone_pressed()
 {
-	sendbutton(BTN_Contacts,true);
+	emu_sendbutton(BTN_Contacts,true);
 }
 
 void MainWindow::on_phone_released()
 {
-	sendbutton(BTN_Contacts,false);
+	emu_sendbutton(BTN_Contacts,false);
 }
 
 void MainWindow::on_todo_pressed()
 {
-	sendbutton(BTN_Todo,true);
+	emu_sendbutton(BTN_Todo,true);
 }
 
 void MainWindow::on_todo_released()
 {
-	sendbutton(BTN_Todo,false);
+	emu_sendbutton(BTN_Todo,false);
 }
 
 void MainWindow::on_notes_pressed()
 {
-	sendbutton(BTN_Notes,true);
+	emu_sendbutton(BTN_Notes,true);
 }
 
 void MainWindow::on_notes_released()
 {
-	sendbutton(BTN_Notes,false);
+	emu_sendbutton(BTN_Notes,false);
 }
 
 void MainWindow::on_runtest_clicked()
 {
+	std::vector<std::string>	appstoload;
+
+#if OS_ANDROID
+	appstoload.push_back("/sdcard/palm/fonts.prc");
+#else
+	appstoload.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
+#endif
+
 #define SIMPAPP 4
 
 #if SIMPAPP == -1
@@ -299,14 +293,9 @@ void MainWindow::on_runtest_clicked()
 	appstoload.push_back("/Users/Hoppy/000prcs/BikeOrDie-2.0d.prc");
 #endif
 
-#if OS_ANDROID
-	appstoload.push_back("/sdcard/palm/fonts.prc");
-#else
-	appstoload.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
-#endif
+	settings.internal_files = appstoload;
 
-	QtEmu_init();
-	bool pass = start(0);
+	bool pass = emu_start(settings);
 	if(pass){
 		ui->controlemulator->setText("Pause");
 		ui->runtest->setEnabled(false);

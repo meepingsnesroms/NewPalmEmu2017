@@ -23,23 +23,18 @@ static void drawmouse(){
 
 
 void libretro_palm_init(){
+	emu_config settings;
+
 	//HACK load varible filepath
-	appstoload.push_back("/Users/Hoppy/000prcs/zap2016.prc");
-	appstoload.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
-   
-	full_init(palmname,res_x,res_y);
-	int xmany = appstoload.size();
-	for(int count = 0;count < xmany;count++){
-		int pass = loadfiletopalm(appstoload[count]);
-		if(pass != 0)palmabrt();
-	}
-	appstoload.clear();
-	bool pass = start(0);
+	settings.internal_files.push_back("/Users/Hoppy/000prcs/zap2016.prc");
+	settings.internal_files.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
+
+	bool pass = emu_start(settings);
 	if(!pass)palmabrt();
 }
 
 void libretro_palm_deinit(){
-	end();
+	emu_end();
 }
 
 void libretro_palm_setresolution(int x,int y){
@@ -48,7 +43,7 @@ void libretro_palm_setresolution(int x,int y){
 }
 
 void libretro_palm_setbutton(int button, bool state){
-	sendbutton(button,state);
+	emu_sendbutton(button,state);
 }
 
 void libretro_palm_touchmouse(int relx,int rely){
@@ -62,11 +57,11 @@ void libretro_palm_touchmouse(int relx,int rely){
 }
 
 void libretro_palm_touchmouseclick(bool down){
-	sendtouch(mousex,mousey,down);
+	emu_sendtouch(mousex,mousey,down);
 }
 
 void* libretro_palm_getframebuffer(){
-	get_palm_framebuffer(libretro_fb);
+	emu_get_framebuffer(libretro_fb);
 	drawmouse();
 	return libretro_fb;
 }

@@ -4,6 +4,7 @@
 #include "biosfont.h"
 #include "fbops.h"
 #include "m68k.h"
+#include "virtuallcd.h"
 
 void drawbioschar(int x,int y,char letter){
 	int curx,cury;

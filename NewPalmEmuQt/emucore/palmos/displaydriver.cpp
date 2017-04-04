@@ -15,6 +15,7 @@
 #include "palmtypeaccess.h"
 #include "palmdefines.h"
 #include "dataexchange.h"
+#include "virtuallcd.h"
 
 #include "palmos/graphics/palette.h"
 
@@ -3056,7 +3057,6 @@ void deinitdisplaydriver(){
 
 
 void appTouchDriver(int x,int y,bool pressed){
-	if(!running)return;
 
 	if(x > 320 || y > 480 || x < 0 || y < 0){
 		dbgprintf("TouchX:%d,TouchY:%d\n",x,y);
@@ -3103,8 +3103,6 @@ void appTouchDriver(int x,int y,bool pressed){
 }
 
 void appKeyDriver(char thiskey,bool pressed){
-	if(!running)return;
-
 	if(pressed){
 		osevent keypress;
 		keypress.type = keyDownEvent;

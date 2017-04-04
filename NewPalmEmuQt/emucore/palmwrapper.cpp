@@ -9,7 +9,6 @@
 
 #include "prcfile.h"
 #include "displaydriver.h"
-#include "appselector.h"
 #include "eventqueue.h"
 #include "launchroutines.h"
 #include "displaydriver.h"
@@ -20,50 +19,47 @@
 #include "m68k.h"
 #include "newcpu.h"
 #include "minifunc.h"
+#include "virtuallcd.h"
 
-
-//Universal data storage/heap/osvalues
+//App state
 std::vector<palmdb> apps;
+int					curapp;//open app
+int					curoverlay;//open apps overlay(language file)
+CPTR				appcall;//fake data saying how and why the app was launched
 
-//OS data
-void (*TouchDriver)(int,int,bool) = nullptr;
-void (*KeyDriver)(char,bool) = nullptr;
-void (*ButtonDriver)(int,bool) = nullptr;
-
-int curapp;//open app
-int curoverlay;//open apps overlay(language file)
-CPTR appcall;//fake data saying how and why the app was launched
+//Device state
 std::string username;
 std::string clipboard;
 std::string sdcarddirectory;
-bool multibytecharsupport;
+bool		multibytecharsupport;
+ULONG		keymask;
+
+//Time
 uint32_t fullticks;
 float partialticks;
-ULONG keymask;
 std::chrono::high_resolution_clock::time_point starttime;
 
-//events
+//Events
 CPTR appexceptionlist;
 
-//ui
+//Ui
 CPTR oslcdwindow,lcdbitmaptype;
 
-//i/o thread safety
+//I/o thread safety
 std::mutex os_data_lock;
 
-//debug
+//Debug
 std::string lasttrap;
-//End of universal data
+bool		confusion_is_fatal;
 
-std::string directory;
-shared_img palm;
+
+shared_img  palm;
 std::thread palmcpu;
 bool started = false;
 bool running = false;
-bool hasbootableapp = false;
 
 
-void get_palm_framebuffer(UWORD* copyto){
+void emu_get_framebuffer(UWORD* copyto){
 	size_t_68k total = LCDW * LCDH;
 
 	//lssa must be fixed for old palm games that set the framebuffer address
@@ -71,36 +67,38 @@ void get_palm_framebuffer(UWORD* copyto){
 }
 
 void palmabrt(){
-	if(!lasttrap.empty())dbgprintf(lasttrap.c_str());
+	if(!lasttrap.empty())dbgprintf("%s", lasttrap.c_str());
 	abort();
 }
 
+/*
 void backupram(){
 	//HACK need to do this!!
 }
+*/
 
-bool start(size_t bootfile){
+bool emu_start(emu_config params){
 	if(running)return false;
 
-	if(!hasbootableapp)return false;
-	if(apps.size() < bootfile || !apps[bootfile].exe)return false;
-	bool launched = launchapp(bootfile);
+	full_init(params.username, params.screen_width, params.screen_height);
+	size_t xmany = params.internal_files.size();
+	for(size_t count = 0;count < xmany;count++){
+		int pass = loadfiletopalm(params.internal_files[count]);
+		if(pass != 0)palmabrt();
+	}
+
+	bool launched = launchapp(params.internal_files.size() - 1);
 	if(!launched)return false;
 
 	palmcpu = std::thread(CPU,&palm);
     CPU_start(&palm);
-
-	//input drivers
-	TouchDriver = &appTouchDriver;
-	KeyDriver = &appKeyDriver;
-	ButtonDriver = nullptr;//hack
 
 	running = true;
 	started = true;
 	return true;
 }
 
-bool resume(){
+bool emu_resume(){
 	if(!started)return false;
 
 	BTNTBL = 0x00000000;
@@ -112,7 +110,7 @@ bool resume(){
 	return true;
 }
 
-bool halt(){
+bool emu_halt(){
 	if(!running)return false;
 
 	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
@@ -131,13 +129,12 @@ bool halt(){
 	return true;
 }
 
-bool end(){
+bool emu_end(){
 	if(started){
 		started = false;
 		running = false;
 		palm.CpuReq = cpuExit;
 		palmcpu.join();
-		if(!palm.ForceExit)backupram();
 
 		full_deinit();//clean up
 
@@ -146,14 +143,22 @@ bool end(){
 	return false;
 }
 
+bool emu_started(){
+	return started;
+}
+
+bool emu_paused(){
+	return !running && started;
+}
+
 
 
 UWORD buttontovchr[7] = {520,0,0,516,517,518,519};
 
-void sendbutton(int button, bool state){
+void emu_sendbutton(int button, bool state){
 	if(!running)return;
 
-	//BTNTBL does not need a mutex since it is read only from the cpu thread
+	//BTNTBL does not need a mutex since it is only written to from the gui thread
 
 	if(state){
 		BTNTBL |= bit(button);
@@ -171,15 +176,17 @@ void sendbutton(int button, bool state){
 	}
 }
 
-void sendtouch(int x, int y, bool pressed){
-	if(TouchDriver)TouchDriver(x,y,pressed);
+void emu_sendtouch(int x, int y, bool pressed){
+	if(!running)return;
+	appTouchDriver(x, y, pressed);
 }
 
-void sendkeyboardchar(char thiskey,bool state){
-	if(KeyDriver)KeyDriver(thiskey,state);
+void emu_sendkeyboardchar(char thiskey, bool state){
+	if(!running)return;
+	appKeyDriver(thiskey, state);
 }
 
-std::string getclipboard(){
+std::string emu_getclipboard(){
 	std::string data;
 	os_data_lock.lock();
 	data = clipboard;
@@ -187,7 +194,7 @@ std::string getclipboard(){
 	return data;
 }
 
-void setclipboard(std::string data){
+void emu_setclipboard(std::string data){
 	os_data_lock.lock();
 	clipboard = data;
 	os_data_lock.unlock();

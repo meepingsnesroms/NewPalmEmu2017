@@ -7,6 +7,8 @@
 #include "m68k.h"
 #include "armv5te.h"
 #include "newcpu.h"
+#include "prcfile.h"
+#include "virtuallcd.h"
 #include "dataexchange.h"
 #include "palmmalloc.h"
 #include "minifunc.h"
@@ -294,6 +296,4 @@ void full_deinit(){
 	deinitdisplaydriver();
 	memory_deinit();
 	clear_rommemory();
-
-	hasbootableapp = false;
 }

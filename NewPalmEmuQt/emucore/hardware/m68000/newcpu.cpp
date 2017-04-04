@@ -15,6 +15,8 @@
 #include "palmwrapper.h" //hack //separate 68k from palm
 #include "palmapi.h" //hack //separate 68k from palm
 
+#include "prcfile.h"
+
 int areg_byteinc[] = { 1,1,1,1,1,1,1,2 };
 int imm8_table[] = { 8,1,2,3,4,5,6,7 };
 

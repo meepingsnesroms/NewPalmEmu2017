@@ -70,7 +70,6 @@ SOURCES += \
     emucore/palmos/graphics/imagescaling.cpp \
     emucore/palmos/graphics/palette.cpp \
     emucore/palmos/graphics/rawimagetools.cpp \
-    emucore/palmos/appselector.cpp \
     emucore/palmos/audiodriver.cpp \
     emucore/palmos/datamanager.cpp \
     emucore/palmos/displaydriver.cpp \
@@ -123,7 +122,6 @@ HEADERS  += \
     emucore/palmos/graphics/imagescaling.h \
     emucore/palmos/graphics/palette.h \
     emucore/palmos/graphics/rawimagetools.h \
-    emucore/palmos/appselector.h \
     emucore/palmos/audiodriver.h \
     emucore/palmos/datamanager.h \
     emucore/palmos/displaydriver.h \

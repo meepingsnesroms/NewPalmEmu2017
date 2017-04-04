@@ -438,7 +438,7 @@ void clipboardgetitem(){
 	switch(cliptype){
 		case clipboardText:{
 				if(!hastextclipbank)textclipbank = getnewlinearchunks(1) << 16;//64k clipboard
-				std::string curclip = getclipboard();
+				std::string curclip = emu_getclipboard();
 				put_word(lengthptr,curclip.size());
 				writestring(textclipbank,curclip);
 				A0 = textclipbank;
