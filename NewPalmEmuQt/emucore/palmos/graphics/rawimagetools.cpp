@@ -1038,10 +1038,10 @@ offset_68k decompressform(uint16_t id){
 void releaseformmemory(offset_68k frmptr){
 	//form bitmap
 	uint16_t flags = get_word(frmptr + 8);//windowflags
-	if(flags & bit(8))abstractfree(getwinbmp(frmptr));
+	if(flags & bit(8))freememaddr(getwinbmp(frmptr));
 
 	//form struct
-	abstractfree(frmptr);
+	freememaddr(frmptr);
 }
 
 

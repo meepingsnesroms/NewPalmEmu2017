@@ -706,7 +706,7 @@ void fieldappointtextptr(offset_68k field, offset_68k ptr){
 	if(islocked(mallocchk))palmabrt();
 	*/
 
-	offset_68k mallocsize = abstractgetsize(ptr);
+	offset_68k mallocsize = getsizememaddr(ptr);
 
 	fieldappointtextaddr(field,ptr,mallocsize,0);
 }
@@ -721,10 +721,8 @@ void fieldappointtexthandle(offset_68k field,offset_68k handle){
 
 	//validity checks
 	if(mallocchk == -1)palmabrt();
-	if(!ishandle(mallocchk))palmabrt();
-	if(islocked(mallocchk))palmabrt();
 
-	offset_68k mallocsize = abstractgetsize(handle);//malloclist[mallocchk].size;
+	offset_68k mallocsize = getsizememaddr(handle);//malloclist[mallocchk].size;
 
 	fieldappointtextaddr(field,handle,mallocsize,0);
 }
@@ -1397,9 +1395,9 @@ void windeletewindow(){
 		uint16_t flags = get_word(winhandle + 8);
 		//free bitmap if flag set
 		if(flags & bit(8)){
-			abstractfree(getwinbmp(winhandle));
+			freememaddr(getwinbmp(winhandle));
 		}
-		abstractfree(winhandle);
+		freememaddr(winhandle);
 
 		//maybe more
 	}
