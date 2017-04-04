@@ -388,7 +388,7 @@ void disableobject(offset_68k objectptr,uint8_t type){
 
 COORD waitforpen(){
 	while(!PENDOWN){
-		KILLSWITCH;
+		m68k_handle_changes();
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
@@ -401,7 +401,7 @@ COORD waitforpen(){
 
 COORD trackpen(){
 	while(PENDOWN){
-		KILLSWITCH;
+		m68k_handle_changes();
 		//stalk the pen!! //later
 		//HACK the pen is not being tracked
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -2574,7 +2574,7 @@ void frmcustomalert(){
 	COORD pressloc;
 	COORD releaseloc;
 	while(true){
-		KILLSWITCH;
+		m68k_handle_changes();
 		pressloc = waitforpen();
 		for(button = 0;button < numbuttons;button++){
 			if(inboundbox(buttonbounds[button],pressloc)){
