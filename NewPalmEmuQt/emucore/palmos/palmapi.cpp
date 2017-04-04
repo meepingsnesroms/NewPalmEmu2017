@@ -371,6 +371,9 @@ void sysnotifyregister(){
 
 
 void timgetticks(){
+
+	timer_lock.lock();
+
 	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
 	uint32_t fulltickspassed = (uint32_t)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
 	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
@@ -381,6 +384,8 @@ void timgetticks(){
 		fullticks   += (uint32_t)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
 		partialticks -= (uint32_t)partialticks;//remove any full ticks from the partial tick counter
 	}
+
+	timer_lock.unlock();
 
 	D0 = fullticks;
 }

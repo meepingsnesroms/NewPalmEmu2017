@@ -20,9 +20,9 @@ typedef struct{
 }emu_config;
 
 //App state
-extern std::vector<palmdb> apps;
-extern int			curapp;
-extern int			curoverlay;
+extern std::vector<palmdb>  apps;
+extern int					curapp;
+extern int					curoverlay;
 extern offset_68k			appcall;
 
 //Emulated device state
@@ -35,6 +35,7 @@ extern uint32_t		keymask;
 extern uint32_t											fullticks;
 extern float											partialticks;
 extern std::chrono::high_resolution_clock::time_point	starttime;
+extern std::mutex										timer_lock;
 
 //Events
 extern offset_68k appexceptionlist;

@@ -25,19 +25,20 @@
 std::vector<palmdb> apps;
 int					curapp;//open app
 int					curoverlay;//open apps overlay(language file)
-offset_68k				appcall;//fake data saying how and why the app was launched
+offset_68k			appcall;//fake data saying how and why the app was launched
 
 //Device state
 std::string username;
 std::string clipboard;
 std::string sdcarddirectory;
 bool		multibytecharsupport;
-uint32_t		keymask;
+uint32_t	keymask;
 
 //Time
-uint32_t fullticks;
-float partialticks;
-std::chrono::high_resolution_clock::time_point starttime;
+uint32_t										fullticks;
+float											partialticks;
+std::chrono::high_resolution_clock::time_point	starttime;
+std::mutex										timer_lock;
 
 //Events
 offset_68k appexceptionlist;
@@ -70,12 +71,6 @@ void palmabrt(){
 	if(!lasttrap.empty())dbgprintf("%s", lasttrap.c_str());
 	abort();
 }
-
-/*
-void backupram(){
-	//HACK need to do this!!
-}
-*/
 
 bool emu_start(emu_config params){
 	if(running)return false;
@@ -113,6 +108,8 @@ bool emu_resume(){
 bool emu_halt(){
 	if(!running)return false;
 
+	timer_lock.lock();
+
 	std::chrono::high_resolution_clock::duration timepassed = std::chrono::high_resolution_clock::now() - starttime;
 	uint32_t fulltickspassed = (uint32_t)(timepassed / palmTicks(1));//how many full ticks have passed since the last call to this function
 	float partialtickspassed = (timepassed / palmTicks(1)) - fulltickspassed;
@@ -123,6 +120,8 @@ bool emu_halt(){
 		fullticks   += (uint32_t)partialticks;//reclaim any leftover time that previosly did not exceed 1 tick
 		partialticks -= (uint32_t)partialticks;//remove any full ticks from the partial tick counter
 	}
+
+	timer_lock.unlock();
 
     CPU_stop(&palm);
 	running = false;

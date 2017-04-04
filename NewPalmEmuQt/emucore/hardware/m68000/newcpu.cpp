@@ -369,17 +369,7 @@ int CPU(shared_img *shptr){
 		case cpuStart:
 			shptr->CpuReq = cpuNone;
 			dbgprintf("I - CPU Started\n");
-			try{
-				MC68000_run();
-			}catch(int request){
-				if(request == ABORT){
-					//tell the control thread that the cpu is now off
-					//shptr->CpuState = cpuStopped;
-					//it already stopped executing so just let the cpu
-					//idle until killed or user restarts it
-				}
-				//hack //backup state and exit
-			};
+			MC68000_run();
 			break;
 		case cpuStop:
 			shptr->CpuReq = cpuNone;
