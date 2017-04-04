@@ -24,19 +24,19 @@ TouchScreen::~TouchScreen()
 }
 
 void TouchScreen::mousePressEvent(QMouseEvent *ev){
-	int x = (int)rangeswap(0,this->width(),0,setting_x,ev->x());
-	int y = (int)rangeswap(0,this->height(),0,setting_y,ev->y());
+	int x = (int)rangeswap(0,this->width(),0,settings.screen_width,ev->x());
+	int y = (int)rangeswap(0,this->height(),0,settings.screen_height,ev->y());
 	emu_sendtouch(x,y,true);
 }
 void TouchScreen::mouseMoveEvent(QMouseEvent *ev){
-	int x = (int)rangeswap(0,this->width(),0,setting_x,ev->x());
-	int y = (int)rangeswap(0,this->height(),0,setting_y,ev->y());
+	int x = (int)rangeswap(0,this->width(),0,settings.screen_width,ev->x());
+	int y = (int)rangeswap(0,this->height(),0,settings.screen_height,ev->y());
 	emu_sendtouch(x,y,true);
 }
 
 void TouchScreen::mouseReleaseEvent(QMouseEvent *ev){
-	int x = (int)rangeswap(0,this->width(),0,setting_x,ev->x());
-	int y = (int)rangeswap(0,this->height(),0,setting_y,ev->y());
+	int x = (int)rangeswap(0,this->width(),0,settings.screen_width,ev->x());
+	int y = (int)rangeswap(0,this->height(),0,settings.screen_height,ev->y());
 	emu_sendtouch(x,y,false);
 }
 

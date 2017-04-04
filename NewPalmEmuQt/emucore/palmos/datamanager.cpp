@@ -256,13 +256,11 @@ void dmreleaserecord(){
 
 	//check if record database
 	if(apps[dmopenref].resdb){
-		//palmabrt();//hack
 		D0 = dmErrNotRecordDB;
 		return;
 	}
 
 	if(index > apps[dmopenref].parts.size() - 1){
-		//palmabrt();//hack
 		D0 = dmErrIndexOutOfRange;
 	}else{
 		apps[dmopenref].parts[index].attr &= ~dmRecAttrBusy;
@@ -305,9 +303,9 @@ void dmattachrecord(){
 
 	//check if is record database
 	if(apps[dmopenref].resdb){
-		//palmabrt();//hack
 		dmlasterror = dmErrNotRecordDB;
 		A0 = nullptr_68k;
+		return;
 	}
 
 	if(ishandle(memisalloc(newhand)) == false)palmabrt();//hack

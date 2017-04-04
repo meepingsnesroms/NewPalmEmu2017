@@ -26,16 +26,16 @@ typedef struct{
 
 
 //Mini functions
-static inline memfragment mergefrags(memfragment& frag1,memfragment& frag2){
+static inline memfragment mergefrags(memfragment& frag1, memfragment& frag2){
 	memfragment spliced;
 	spliced.start = smallest(frag1.start,frag2.start);
 	spliced.size = frag1.size + frag2.size;
 	return spliced;
 }
 
-static inline bool fragstouching(memfragment& frag1,memfragment& frag2){
-	if(smallest(frag1.start + frag1.size,frag2.start + frag2.size) + 1
-	   == largest(frag1.start,frag2.start))return true;
+static inline bool fragstouching(memfragment& frag1, memfragment& frag2){
+	if(smallest(frag1.start + frag1.size, frag2.start + frag2.size) + 1
+	   == largest(frag1.start, frag2.start))return true;
 	return false;
 }
 
@@ -200,11 +200,11 @@ bool unlockmem(int index){
 	return false;
 }
 
-void lockappdata(int index,uint16_t resid){
+void lockappdata(int index, uint16_t resid){
 	apps[index].parts[resid].lockcount++;
 }
 
-bool unlockappdata(int index,uint16_t resid){
+bool unlockappdata(int index, uint16_t resid){
 	if(apps[index].parts[resid].lockcount > 0){
 		apps[index].parts[resid].lockcount--;
 		return true;
@@ -218,7 +218,7 @@ void clensememory(){
 
 	//values must be signed for >= 0 to be valid
 
-	//free unused memory DONE
+	//free unused memory
 	for(int segments = malloclist.size() - 1;segments >= 0;segments--){
 		if(malloclist[segments].released){
 			memfragment newfrag;
@@ -229,9 +229,8 @@ void clensememory(){
 		}
 	}
 
-	//remove fragments that are touching DONE
-	bool compact = true;
-	while(compact)compact = condensefrags();
+	//remove fragments that are touching
+	while(condensefrags());//While true compress more, returns false when fully compressed
 
 	//merge fragments with malloc stack DONE
 	for(int segments = freememfragments.size() - 1;segments >= 0;segments--){

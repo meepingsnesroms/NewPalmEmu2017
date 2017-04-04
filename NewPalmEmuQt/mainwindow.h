@@ -3,10 +3,9 @@
 
 #include <QMainWindow>
 #include <string>
+#include "palmwrapper.h"
 
-using namespace std;
-
-extern int setting_x,setting_y;
+extern emu_config settings;
 
 extern QApplication* thisapp;
 
@@ -21,7 +20,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void errdisplay(string err);
+	void errdisplay(std::string err);
 
 protected:
     void keyPressEvent(QKeyEvent* ev);
