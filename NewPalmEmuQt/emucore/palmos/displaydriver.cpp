@@ -22,9 +22,9 @@
 
 #include "ugui.h"
 
-UG_GUI displayctx;
-
+UG_GUI drawctx;
 offset_68k frameoffset;
+uint16_t active_color_palette[0xFF];
 
 void plotpixel(int16_t x, int16_t y, uint16_t color){
 	put_word(frameoffset + ((y * LCDW + x) * 2), color);
@@ -223,6 +223,7 @@ void rectangle(){
 	//simulatecycles(srcw * srch);
 }
 
+/*
 void dot(){
 	//dbgprintf("Draw Pixel:(Dst:%08x,Dst data:%08x,X:%d,Y:%d,Color:%d)\n",dstptr,getwindata(dstptr),dstx,dsty,drwcolor);
 	offset_68k winbmp = getwinbmp(dstptr);
@@ -230,6 +231,7 @@ void dot(){
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.setpixel(dstx,dsty,drwcolor);
 }
+*/
 
 void bitmap(){
 	dbgprintf("Draw Bitmap:(Src:%08x,Dst:%08x,X:%d,Y:%d)\n",srcptr,dstptr,dstx,dsty);
@@ -1484,12 +1486,7 @@ void windrawbitmap(){
 void windrawpixel(){
 	stackword(x);
 	stackword(y);
-	dstptr = currentdrawwindow;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-
-	dstx = (int16_t)x;
-	dsty = (int16_t)y;
-	dot();
+	UG_DrawPixel(x, y, active_color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
@@ -1942,12 +1939,7 @@ void windrawline(){
 void winerasepixel(){
 	stackword(x);
 	stackword(y);
-	dstptr = currentdrawwindow;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
-
-	dstx = (int16_t)x;
-	dsty = (int16_t)y;
-	dot();
+	UG_DrawPixel(x, y, active_color_palette[get_byte(BACKCOLOR)]);
 	//no return value
 }
 
@@ -2983,8 +2975,13 @@ void evtgeteventWIN(){
 bool init_display_driver(){
 	frameoffset = lcd_start;
 
-	UG_Init(&displayctx, plotpixel, LCDW, LCDH);
+	for(uint16_t cnt = 0;cnt < 0xFF;cnt++){
+		active_color_palette[cnt] = paltopalm(PalmPalette8bpp[cnt]);
+	}
+
+	UG_Init(&drawctx, plotpixel, LCDW, LCDH);
 	UG_FillScreen(C_WHITE);
+
 
 
 	//spareframe does not need to be cleared since it is not accessible from inside the emulator
