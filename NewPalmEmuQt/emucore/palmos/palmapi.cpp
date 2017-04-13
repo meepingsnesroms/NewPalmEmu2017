@@ -322,7 +322,7 @@ void sysrandom(){
 void syscopystringresource(){
 	stackptr(chrptr);
 	stackword(id);
-	offset_68k resptr = getappresource(id,'tSTR');
+	offset_68k resptr = get_app_resource(id,'tSTR');
 	size_t_68k strsize = strlen68k(resptr) + 1;//+1 to count the null terminator
 	memcpy68k(chrptr,resptr,strsize);
 	//no return value

@@ -258,7 +258,7 @@ void RAWimg::from68k(offset_68k m68kaddr, uint8_t type, int16_t datawidth,
 	compression = BitmapCompressionTypeNone;
 	switch(datatype){
 		case WINDOW:
-			m68kaddr = getwinbmp(m68kaddr);
+			m68kaddr = get_win_bmp(m68kaddr);
 		case ICON:
 		case BMP:{
 				if(datatype == BMP)m68kaddr = getbestbitmap(m68kaddr);
@@ -928,7 +928,7 @@ offset_68k load_FRMOBJ(uint8_t type,offset_68k unopenedobj){
 
 uint16_t frmid;
 offset_68k decompressform(uint16_t id){
-	offset_68k form = getappresource(id,'tFRM');
+	offset_68k form = get_app_resource(id,'tFRM');
 
 	//resource does not exist
 	if(!form)return nullptr_68k;
@@ -1038,7 +1038,7 @@ offset_68k decompressform(uint16_t id){
 void releaseformmemory(offset_68k frmptr){
 	//form bitmap
 	uint16_t flags = get_word(frmptr + 8);//windowflags
-	if(flags & bit(8))freememaddr(getwinbmp(frmptr));
+	if(flags & bit(8))freememaddr(get_win_bmp(frmptr));
 
 	//form struct
 	freememaddr(frmptr);

@@ -41,7 +41,7 @@ offset_68k getresource(int dbnum, uint16_t id, uint32_t tp){
 }
 
 //above for current app and includes overlay
-offset_68k getappresource(uint16_t id, uint32_t tp){
+offset_68k get_app_resource(uint16_t id, uint32_t tp){
 	offset_68k addr = nullptr_68k;
 	//check overlay
 	if(curoverlay > -1)addr = getresource(curoverlay,id,tp);
