@@ -152,7 +152,7 @@ void dmnewrecord(){
 
 	dbgprintf("Atp:%d,Index:%d,Dbptr:%d,Size:%d\n",atp,index,dmopenref,size);
 
-	offset_68k recaddr = getfreestorageramhandle(size);
+	offset_68k recaddr = getfreestorageram(size);
 
 	dbgprintf("Addr:%08x\n",recaddr);
 
@@ -199,7 +199,7 @@ void dmnewresource(){
 		return;
 	}
 
-	offset_68k newresource = getfreeheaphandle(size);
+	offset_68k newresource = getfreeheap(size);
 	if(newresource){
 		palmresource resinfo;
 		resinfo.type.typen = belong(type);//fix endian swap //hack
@@ -229,7 +229,7 @@ void dmnewhandle(){
 	stacklong(size);
 	if(size > 0xFFFF)palmabrt();//hack
 	dmopenref -= dmOpenRefOffset;
-	A0 = getfreestorageramhandle(size);
+	A0 = getfreestorageram(size);
 }
 
 void dmwrite(){
@@ -307,8 +307,6 @@ void dmattachrecord(){
 		A0 = nullptr_68k;
 		return;
 	}
-
-	if(ishandle(memisalloc(newhand)) == false)palmabrt();//hack
 
 	uint16_t index = get_word(atp);
 
@@ -434,7 +432,7 @@ void dmremoverecord(){
 	dbgprintf("DB:%d,Index:%04x\n",dmopenref,index);
 
 	offset_68k dataloc = getrecord(dmopenref,index);
-	abstractfree(dataloc);
+	freememaddr(dataloc);
 
 	//more
 	TEMPHACK;
@@ -840,8 +838,7 @@ void memptrnew(){
 
 void memptrunlock(){
 	stackptr(ptr);
-	if(abstractunlock(ptr))D0 = errNone;//a handle can also be unlocked as a pointer
-	else D0 = memErrInvalidParam;//maybe memErrChunkNotLocked
+	D0 = errNone;
 }
 
 void memptrrecoverhandle(){
@@ -863,39 +860,30 @@ void memptrheapid(){
 void memhandlenew(){
 	stacklong(size);
 	if(size > 0xFFFF)palmabrt();//hack
-	A0 = getfreeheaphandle(size);
+	A0 = getfreeheap(size);
 	dbgprintf("A0:%08x,Size:%08x\n",A0,size);
 }
 
 void memhandlefree(){
 	stackptr(handle);
 	dbgprintf("Handle:%08x\n",handle);
-	if(freememaddr(handle,true))D0 = errNone;
+	if(freememaddr(handle))D0 = errNone;
 	else D0 = memErrInvalidParam;
 }
 
 void memhandlelock(){
 	stackptr(handle);
-	//dbgprintf("Handle:%08x\n",handle);
-	if(lockmemaddr(handle,true)){
-		A0 = handle;
-	}else{
-		A0 = nullptr_68k;
-		palmabrt();
-	}
+	A0 = handle;
 }
 
 void memhandleunlock(){
 	stackptr(handle);
-	//dbgprintf("Handle:%08x\n",handle);
-	if(unlockmemaddr(handle,true))D0 = errNone;
-	else D0 = memErrInvalidParam;//maybe memErrChunkNotLocked
+	D0 = errNone;
 }
 
 void memhandlesize(){
 	stackptr(handle);
-	D0 = getsizememaddr(handle,true);//hack fix size of app resource handles
-	//dbgprintf("Handle:%08x,Size:%08x\n",handle,D0);
+	D0 = getsizememaddr(handle);
 }
 
 
@@ -924,19 +912,19 @@ void memchunknew(){
 		if(prelock)palmabrt();//hack
 		chunk = getfreeheap(size);
 	}else{
-		chunk = getfreeheaphandle(size);
-		if(prelock)lockmemaddr(chunk,true);
+		chunk = getfreeheap(size);
+		//if(prelock)lockmemaddr(chunk,true);
 	}
 
 
 	A0 = chunk;
 }
 
-//system use only (apps ignore it though)
+//system use only (apps use them anyway)
 void memchunkfree(){
 	stackptr(chunk);
 	dbgprintf("Chunk:%08x\n",chunk);
-	if(abstractfree(chunk))D0 = errNone;
+	if(freememaddr(chunk))D0 = errNone;
 	else D0 = memErrInvalidParam;
 }
 

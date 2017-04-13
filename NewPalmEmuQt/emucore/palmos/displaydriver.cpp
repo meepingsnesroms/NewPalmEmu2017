@@ -19,9 +19,31 @@
 
 #include "palmos/graphics/palette.h"
 
-//display config //these are hardware abstraction layer values,the actual display size and depth are fixed
+
+#include "ugui.h"
+
+UG_GUI displayctx;
+offset_68k displayoffset;
+void plotpixel_displayctx(int16_t x, int16_t y, uint16_t color){
+	put_word(displayoffset + ((y * LCDW + x) * 2), color);
+}
+
+
+UG_GUI drawctx;
+offset_68k drawoffset;
+uint16_t active_color_palette[0xFF];
+void plotpixel_drawctx(int16_t x, int16_t y, uint16_t color){
+	put_word(drawoffset + ((y * LCDW + x) * 2), color);
+}
+
+
+
+
+//display config
+//these are hardware abstraction layer values, the actual display size and depth are fixed
 uint8_t bpp;
 int16_t width,height;
+
 uint16_t coordsys;
 bool color;
 bool scalevideo;//should be true if using 160*160 resolution,starts true and apps must enable hires mode
@@ -62,7 +84,7 @@ offset_68k newwindowptr;
 bool changewindow;
 
 //what drawing commands use
-offset_68k currentdrawwindow;
+offset_68k current_draw_window;
 
 //what is on the display
 offset_68k currentactivewindow;
@@ -84,8 +106,8 @@ std::unordered_map<uint16_t,offset_68k> openforms;
 std::vector<uint16_t> openformids;//added to access open forms as a list
 
 void setdisplayaddr(offset_68k displayaddr){
-	put_long(oslcdwindow + 4,displayaddr);
-	offset_68k bitmap = getwinbmp(oslcdwindow);
+	put_long(os_lcd_window + 4,displayaddr);
+	offset_68k bitmap = get_win_bmp(os_lcd_window);
 	put_long(bitmap + 16,displayaddr);
 }
 
@@ -149,7 +171,7 @@ uint16_t getformobjid(offset_68k form,uint16_t count){
 }
 
 
-
+//#if 0
 //Virtual GPU
 //virtual GPU registers
 
@@ -192,7 +214,7 @@ int prams;
 
 void copyrectangle(){
 	RAWimg hostwindow(srcptr,WINDOW);
-	offset_68k winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = get_win_bmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.copyrect(hostwindow,srcx,srcy,srcw,srch,dstx,dsty);
@@ -202,7 +224,7 @@ void rectangle(){
 	//dbgprintf("WinBmpPtr:%08x,WinDataPtr:%08x,X:%d,Y:%d,EndX:%d,EndY:%d,Rect:%08x\n",
 	//	   getwinbmp(currentdrawwindow),getwindata(currentdrawwindow),x,y,endx,endy,rectptr);
 
-	offset_68k winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = get_win_bmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	window.rect(srcx,srcy,srcw,srch,prams,drwcolor,dstround);
@@ -211,20 +233,12 @@ void rectangle(){
 	//simulatecycles(srcw * srch);
 }
 
-void dot(){
-	//dbgprintf("Draw Pixel:(Dst:%08x,Dst data:%08x,X:%d,Y:%d,Color:%d)\n",dstptr,getwindata(dstptr),dstx,dsty,drwcolor);
-	offset_68k winbmp = getwinbmp(dstptr);
-	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
-	window.setpixel(dstx,dsty,drwcolor);
-}
-
 void bitmap(){
 	dbgprintf("Draw Bitmap:(Src:%08x,Dst:%08x,X:%d,Y:%d)\n",srcptr,dstptr,dstx,dsty);
 
 	RAWimg palmbmp(srcptr,BMP,UNDEFINED,UNDEFINED,UNDEFINED,false);
 
-	offset_68k winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = get_win_bmp(dstptr);
 	dbgprintf("FrameBuffLoc:%08x\n",getbmpdata(winbmp));
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	//FBWriter window(getbmpdata(winbmp),get_word(winbmp),getbmpbpp(winbmp));
@@ -244,7 +258,7 @@ void text(){
 		activefont->setactivefont(tempnewfont);
 	}
 
-	offset_68k winbmp = getwinbmp(dstptr);
+	offset_68k winbmp = get_win_bmp(dstptr);
 	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
 	offset_68k count = 0;
 	char curchr;
@@ -319,29 +333,23 @@ void text(){
 	*/
 }
 
-void line(){
-	offset_68k winbmp = getwinbmp(dstptr);
-	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
-	window.line(srcx,srcy,srcendx,srcendy,prams,drwcolor);
-}
-
 //End of virtual GPU
+//#endif
 
 
 //helpers
-offset_68k getuiresource(uint16_t id,uint32_t type){
-	return getappresource(id,type);
+offset_68k get_ui_resource(uint16_t id,uint32_t type){
+	return get_app_resource(id,type);
 }
 
-bool inboundbox(UISQUARE& box,COORD compare){
+bool in_bound_box(UISQUARE& box,COORD compare){
 	if(compare.x >= box.start.x && compare.x <= box.end.x)
 		if(compare.y >= box.start.y && compare.y <= box.end.y)return true;
 
 	return false;
 }
 
-bool inboundbox(SQUARE& box,COORD compare){
+bool in_bound_box(SQUARE& box,COORD compare){
 	if(compare.x >= box.start.x && compare.x <= box.end.x)
 		if(compare.y >= box.start.y && compare.y <= box.end.y)return true;
 
@@ -414,11 +422,12 @@ COORD trackpen(){
 	return loc;
 }
 
+//#if 0
 void drawborder(SQUARE area){
 	srcsquare = area;
 	drwcolor = 0xFFFF;//white
 	prams = FILL;
-	dstptr = oslcdwindow;//hack
+	dstptr = os_lcd_window;//hack
 	rectangle();
 	//palmabrt();//hack
 }
@@ -427,7 +436,7 @@ void drawbutton(SQUARE area){
 	srcsquare = area;
 	drwcolor = 0x07E0;//green
 	prams = FILL;
-	dstptr = oslcdwindow;//hack
+	dstptr = os_lcd_window;//hack
 	rectangle();
 	//palmabrt();//hack
 }
@@ -436,7 +445,7 @@ void drawbutton(SQUARE area){
 void radioactiveborder(SQUARE area,bool round){
 	palmabrt();
 }
-
+//#endif
 
 //used by emulator when writing os data to screen and the onscreen image needs to be preserved(like alerts)
 static uint16_t spareframe[LCDMAXPIX];
@@ -466,7 +475,7 @@ bool relaytouchevent(offset_68k eventptr){
 	size_t_68k totalobjs = objects.size();
 	offset_68k curuisquare;
 	for(curuisquare = 0;curuisquare < totalobjs;curuisquare++){
-		if(inboundbox(objects[curuisquare],touch)){
+		if(in_bound_box(objects[curuisquare],touch)){
 			//send here
 			dbgprintf("Object:%d has been pushed\n",curuisquare);
 			//no checks are needed because only active objects are in the collision matrix
@@ -572,7 +581,7 @@ void relayfieldevent(offset_68k eventptr){
 
 TEMPHACK //all color get functions are unconfirmed and are hacks
 uint16_t getbackcolor(){
-	offset_68k activebmp = getwinbmp(activeform);
+	offset_68k activebmp = get_win_bmp(activeform);
 	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
@@ -601,7 +610,7 @@ uint16_t getbackcolor(){
 }
 
 uint16_t getforecolor(){
-	offset_68k activebmp = getwinbmp(activeform);
+	offset_68k activebmp = get_win_bmp(activeform);
 	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
@@ -630,7 +639,7 @@ uint16_t getforecolor(){
 }
 
 uint16_t gettextcolor(){
-	offset_68k activebmp = getwinbmp(activeform);
+	offset_68k activebmp = get_win_bmp(activeform);
 	uint8_t colortype = getbmpbpp(activebmp);
 	switch(colortype){
 		case 16:
@@ -706,7 +715,7 @@ void fieldappointtextptr(offset_68k field, offset_68k ptr){
 	if(islocked(mallocchk))palmabrt();
 	*/
 
-	offset_68k mallocsize = abstractgetsize(ptr);
+	offset_68k mallocsize = getsizememaddr(ptr);
 
 	fieldappointtextaddr(field,ptr,mallocsize,0);
 }
@@ -721,10 +730,8 @@ void fieldappointtexthandle(offset_68k field,offset_68k handle){
 
 	//validity checks
 	if(mallocchk == -1)palmabrt();
-	if(!ishandle(mallocchk))palmabrt();
-	if(islocked(mallocchk))palmabrt();
 
-	offset_68k mallocsize = abstractgetsize(handle);//malloclist[mallocchk].size;
+	offset_68k mallocsize = getsizememaddr(handle);//malloclist[mallocchk].size;
 
 	fieldappointtextaddr(field,handle,mallocsize,0);
 }
@@ -732,7 +739,7 @@ void fieldappointtexthandle(offset_68k field,offset_68k handle){
 //to accomadate different type names ABMP,Tbmp,tAIB,tbmf,taif,PICT
 //may or may not count tFBM,Tbsb (boot screen bitmap)
 offset_68k getbitmap(uint16_t bmpid){
-	offset_68k bitmap = getappresource(bmpid,'Tbmp');
+	offset_68k bitmap = get_app_resource(bmpid,'Tbmp');
 	//if(!bitmap)bitmap = getappresource(bmpid,'PICT');
 	if(bitmap)return bitmap;
 	else palmabrt();//error
@@ -1043,7 +1050,7 @@ void updateanddrawform(offset_68k form){
 	}
 
 	//clean up form framebuffer //may break some apps check os version before deleting
-	offset_68k formbmp = getwinbmp(form);
+	offset_68k formbmp = get_win_bmp(form);
 	srcx = 0;
 	srcy = 0;
 	srcw = get_word(formbmp);
@@ -1073,8 +1080,8 @@ void updateanddrawform(offset_68k form){
 		placeformobj(form,count);
 	}
 
-	srcptr = getwinbmp(form);
-	dstptr = oslcdwindow;
+	srcptr = get_win_bmp(form);
+	dstptr = os_lcd_window;
 	//dstptr = getwindisplaywindow(formptr);//resolution fix
 	dstx = 0,dsty = 0;
 	bitmap();
@@ -1092,7 +1099,7 @@ void updateanddrawform(offset_68k form){
 		addnewevent(enterevt);
 
 		currentactivewindow = form;
-		currentdrawwindow = form;
+		current_draw_window = form;
 
 		//enabled flag in form window is unused in all os versions
 	}
@@ -1241,7 +1248,7 @@ void controleventhandler(offset_68k controlptr,offset_68k eventptr){
 				//check bounds and send ctlEnterEvent
 				SQUARE bounds = get_square(controlptr + 2);
 				COORD touch = get_coord(eventptr + 4);
-				if(inboundbox(bounds,touch)){
+				if(in_bound_box(bounds,touch)){
 					osevent controlenter;
 					controlenter.type = ctlEnterEvent;
 					controlenter.data.push_back(get_word(controlptr));//control id
@@ -1267,7 +1274,7 @@ void controleventhandler(offset_68k controlptr,offset_68k eventptr){
 
 				sendpenevents = false;
 				COORD releasepoint = trackpen();//waits for pen release
-				if(inboundbox(box,releasepoint)){
+				if(in_bound_box(box,releasepoint)){
 					ctlevent.type = ctlSelectEvent;
 					ctlevent.data.push_back(ctlid);//control id
 					ctlevent.data.push_back(controlptr);//control pointer
@@ -1397,9 +1404,9 @@ void windeletewindow(){
 		uint16_t flags = get_word(winhandle + 8);
 		//free bitmap if flag set
 		if(flags & bit(8)){
-			abstractfree(getwinbmp(winhandle));
+			freememaddr(get_win_bmp(winhandle));
 		}
-		abstractfree(winhandle);
+		freememaddr(winhandle);
 
 		//maybe more
 	}
@@ -1415,7 +1422,7 @@ void wineraserectangle(){
 	stackword(cornerrnd);
 
 	srcsquare = get_square(rectptr);
-	dstptr = currentdrawwindow;
+	dstptr = current_draw_window;
 	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
 	dstround = cornerrnd;
 	prams = ERASE;
@@ -1428,7 +1435,7 @@ void windrawrectangle(){
 	stackword(cornerrnd);
 
 	srcsquare = get_square(rectptr);
-	dstptr = currentdrawwindow;
+	dstptr = current_draw_window;
 	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
 	dstround = cornerrnd;
 	prams = OUTLINE;
@@ -1441,7 +1448,7 @@ void windrawrectangleframe(){
 	stackptr(rectptr);
 
 	srcsquare = get_square(rectptr);
-	dstptr = currentdrawwindow;
+	dstptr = current_draw_window;
 	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
 	dstround = 0;//hack
 	prams = OUTLINE;
@@ -1464,7 +1471,7 @@ void windrawbitmap(){
 	dstx = x;
 	dsty = y;
 	srcptr = bmpptr;
-	dstptr = currentdrawwindow;
+	dstptr = current_draw_window;
 	bitmap();
 	//no return value
 }
@@ -1472,12 +1479,7 @@ void windrawbitmap(){
 void windrawpixel(){
 	stackword(x);
 	stackword(y);
-	dstptr = currentdrawwindow;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-
-	dstx = (int16_t)x;
-	dsty = (int16_t)y;
-	dot();
+	UG_DrawPixel(x, y, active_color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
@@ -1508,7 +1510,9 @@ void winscreenmode(){
 			dbgprintf("getdefaultscreenmode\n");
 			return;
 		case winScreenModeSet:{
-				uint32_t resultw = width,resulth = height,resultbpp = bpp;
+				uint32_t resultw = width;
+				uint32_t resulth = height;
+				uint32_t resultbpp = bpp;
 				bool resultcolor = color;
 
 				if(widthptr)resultw = get_long(widthptr);
@@ -1643,8 +1647,7 @@ void winscreenunlock(){
 
 void wingetbitmap(){
 	stackptr(window);
-	//dbgprintf("Windowptr:%08x\n",window);
-	A0 = getwinbmp(window);
+	A0 = get_win_bmp(window);
 }
 
 void winsetforecolor(){
@@ -1666,22 +1669,22 @@ void winsettextcolor(){
 }
 
 void wingetdisplaywindow(){
-	A0 = oslcdwindow;
+	A0 = os_lcd_window;
 }
 
 void wingetdrawwindow(){
-	A0 = currentdrawwindow;
+	A0 = current_draw_window;
 }
 
 void winsetdrawwindow(){
 	stackptr(winptr);
 	//dbgprintf("Old Addr:%08x,New Addr:%08x\n",currentdrawwindow,winptr);
-	A0 = currentdrawwindow;
-	if(winptr)currentdrawwindow = winptr;
+	A0 = current_draw_window;
+	if(winptr)current_draw_window = winptr;
 	else{
 		dbgprintf("Cant set drawwindow to nullptr_68k,Setting to oslcdwindow"
 			   "(this is not supported above palm os 3.0)\n");//hack
-		currentdrawwindow = oslcdwindow;
+		current_draw_window = os_lcd_window;
 		palmabrt();//hack
 	}
 }
@@ -1693,7 +1696,7 @@ void winsetactivewindow(){
 	else{
 		dbgprintf("Cant set activewindow to nullptr_68k,Setting to oslcdwindow"
 			   "(this is not supported above palm os 3.0)\n");//hack
-		newwindowptr = oslcdwindow;
+		newwindowptr = os_lcd_window;
 		palmabrt();//hack
 	}
 
@@ -1714,7 +1717,7 @@ void winsetclip(){
 	stackword(endx);
 	stackword(endy);
 
-	offset_68k clipptr = getwinclipping(currentdrawwindow);
+	offset_68k clipptr = get_win_clipping(current_draw_window);
 
 	put_word(clipptr,startx);
 	put_word(clipptr + 2,starty);
@@ -1736,7 +1739,7 @@ void windrawchars(){
 
 	dbgprintf("Chars:%s\n",readstring(chrsptr).c_str());//HACK use length if given
 
-	dstptr = currentdrawwindow;
+	dstptr = current_draw_window;
 	dstx = thisx;
 	dsty = thisy;
 	srcsize = (int16_t)length;
@@ -1747,18 +1750,18 @@ void windrawchars(){
 }
 
 void winresetclip(){
-	uint16_t winw = get_word(currentdrawwindow);
-	uint16_t winh = get_word(currentdrawwindow + 2);
-	offset_68k clip = getwinclipping(currentdrawwindow);
+	uint16_t winw = get_word(current_draw_window);
+	uint16_t winh = get_word(current_draw_window + 2);
+	offset_68k clip = get_win_clipping(current_draw_window);
 
-	put_word(clip,0);
-	put_word(clip + 2,0);
+	put_word(clip, 0);
+	put_word(clip + 2, 0);
 
-	if(winw < LCDW)put_word(clip + 4,winw);
-	else put_word(clip + 4,LCDW);
+	if(winw < LCDW)put_word(clip + 4, winw);
+	else put_word(clip + 4, LCDW);
 
-	if(winh < LCDH)put_word(clip + 6,winh);
-	else put_word(clip + 6,LCDH);
+	if(winh < LCDH)put_word(clip + 6, winh);
+	else put_word(clip + 6, LCDH);
 	//no return value
 }
 
@@ -1771,10 +1774,10 @@ void wincopyrectangle(){
 	stackbyte(mode);
 
 	if(srcwin)srcptr = srcwin;
-	else srcptr = currentdrawwindow;
+	else srcptr = current_draw_window;
 
 	if(dstwin)dstptr = dstwin;
-	else dstptr = currentdrawwindow;
+	else dstptr = current_draw_window;
 
 	srcsquare = get_square(srcrect);
 
@@ -1803,7 +1806,7 @@ void winpalette(){
 		dbgprintf("top robin premium dirt noodles.\n");
 	}
 
-	offset_68k winpal = getwinpalette(currentdrawwindow);
+	offset_68k winpal = getwinpalette(current_draw_window);
 	switch(operation){
 		case winPaletteGet:
 			memcpy68k(userpalarray,winpal + startindex * 4,(int16_t)paletteentrys * 4);
@@ -1833,14 +1836,14 @@ void winrgbtoindex(){
 	uint8_t blue = get_byte(rgbcolor + 3);
 
 	uint8_t bestindex = 0;
-	offset_68k clut = getwinpalette(currentdrawwindow);
-	uint16_t tablesize = getwinpalettenumentrys(currentdrawwindow);
+	offset_68k clut = getwinpalette(current_draw_window);
+	uint16_t tablesize = getwinpalettenumentrys(current_draw_window);
 
 	TEMPHACK;
 	//get bpp and compare indicies properly
 	offset_68k count;
 	if(clut == nullptr_68k || tablesize == 0){
-		uint8_t bpp = getbmpbpp(getwinbmp(currentdrawwindow));
+		uint8_t bpp = getbmpbpp(get_win_bmp(current_draw_window));
 		bestindex = getbestdefaultindex(red,green,blue,bpp);
 	}
 	else{
@@ -1860,7 +1863,7 @@ void winrgbtoindex(){
 }
 
 void winpushdrawstate(){
-	offset_68k curdrwstate = getwindrawstate(currentdrawwindow);
+	offset_68k curdrwstate = getwindrawstate(current_draw_window);
 	offset_68k newdrwptr = getfreeheap(44);
 
 	drawstates.push_back(curdrwstate);
@@ -1888,54 +1891,24 @@ void wingetdisplayextent(){
 
 TEMPHACK
 void winerasewindow(){
-	//just calls wineraserectangle
-
-	offset_68k winbmp = getwinbmp(currentdrawwindow);
-
-	srcx = 0;
-	srcy = 0;
-	srcw = get_word(winbmp);//draw window width
-	srch = get_word(winbmp + 2);//draw window height
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);//background color
-	prams = ERASE;
-	dstptr = currentdrawwindow;
-	rectangle();
-
-	TEMPHACK;
-	//is not suppose to erase the window border
-
+	//this function does not erase the border
+	//UG_FillScreen(active_color_palette[get_byte(BACKCOLOR)]);
 	//no return value
 }
 
-TEMPHACK
-//unsure if correct
 void windrawline(){
-	stackword(sx);
-	stackword(sy);
-	stackword(ex);
-	stackword(ey);
-
-	srcx = sx;
-	srcy = sy;
-	srcendx = ex;
-	srcendy = ey;
-	dstptr = currentdrawwindow;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-	prams = SOLID;
-	line();
-
+	stackword(start_x);
+	stackword(start_y);
+	stackword(end_x);
+	stackword(end_y);
+	UG_DrawLine(start_x, start_y, end_x, end_y, active_color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
 void winerasepixel(){
 	stackword(x);
 	stackword(y);
-	dstptr = currentdrawwindow;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
-
-	dstx = (int16_t)x;
-	dsty = (int16_t)y;
-	dot();
+	UG_DrawPixel(x, y, active_color_palette[get_byte(BACKCOLOR)]);
 	//no return value
 }
 
@@ -1956,7 +1929,7 @@ void winpaintbitmap(){
 			dstx = x;
 			dsty = y;
 			srcptr = bmpptr;
-			dstptr = currentdrawwindow;
+			dstptr = current_draw_window;
 			bitmap();
 			return;
 		case winPaintInverse://swap colors
@@ -2097,7 +2070,7 @@ void bmpcreate(){
 
 	//palm sets all pixels to white
 	//get clear params
-	uint rowbytes = (w * bpp) / 8;//full bytes in row
+	uint32_t rowbytes = (w * bpp) / 8;//full bytes in row
 	bool leftoverbyte = (((w * bpp) % 8) != 0);//has byte with unused data on end(since all rows are byte aligned)
 	if(leftoverbyte)rowbytes += 1;
 	//clear bitmap to white
@@ -2475,7 +2448,7 @@ void frmdrawform(){
 
 	updateanddrawform(formptr);
 
-	dbgprintf("ACTwin:%08x,DRAWwin:%08x,Thisform:%08x\n",currentactivewindow,currentdrawwindow,formptr);
+	dbgprintf("ACTwin:%08x,DRAWwin:%08x,Thisform:%08x\n",currentactivewindow,current_draw_window,formptr);
 
 	//no return value
 }
@@ -2494,7 +2467,7 @@ void frmcustomalert(){
 
 	sendpenevents = false;
 
-	offset_68k alert = getuiresource(resourcenum,'Talt');
+	offset_68k alert = get_ui_resource(resourcenum,'Talt');
 
 	uint16_t alertype = get_word(alert);
 	uint16_t helprscid = get_word(alert + 2);
@@ -2577,12 +2550,12 @@ void frmcustomalert(){
 		m68k_handle_changes();
 		pressloc = waitforpen();
 		for(button = 0;button < numbuttons;button++){
-			if(inboundbox(buttonbounds[button],pressloc)){
+			if(in_bound_box(buttonbounds[button],pressloc)){
 
 				//change button color
 
 				releaseloc = trackpen();
-				if(inboundbox(buttonbounds[button],releaseloc)){
+				if(in_bound_box(buttonbounds[button],releaseloc)){
 
 					//change button color
 
@@ -2604,7 +2577,7 @@ void frmcustomalert(){
 void frmalert(){
 	stackword(id);
 	uint16_t button = 0;
-	offset_68k alert = getuiresource(id,'Talt');
+	offset_68k alert = get_ui_resource(id,'Talt');
 
 	uint16_t alerttype = get_word(alert);
 	uint16_t helprsc = get_word(alert + 2);
@@ -2770,7 +2743,7 @@ void fldsettexthandle(){
 
 void flddrawfield(){
 	stackptr(field);
-	drawfield(oslcdwindow,field);//to screen or activeform unsure? //hack
+	drawfield(os_lcd_window,field);//to screen or activeform unsure? //hack
 	//palmabrt();
 	//no return value
 }
@@ -2889,7 +2862,7 @@ void rctptinrectangle(){
 	SQUARE rect = get_square(rectptr);
 	COORD testpt = {(int16_t)x,(int16_t)y};
 
-	D0 = inboundbox(rect,testpt);
+	D0 = in_bound_box(rect,testpt);
 }
 
 TEMPHACK
@@ -2958,7 +2931,7 @@ void evtgeteventWIN(){
 		addnewevent(opennew);
 
 		currentactivewindow = newwindowptr;
-		currentdrawwindow = newwindowptr;
+		current_draw_window = newwindowptr;
 
 		changewindow = false;
 	}
@@ -2968,23 +2941,35 @@ void evtgeteventWIN(){
 
 
 //sets up memory and varibles
-bool initdisplaydriver(){
+bool init_display_driver(){
+	displayoffset = lcd_start;
+	drawoffset = lcd_start;
+
+	for(uint16_t cnt = 0;cnt < 0xFF;cnt++){
+		active_color_palette[cnt] = paltopalm(PalmPalette8bpp[cnt]);
+	}
+
+	UG_Init(&displayctx, plotpixel_displayctx, LCDW, LCDH);
+	UG_Init(&drawctx, plotpixel_drawctx, LCDW, LCDH);
+
+	//clear screen
+	UG_SelectGUI(&displayctx);
+	UG_FillScreen(C_WHITE);
+
+	UG_SelectGUI(&drawctx);
+
+
+
 	//spareframe does not need to be cleared since it is not accessible from inside the emulator
 	//(it is only drawn after being filled with valid screen data)
 
 	scalevideo = true;
 
-	width = 160;
-	height = 160;
-	bpp = LCDBPP;
-	color = LCDHASCOLOR;
-
-	/*
-	width = LCDW;
+	width  = LCDW;
 	height = LCDH;
-	bpp = LCDBPP;
-	color = LCDHASCOLOR;
-	*/
+	bpp	   = LCDBPP;
+	color  = LCDHASCOLOR;
+
 
 	TEMPHACK;
 	//status bar on devices with dynamic input area
@@ -2997,15 +2982,15 @@ bool initdisplaydriver(){
 
 	osdrawstate = newdrawstate();
 	lcdbitmaptype = getfreeheap(20);
-	oslcdwindow = getfreeheap(68);
+	os_lcd_window = getfreeheap(68);
 	/*
 	initformwindow(oslcdwindow,LCDW,LCDH,bit(11) | bit(10) | bit(8),
 			  0,lcdbitmaptype,osdrawstate,0);
 	*/
-	initformwindow(oslcdwindow,160,160,bit(11) | bit(10) | bit(8),
+	initformwindow(os_lcd_window,160,160,bit(11) | bit(10) | bit(8),
 	          0,lcdbitmaptype,osdrawstate,0);
 
-	if(oslcdwindow == nullptr_68k || lcdbitmaptype == nullptr_68k || osdrawstate == nullptr_68k){
+	if(os_lcd_window == nullptr_68k || lcdbitmaptype == nullptr_68k || osdrawstate == nullptr_68k){
 		palmabrt();//hack
 		return false;
 	}
@@ -3027,8 +3012,8 @@ bool initdisplaydriver(){
 	//most likely *double or *single not *native
 	put_word(COORDSYS,kCoordinatesNative);
 
-	currentdrawwindow = oslcdwindow;
-	currentactivewindow = oslcdwindow;
+	current_draw_window = os_lcd_window;
+	currentactivewindow = os_lcd_window;
 
 	//fonts
 	offset_68k stdfntaddr = getfontaddr(stdFont);
@@ -3051,7 +3036,7 @@ bool initdisplaydriver(){
 	return true;
 }
 
-void deinitdisplaydriver(){
+void deinit_display_driver(){
 }
 
 

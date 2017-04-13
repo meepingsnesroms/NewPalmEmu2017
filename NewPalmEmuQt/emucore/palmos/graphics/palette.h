@@ -39,9 +39,9 @@ inline uint16_t getcolortblindex(offset_68k customtable,uint8_t index){
 }
 
 //a uint should be good enough for this function (palm os dosent use 32bit color)
-inline uint bitstocolors(int bits){
+inline uint32_t bitstocolors(int bits){
 	//2 to the power of bpp(bits per pixel)
-	uint colors = 1;
+	uint32_t colors = 1;
 	while(bits > 0){
 		colors *= 2;
 		bits--;

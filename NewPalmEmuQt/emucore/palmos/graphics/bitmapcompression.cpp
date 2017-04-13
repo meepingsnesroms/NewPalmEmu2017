@@ -6,19 +6,19 @@
 
 
 static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint16_t rowbytes/*number of bytes per scanline*/){
-	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
+	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
 
-	uint rowptr = 0;//byte in compressed data
+	uint32_t rowptr = 0;//byte in compressed data
 	uint32_t datanum = 0;//byte in uncompressed data
-	uint rowindex = 0;//byte in current scanline
+	uint32_t rowindex = 0;//byte in current scanline
 	uint8_t newdataflags;
 	while(rowptr < compressedsize){
 		newdataflags = compresseddata[rowptr];
 		rowptr++;
 
-		for(uint bytecount = 0;bytecount < 8;bytecount++){
+		for(uint32_t bytecount = 0;bytecount < 8;bytecount++){
 			//plot bytes
 			if(newdataflags & bit(7 - bytecount)){
 				//this byte is new,get a byte from the stream
@@ -41,11 +41,11 @@ static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint1
 }
 
 static void BMP_RLE(uint8_t* compresseddata,uint8_t* uncompresseddata){
-	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
+	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
 
-	uint bunny = 0;//current position in the input
+	uint32_t bunny = 0;//current position in the input
 	uint32_t loc = 0;//current position in the output
 	uint8_t headerbyte,databyte;
 	while(bunny < compressedsize){
@@ -63,11 +63,11 @@ static void BMP_RLE(uint8_t* compresseddata,uint8_t* uncompresseddata){
 }
 
 static void BMP_PackBits(uint8_t* compresseddata,uint8_t* uncompresseddata){
-	uint compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
+	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
 
-	uint bunny = 0;//current position in the input
+	uint32_t bunny = 0;//current position in the input
 	uint32_t loc = 0;//current position in the output
 	int8_t headerbyte;//the current command (-128 = skip,< 0 repeat,>= 0 unique data)
 	while(bunny < compressedsize){

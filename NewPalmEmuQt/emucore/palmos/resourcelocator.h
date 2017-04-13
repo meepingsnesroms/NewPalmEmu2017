@@ -18,7 +18,7 @@ struct dbinfo{
 bool typecreatorCMP(uint32_t type, uint32_t creator, uint32_t cmptype, uint32_t cmpcreator, bool zeroiswild, bool swapendian);
 
 offset_68k getresource(int dbnum, uint16_t id, uint32_t tp);
-offset_68k getappresource(uint16_t id, uint32_t tp);
+offset_68k get_app_resource(uint16_t id, uint32_t tp);
 offset_68k getrecord(int dbnum, uint16_t index);
 //only applies to resource dbs
 uint16_t resourcenumfromtypeid(int appnum, uint16_t id, uint32_t tp);

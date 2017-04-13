@@ -26,7 +26,7 @@ void showBSOD(std::string message){
 
 	int x = 0;
 	int y = 0;
-	uint count = 0;
+	uint32_t count = 0;
 	while(count < message.length()){
 		drawbioschar(x,y,message[count]);
 		x += 5 + 1/*space between chars*/;

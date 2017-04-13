@@ -65,16 +65,16 @@ void setimageparams(int width_L,int height_L,int imagebpp_L){
 }
 
 void setpalette(uint8_t** newpalette){
-	uint indexes = bitstocolors(imagebpp);
-	for(uint index = 0;index < indexes;index++){
+	uint32_t indexes = bitstocolors(imagebpp);
+	for(uint32_t index = 0;index < indexes;index++){
 		activepalette[index] = paltopalm(newpalette[index]);
 	}
 }
 
 void setpalette68k(offset_68k newpalette){
-	//uint indexes = bitstocolors(imagebpp);
-	uint indexes = get_word(newpalette);//read it from the palette
-	for(uint index = 0;index < indexes;index++){
+	//uint32_t indexes = bitstocolors(imagebpp);
+	uint32_t indexes = get_word(newpalette);//read it from the palette
+	for(uint32_t index = 0;index < indexes;index++){
 		activepalette[index] = getcolortblindex(newpalette,index);
 	}
 }
