@@ -68,28 +68,28 @@ inline uint16_t getbmprowbytes(offset_68k bmpptr){
 }
 
 //window
-inline offset_68k getwinbmp(offset_68k winptr){
+inline offset_68k get_win_bmp(offset_68k winptr){
 	return get_long(winptr + 26);
 }
 
 inline offset_68k getwindata(offset_68k winptr){
-	return getbmpdata(getwinbmp(winptr));
+	return getbmpdata(get_win_bmp(winptr));
 }
 
 inline offset_68k getwinbounds(offset_68k winptr){
 	return winptr + 10;
 }
 
-inline offset_68k getwinclipping(offset_68k winptr){
+inline offset_68k get_win_clipping(offset_68k winptr){
 	return winptr + 18;
 }
 
 inline offset_68k getwinpalette(offset_68k winptr){
-	return getbmppalette(getwinbmp(winptr));
+	return getbmppalette(get_win_bmp(winptr));
 }
 
 inline uint16_t getwinpalettenumentrys(offset_68k winptr){
-	return getbmppalettenumentrys(getwinbmp(winptr));
+	return getbmppalettenumentrys(get_win_bmp(winptr));
 }
 
 inline void setwinbmp(offset_68k winptr,offset_68k bitmap){

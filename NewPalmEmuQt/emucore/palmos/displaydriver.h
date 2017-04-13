@@ -2,6 +2,7 @@
 #define DISPLAYDRIVER
 
 #include "m68k.h"
+#include "ugui.h"
 
 // Selectors for the PIN trap dispatcher
 #define	pinPINSetInputAreaState			  0
@@ -188,7 +189,7 @@ enum{
 
 
 //what drawing commands use
-extern offset_68k currentdrawwindow;
+extern offset_68k current_draw_window;
 
 //what is on the display
 extern offset_68k currentactivewindow;
@@ -317,7 +318,8 @@ void evtgeteventWIN();
 bool init_display_driver();
 void deinit_display_driver();
 
-
+extern UG_GUI displayctx;
+extern UG_GUI drawctx;
 
 //drivers
 void appTouchDriver(int x,int y,bool pressed);
