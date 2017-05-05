@@ -41,7 +41,7 @@ extern std::mutex										timer_lock;
 extern offset_68k appexceptionlist;
 
 //Ui
-extern offset_68k os_lcd_window, lcdbitmaptype;
+//extern offset_68k os_lcd_window, lcdbitmaptype;
 
 //Debug
 extern std::string	lasttrap;

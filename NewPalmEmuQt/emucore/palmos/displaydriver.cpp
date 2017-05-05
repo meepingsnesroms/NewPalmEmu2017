@@ -22,49 +22,53 @@
 
 #include "ugui.h"
 
-UG_GUI displayctx;
-offset_68k displayoffset;
-void plotpixel_displayctx(int16_t x, int16_t y, uint16_t color){
-	put_word(displayoffset + ((y * LCDW + x) * 2), color);
+struct{
+	uint8_t bpp;
+	int16_t width;
+	int16_t height;
+	bool color;
+	bool scale_video;//should be true if using 160*160 resolution, starts true and apps must enable hires mode
+	int screenlockcount;
+	offset_68k draw_state;
+
+	offset_68k lcd_window;//represents the framebuffer as a window
+	offset_68k lcd_bitmap;//represents the framebuffer as a palm bitmap struct
+
+	UG_GUI draw_ctx;
+	offset_68k draw_offset;//the current draw window bitmap data
+
+	offset_68k current_draw_window;//the window to draw to
+	offset_68k current_active_window;//the window to render
+
+	uint32_t UIColorTable[31];
+	uint16_t color_palette[0xFF];
+
+	void set_draw_window(offset_68k new_draw_window){
+		current_draw_window = new_draw_window;
+		draw_offset = getwindata(new_draw_window);//get window pixel data address
+	}
+	offset_68k get_draw_window(){
+		return current_draw_window;
+	}
+}renderer;
+
+void plotpixel_drawctx(int16_t x, int16_t y, uint16_t pixcolor){
+	put_word(renderer.draw_offset + ((y * renderer.width + x) * 2), pixcolor);
 }
 
+#define XFERTYPE  (renderer.draw_state)//uint8_t
+#define PATTERN	  (renderer.draw_state + 1)
+#define UNDERLINE (renderer.draw_state + 2)
+#define FONTID	  (renderer.draw_state + 3)//uint8_t
+#define FONTPTR	  (renderer.draw_state + 4)//offset_68k
+#define FORECOLOR (renderer.draw_state + 18)//uint8_t
+#define BACKCOLOR (renderer.draw_state + 19)//uint8_t
+#define TEXTCOLOR (renderer.draw_state + 20)//uint8_t
+#define COORDSYS  (renderer.draw_state + 32)//uint16_t
 
-UG_GUI drawctx;
-offset_68k drawoffset;
-uint16_t active_color_palette[0xFF];
-void plotpixel_drawctx(int16_t x, int16_t y, uint16_t color){
-	put_word(drawoffset + ((y * LCDW + x) * 2), color);
+offset_68k get_draw_state(){
+	return renderer.draw_state;
 }
-
-
-
-
-//display config
-//these are hardware abstraction layer values, the actual display size and depth are fixed
-uint8_t bpp;
-int16_t width,height;
-
-uint16_t coordsys;
-bool color;
-bool scalevideo;//should be true if using 160*160 resolution,starts true and apps must enable hires mode
-int screenlockcount;
-uint32_t UIColorTable[31];
-offset_68k osdrawstate;//theres only one drawstate,every window points to this drawstate
-#define XFERTYPE  (osdrawstate)//uint8_t
-#define PATTERN	  (osdrawstate + 1)
-#define UNDERLINE (osdrawstate + 2)
-#define FONTID	  (osdrawstate + 3)//uint8_t
-#define FONTPTR	  (osdrawstate + 4)//offset_68k
-#define FORECOLOR (osdrawstate + 18)//uint8_t
-#define BACKCOLOR (osdrawstate + 19)//uint8_t
-#define TEXTCOLOR (osdrawstate + 20)//uint8_t
-#define COORDSYS  (osdrawstate + 32)//uint16_t
-
-
-#define FORECOLORRGB (osdrawstate + 18)//uint8_t
-#define BACKCOLORRGB (osdrawstate + 19)//uint8_t
-#define TEXTCOLORRGB (osdrawstate + 20)//uint8_t
-
 
 
 //uncompressed version of current font
@@ -83,12 +87,6 @@ COORD touchstart;
 offset_68k newwindowptr;
 bool changewindow;
 
-//what drawing commands use
-offset_68k current_draw_window;
-
-//what is on the display
-offset_68k currentactivewindow;
-
 std::vector<offset_68k> windowlist;
 
 std::vector<offset_68k> drawstates;
@@ -106,8 +104,8 @@ std::unordered_map<uint16_t,offset_68k> openforms;
 std::vector<uint16_t> openformids;//added to access open forms as a list
 
 void setdisplayaddr(offset_68k displayaddr){
-	put_long(os_lcd_window + 4,displayaddr);
-	offset_68k bitmap = get_win_bmp(os_lcd_window);
+	put_long(renderer.lcd_window + 4,displayaddr);
+	offset_68k bitmap = get_win_bmp(renderer.lcd_window);
 	put_long(bitmap + 16,displayaddr);
 }
 
@@ -370,12 +368,12 @@ void resetcollisionmatrix(){
 	objects.clear();
 }
 
-void disableobject(offset_68k objectptr,uint8_t type){
+void disableobject(offset_68k objectptr, uint8_t type){
 	uint16_t attr;
 	switch(type){
 		case frmFieldObj:
 			attr = get_word(objectptr + 10);
-			put_word(objectptr + 10,attr & ~bit(15));
+			put_word(objectptr + 10, attr & ~bit(15));
 			return;
 		//case frmControlObj:
 			//break;
@@ -383,7 +381,7 @@ void disableobject(offset_68k objectptr,uint8_t type){
 			//break;
 		case frmLabelObj:
 			attr = get_word(objectptr + 6);
-			put_word(objectptr + 6,attr & ~bit(15));
+			put_word(objectptr + 6, attr & ~bit(15));
 			return;
 		//case frmGadgetObj:
 			//break;
@@ -427,7 +425,7 @@ void drawborder(SQUARE area){
 	srcsquare = area;
 	drwcolor = 0xFFFF;//white
 	prams = FILL;
-	dstptr = os_lcd_window;//hack
+	dstptr = renderer.lcd_window;//hack
 	rectangle();
 	//palmabrt();//hack
 }
@@ -436,7 +434,7 @@ void drawbutton(SQUARE area){
 	srcsquare = area;
 	drwcolor = 0x07E0;//green
 	prams = FILL;
-	dstptr = os_lcd_window;//hack
+	dstptr = renderer.lcd_window;//hack
 	rectangle();
 	//palmabrt();//hack
 }
@@ -578,96 +576,6 @@ void relayfieldevent(offset_68k eventptr){
 
 
 //object interaction/drawing
-
-TEMPHACK //all color get functions are unconfirmed and are hacks
-uint16_t getbackcolor(){
-	offset_68k activebmp = get_win_bmp(activeform);
-	uint8_t colortype = getbmpbpp(activebmp);
-	switch(colortype){
-		case 16:
-			return get_word(BACKCOLORRGB);
-		case 8:
-			{
-				offset_68k palette = getbmppalette(activebmp);
-				if(palette != nullptr_68k)palmabrt();//later
-				return paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
-			}
-		case 4:
-			return paltopalm(PalmPalette4bpp[get_byte(BACKCOLOR)]);
-		case 2:
-			return paltopalm(PalmPalette2bpp[get_byte(BACKCOLOR)]);
-		case 1:
-			/*
-			if(BACKCOLOR)return 0x0000;//this should be correct (on b/w displays 0 = white,1 = black)
-			return 0xFFFF;
-			*/
-			//HACK find default background color
-			return 0xFFFF;//assuming background color is white on b/w palms
-		default:
-			palmabrt();
-	}
-	return 0;
-}
-
-uint16_t getforecolor(){
-	offset_68k activebmp = get_win_bmp(activeform);
-	uint8_t colortype = getbmpbpp(activebmp);
-	switch(colortype){
-		case 16:
-			return get_word(FORECOLORRGB);
-		case 8:
-			{
-				offset_68k palette = getbmppalette(activebmp);
-				if(palette != nullptr_68k)palmabrt();//later
-				return paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-			}
-		case 4:
-			return paltopalm(PalmPalette4bpp[get_byte(FORECOLOR)]);
-		case 2:
-			return paltopalm(PalmPalette2bpp[get_byte(FORECOLOR)]);
-		case 1:
-			/*
-			if(BACKCOLOR)return 0x0000;//this should be correct (on b/w displays 0 = white,1 = black)
-			return 0xFFFF;
-			*/
-			//HACK find default foreground color
-			return 0x0000;//assuming foreground color is black on b/w palms
-		default:
-			palmabrt();
-	}
-	return 0;
-}
-
-uint16_t gettextcolor(){
-	offset_68k activebmp = get_win_bmp(activeform);
-	uint8_t colortype = getbmpbpp(activebmp);
-	switch(colortype){
-		case 16:
-			return get_word(TEXTCOLORRGB);
-		case 8:
-			{
-				offset_68k palette = getbmppalette(activebmp);
-				if(palette != nullptr_68k)palmabrt();//later
-				return paltopalm(PalmPalette8bpp[get_byte(TEXTCOLOR)]);
-			}
-		case 4:
-			return paltopalm(PalmPalette4bpp[get_byte(TEXTCOLOR)]);
-		case 2:
-			return paltopalm(PalmPalette2bpp[get_byte(TEXTCOLOR)]);
-		case 1:
-			/*
-			if(BACKCOLOR)return 0x0000;//this should be correct (on b/w displays 0 = white,1 = black)
-			return 0xFFFF;
-			*/
-			//HACK find default text color
-			return 0xFFFF;//assuming text color is black on b/w palms
-		default:
-			palmabrt();
-	}
-	return 0;
-}
-
-
 
 void fielddisassociateaddr(offset_68k field){
 	//just disasociate pointer and handle
@@ -1081,7 +989,7 @@ void updateanddrawform(offset_68k form){
 	}
 
 	srcptr = get_win_bmp(form);
-	dstptr = os_lcd_window;
+	dstptr = renderer.lcd_window;
 	//dstptr = getwindisplaywindow(formptr);//resolution fix
 	dstx = 0,dsty = 0;
 	bitmap();
@@ -1090,16 +998,17 @@ void updateanddrawform(offset_68k form){
 	setformattr(form,attr | bit(13));
 
 
-	if(currentactivewindow != form){
+	if(renderer.current_active_window != form){
 		//apparently palm sends winenter every time the form is drawn
 		osevent enterevt;
 		enterevt.type = winEnterEvent;
 		enterevt.data.push_back(form);
-		enterevt.data.push_back(currentactivewindow);
+		enterevt.data.push_back(renderer.current_active_window);
 		addnewevent(enterevt);
 
-		currentactivewindow = form;
-		current_draw_window = form;
+		renderer.current_active_window = form;
+		//current_draw_window = form;
+		renderer.set_draw_window(form);
 
 		//enabled flag in form window is unused in all os versions
 	}
@@ -1367,11 +1276,11 @@ void wincreateoffscreenwindow(){
 
 	uint16_t flags = bit(8) | bit(14);//free bitmap on delete & offscreen flags
 	//if(winformat != 0)flags |= bit(15);
-	offset_68k thisbmp = newbmpsimple(width,height,bpp);//global bpp of display
+	offset_68k thisbmp = newbmpsimple(width, height, renderer.bpp);//global bpp of display
 	//offset_68k thisbmp = newbmpsimple(width,height,16);//global bpp of display
 	//offset_68k thisdrawstate = newdrawstate();
 
-	offset_68k retval = newwindow(width,height,flags,0,thisbmp,osdrawstate,0);
+	offset_68k retval = newwindow(width,height,flags,0,thisbmp,renderer.draw_state,0);
 
 	//dbgprintf("Win addr:%08x,Real addr:%016lx\n",retval,get_real_address(thisbmp + 16));
 
@@ -1391,7 +1300,7 @@ void wincreatebitmapwindow(){
 	 * It must not be the screen bitmap.*/
 
 	offset_68k bmpwindow = newwindow(get_word(bmpptr),get_word(bmpptr + 2),/*flags*/0,
-							   /*frameflags*/0,bmpptr,osdrawstate,/*nextwindowptr*/0);
+	                           /*frameflags*/0,bmpptr,renderer.draw_state,/*nextwindowptr*/0);
 
 	A0 = bmpwindow;
 }
@@ -1421,12 +1330,14 @@ void wineraserectangle(){
 	stackptr(rectptr);
 	stackword(cornerrnd);
 
-	srcsquare = get_square(rectptr);
-	dstptr = current_draw_window;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(BACKCOLOR)]);
-	dstround = cornerrnd;
-	prams = ERASE;
-	rectangle();
+	SQUARE square = get_square(rectptr);
+
+	if(cornerrnd == 0){
+		UG_FillFrame(square.start.x, square.start.y, square.end.x, square.end.y, renderer.color_palette[get_byte(BACKCOLOR)]);
+	}
+	else{
+		UG_FillRoundFrame(square.start.x, square.start.y, square.end.x, square.end.y, cornerrnd, renderer.color_palette[get_byte(BACKCOLOR)]);
+	}
 	//no return value
 }
 
@@ -1434,12 +1345,14 @@ void windrawrectangle(){
 	stackptr(rectptr);
 	stackword(cornerrnd);
 
-	srcsquare = get_square(rectptr);
-	dstptr = current_draw_window;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-	dstround = cornerrnd;
-	prams = OUTLINE;
-	rectangle();
+	SQUARE square = get_square(rectptr);
+
+	if(cornerrnd == 0){
+		UG_FillFrame(square.start.x, square.start.y, square.end.x, square.end.y, renderer.color_palette[get_byte(FORECOLOR)]);
+	}
+	else{
+		UG_FillRoundFrame(square.start.x, square.start.y, square.end.x, square.end.y, cornerrnd, renderer.color_palette[get_byte(FORECOLOR)]);
+	}
 	//no return value
 }
 
@@ -1447,12 +1360,8 @@ void windrawrectangleframe(){
 	stackword(frametype);
 	stackptr(rectptr);
 
-	srcsquare = get_square(rectptr);
-	dstptr = current_draw_window;
-	drwcolor = paltopalm(PalmPalette8bpp[get_byte(FORECOLOR)]);
-	dstround = 0;//hack
-	prams = OUTLINE;
-	rectangle();
+	SQUARE square = get_square(rectptr);
+	UG_DrawFrame(square.start.x, square.start.y, square.end.x, square.end.y, renderer.color_palette[get_byte(FORECOLOR)]);
 
 	TEMPHACK;
 	//draw frame with custom frametype
@@ -1471,7 +1380,7 @@ void windrawbitmap(){
 	dstx = x;
 	dsty = y;
 	srcptr = bmpptr;
-	dstptr = current_draw_window;
+	dstptr = renderer.get_draw_window();
 	bitmap();
 	//no return value
 }
@@ -1479,7 +1388,7 @@ void windrawbitmap(){
 void windrawpixel(){
 	stackword(x);
 	stackword(y);
-	UG_DrawPixel(x, y, active_color_palette[get_byte(FORECOLOR)]);
+	UG_DrawPixel(x, y, renderer.color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
@@ -1496,10 +1405,10 @@ void winscreenmode(){
 	D0 = errNone;
 	switch(operand){
 		case winScreenModeGet:
-			putlongifvptr(widthptr,width);
-			putlongifvptr(heightptr,height);
-			putlongifvptr(bppptr,bpp);
-			putbyteifvptr(colenableptr,color);
+			putlongifvptr(widthptr, renderer.width);
+			putlongifvptr(heightptr, renderer.height);
+			putlongifvptr(bppptr, renderer.bpp);
+			putbyteifvptr(colenableptr, renderer.color);
 			dbgprintf("getscreenmode\n");
 			return;
 		case winScreenModeGetDefaults:
@@ -1510,10 +1419,10 @@ void winscreenmode(){
 			dbgprintf("getdefaultscreenmode\n");
 			return;
 		case winScreenModeSet:{
-				uint32_t resultw = width;
-				uint32_t resulth = height;
-				uint32_t resultbpp = bpp;
-				bool resultcolor = color;
+				uint32_t resultw = renderer.width;
+				uint32_t resulth = renderer.height;
+				uint32_t resultbpp = renderer.bpp;
+				bool resultcolor = renderer.color;
 
 				if(widthptr)resultw = get_long(widthptr);
 				if(heightptr)resulth = get_long(heightptr);
@@ -1538,20 +1447,20 @@ void winscreenmode(){
 				}
 
 				//set screen format
-				if(widthptr)width = resultw;
-				if(heightptr)height = resulth;
-				if(bppptr)bpp = resultbpp;
-				if(colenableptr)color = resultcolor;
+				if(widthptr)renderer.width = resultw;
+				if(heightptr)renderer.height = resulth;
+				if(bppptr)renderer.bpp = resultbpp;
+				if(colenableptr)renderer.color = resultcolor;
 
 
-				dbgprintf("setscreenmode Width:%d,Height:%d,BPP:%d,Color:%d\n",width,height,bpp,color);
+				dbgprintf("setscreenmode Width:%d,Height:%d,BPP:%d,Color:%d\n",renderer.width,renderer.height,renderer.bpp,renderer.color);
 			}
 			return;
 		case winScreenModeSetToDefaults:
-			width = LCDW;
-			height = LCDH;
-			bpp = LCDBPP;
-			color = LCDHASCOLOR;
+			renderer.width = LCDW;
+			renderer.height = LCDH;
+			renderer.bpp = LCDBPP;
+			renderer.color = LCDHASCOLOR;
 			dbgprintf("setdefaultscreenmode\n");
 			return;
 		case winScreenModeGetSupportsColor:
@@ -1597,7 +1506,7 @@ void winscreenlock(){
 
 	//palmabrt();//hack
 
-	if(screenlockcount == 0){
+	if(renderer.screenlockcount == 0){
 		//copy screen / erase it with locktype
 		switch(locktype){
 			case winLockCopy:
@@ -1621,24 +1530,22 @@ void winscreenlock(){
 		dbgprintf("err unexpected double display lock.\n");
 		palmabrt();
 	}
-	screenlockcount++;
+	renderer.screenlockcount++;
 	D0 = lcd_start + LCDBYTES;
 }
 
 void winscreenunlock(){
+	//no params
 
-	//palmabrt();//hack
-
-	//no prams
-	if(screenlockcount == 0){
+	if(renderer.screenlockcount == 0){
 		dbgprintf("err unexpected double display unlock.\n");
 		palmabrt();
 	}
 
-	if(screenlockcount > 0)screenlockcount--;
-	if(screenlockcount == 0){
+	if(renderer.screenlockcount > 0)renderer.screenlockcount--;
+	if(renderer.screenlockcount == 0){
 		//copy over old buffer
-		memcpy68k(lcd_start,lcd_start + LCDBYTES,LCDBYTES);
+		memcpy68k(lcd_start, lcd_start + LCDBYTES, LCDBYTES);
 		//set oslcdwindow
 		setdisplayaddr(lcd_start);
 	}
@@ -1669,23 +1576,24 @@ void winsettextcolor(){
 }
 
 void wingetdisplaywindow(){
-	A0 = os_lcd_window;
+	A0 = renderer.lcd_window;
 }
 
 void wingetdrawwindow(){
-	A0 = current_draw_window;
+	A0 = renderer.get_draw_window();
 }
 
 void winsetdrawwindow(){
 	stackptr(winptr);
 	//dbgprintf("Old Addr:%08x,New Addr:%08x\n",currentdrawwindow,winptr);
-	A0 = current_draw_window;
-	if(winptr)current_draw_window = winptr;
+	A0 = renderer.get_draw_window();
+	if(winptr)renderer.set_draw_window(winptr);//current_draw_window = winptr;
 	else{
 		dbgprintf("Cant set drawwindow to nullptr_68k,Setting to oslcdwindow"
 			   "(this is not supported above palm os 3.0)\n");//hack
-		current_draw_window = os_lcd_window;
-		palmabrt();//hack
+		//current_draw_window = os_lcd_window;
+		renderer.set_draw_window(renderer.lcd_window);
+		//palmabrt();//hack
 	}
 }
 
@@ -1696,7 +1604,7 @@ void winsetactivewindow(){
 	else{
 		dbgprintf("Cant set activewindow to nullptr_68k,Setting to oslcdwindow"
 			   "(this is not supported above palm os 3.0)\n");//hack
-		newwindowptr = os_lcd_window;
+		newwindowptr = renderer.lcd_window;
 		palmabrt();//hack
 	}
 
@@ -1717,7 +1625,7 @@ void winsetclip(){
 	stackword(endx);
 	stackword(endy);
 
-	offset_68k clipptr = get_win_clipping(current_draw_window);
+	offset_68k clipptr = get_win_clipping(renderer.get_draw_window());
 
 	put_word(clipptr,startx);
 	put_word(clipptr + 2,starty);
@@ -1732,6 +1640,7 @@ void windrawchars(){
 	stackword(thisx);
 	stackword(thisy);
 
+#if 0
 	TEMPHACK;
 	if((int16_t)thisx < 0 || (int16_t)thisy < 0)return;
 
@@ -1739,20 +1648,22 @@ void windrawchars(){
 
 	dbgprintf("Chars:%s\n",readstring(chrsptr).c_str());//HACK use length if given
 
-	dstptr = current_draw_window;
+	dstptr = renderer.get_draw_window();
 	dstx = thisx;
 	dsty = thisy;
 	srcsize = (int16_t)length;
 	srcptr = chrsptr;
 	drwcolor = get_byte(TEXTCOLOR);
 	text();
+#endif
+	TEMPHACK;
 	//no return value
 }
 
 void winresetclip(){
-	uint16_t winw = get_word(current_draw_window);
-	uint16_t winh = get_word(current_draw_window + 2);
-	offset_68k clip = get_win_clipping(current_draw_window);
+	uint16_t winw = get_word(renderer.get_draw_window());
+	uint16_t winh = get_word(renderer.get_draw_window() + 2);
+	offset_68k clip = get_win_clipping(renderer.get_draw_window());
 
 	put_word(clip, 0);
 	put_word(clip + 2, 0);
@@ -1774,10 +1685,10 @@ void wincopyrectangle(){
 	stackbyte(mode);
 
 	if(srcwin)srcptr = srcwin;
-	else srcptr = current_draw_window;
+	else srcptr = renderer.get_draw_window();
 
 	if(dstwin)dstptr = dstwin;
-	else dstptr = current_draw_window;
+	else dstptr = renderer.get_draw_window();
 
 	srcsquare = get_square(srcrect);
 
@@ -1806,7 +1717,7 @@ void winpalette(){
 		dbgprintf("top robin premium dirt noodles.\n");
 	}
 
-	offset_68k winpal = getwinpalette(current_draw_window);
+	offset_68k winpal = getwinpalette(renderer.get_draw_window());
 	switch(operation){
 		case winPaletteGet:
 			memcpy68k(userpalarray,winpal + startindex * 4,(int16_t)paletteentrys * 4);
@@ -1836,14 +1747,14 @@ void winrgbtoindex(){
 	uint8_t blue = get_byte(rgbcolor + 3);
 
 	uint8_t bestindex = 0;
-	offset_68k clut = getwinpalette(current_draw_window);
-	uint16_t tablesize = getwinpalettenumentrys(current_draw_window);
+	offset_68k clut = getwinpalette(renderer.get_draw_window());
+	uint16_t tablesize = getwinpalettenumentrys(renderer.get_draw_window());
 
 	TEMPHACK;
 	//get bpp and compare indicies properly
 	offset_68k count;
 	if(clut == nullptr_68k || tablesize == 0){
-		uint8_t bpp = getbmpbpp(get_win_bmp(current_draw_window));
+		uint8_t bpp = getbmpbpp(get_win_bmp(renderer.get_draw_window()));
 		bestindex = getbestdefaultindex(red,green,blue,bpp);
 	}
 	else{
@@ -1863,19 +1774,19 @@ void winrgbtoindex(){
 }
 
 void winpushdrawstate(){
-	offset_68k curdrwstate = getwindrawstate(current_draw_window);
+	offset_68k curdrwstate = getwindrawstate(renderer.get_draw_window());
 	offset_68k newdrwptr = getfreeheap(44);
 
 	drawstates.push_back(curdrwstate);
-	memcpy68k(newdrwptr,curdrwstate,44);
-	setwindrawstate(currentactivewindow,newdrwptr);
+	memcpy68k(newdrwptr, curdrwstate, 44);
+	setwindrawstate(renderer.get_draw_window(), newdrwptr);
 	//no return value
 }
 
 TEMPHACK
 //free now unused drawstate
 void winpopdrawstate(){
-	setwindrawstate(currentactivewindow,drawstates.back());
+	setwindrawstate(renderer.get_draw_window(), drawstates.back());
 	drawstates.pop_back();
 	//no return value
 }
@@ -1901,14 +1812,14 @@ void windrawline(){
 	stackword(start_y);
 	stackword(end_x);
 	stackword(end_y);
-	UG_DrawLine(start_x, start_y, end_x, end_y, active_color_palette[get_byte(FORECOLOR)]);
+	UG_DrawLine(start_x, start_y, end_x, end_y, renderer.color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
 void winerasepixel(){
 	stackword(x);
 	stackword(y);
-	UG_DrawPixel(x, y, active_color_palette[get_byte(BACKCOLOR)]);
+	UG_DrawPixel(x, y, renderer.color_palette[get_byte(BACKCOLOR)]);
 	//no return value
 }
 
@@ -1929,7 +1840,7 @@ void winpaintbitmap(){
 			dstx = x;
 			dsty = y;
 			srcptr = bmpptr;
-			dstptr = current_draw_window;
+			dstptr = renderer.get_draw_window();
 			bitmap();
 			return;
 		case winPaintInverse://swap colors
@@ -2448,7 +2359,7 @@ void frmdrawform(){
 
 	updateanddrawform(formptr);
 
-	dbgprintf("ACTwin:%08x,DRAWwin:%08x,Thisform:%08x\n",currentactivewindow,current_draw_window,formptr);
+	dbgprintf("ACTwin:%08x,DRAWwin:%08x,Thisform:%08x\n", renderer.current_active_window, renderer.get_draw_window(), formptr);
 
 	//no return value
 }
@@ -2679,20 +2590,20 @@ void menuhandleevent(){
 void uicolorgettableentryrgb(){
 	stackbyte(index);
 	stackptr(rgbcolor);
-	put_long(rgbcolor,UIColorTable[index]);
+	put_long(rgbcolor, renderer.UIColorTable[index]);
 	//no return value
 }
 
 void uicolortablesettableentry(){
 	stackbyte(index);
 	stackptr(rgbcolor);
-	UIColorTable[index] = get_long(rgbcolor);
+	renderer.UIColorTable[index] = get_long(rgbcolor);
 	D0 = errNone;
 }
 
 void uicolorgettableentryindex(){
 	stackbyte(colortableindex);
-	D0 = UIColorTable[colortableindex] >> 24;
+	D0 = renderer.UIColorTable[colortableindex] >> 24;
 }
 
 
@@ -2743,7 +2654,9 @@ void fldsettexthandle(){
 
 void flddrawfield(){
 	stackptr(field);
-	drawfield(os_lcd_window,field);//to screen or activeform unsure? //hack
+
+	TEMPHACK;
+	drawfield(renderer.lcd_window, field);//to screen or activeform unsure? //hack
 	//palmabrt();
 	//no return value
 }
@@ -2922,16 +2835,17 @@ void evtgeteventWIN(){
 
 		closeold.type = winExitEvent;
 		closeold.data.push_back(newwindowptr);
-		closeold.data.push_back(currentactivewindow);
+		closeold.data.push_back(renderer.current_active_window);
 		addnewevent(closeold);
 
 		opennew.type = winEnterEvent;
 		opennew.data.push_back(newwindowptr);
-		opennew.data.push_back(currentactivewindow);
+		opennew.data.push_back(renderer.current_active_window);
 		addnewevent(opennew);
 
-		currentactivewindow = newwindowptr;
-		current_draw_window = newwindowptr;
+		renderer.current_active_window = newwindowptr;
+		//renderer.current_draw_window = newwindowptr;
+		renderer.set_draw_window(newwindowptr);
 
 		changewindow = false;
 	}
@@ -2942,33 +2856,33 @@ void evtgeteventWIN(){
 
 //sets up memory and varibles
 bool init_display_driver(){
-	displayoffset = lcd_start;
-	drawoffset = lcd_start;
-
+	//Make color palette
 	for(uint16_t cnt = 0;cnt < 0xFF;cnt++){
-		active_color_palette[cnt] = paltopalm(PalmPalette8bpp[cnt]);
+		renderer.color_palette[cnt] = paltopalm(PalmPalette8bpp[cnt]);
 	}
 
-	UG_Init(&displayctx, plotpixel_displayctx, LCDW, LCDH);
-	UG_Init(&drawctx, plotpixel_drawctx, LCDW, LCDH);
+	//Init gui library
+	UG_Init(&renderer.draw_ctx, plotpixel_drawctx, LCDW, LCDH);
+	UG_SelectGUI(&renderer.draw_ctx);
 
-	//clear screen
-	UG_SelectGUI(&displayctx);
-	UG_FillScreen(C_WHITE);
+	//Clear hardware screen to white
+	for(uint32_t took = 0;took < LCDW * LCDH;took++){
+		put_word(lcd_start, 0xFFFF /*white*/);
+	}
 
-	UG_SelectGUI(&drawctx);
+
 
 
 
 	//spareframe does not need to be cleared since it is not accessible from inside the emulator
 	//(it is only drawn after being filled with valid screen data)
 
-	scalevideo = true;
+	renderer.scale_video = true;
 
-	width  = LCDW;
-	height = LCDH;
-	bpp	   = LCDBPP;
-	color  = LCDHASCOLOR;
+	renderer.width  = LCDW;
+	renderer.height = LCDH;
+	renderer.bpp	= LCDBPP;
+	renderer.color  = LCDHASCOLOR;
 
 
 	TEMPHACK;
@@ -2980,40 +2894,37 @@ bool init_display_driver(){
 	//touch driver
 	sendpenevents = true;
 
-	osdrawstate = newdrawstate();
-	lcdbitmaptype = getfreeheap(20);
-	os_lcd_window = getfreeheap(68);
-	/*
-	initformwindow(oslcdwindow,LCDW,LCDH,bit(11) | bit(10) | bit(8),
-			  0,lcdbitmaptype,osdrawstate,0);
-	*/
-	initformwindow(os_lcd_window,160,160,bit(11) | bit(10) | bit(8),
-	          0,lcdbitmaptype,osdrawstate,0);
+	renderer.draw_state = newdrawstate();
+	renderer.lcd_bitmap = getfreeheap(20);
+	renderer.lcd_window = getfreeheap(68);
 
-	if(os_lcd_window == nullptr_68k || lcdbitmaptype == nullptr_68k || osdrawstate == nullptr_68k){
+	initformwindow(renderer.lcd_window,160,160,bit(11) | bit(10) | bit(8),
+	          0,renderer.lcd_bitmap,renderer.draw_state,0);
+
+	if(renderer.lcd_window == nullptr_68k || renderer.lcd_bitmap == nullptr_68k || renderer.draw_state == nullptr_68k){
 		palmabrt();//hack
 		return false;
 	}
 
 	//setup lcdbitmaptype
-	put_word(lcdbitmaptype,LCDW);
-	put_word(lcdbitmaptype + 2,LCDH);
-	put_word(lcdbitmaptype + 4,LCDW * 2);
-	put_word(lcdbitmaptype + 6,bit(11) | bit(12));
-	put_byte(lcdbitmaptype + 8,LCDBPP);//bits per pixel
-	put_byte(lcdbitmaptype + 9,2);
-	put_word(lcdbitmaptype + 10,0);//next bitmaptype
-	put_byte(lcdbitmaptype + 12,0);//transparent color (none)
-	put_byte(lcdbitmaptype + 13,0xFF);//compression type (none)
-	put_word(lcdbitmaptype + 14,0);//reserved
-	put_long(lcdbitmaptype + 16,lcd_start);//indirect flag ptr (to lcd)
+	put_word(renderer.lcd_bitmap,LCDW);
+	put_word(renderer.lcd_bitmap + 2,LCDH);
+	put_word(renderer.lcd_bitmap + 4,LCDW * 2);
+	put_word(renderer.lcd_bitmap + 6,bit(11) | bit(12));
+	put_byte(renderer.lcd_bitmap + 8,LCDBPP);//bits per pixel
+	put_byte(renderer.lcd_bitmap + 9,2);
+	put_word(renderer.lcd_bitmap + 10,0);//next bitmaptype
+	put_byte(renderer.lcd_bitmap + 12,0);//transparent color (none)
+	put_byte(renderer.lcd_bitmap + 13,0xFF);//compression type (none)
+	put_word(renderer.lcd_bitmap + 14,0);//reserved
+	put_long(renderer.lcd_bitmap + 16,lcd_start);//indirect flag ptr (to lcd)
 
 	TEMPHACK;
 	//most likely *double or *single not *native
 	put_word(COORDSYS,kCoordinatesNative);
 
-	current_draw_window = os_lcd_window;
-	currentactivewindow = os_lcd_window;
+	renderer.set_draw_window(renderer.lcd_window);
+	renderer.current_active_window	= renderer.lcd_window;
 
 	//fonts
 	offset_68k stdfntaddr = getfontaddr(stdFont);
@@ -3026,9 +2937,9 @@ bool init_display_driver(){
 
 	TEMPHACK;
 	activeform = 0x0;
-	activeformptr = currentactivewindow;
+	activeformptr = renderer.current_active_window;
 
-	screenlockcount = 0;
+	renderer.screenlockcount = 0;
 
 	changewindow = false;
 	sendwinenterondraw = false;
@@ -3037,6 +2948,7 @@ bool init_display_driver(){
 }
 
 void deinit_display_driver(){
+	//nothing right now
 }
 
 

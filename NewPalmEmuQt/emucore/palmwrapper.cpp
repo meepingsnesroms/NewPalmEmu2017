@@ -44,7 +44,7 @@ std::mutex										timer_lock;
 offset_68k appexceptionlist;
 
 //Ui
-offset_68k os_lcd_window,lcdbitmaptype;
+//offset_68k os_lcd_window,lcdbitmaptype;
 
 //I/o thread safety
 std::mutex os_data_lock;

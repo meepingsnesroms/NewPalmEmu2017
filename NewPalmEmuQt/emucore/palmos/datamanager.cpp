@@ -341,9 +341,9 @@ void dmattachrecord(){
 	}
 
 	TEMPHACK;
-	//this crashes for some reason
+	//this crashes for some reason, that is why a known value is commented out
 
-	apps[dmopenref].parts[index].attr |= dmRecAttrDirty;
+	apps[dmopenref].parts[index].attr |= 0x40/*dmRecAttrDirty*/;
 
 	reindexrecords(dmopenref);
 	D0 = errNone;

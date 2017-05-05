@@ -980,13 +980,14 @@ offset_68k decompressform(uint16_t id){
 	offset_68k formframebuffer = newbmpsimple(w,h,LCDBPP);//change to dynamic bpp
 
 	//universal drawstate pointer
-	offset_68k drawstatetype = osdrawstate;
+	//offset_68k drawstatetype = get_draw_state();
 
 	TEMPHACK;
 	//free bitmap with form
 	windowflags |= bit(8);
 
-	initformwindow(formmemory,w,h,windowflags,frameflags,formframebuffer,drawstatetype,0);
+	//initformwindow(formmemory,w,h,windowflags,frameflags,formframebuffer,drawstatetype,0);
+	initformwindow(formmemory,w,h,windowflags,frameflags,formframebuffer,get_draw_state(),0);
 
 	//copy old
 	memcpy68k(formmemory + 40,form + 40,28);

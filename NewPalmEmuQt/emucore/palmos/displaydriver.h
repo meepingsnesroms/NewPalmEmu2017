@@ -189,15 +189,17 @@ enum{
 
 
 //what drawing commands use
-extern offset_68k current_draw_window;
+//extern offset_68k current_draw_window;
 
 //what is on the display
-extern offset_68k currentactivewindow;
+//extern offset_68k currentactivewindow;
 
-extern offset_68k osdrawstate;
+//extern offset_68k osdrawstate;
 
 //if the framebuffer size needs to be doubled
-extern bool scalevideo;
+//extern bool scalevideo;
+
+offset_68k get_draw_state();
 
 //event handlers
 void formeventhandler(offset_68k formptr,offset_68k eventptr);
@@ -318,8 +320,8 @@ void evtgeteventWIN();
 bool init_display_driver();
 void deinit_display_driver();
 
-extern UG_GUI displayctx;
-extern UG_GUI drawctx;
+//extern UG_GUI displayctx;
+//extern UG_GUI drawctx;
 
 //drivers
 void appTouchDriver(int x,int y,bool pressed);

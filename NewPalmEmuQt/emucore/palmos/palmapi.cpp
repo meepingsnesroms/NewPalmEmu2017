@@ -535,9 +535,6 @@ void pcenativecall(){
 //apis (and call to ARM)
 bool emulateapi(uint16_t api){
 
-	if(currentactivewindow == nullptr_68k)palmabrt();//hack
-
-
 	//to catch errors without printing every api call
 	char fakestring[100];//100 is way overestimateing
 	sprintf(fakestring,"Trap At:%#010x,Api:%s,0x%04x\n",MC68000_getpc(),lookup_trap(api),api);
