@@ -40,9 +40,6 @@ extern std::mutex										timer_lock;
 //Events
 extern offset_68k appexceptionlist;
 
-//Ui
-//extern offset_68k os_lcd_window, lcdbitmaptype;
-
 //Debug
 extern std::string	lasttrap;
 extern bool			confusion_is_fatal;

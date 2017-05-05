@@ -23,25 +23,25 @@
 #include "ugui.h"
 
 struct{
-	uint8_t bpp;
-	int16_t width;
-	int16_t height;
-	bool color;
+	uint8_t bpp;//bits per pixel of renderer
+	int16_t width;//width of renderer
+	int16_t height;//height of renderer
+	bool color;//if color should be displayed or not
 	bool scale_video;//should be true if using 160*160 resolution, starts true and apps must enable hires mode
-	int screenlockcount;
-	offset_68k draw_state;
+	int screen_lock_count;//used to prevent displaying any changes until finished rendering
+	offset_68k draw_state;//the current settings of the renderer (stored in palm address space so apps can access it(even though that "forbidden" by the api docs))
 
 	offset_68k lcd_window;//represents the framebuffer as a window
 	offset_68k lcd_bitmap;//represents the framebuffer as a palm bitmap struct
 
-	UG_GUI draw_ctx;
+	UG_GUI draw_ctx;//gui library rendering context
 	offset_68k draw_offset;//the current draw window bitmap data
 
 	offset_68k current_draw_window;//the window to draw to
 	offset_68k current_active_window;//the window to render
 
-	uint32_t UIColorTable[31];
-	uint16_t color_palette[0xFF];
+	uint32_t UIColorTable[31];//may just be used as storage?
+	uint16_t color_palette[0xFF];//used for non 16bit color to map to 16bit values
 
 	void set_draw_window(offset_68k new_draw_window){
 		current_draw_window = new_draw_window;
@@ -1506,7 +1506,7 @@ void winscreenlock(){
 
 	//palmabrt();//hack
 
-	if(renderer.screenlockcount == 0){
+	if(renderer.screen_lock_count == 0){
 		//copy screen / erase it with locktype
 		switch(locktype){
 			case winLockCopy:
@@ -1530,20 +1530,20 @@ void winscreenlock(){
 		dbgprintf("err unexpected double display lock.\n");
 		palmabrt();
 	}
-	renderer.screenlockcount++;
+	renderer.screen_lock_count++;
 	D0 = lcd_start + LCDBYTES;
 }
 
 void winscreenunlock(){
 	//no params
 
-	if(renderer.screenlockcount == 0){
+	if(renderer.screen_lock_count == 0){
 		dbgprintf("err unexpected double display unlock.\n");
 		palmabrt();
 	}
 
-	if(renderer.screenlockcount > 0)renderer.screenlockcount--;
-	if(renderer.screenlockcount == 0){
+	if(renderer.screen_lock_count > 0)renderer.screen_lock_count--;
+	if(renderer.screen_lock_count == 0){
 		//copy over old buffer
 		memcpy68k(lcd_start, lcd_start + LCDBYTES, LCDBYTES);
 		//set oslcdwindow
@@ -2844,7 +2844,6 @@ void evtgeteventWIN(){
 		addnewevent(opennew);
 
 		renderer.current_active_window = newwindowptr;
-		//renderer.current_draw_window = newwindowptr;
 		renderer.set_draw_window(newwindowptr);
 
 		changewindow = false;
@@ -2866,8 +2865,8 @@ bool init_display_driver(){
 	UG_SelectGUI(&renderer.draw_ctx);
 
 	//Clear hardware screen to white
-	for(uint32_t took = 0;took < LCDW * LCDH;took++){
-		put_word(lcd_start, 0xFFFF /*white*/);
+	for(uint32_t pixels = 0;pixels < LCDW * LCDH;pixels++){
+		put_word(lcd_start + (pixels * 2), 0xFFFF /*white*/);
 	}
 
 
@@ -2939,7 +2938,7 @@ bool init_display_driver(){
 	activeform = 0x0;
 	activeformptr = renderer.current_active_window;
 
-	renderer.screenlockcount = 0;
+	renderer.screen_lock_count = 0;
 
 	changewindow = false;
 	sendwinenterondraw = false;

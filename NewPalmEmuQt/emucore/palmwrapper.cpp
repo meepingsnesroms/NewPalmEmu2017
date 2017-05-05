@@ -43,9 +43,6 @@ std::mutex										timer_lock;
 //Events
 offset_68k appexceptionlist;
 
-//Ui
-//offset_68k os_lcd_window,lcdbitmaptype;
-
 //I/o thread safety
 std::mutex os_data_lock;
 
@@ -63,6 +60,7 @@ bool running = false;
 void emu_get_framebuffer(uint16_t* copyto){
 	size_t_68k total = LCDW * LCDH;
 
+	TEMPHACK;
 	//lssa must be fixed for old palm games that set the framebuffer address
 	memcpy(copyto,framebuffer,total * sizeof(uint16_t));
 }

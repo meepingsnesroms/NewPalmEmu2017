@@ -6,7 +6,6 @@
 #include "minifunc.h"
 #include <vector>
 
-//HACK remove this header
 #include "palmos/graphics/bitmapcompression.h"
 
 typedef struct{
@@ -69,8 +68,6 @@ inline SQUARE get_ABSsquare(offset_68k addr){
 
 
 #define THICKNESS (LCDW / 160)
-
-//extern unsigned char Font5x7[];
 
 //Compression Types for BitMap (for BitmapVersionTwo and >)
 /*

@@ -5,7 +5,7 @@
 #include "palmos/graphics/bitmapcompression.h"
 
 
-static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint16_t rowbytes/*number of bytes per scanline*/){
+static void BMP_ScanLine(uint8_t* compresseddata, uint8_t* uncompresseddata, uint16_t rowbytes/*number of bytes per scanline*/){
 	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
@@ -21,12 +21,12 @@ static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint1
 		for(uint32_t bytecount = 0;bytecount < 8;bytecount++){
 			//plot bytes
 			if(newdataflags & bit(7 - bytecount)){
-				//this byte is new,get a byte from the stream
+				//this byte is new, get a byte from the stream
 				uncompresseddata[datanum] = compresseddata[rowptr];
 				rowptr++;
 			}
 			else{
-				//the byte is the same,copy old byte
+				//the byte is the same, copy old byte
 				uncompresseddata[datanum] = uncompresseddata[datanum - rowbytes];
 			}
 
@@ -40,7 +40,7 @@ static void BMP_ScanLine(uint8_t* compresseddata,uint8_t* uncompresseddata,uint1
 	}
 }
 
-static void BMP_RLE(uint8_t* compresseddata,uint8_t* uncompresseddata){
+static void BMP_RLE(uint8_t* compresseddata, uint8_t* uncompresseddata){
 	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
@@ -62,7 +62,7 @@ static void BMP_RLE(uint8_t* compresseddata,uint8_t* uncompresseddata){
 	}
 }
 
-static void BMP_PackBits(uint8_t* compresseddata,uint8_t* uncompresseddata){
+static void BMP_PackBits(uint8_t* compresseddata, uint8_t* uncompresseddata){
 	uint32_t compressedsize = ((compresseddata[0] << 8) | compresseddata[1]) - 2/*subtract length from its self*/;
 	compresseddata += 2;
 
@@ -91,28 +91,27 @@ static void BMP_PackBits(uint8_t* compresseddata,uint8_t* uncompresseddata){
 			}
 			bunny++;
 		}
-		else dbgprintf("byte is not a byte.\n");
 	}
 }
 
-void BMP_extract(uint8_t* compressed,uint8_t* output,int type,int rowbytes){
+void BMP_extract(uint8_t* compressed, uint8_t* output, int type, int rowbytes){
 	switch(type){
 		case BitmapCompressionTypeScanLine:
-			BMP_ScanLine(compressed,output,rowbytes);
+			BMP_ScanLine(compressed, output, rowbytes);
 			break;
 		case BitmapCompressionTypeRLE:
-			BMP_RLE(compressed,output);
+			BMP_RLE(compressed, output);
 			break;
 		case BitmapCompressionTypePackBits:
-			BMP_PackBits(compressed,output);
+			BMP_PackBits(compressed, output);
 			break;
 		default:
-			dbgprintf("Unsupported bitmap compression type:%d.\n",type);
+			dbgprintf("Unsupported bitmap compression type:%d.\n", type);
 			break;
 	}
 }
 
 /*
 exported functions
-void BMP_extract(uint8_t* compressed,uint8_t* output,int type,int rowbytes);
+void BMP_extract(uint8_t* compressed, uint8_t* output, int type, int rowbytes);
 */

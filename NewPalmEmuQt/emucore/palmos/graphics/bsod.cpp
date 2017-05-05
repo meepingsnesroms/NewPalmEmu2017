@@ -6,23 +6,27 @@
 #include "m68k.h"
 #include "virtuallcd.h"
 
-void drawbioschar(int x,int y,char letter){
+inline void set_lcd_pixel(int x, int y, uint16_t color){
+	put_word(lcd_start + ((y * LCDW + x) * 2), color);
+}
+
+static void drawbioschar(int x, int y, char letter){
 	for(int cury = 0;cury < 7;cury++){
 		for(int curx = 0;curx <5;curx++){
 			unsigned int total = (letter - 0x20) * 5;
 			int thisbyte = curx;//bytes
 			int thisbit = cury;//leftover
-			if(Font5x7[total + thisbyte] & bit(thisbit))FB_setpixel(curx + x,cury + y,0xFFFF/*white*/);
+			if(Font5x7[total + thisbyte] & bit(thisbit))set_lcd_pixel(curx + x, cury + y, 0xFFFF/*white*/);
 		}
 	}
 }
 
 void showBSOD(std::string message){
-	FB_data = framebuffer;
-	FB_width = LCDW;
-	FB_height = LCDH;
 
-	FB_fillrect(0,0,LCDW,LCDH,0x001F/*blue*/);
+	//make blue background
+	for(uint32_t pixels = 0;pixels < LCDW * LCDH;pixels++){
+		put_word(lcd_start + (pixels * 2), 0x001F/*blue*/);
+	}
 
 	int x = 0;
 	int y = 0;
