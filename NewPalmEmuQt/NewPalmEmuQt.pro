@@ -62,7 +62,6 @@ SOURCES += \
     emucore/hardware/dataexchange.cpp \
     emucore/hardware/memmap.cpp \
     emucore/hardware/virtuallcd.cpp \
-    emucore/palmos/graphics/biosfont.cpp \
     emucore/palmos/graphics/bitmapcompression.cpp \
     emucore/palmos/graphics/bitmaphandler.cpp \
     emucore/palmos/graphics/bsod.cpp \
@@ -115,7 +114,6 @@ HEADERS  += \
     emucore/hardware/dataexchange.h \
     emucore/hardware/memmap.h \
     emucore/hardware/virtuallcd.h \
-    emucore/palmos/graphics/biosfont.h \
     emucore/palmos/graphics/bitmapcompression.h \
     emucore/palmos/graphics/bitmaphandler.h \
     emucore/palmos/graphics/bsod.h \

@@ -4555,6 +4555,11 @@ UG_S16 UG_SelectGUI( UG_GUI* g )
    return 1;
 }
 
+UG_GUI* UG_CurrentGUI( void )
+{
+   return gui;
+}
+
 void UG_FontSelect( const UG_FONT* font )
 {
    gui->font = *font;
