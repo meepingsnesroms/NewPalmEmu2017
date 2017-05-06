@@ -188,7 +188,8 @@ DISTFILES += \
     android/local.properties \
     removedJUL132016.txt \
     galaxdebuglogJUL132016.txt \
-    playpusARMtestJUL212016.txt
+    playpusARMtestJUL212016.txt \
+    .astylerc
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

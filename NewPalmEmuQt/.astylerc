@@ -1,0 +1,11 @@
+--style=java
+--indent=tab=4
+--break-blocks
+--pad-oper
+--unpad-paren
+--delete-empty-lines
+--align-pointer=type
+--break-closing-braces
+--break-elseifs
+--add-braces
+--remove-comment-prefix
