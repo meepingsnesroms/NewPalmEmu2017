@@ -38,7 +38,7 @@ static offset_68k getbestbitmap(offset_68k startbitmap){
 	while(true){
 		offset_68k nextbmp = get_word(curbitmap + 10) * 4;//offset in longwords
 
-		uint16_t testbpp = getbmpbpp(curbitmap);
+		uint16_t testbpp = get_bmp_bpp(curbitmap);
 		int32_t testsize = ((int16_t)get_word(curbitmap)) * ((int16_t)get_word(curbitmap + 2));//stored as signed but is an error if negative
 		uint8_t testversion = get_byte(curbitmap + 9);//version 3 has different nextbitmapoffset at a different address
 
@@ -300,7 +300,7 @@ void RAWimg::from68k(offset_68k m68kaddr, uint8_t type, int16_t datawidth,
 
 				//dbgprintf("BMP flags:%04x\n",get_word(m68kaddr + 6));
 
-				m68kptr = getbmpdata(m68kaddr);
+				m68kptr = get_bmp_data(m68kaddr);
 
 				if(m68kptr >= dyn_start && m68kptr < lcd_start)readonly = true;
 				break;

@@ -1,5 +1,4 @@
 #include "m68k.h"
-#include "minifunc.h"
 #include "palette.h"
 
 //HACK remove palmabrt() and this header
@@ -103,8 +102,8 @@ int getbestdefaultindex(uint8_t red,uint8_t green,uint8_t blue,int bpp){
 	int bestindex;
 	int count;
 	if(bpp == 8 || bpp == 16){
-		inc_for(count,256){
-			thisdiff = getrgbdiff(red,green,blue,PalmPalette8bpp[count][0],PalmPalette8bpp[count][1],PalmPalette8bpp[count][2]);
+		for(count = 0;count < 256;count++){
+			thisdiff = get_rgb_diff(red,green,blue,PalmPalette8bpp[count][0],PalmPalette8bpp[count][1],PalmPalette8bpp[count][2]);
 			if(thisdiff < closeness){
 				closeness = thisdiff;
 				bestindex = count;
@@ -113,8 +112,8 @@ int getbestdefaultindex(uint8_t red,uint8_t green,uint8_t blue,int bpp){
 	}else{
 		switch(bpp){
 			case 4:
-				inc_for(count,16){
-					thisdiff = getrgbdiff(red,green,blue,PalmPalette4bpp[count][0],PalmPalette4bpp[count][1],PalmPalette4bpp[count][2]);
+				for(count = 0;count < 16;count++){
+					thisdiff = get_rgb_diff(red,green,blue,PalmPalette4bpp[count][0],PalmPalette4bpp[count][1],PalmPalette4bpp[count][2]);
 					if(thisdiff < closeness){
 						closeness = thisdiff;
 						bestindex = count;
@@ -122,8 +121,8 @@ int getbestdefaultindex(uint8_t red,uint8_t green,uint8_t blue,int bpp){
 				}
 				break;
 			case 2:
-				inc_for(count,4){
-					thisdiff = getrgbdiff(red,green,blue,PalmPalette2bpp[count][0],PalmPalette2bpp[count][1],PalmPalette2bpp[count][2]);
+				for(count = 0;count < 256;count++){
+					thisdiff = get_rgb_diff(red,green,blue,PalmPalette2bpp[count][0],PalmPalette2bpp[count][1],PalmPalette2bpp[count][2]);
 					if(thisdiff < closeness){
 						closeness = thisdiff;
 						bestindex = count;

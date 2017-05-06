@@ -45,7 +45,7 @@ struct{
 
 	void set_draw_window(offset_68k new_draw_window){
 		current_draw_window = new_draw_window;
-		draw_offset = getwindata(new_draw_window);//get window pixel data address
+		draw_offset = get_win_data(new_draw_window);//get window pixel data address
 	}
 	offset_68k get_draw_window(){
 		return current_draw_window;
@@ -214,7 +214,7 @@ void copyrectangle(){
 	RAWimg hostwindow(srcptr,WINDOW);
 	offset_68k winbmp = get_win_bmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
+	FBWriter window(get_bmp_data(winbmp),get_word(winbmp),16);//hack
 	window.copyrect(hostwindow,srcx,srcy,srcw,srch,dstx,dsty);
 }
 
@@ -224,11 +224,8 @@ void rectangle(){
 
 	offset_68k winbmp = get_win_bmp(dstptr);
 	//FBWriter window(getbmpdata(winbmp),getbmprowbytes(winbmp),getbmpbpp(winbmp));
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
+	FBWriter window(get_bmp_data(winbmp),get_word(winbmp),16);//hack
 	window.rect(srcx,srcy,srcw,srch,prams,drwcolor,dstround);
-
-	//write uint32_t
-	//simulatecycles(srcw * srch);
 }
 
 void bitmap(){
@@ -237,8 +234,8 @@ void bitmap(){
 	RAWimg palmbmp(srcptr,BMP,UNDEFINED,UNDEFINED,UNDEFINED,false);
 
 	offset_68k winbmp = get_win_bmp(dstptr);
-	dbgprintf("FrameBuffLoc:%08x\n",getbmpdata(winbmp));
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
+	dbgprintf("FrameBuffLoc:%08x\n",get_bmp_data(winbmp));
+	FBWriter window(get_bmp_data(winbmp),get_word(winbmp),16);//hack
 	//FBWriter window(getbmpdata(winbmp),get_word(winbmp),getbmpbpp(winbmp));
 	window.draw(palmbmp,dstx,dsty);
 }
@@ -257,7 +254,7 @@ void text(){
 	}
 
 	offset_68k winbmp = get_win_bmp(dstptr);
-	FBWriter window(getbmpdata(winbmp),get_word(winbmp),16);//hack
+	FBWriter window(get_bmp_data(winbmp),get_word(winbmp),16);//hack
 	offset_68k count = 0;
 	char curchr;
 	if(srcsize == UNDEFINED){
@@ -431,12 +428,7 @@ void drawborder(SQUARE area){
 }
 
 void drawbutton(SQUARE area){
-	srcsquare = area;
-	drwcolor = 0x07E0;//green
-	prams = FILL;
-	dstptr = renderer.lcd_window;//hack
-	rectangle();
-	//palmabrt();//hack
+	UG_FillFrame( area.start.x, area.start.y, area.end.x, area.end.y, C_GREEN);
 }
 
 //the blue outline around the active control on Palm OS 5
@@ -1677,20 +1669,41 @@ void winresetclip(){
 }
 
 void wincopyrectangle(){
-	stackptr(srcwin);
-	stackptr(dstwin);
-	stackptr(srcrect);
+	stackptr(src_win);
+	stackptr(dst_win);
+	stackptr(src_rect);
 	stackword(x);
 	stackword(y);
 	stackbyte(mode);
 
-	if(srcwin)srcptr = srcwin;
+	/*
+	offset_68k src_data;
+	offset_68k dst_data;
+	SQUARE area = get_square(src_rect);
+
+	//get_bmp_row_bytes(get_win_bmp(offset_68k winptr));
+
+	if(src_win)src_data = get_win_data(src_win);
+	else src_data = get_win_data(renderer.get_draw_window());
+
+	if(dst_win)dstdata = get_win_data(dst_win);
+	else dst_data = get_win_data(renderer.get_draw_window());
+
+	for(uint32_t y = area.start.y;y < area.end.y;y++){
+		for(uint32_t x = area.start.x;x < area.end.x;x++){
+
+		}
+	}
+	*/
+
+
+	if(src_win)srcptr = src_win;
 	else srcptr = renderer.get_draw_window();
 
-	if(dstwin)dstptr = dstwin;
+	if(dst_win)dstptr = dst_win;
 	else dstptr = renderer.get_draw_window();
 
-	srcsquare = get_square(srcrect);
+	srcsquare = get_square(src_rect);
 
 	dstx = x;
 	dsty = y;
@@ -1754,14 +1767,14 @@ void winrgbtoindex(){
 	//get bpp and compare indicies properly
 	offset_68k count;
 	if(clut == nullptr_68k || tablesize == 0){
-		uint8_t bpp = getbmpbpp(get_win_bmp(renderer.get_draw_window()));
+		uint8_t bpp = get_bmp_bpp(get_win_bmp(renderer.get_draw_window()));
 		bestindex = getbestdefaultindex(red,green,blue,bpp);
 	}
 	else{
 		uint16_t closeness = 0xFFFF;//the bigger the more diffrence
 		offset_68k curcolor = clut;
 		for(count = 0;count < tablesize;count++){
-			uint16_t thisdiff = getrgbdiff(red,green,blue,get_byte(curcolor + 1),get_byte(curcolor + 2),get_byte(curcolor + 3));
+			uint16_t thisdiff = get_rgb_diff(red,green,blue,get_byte(curcolor + 1),get_byte(curcolor + 2),get_byte(curcolor + 3));
 			if(thisdiff < closeness){
 				closeness = thisdiff;
 				bestindex = get_byte(curcolor);
@@ -1907,7 +1920,7 @@ void winsetcoordinatesystem(){
 //bmp functions
 void bmpgetbits(){
 	stackptr(bmpptr);
-	A0 = getbmpdata(bmpptr);
+	A0 = get_bmp_data(bmpptr);
 }
 
 void bmpbitssize(){
@@ -1917,7 +1930,7 @@ void bmpbitssize(){
 	//compressed
 	if(flags & bit(15)){
 		uint8_t version = get_byte(bmpptr + 9);
-		offset_68k cmpdata = getbmpdata(bmpptr);
+		offset_68k cmpdata = get_bmp_data(bmpptr);
 		switch(version){
 			case 0://version 0 has no compression
 				D0 = (get_word(bmpptr + 2)/*height*/ * get_word(bmpptr + 4)/*rowbytes*/);
@@ -1985,8 +1998,8 @@ void bmpcreate(){
 	bool leftoverbyte = (((w * bpp) % 8) != 0);//has byte with unused data on end(since all rows are byte aligned)
 	if(leftoverbyte)rowbytes += 1;
 	//clear bitmap to white
-	if(bpp == 1)memset68k(getbmpdata(newbitmap),0x00,rowbytes * h);//black and white are swapped in 1bpp mode
-	else memset68k(getbmpdata(newbitmap),0xFF,rowbytes * h);
+	if(bpp == 1)memset68k(get_bmp_data(newbitmap),0x00,rowbytes * h);//black and white are swapped in 1bpp mode
+	else memset68k(get_bmp_data(newbitmap),0xFF,rowbytes * h);
 
 	put_word(err,errNone);
 	A0 = newbitmap;

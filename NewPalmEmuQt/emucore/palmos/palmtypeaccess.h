@@ -3,26 +3,27 @@
 
 #include "m68k.h"
 #include "rawimagetools.h"
-#include "minifunc.h"
+//#include "minifunc.h"
 
 #include "palmos/graphics/palette.h"
 
+/*
 //new format palm struct field accessors
 #define WINFLAGS(winptr) ((winptr) + 8)
 //#define WINFLAGMODAL(flags) ((flags) & bit(13))
 
-inline uint16_t getwinflags(offset_68k winptr){
+inline uint16_t get_win_flags(offset_68k winptr){
 	return get_word(winptr + 8);
 }
 
-inline bool getwinmodal(offset_68k winptr){
-	return getwinflags(winptr) & bit(13);
+inline bool get_win_modal(offset_68k winptr){
+	return get_win_flags(winptr) & bit(13);
 }
 
-inline uint16_t getwinbackcolor(offset_68k winptr){
+inline uint16_t get_win_back_color(offset_68k winptr){
 	return get_word(winptr + 8);
 }
-
+*/
 
 //bitmap
 inline offset_68k getbmppalette(offset_68k bmpptr){
@@ -44,7 +45,7 @@ inline uint16_t getbmppalettenumentrys(offset_68k bmpptr){
 	return 0;
 }
 
-inline offset_68k getbmpdata(offset_68k bmpptr){
+inline offset_68k get_bmp_data(offset_68k bmpptr){
 	offset_68k data;
 	uint16_t bmpflags = get_word(bmpptr + 6);
 	if(bmpflags & bit(12))data = get_long(bmpptr + 16);
@@ -58,12 +59,12 @@ inline offset_68k getbmpdata(offset_68k bmpptr){
 	return data;
 }
 
-inline uint8_t getbmpbpp(offset_68k bmpptr){
+inline uint8_t get_bmp_bpp(offset_68k bmpptr){
 	if(get_byte(bmpptr + 9) > 0)return get_byte(bmpptr + 8);
 	return 1;
 }
 
-inline uint16_t getbmprowbytes(offset_68k bmpptr){
+inline uint16_t get_bmp_row_bytes(offset_68k bmpptr){
 	return get_word(bmpptr + 4);
 }
 
@@ -72,8 +73,8 @@ inline offset_68k get_win_bmp(offset_68k winptr){
 	return get_long(winptr + 26);
 }
 
-inline offset_68k getwindata(offset_68k winptr){
-	return getbmpdata(get_win_bmp(winptr));
+inline offset_68k get_win_data(offset_68k winptr){
+	return get_bmp_data(get_win_bmp(winptr));
 }
 
 inline offset_68k getwinbounds(offset_68k winptr){

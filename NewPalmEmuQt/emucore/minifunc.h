@@ -26,16 +26,16 @@
 #define nextboundry(x)	(((x) + 1) & ~0x1)
 #define bit(x)			(1 << (x))
 
-inline long smallest(long val1,long val2){
+inline long smallest(long val1, long val2){
 	return val1 < val2 ? val1 : val2;
 }
 
-inline long largest(long val1,long val2){
+inline long largest(long val1, long val2){
 	return val1 > val2 ? val1 : val2;
 }
 
-inline long absdiffrence(long var1,long var2){
-	return largest(var1,var2) - smallest(var1,var2);
+inline long absdiffrence(long var1, long var2){
+	return largest(var1, var2) - smallest(var1, var2);
 }
 
 #endif
