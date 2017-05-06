@@ -30,6 +30,11 @@ struct {
 	bool scale_video;//should be true if using 160*160 resolution, starts true and apps must enable hires mode
 	int screen_lock_count;//used to prevent displaying any changes until finished rendering
 	offset_68k draw_state;//the current settings of the renderer (stored in palm address space so apps can access it(even though that "forbidden" by the api docs))
+	struct {
+		//uint8_t widths[];
+		UG_FONT custom_font;
+	} font_mem;
+
 
 	offset_68k lcd_window;//represents the framebuffer as a window
 	offset_68k lcd_bitmap;//represents the framebuffer as a palm bitmap struct
@@ -773,6 +778,7 @@ void drawfield(offset_68k window, offset_68k fieldptr) {
 		dststart = area.start;
 		srcsize = textlength;
 		text();
+		//UG_PutString();
 		//dsty += textlineheight;
 		//dstendy += textlineheight;
 		//prams = DOTTED;
@@ -992,7 +998,7 @@ void updateanddrawform(offset_68k form) {
 	//clear hitboxes
 	resetcollisionmatrix();
 	//draw the objects
-	uint16_t numobjects = getformnumobjects(form);
+	uint16_t numobjects = get_form_num_objects(form);
 
 	//dbgprintf("Numobjs:%d,Formptr:%08x\n",numobjects,formptr);
 
@@ -1723,24 +1729,15 @@ void windrawchars() {
 	stackword(length);
 	stackword(thisx);
 	stackword(thisy);
-#if 0
-	TEMPHACK;
+	std::string str = "";
 
-	if((int16_t)thisx < 0 || (int16_t)thisy < 0) {
-		return;
+	for(uint32_t cnt = 0; cnt < length; cnt++) {
+		str += (char)get_byte(chrsptr + cnt);
 	}
 
-	dbgprintf("%d chars to print.\n", length);
-	dbgprintf("Chars:%s\n", readstring(chrsptr).c_str()); //HACK use length if given
-	dstptr = renderer.get_draw_window();
-	dstx = thisx;
-	dsty = thisy;
-	srcsize = (int16_t)length;
-	srcptr = chrsptr;
-	drwcolor = get_byte(TEXTCOLOR);
-	text();
-#endif
-	TEMPHACK;
+	UG_SetForecolor(renderer.color_palette[get_byte(TEXTCOLOR)]);
+	UG_PutString(thisx, thisy, (char*)str.c_str());
+	UG_SetForecolor(renderer.color_palette[get_byte(FORECOLOR)]);
 	//no return value
 }
 
@@ -1849,9 +1846,7 @@ void winpalette() {
 		break;
 
 	case winPaletteSetToDefault:
-		uint16_t rabbid;
-
-		for(rabbid = 0; rabbid < paletteentrys; rabbid++) {
+		for(uint16_t rabbid = 0; rabbid < paletteentrys; rabbid++) {
 			put_long(winpal + (startindex + rabbid) * 4, paltorgbindex8(rabbid));
 		}
 
@@ -2465,7 +2460,7 @@ void frmsettitle() {
 	dbgprintf("Formptr:%08x,New Title:%08x\n", formptr, chrptr);
 	offset_68k formobjlist = getformobjlist(formptr);
 	offset_68k titleobj = nullptr_68k;
-	uint16_t thisnumobjects = getformnumobjects(formptr);
+	uint16_t thisnumobjects = get_form_num_objects(formptr);
 
 	for(uint16_t count = 0; count < thisnumobjects; count++) {
 		if(get_byte(formobjlist + count * 6) == frmTitleObj) {
@@ -2635,7 +2630,7 @@ void frmalert() {
 void frmgetobjectindex() {
 	stackptr(form);
 	stackword(objid);//not resource id
-	uint16_t formobjnum = getformnumobjects(form);
+	uint16_t formobjnum = get_form_num_objects(form);
 
 	for(uint16_t count = 0; count < formobjnum; count++) {
 		if(getformobjid(form, count) == objid) {

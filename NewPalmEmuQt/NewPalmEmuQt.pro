@@ -98,7 +98,8 @@ SOURCES += \
     emucore/hardware/romutils.cpp \
     emucore/palmosv4.1-en-m515.cpp \
     emucore/debug/trapnumtoname.cpp \
-    emucore/palmos/graphics/ugui/ugui.c
+    emucore/palmos/graphics/ugui/ugui.c \
+    emucore/palmos/graphics/formrenderer.cpp
 
 
 

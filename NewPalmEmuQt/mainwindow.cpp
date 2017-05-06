@@ -23,201 +23,180 @@ QImage video;
 QTimer* refreshdisplay;
 QApplication* thisapp;
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow) {
 	ui->setupUi(this);
 	output = this;
 	refreshdisplay = new QTimer(this);
-    connect(refreshdisplay, SIGNAL(timeout()), this, SLOT(updatedisplay()));
+	connect(refreshdisplay, SIGNAL(timeout()), this, SLOT(updatedisplay()));
 	//update display every 16.67 miliseconds = 60*second
 	refreshdisplay->start(16);
 	ui->exitemulator->setEnabled(false);
-
 	//palm tx
 	//settings.screen_width = 320;
 	//settings.screen_height  = 480;
-
 	//palm z22
 	settings.screen_width = 160;
 	settings.screen_height = 160;
-
 	//tapwave zodiac
 	//settings.screen_width = 480;
 	//settings.screen_height  = 320;
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 	emu_end();
 	delete ui;
 }
 
-void MainWindow::on_keyboard_pressed()
-{
-
+void MainWindow::on_keyboard_pressed() {
 }
 
-void MainWindow::on_install_pressed()
-{
-	string app = QFileDialog::getOpenFileName(this,"Open Prc/Pdb",
-											  QDir::root().path(),0).toStdString();
-	if(app != "")settings.internal_files.push_back(app);
+void MainWindow::on_install_pressed() {
+	string app = QFileDialog::getOpenFileName(this, "Open Prc/Pdb",
+	             QDir::root().path(), 0).toStdString();
+
+	if(app != "") {
+		settings.internal_files.push_back(app);
+	}
 }
 
 uint16_t formattedgfxbuffer[320 * 480];
 
-void MainWindow::updatedisplay(){
-	if(!emu_started())return;
+void MainWindow::updatedisplay() {
+	if(!emu_started()) {
+		return;
+	}
 
 	emu_get_framebuffer(formattedgfxbuffer);
 	video = QImage((unsigned char*)formattedgfxbuffer, settings.screen_width, settings.screen_height, QImage::Format_RGB16);//16 bit
 	ui->display->setPixmap(QPixmap::fromImage(video).scaled(
 	                           ui->display->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->display->update();
+	ui->display->update();
 }
 
-void MainWindow::errdisplay(string err){
-    ui->display->setText(QString::fromStdString(err));
+void MainWindow::errdisplay(string err) {
+	ui->display->setText(QString::fromStdString(err));
 }
 
-void MainWindow::on_display_destroyed()
-{
-
+void MainWindow::on_display_destroyed() {
 }
 
-void MainWindow::on_mainleft_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(2));
+void MainWindow::on_mainleft_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(2));
 }
 
-void MainWindow::on_mainright_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(1));
+void MainWindow::on_mainright_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(1));
 }
 
-void MainWindow::on_settingsleft_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(0));
+void MainWindow::on_settingsleft_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(0));
 }
 
-void MainWindow::on_settingsright_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(2));
+void MainWindow::on_settingsright_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(2));
 }
 
-void MainWindow::on_joyleft_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(1));
+void MainWindow::on_joyleft_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(1));
 }
 
-void MainWindow::on_joyright_clicked()
-{
-    ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(0));
+void MainWindow::on_joyright_clicked() {
+	ui->controlpanel->setCurrentWidget(ui->controlpanel->widget(0));
 }
 
-void MainWindow::on_settings_clicked()
-{
-    setprocess(SETUP);
+void MainWindow::on_settings_clicked() {
+	setprocess(SETUP);
 }
 
-void MainWindow::on_controlemulator_clicked()
-{
-	if(!emu_started()){
+void MainWindow::on_controlemulator_clicked() {
+	if(!emu_started()) {
 		//QtEmu_init();
 		//selectappandstart();
 		/*
-		bool pass = start(0);
-		if(pass){
+			bool pass = start(0);
+			if(pass){
 			ui->controlemulator->setText("Pause");
 			ui->exitemulator->setEnabled(true);
-		}
+			}
 		*/
 		return;
 	}
 
-	if(!emu_paused()){
-		if(!emu_resume())return;
-        ui->controlemulator->setText("Pause");
-    }
-	else{
-		if(!emu_halt())return;
+	if(!emu_paused()) {
+		if(!emu_resume()) {
+			return;
+		}
+
+		ui->controlemulator->setText("Pause");
+	}
+	else {
+		if(!emu_halt()) {
+			return;
+		}
+
 		ui->controlemulator->setText("Resume");
-    }
+	}
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* ev){
-	emu_sendkeyboardchar(ev->key(),true);
+void MainWindow::keyPressEvent(QKeyEvent* ev) {
+	emu_sendkeyboardchar(ev->key(), true);
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent* ev){
-	emu_sendkeyboardchar(ev->key(),false);
+void MainWindow::keyReleaseEvent(QKeyEvent* ev) {
+	emu_sendkeyboardchar(ev->key(), false);
 }
 
-void MainWindow::on_exitemulator_pressed()
-{
+void MainWindow::on_exitemulator_pressed() {
 	emu_end();
 	ui->controlemulator->setText("Start");
 	ui->exitemulator->setEnabled(false);
 }
 
-void MainWindow::on_exitemulator_released()
-{
+void MainWindow::on_exitemulator_released() {
 	//emu_sendbutton(Power,false);
 }
 
-void MainWindow::on_clock_pressed()
-{
-	emu_sendbutton(BTN_Calender,true);
+void MainWindow::on_clock_pressed() {
+	emu_sendbutton(BTN_Calender, true);
 }
 
-void MainWindow::on_clock_released()
-{
-	emu_sendbutton(BTN_Calender,false);
+void MainWindow::on_clock_released() {
+	emu_sendbutton(BTN_Calender, false);
 }
 
-void MainWindow::on_phone_pressed()
-{
-	emu_sendbutton(BTN_Contacts,true);
+void MainWindow::on_phone_pressed() {
+	emu_sendbutton(BTN_Contacts, true);
 }
 
-void MainWindow::on_phone_released()
-{
-	emu_sendbutton(BTN_Contacts,false);
+void MainWindow::on_phone_released() {
+	emu_sendbutton(BTN_Contacts, false);
 }
 
-void MainWindow::on_todo_pressed()
-{
-	emu_sendbutton(BTN_Todo,true);
+void MainWindow::on_todo_pressed() {
+	emu_sendbutton(BTN_Todo, true);
 }
 
-void MainWindow::on_todo_released()
-{
-	emu_sendbutton(BTN_Todo,false);
+void MainWindow::on_todo_released() {
+	emu_sendbutton(BTN_Todo, false);
 }
 
-void MainWindow::on_notes_pressed()
-{
-	emu_sendbutton(BTN_Notes,true);
+void MainWindow::on_notes_pressed() {
+	emu_sendbutton(BTN_Notes, true);
 }
 
-void MainWindow::on_notes_released()
-{
-	emu_sendbutton(BTN_Notes,false);
+void MainWindow::on_notes_released() {
+	emu_sendbutton(BTN_Notes, false);
 }
 
-void MainWindow::on_runtest_clicked()
-{
-
+void MainWindow::on_runtest_clicked() {
 #if OS_ANDROID
 	settings.internal_files.push_back("/sdcard/palm/fonts.prc");
 #else
 	settings.internal_files.push_back("/Users/Hoppy/000prcs/osdata/fonts.prc");
 #endif
-
-#define SIMPAPP 13
-
+#define SIMPAPP 1
 #if SIMPAPP == -1
 	settings.internal_files.push_back("/sdcard/palm/zap2016.prc");
 #elif SIMPAPP == 0
@@ -240,7 +219,7 @@ void MainWindow::on_runtest_clicked()
 #elif SIMPAPP == 6
 	settings.internal_files.push_back("/sdcard/palm/invaders.prc");
 #elif SIMPAPP == 7
-	static_assert(RES >= 320,"Cant run in lores mode.");
+	static_assert(RES >= 320, "Cant run in lores mode.");
 	settings.internal_files.push_back("/Users/Hoppy/000prcs/platypus.prc");//broken at writeing to addr 0x0
 #elif SIMPAPP == 8
 	settings.internal_files.push_back("/Users/Hoppy/000prcs/Calculator_enUS.prc");
@@ -288,9 +267,9 @@ void MainWindow::on_runtest_clicked()
 #elif SIMPAPP == 20
 	settings.internal_files.push_back("/Users/Hoppy/000prcs/BikeOrDie-2.0d.prc");
 #endif
-
 	bool pass = emu_start(settings);
-	if(pass){
+
+	if(pass) {
 		ui->controlemulator->setText("Pause");
 		ui->runtest->setEnabled(false);
 		ui->exitemulator->setEnabled(true);
